@@ -1,0 +1,10 @@
+img
+vcr
+*.pdb
+*.manifest
+
+.vs/YYOPInspectionClient/v14/.suo
+*.mp4
+YYOPInspectionClient/bin/draft/32213232/1521006908_vcr.mp4
+*.mp4
+*.mp4
