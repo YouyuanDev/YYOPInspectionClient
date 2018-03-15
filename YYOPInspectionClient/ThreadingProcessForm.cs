@@ -236,12 +236,12 @@ namespace YYOPInspectionClient
                     count = streamRead.Read(readBuff, 0, 256);
                 }
                 response.Close();
-                MessageBox.Show("返回的内容：" + content);
+               // MessageBox.Show("返回的内容：" + content);
                 string jsons = content;
                 JObject jobject = JObject.Parse(jsons);
-                MessageBox.Show(jobject["resultMsg"].ToString());
+               // MessageBox.Show(jobject["resultMsg"].ToString());
                 bool result = Convert.ToBoolean(jobject["resultMsg"].ToString());
-                MessageBox.Show(result.ToString());
+               // MessageBox.Show(result.ToString());
                 if (result)
                 {
                     MessageBox.Show("上传成功！");
@@ -289,6 +289,22 @@ namespace YYOPInspectionClient
         #region 窗体关闭事件
         private void ThreadingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            string notUploadedPath = Application.StartupPath + "\\draft\\notuploaded.txt";
+            //判断已上传记录文件是否存在
+            if (!File.Exists(notUploadedPath))
+            {
+                FileStream fs0 = new FileStream(notUploadedPath, FileMode.Create);//创建写入文件 
+                fs0.Close();
+            }
+            string[] videoNameList = getVideoPath(videoTimestamp).Split(new char[] {';'});
+            FileStream fs = new FileStream(notUploadedPath, FileMode.Append, FileAccess.Write);//创建写入文件 
+            StreamWriter sw = new StreamWriter(fs);
+            //向notuploaded.txt追加未上传视频名字
+            for (int i = 0; i < videoNameList.Length-1; i++) {
+                sw.WriteLine(videoNameList[i]);
+            }
+            sw.Close();
+            fs.Close();
             codeReaderWindow.codeReaderDisConnect();
         }
         #endregion

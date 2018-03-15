@@ -31,7 +31,11 @@
             this.lblMsg = new System.Windows.Forms.Label();
             this.btnUpload = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.checkbox1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.filename = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,35 +50,78 @@
             // 
             // btnUpload
             // 
-            this.btnUpload.Location = new System.Drawing.Point(477, 12);
+            this.btnUpload.Location = new System.Drawing.Point(443, 278);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
             this.btnUpload.TabIndex = 2;
             this.btnUpload.Text = "上传";
             this.btnUpload.UseVisualStyleBackColor = true;
+            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.checkbox1,
             this.filename});
             this.dataGridView1.Location = new System.Drawing.Point(4, 3);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(467, 298);
+            this.dataGridView1.Size = new System.Drawing.Size(433, 298);
             this.dataGridView1.TabIndex = 3;
+            // 
+            // checkbox1
+            // 
+            this.checkbox1.HeaderText = "全选";
+            this.checkbox1.Name = "checkbox1";
+            this.checkbox1.Width = 50;
             // 
             // filename
             // 
             this.filename.HeaderText = "文件名";
             this.filename.Name = "filename";
-            this.filename.Width = 450;
+            this.filename.Width = 375;
+            // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(443, 12);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectAll.TabIndex = 4;
+            this.btnSelectAll.Text = "全选";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(444, 58);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "上传视频";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(444, 114);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // UnSubmitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 313);
+            this.ClientSize = new System.Drawing.Size(530, 313);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnUpload);
             this.Controls.Add(this.lblMsg);
@@ -90,6 +137,10 @@
         private System.Windows.Forms.Label lblMsg;
         private System.Windows.Forms.Button btnUpload;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn checkbox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn filename;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

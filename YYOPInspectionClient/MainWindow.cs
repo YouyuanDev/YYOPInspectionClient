@@ -615,6 +615,7 @@ namespace YYOPInspectionClient
                 }
                 else
                 {
+
                     DebugInfo("NET_DVR_SaveRealData succ!");
                     btnRecord.Text = "Stop";
                     m_bRecord = true;
@@ -633,6 +634,7 @@ namespace YYOPInspectionClient
                 else
                 {
                     str = "NET_DVR_StopSaveRealData succ and the saved file is " + sVideoFileName;
+
                     DebugInfo(str);
                     btnRecord.Text = "Record";
                     m_bRecord = false;
