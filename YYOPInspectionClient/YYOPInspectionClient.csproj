@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
+    <Compile Include="FormAdaptive.cs" />
     <Compile Include="FtpUtil.cs" />
     <Compile Include="IndexWindow.cs">
       <SubType>Form</SubType>

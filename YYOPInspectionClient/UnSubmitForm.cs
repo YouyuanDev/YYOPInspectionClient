@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace YYOPInspectionClient
@@ -27,7 +28,7 @@ namespace YYOPInspectionClient
         private void getUnSummitFile()
         {
             dataGridView1.Rows.Clear();
-            string path = Application.StartupPath + "\\draft\\formbackup\\";
+            string path = Application.StartupPath + "\\draft\\";
             if (Directory.Exists(path))
             {
                 DirectoryInfo folder = new DirectoryInfo(path);
@@ -85,7 +86,7 @@ namespace YYOPInspectionClient
                         }
                     }
                     totalForm = listForm.Count;
-                    string path = Application.StartupPath + "\\draft\\formbackup\\";
+                    string path = Application.StartupPath + "\\draft\\";
                     //获取选中表单的路径集合
                     DirectoryInfo folder = new DirectoryInfo(path);
                     string dirName = "";
@@ -108,13 +109,13 @@ namespace YYOPInspectionClient
                         //遍历listPath找到未提交文件，然后读出json数据
                         for (int i = 0; i < listPath.Count; i++) {
                             jsonContent = File.ReadAllText(listPath[i], Encoding.UTF8).Trim();
-                            MessageBox.Show(jsonContent);
                             if (jsonContent != null && jsonContent.Length > 0) {
                                 if (uploadUnSubmitForm(jsonContent)) {
                                     //如果上传成功删除文件
                                     File.Delete(listPath[i]);
                                     string fatherDir = Directory.GetParent(listPath[i]).FullName;
-                                    if (Directory.Exists(fatherDir)) {
+                                    //然后判断父目录中还有文件没，如果有父目录就不删除
+                                    if (!Directory.EnumerateDirectories(fatherDir, "*.*", SearchOption.AllDirectories).Any()) {
                                         Directory.Delete(fatherDir);
                                     }
                                     tempTotal++;
@@ -216,74 +217,34 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string uploadedPath = Application.StartupPath + "\\draft";
-            getVideoPathList(uploadedPath);
-            List<string> videoNameList = new List<string>();
-            //List<string> uploadedNameList = new List<string>();
-            string path = Application.StartupPath + "\\draft\\notuploaded.txt";
-
-            //判断已上传记录文件是否存在
-            if (File.Exists(path))
-            {
-                videoNameList = File.ReadAllLines(path,Encoding.UTF8).ToList<string>();
-                //FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);//创建写入文件 
-                //StreamReader sr = new StreamReader(fs);
-                //string content =null;
-                //while ((content = sr.ReadLine()) != null) {
-                //    videoNameList.Add(content);
-                //}
-                //sr.Close();
-                //fs.Close();
-                //取出未上传视频名字集合
-                string videoName = null;
-                string videoPath = null;
-                int tempTotal = 0;
-                if (videoPathList != null && videoPathList.Count > 0)
-                {
-                    //遍历获取所有的视频文件的字典集合
-                    foreach (KeyValuePair<string,string> keyVal in videoPathList) {
-                        videoName = keyVal.Key;
-                        if (videoNameList.Contains(videoName)) {
-                            //获取未上传视频的路径，然后开始上传
-                            videoPath = keyVal.Value;
-                            MessageBox.Show(videoPath);
-                            //if (FtpUtil.UpLoadFile(videoPath)) {
-                            //    tempTotal++;
-                            //    videoNameList.Remove(videoName);
-                            //}
-                            //MessageBox.Show("开始上传"+videoPath);
-                            //上传成功后从list中移除
-                        }
-                    }
-                }
-                MessageBox.Show("共"+tempTotal+"个视频上传成功");
-                //最后更新notuploaded.txt文件
-                FileStream stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write);
-                stream.Seek(0, SeekOrigin.Begin);
-                stream.SetLength(0);
-                stream.Close();
-                FileStream fs1 = File.Open(path, FileMode.Append, FileAccess.Write);
-                StreamWriter sw = new StreamWriter(fs1);
-                foreach (string item in videoNameList) {
-                    sw.WriteLine(item);
-                }
-                sw.Flush();
-                sw.Close();
-            }
-            else {
-                MessageBox.Show("未找到视频保存路径!");
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            FileInfo info = new FileInfo("C:\\eee.mp4");
-            if (FtpUtil.UploadFile(info))
-            {
-                MessageBox.Show("上传成功");
-            }
-        }
+        
+        //private static void UploadVideo()
+        //{
+        //    string path = Application.StartupPath + "\\draft";
+        //    if (Directory.Exists(path))
+        //    {
+        //        DirectoryInfo folder = new DirectoryInfo(path);
+        //        foreach (DirectoryInfo folderMp4 in folder.GetDirectories()) {
+        //            foreach (FileInfo file in folderMp4.GetFiles("*.mp4"))
+        //            {
+        //                //获取文件路径
+        //                MessageBox.Show(file.FullName);
+        //                if (File.Exists(file.FullName)) {
+        //                    FileInfo info = new FileInfo(file.FullName);
+        //                    if (FtpUtil.UploadFile(folderMp4,info))
+        //                    {
+        //                        //File.Delete(info.FullName);
+        //                        //string fatherDir = Directory.GetParent(info.FullName).FullName;
+        //                        ////然后判断父目录中还有文件没，如果有父目录就不删除
+        //                        //if ((folderMp4.GetFiles().Length + folderMp4.GetDirectories().Length) == 0)
+        //                        //{
+        //                        //    Directory.Delete(fatherDir);
+        //                        //}
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

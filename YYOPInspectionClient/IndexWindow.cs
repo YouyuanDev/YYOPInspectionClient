@@ -9,20 +9,49 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Windows.Forms;
 
 namespace YYOPInspectionClient
 {
+   
     public partial class IndexWindow : Form
     {
+        private static Thread thread = null;
+        FormAdaptive adapter = new FormAdaptive();
         public IndexWindow()
         {
             InitializeComponent();
             getThreadingProcessData();
+            thread = new Thread(UploadVideo);
+            thread.Start();
+            thread.IsBackground = true;
+            //adapter.controllInitializeSize(this);
         }
 
-        
+        private static void UploadVideo()
+        {
+            while (true)
+            {
+                //遍历视频文件
+                string path = Application.StartupPath + "\\draft";
+                if (Directory.Exists(path))
+                {
+                    DirectoryInfo folder = new DirectoryInfo(path);
+                    foreach (DirectoryInfo sonFolder in folder.GetDirectories())
+                    {
+                        foreach (FileInfo file in sonFolder.GetFiles("*.mp4"))
+                        {
+                            //获取文件路径 
+                            FileInfo info = new FileInfo(file.FullName);
+                            FtpUtil.UploadFile(sonFolder, info);
+                        }
+                    }
+                }
+                Thread.Sleep(3000);
+            }
+        }
 
         private void VideoToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -53,8 +82,8 @@ namespace YYOPInspectionClient
                 string operator_no = HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
                 string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
                 string end_time = HttpUtility.UrlEncode(this.dtpEndTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
-                string pageCurrent = HttpUtility.UrlEncode(this.textBox3.Text.Trim(), Encoding.UTF8);
-                string pageSize = HttpUtility.UrlEncode(this.textBox4.Text.Trim(), Encoding.UTF8);
+                string pageCurrent = HttpUtility.UrlEncode("", Encoding.UTF8);
+               string pageSize = HttpUtility.UrlEncode("", Encoding.UTF8);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
                 sb.Append("\"couping_no\"" + ":" + "\"" + couping_no + "\",");
@@ -114,6 +143,18 @@ namespace YYOPInspectionClient
             UnSubmitForm form = new UnSubmitForm();
             form.Show();
 
+        }
+
+        private void IndexWindow_Load(object sender, EventArgs e)
+        {
+            //MessageBox.Show("Form_load");
+            //adapter.controllInitializeSize(this);
+        }
+
+        private void IndexWindow_SizeChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("大小改变");
+            //adapter.controlAutoSize(this);
         }
     }
 }

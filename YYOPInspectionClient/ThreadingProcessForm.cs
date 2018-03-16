@@ -18,13 +18,16 @@ namespace YYOPInspectionClient
         private IndexWindow indexWindow;
         private MainWindow mainWindow;
         YYKeyenceReaderConsole codeReaderWindow;
-        private List<string> videoTimestamp=new List<string>();
+        //时间戳(视频和form表单保存的目录名)
+        private string timestamp = null;
+        //private List<string> videoTimestamp=new List<string>();
         public ThreadingProcessForm(IndexWindow indexWindow,MainWindow mainWindow)
         {
             InitializeComponent();
             this.comboBox1.SelectedIndex =0;
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
+            timestamp = getMesuringRecord();
             codeReaderWindow = new YYKeyenceReaderConsole(this);
         }
 
@@ -58,19 +61,23 @@ namespace YYOPInspectionClient
                 string btnName = this.button2.Text;
                 if (btnName.Equals("开始录像"))
                 {
-                    videoTimestamp.Add(getMesuringRecord());
+                   //如果时间戳不存在，生成时间戳，此时间戳与视频和txt保存关联
+                    if (timestamp== null||timestamp.Length<=0) {
+                      timestamp = getMesuringRecord();
+                    }
+                    //videoTimestamp.Add(getMesuringRecord());
                     //先判断是否登录
                     mainWindow.recordLogin();
                     //然后预览
                     mainWindow.recordPreview();
                     //然后开始录像
-                    mainWindow.RecordVideo(videoTimestamp[videoTimestamp.Count-1].ToString());
+                    mainWindow.RecordVideo(timestamp);
                     this.button2.Text = "结束录像";
                 }
                 else
                 {
                     //停止录制的时候就是 先停止录制，然后停止预览，最后退出登陆
-                    mainWindow.RecordVideo(videoTimestamp[videoTimestamp.Count - 1].ToString());
+                    mainWindow.RecordVideo(timestamp);
                     mainWindow.recordPreview();
                     mainWindow.recordLogin();
 
@@ -158,11 +165,12 @@ namespace YYOPInspectionClient
             string couping_length = HttpUtility.UrlEncode(this.textBox39.Text, Encoding.UTF8);//接箍长度
             string thread_tooth_angle = HttpUtility.UrlEncode(this.textBox40.Text, Encoding.UTF8);//牙型角度
             string thread_throug_hole_size = HttpUtility.UrlEncode(this.textBox41.Text, Encoding.UTF8);//镗孔尺寸
-            //然后搜索录制的视频文件获取文件名集合保存到video_no中
-            string video_no =getVideoPath(videoTimestamp); //HttpUtility.UrlEncode(this.textBox2.Text, Encoding.UTF8);//视频编号
+            //然后根据时间戳生成的目录搜索录制的视频文件获取文件名集合保存到video_no中
+            string video_no =getVideoPath(timestamp); //HttpUtility.UrlEncode(this.textBox2.Text, Encoding.UTF8);//视频编号
             string inspection_result = HttpUtility.UrlEncode(getInspectionResult(this.comboBox1.SelectedItem.ToString()).ToString(), Encoding.UTF8);//检验结果
             ASCIIEncoding encoding = new ASCIIEncoding();
-            String content = "";
+            string content = "";
+            string json = "";
             try
             {
                 //拼接json格式字符串
@@ -212,7 +220,7 @@ namespace YYOPInspectionClient
                 sb.Append("\"arg41\"" + ":" + "\"" + video_no + "\",");
                 sb.Append("\"arg42 \"" + ":" + "\"" + inspection_result + "\"");
                 sb.Append("}");
-                string json = sb.ToString();
+                json= sb.ToString();
                 JObject o = JObject.Parse(json);
                 String param = o.ToString();
                 byte[] data = encoding.GetBytes(param);
@@ -245,15 +253,15 @@ namespace YYOPInspectionClient
                 if (result)
                 {
                     MessageBox.Show("上传成功！");
-
-                    writeUnSubmitForm(getMesuringRecord(), json);
                 }
                 else {
+                    writeUnSubmitForm(json);
                     MessageBox.Show("上传失败，系统将数据暂时存储，请在空闲时间提交(在主页数据管理功能处提交)！");
                 }
             }
             catch (Exception ex)
             {
+                writeUnSubmitForm(json);
                 MessageBox.Show("异常报错信息：" + ex.Message.ToString());
             }
             finally
@@ -266,14 +274,20 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 写入未提交成功的表单
-        private void writeUnSubmitForm(string timestamp, string jsonData) 
+        private void writeUnSubmitForm(string jsonData) 
         {
-            string coupingDir = Application.StartupPath + "\\draft\\formbackup\\" + timestamp;
+            //MessageBox.Show(jsonData);
+            //判断在没有点击录制视频的时候未生成时间戳的事件
+            if (timestamp == null || timestamp.Length <= 0) {
+                timestamp = getMesuringRecord();
+            }
+            string coupingDir = Application.StartupPath + "\\draft\\" + timestamp;
+            //MessageBox.Show(coupingDir);
             if (!File.Exists(coupingDir))
             {
                 Directory.CreateDirectory(coupingDir);
             }
-            string coupingTxt = Application.StartupPath + "\\draft\\formbackup\\" + timestamp + "\\" + timestamp + ".txt";
+            string coupingTxt = Application.StartupPath + "\\draft\\" + timestamp +"\\"+ timestamp + ".txt";
             if (!File.Exists(coupingTxt))
             {
                 FileStream fs = new FileStream(coupingTxt, FileMode.Create, FileAccess.Write);
@@ -289,44 +303,37 @@ namespace YYOPInspectionClient
         #region 窗体关闭事件
         private void ThreadingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string notUploadedPath = Application.StartupPath + "\\draft\\notuploaded.txt";
-            //判断已上传记录文件是否存在
-            if (!File.Exists(notUploadedPath))
-            {
-                FileStream fs0 = new FileStream(notUploadedPath, FileMode.Create);//创建写入文件 
-                fs0.Close();
+            //窗口关闭时判断是否结束录像
+            string btnName = this.button2.Text;
+            if (!btnName.Equals("开始录像")) {
+                mainWindow.RecordVideo(timestamp);
+                mainWindow.recordPreview();
+                mainWindow.recordLogin();
+                this.button2.Text = "开始录像";
             }
-            string[] videoNameList = getVideoPath(videoTimestamp).Split(new char[] {';'});
-            FileStream fs = new FileStream(notUploadedPath, FileMode.Append, FileAccess.Write);//创建写入文件 
-            StreamWriter sw = new StreamWriter(fs);
-            //向notuploaded.txt追加未上传视频名字
-            for (int i = 0; i < videoNameList.Length-1; i++) {
-                sw.WriteLine(videoNameList[i]);
-            }
-            sw.Close();
-            fs.Close();
             codeReaderWindow.codeReaderDisConnect();
         }
         #endregion
 
         #region 遍历录制视频文件获取文件名集合
-        private string getVideoPath(List<string> timestamp)
+        private string getVideoPath(string pathDir)
         {
             string pathList = "";
-            if (timestamp != null&&timestamp.Count>0) {
-                foreach (string item in timestamp) {
-                    string path = Application.StartupPath + "\\draft\\" + item + "\\";
-                    if (Directory.Exists(path)) {
-                        DirectoryInfo folder = new DirectoryInfo(path);
-                        foreach (FileInfo file in folder.GetFiles("*.mp4"))
-                        {
-                            pathList += file.Name + ";";
-                        }
+            //时间戳存在
+            if (timestamp != null && timestamp.Length > 0)
+            {
+                string path = Application.StartupPath + "\\draft\\" + pathDir + "\\";
+                if (Directory.Exists(path))
+                {
+                    DirectoryInfo folder = new DirectoryInfo(path);
+                    foreach (FileInfo file in folder.GetFiles("*.mp4"))
+                    {
+                        pathList += file.Name + ";";
                     }
                 }
             }
             return pathList;
-        } 
+        }
         #endregion
-    } 
+    }
 }
