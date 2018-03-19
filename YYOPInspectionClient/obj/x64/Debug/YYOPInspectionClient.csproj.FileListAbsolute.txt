@@ -30,3 +30,4 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspect
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.YYKeyenceReaderConsole.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.csproj.GenerateResource.Cache
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.pdb
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.FTPSetting.resources

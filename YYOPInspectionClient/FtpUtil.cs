@@ -12,6 +12,7 @@ namespace YYOPInspectionClient
     {
         private static DirectoryInfo dirInfo = null;
         private static FileInfo fileInfo = null;
+        private static  FTPSetting ftp = new FTPSetting();
         public static bool UploadFile(DirectoryInfo dirinfo, FileInfo fileinfo) {
            
             bool flag = false;
@@ -24,8 +25,9 @@ namespace YYOPInspectionClient
                 //定义FtpWebRequest,并设置相关属性
                 FtpWebRequest uploadRequest = (FtpWebRequest)WebRequest.Create(uri);
                 uploadRequest.Method = WebRequestMethods.Ftp.UploadFile;
-                string ftpUser = "ftpadmin";
-                string ftpPassWord = "123456";
+
+                string ftpUser = ftp.txtFtpName.Text.Trim();
+                string ftpPassWord = ftp.txtFtpPwd.Text.Trim();
                 uploadRequest.Credentials = new NetworkCredential(ftpUser, ftpPassWord);
                 //开始以异步方式打开请求的内容流以便写入
 

@@ -75,6 +75,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.fTPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -108,14 +109,14 @@
             // NewFormToolStripMenuItem
             // 
             this.NewFormToolStripMenuItem.Name = "NewFormToolStripMenuItem";
-            this.NewFormToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.NewFormToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.NewFormToolStripMenuItem.Text = "新建";
             this.NewFormToolStripMenuItem.Click += new System.EventHandler(this.NewFormToolStripMenuItem_Click);
             // 
             // unSubmitToolStripMenuItem
             // 
             this.unSubmitToolStripMenuItem.Name = "unSubmitToolStripMenuItem";
-            this.unSubmitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.unSubmitToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.unSubmitToolStripMenuItem.Text = "未提交表单";
             this.unSubmitToolStripMenuItem.Click += new System.EventHandler(this.unSubmitToolStripMenuItem_Click);
             // 
@@ -123,7 +124,8 @@
             // 
             this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.VideoToolStripMenuItem,
-            this.CodeToolStripMenuItem});
+            this.CodeToolStripMenuItem,
+            this.fTPToolStripMenuItem});
             this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
             this.设置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.设置ToolStripMenuItem.Text = "设置";
@@ -469,6 +471,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "接箍编号：";
             // 
+            // fTPToolStripMenuItem
+            // 
+            this.fTPToolStripMenuItem.Name = "fTPToolStripMenuItem";
+            this.fTPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fTPToolStripMenuItem.Text = "FTP设置";
+            this.fTPToolStripMenuItem.Click += new System.EventHandler(this.fTPToolStripMenuItem_Click);
+            // 
             // IndexWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -543,5 +552,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem unSubmitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fTPToolStripMenuItem;
     }
 }

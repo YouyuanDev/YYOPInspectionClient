@@ -19,15 +19,20 @@ namespace YYOPInspectionClient
     public partial class IndexWindow : Form
     {
         private static Thread thread = null;
-        FormAdaptive adapter = new FormAdaptive();
         public IndexWindow()
         {
             InitializeComponent();
             getThreadingProcessData();
-            thread = new Thread(UploadVideo);
-            thread.Start();
-            thread.IsBackground = true;
-            //adapter.controllInitializeSize(this);
+            try {
+                thread = new Thread(UploadVideo);
+                thread.Start();
+                thread.IsBackground = true;
+            }
+            catch(Exception e)
+            {
+                thread.Abort();
+            }
+           
         }
 
         private static void UploadVideo()
@@ -155,6 +160,12 @@ namespace YYOPInspectionClient
         {
             //MessageBox.Show("大小改变");
             //adapter.controlAutoSize(this);
+        }
+
+        private void fTPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FTPSetting setting = new FTPSetting();
+            setting.Show();
         }
     }
 }

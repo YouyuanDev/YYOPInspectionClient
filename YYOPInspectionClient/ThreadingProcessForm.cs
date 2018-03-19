@@ -90,8 +90,13 @@ namespace YYOPInspectionClient
         private void button3_Click(object sender, EventArgs e)
         {
             //获取时间戳，生成唯一工具使用记录编号
-            formSubmit();
-
+            if (button2.Text.Trim() == "结束录像")
+            {
+                MessageBox.Show("请关闭录像后提交！");
+            }
+            else {
+                formSubmit();
+            }
         }
         #endregion
 

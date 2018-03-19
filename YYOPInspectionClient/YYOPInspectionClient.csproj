@@ -81,6 +81,12 @@
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="FormAdaptive.cs" />
+    <Compile Include="FTPSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FTPSetting.Designer.cs">
+      <DependentUpon>FTPSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="FtpUtil.cs" />
     <Compile Include="IndexWindow.cs">
       <SubType>Form</SubType>
@@ -122,6 +128,9 @@
     <Compile Include="YYKeyenceReaderConsole.Designer.cs">
       <DependentUpon>YYKeyenceReaderConsole.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FTPSetting.resx">
+      <DependentUpon>FTPSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IndexWindow.resx">
       <DependentUpon>IndexWindow.cs</DependentUpon>
     </EmbeddedResource>
