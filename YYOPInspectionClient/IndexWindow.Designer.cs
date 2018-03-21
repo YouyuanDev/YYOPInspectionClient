@@ -28,13 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.表单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.unSubmitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.VideoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,74 +68,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.fTPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.未提交ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.读码器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.表单ToolStripMenuItem,
-            this.设置ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(96, 25);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "表单";
-            // 
-            // 表单ToolStripMenuItem
-            // 
-            this.表单ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewFormToolStripMenuItem,
-            this.unSubmitToolStripMenuItem});
-            this.表单ToolStripMenuItem.Name = "表单ToolStripMenuItem";
-            this.表单ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.表单ToolStripMenuItem.Text = "表单";
-            // 
-            // NewFormToolStripMenuItem
-            // 
-            this.NewFormToolStripMenuItem.Name = "NewFormToolStripMenuItem";
-            this.NewFormToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.NewFormToolStripMenuItem.Text = "新建";
-            this.NewFormToolStripMenuItem.Click += new System.EventHandler(this.NewFormToolStripMenuItem_Click);
-            // 
-            // unSubmitToolStripMenuItem
-            // 
-            this.unSubmitToolStripMenuItem.Name = "unSubmitToolStripMenuItem";
-            this.unSubmitToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.unSubmitToolStripMenuItem.Text = "未提交表单";
-            this.unSubmitToolStripMenuItem.Click += new System.EventHandler(this.unSubmitToolStripMenuItem_Click);
-            // 
-            // 设置ToolStripMenuItem
-            // 
-            this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.VideoToolStripMenuItem,
-            this.CodeToolStripMenuItem,
-            this.fTPToolStripMenuItem});
-            this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.设置ToolStripMenuItem.Text = "设置";
-            // 
-            // VideoToolStripMenuItem
-            // 
-            this.VideoToolStripMenuItem.Name = "VideoToolStripMenuItem";
-            this.VideoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.VideoToolStripMenuItem.Text = "录像设置";
-            this.VideoToolStripMenuItem.Click += new System.EventHandler(this.VideoToolStripMenuItem_Click);
-            // 
-            // CodeToolStripMenuItem
-            // 
-            this.CodeToolStripMenuItem.Name = "CodeToolStripMenuItem";
-            this.CodeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.CodeToolStripMenuItem.Text = "读码器设置";
-            this.CodeToolStripMenuItem.Click += new System.EventHandler(this.CodeToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -471,12 +409,70 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "接箍编号：";
             // 
-            // fTPToolStripMenuItem
+            // menuStrip1
             // 
-            this.fTPToolStripMenuItem.Name = "fTPToolStripMenuItem";
-            this.fTPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fTPToolStripMenuItem.Text = "FTP设置";
-            this.fTPToolStripMenuItem.Click += new System.EventHandler(this.fTPToolStripMenuItem_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1211, 25);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.新建ToolStripMenuItem,
+            this.未提交ToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
+            this.toolStripMenuItem1.Text = "表单";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.读码器设置ToolStripMenuItem,
+            this.录像设置ToolStripMenuItem,
+            this.fTP设置ToolStripMenuItem});
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(44, 21);
+            this.toolStripMenuItem2.Text = "设置";
+            // 
+            // 新建ToolStripMenuItem
+            // 
+            this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.新建ToolStripMenuItem.Text = "新建";
+            this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
+            // 
+            // 未提交ToolStripMenuItem
+            // 
+            this.未提交ToolStripMenuItem.Name = "未提交ToolStripMenuItem";
+            this.未提交ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.未提交ToolStripMenuItem.Text = "未提交";
+            this.未提交ToolStripMenuItem.Click += new System.EventHandler(this.未提交ToolStripMenuItem_Click);
+            // 
+            // 读码器设置ToolStripMenuItem
+            // 
+            this.读码器设置ToolStripMenuItem.Name = "读码器设置ToolStripMenuItem";
+            this.读码器设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.读码器设置ToolStripMenuItem.Text = "读码器设置";
+            this.读码器设置ToolStripMenuItem.Click += new System.EventHandler(this.读码器设置ToolStripMenuItem_Click);
+            // 
+            // 录像设置ToolStripMenuItem
+            // 
+            this.录像设置ToolStripMenuItem.Name = "录像设置ToolStripMenuItem";
+            this.录像设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.录像设置ToolStripMenuItem.Text = "录像设置";
+            this.录像设置ToolStripMenuItem.Click += new System.EventHandler(this.录像设置ToolStripMenuItem_Click);
+            // 
+            // fTP设置ToolStripMenuItem
+            // 
+            this.fTP设置ToolStripMenuItem.Name = "fTP设置ToolStripMenuItem";
+            this.fTP设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fTP设置ToolStripMenuItem.Text = "FTP设置";
+            this.fTP设置ToolStripMenuItem.Click += new System.EventHandler(this.fTP设置ToolStripMenuItem_Click);
             // 
             // IndexWindow
             // 
@@ -486,31 +482,22 @@
             this.ClientSize = new System.Drawing.Size(1211, 552);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "IndexWindow";
             this.Text = "主页";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.IndexWindow_Load);
-            this.SizeChanged += new System.EventHandler(this.IndexWindow_SizeChanged);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 表单ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewFormToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem VideoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CodeToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
@@ -551,7 +538,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
         public System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ToolStripMenuItem unSubmitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fTPToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem 新建ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 未提交ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 读码器设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fTP设置ToolStripMenuItem;
     }
 }

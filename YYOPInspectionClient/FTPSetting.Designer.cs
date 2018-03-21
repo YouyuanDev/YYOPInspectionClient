@@ -32,12 +32,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtFtpName = new System.Windows.Forms.TextBox();
             this.txtFtpPwd = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtIP = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(37, 39);
+            this.label1.Location = new System.Drawing.Point(37, 78);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
@@ -46,7 +48,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 88);
+            this.label2.Location = new System.Drawing.Point(37, 132);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 12);
             this.label2.TabIndex = 1;
@@ -54,7 +56,7 @@
             // 
             // txtFtpName
             // 
-            this.txtFtpName.Location = new System.Drawing.Point(121, 29);
+            this.txtFtpName.Location = new System.Drawing.Point(121, 74);
             this.txtFtpName.Name = "txtFtpName";
             this.txtFtpName.Size = new System.Drawing.Size(100, 21);
             this.txtFtpName.TabIndex = 2;
@@ -62,18 +64,37 @@
             // 
             // txtFtpPwd
             // 
-            this.txtFtpPwd.Location = new System.Drawing.Point(121, 78);
+            this.txtFtpPwd.Location = new System.Drawing.Point(121, 126);
             this.txtFtpPwd.Name = "txtFtpPwd";
             this.txtFtpPwd.PasswordChar = '*';
             this.txtFtpPwd.Size = new System.Drawing.Size(100, 21);
             this.txtFtpPwd.TabIndex = 3;
             this.txtFtpPwd.Text = "123456";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(39, 27);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "FTP（IP）";
+            // 
+            // txtIP
+            // 
+            this.txtIP.Location = new System.Drawing.Point(121, 23);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(100, 21);
+            this.txtIP.TabIndex = 5;
+            this.txtIP.Text = "192.168.0.200";
+            // 
             // FTPSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(322, 221);
+            this.Controls.Add(this.txtIP);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtFtpPwd);
             this.Controls.Add(this.txtFtpName);
             this.Controls.Add(this.label2);
@@ -91,5 +112,7 @@
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox txtFtpName;
         public System.Windows.Forms.TextBox txtFtpPwd;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.TextBox txtIP;
     }
 }

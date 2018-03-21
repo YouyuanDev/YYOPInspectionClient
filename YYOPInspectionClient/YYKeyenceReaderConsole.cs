@@ -543,145 +543,123 @@ namespace YYOPInspectionClient
             }
         }
 
-        public void codeReaderConnect() {
-            //连接所有读码器socket
-            for (int i = 0; i < READER_COUNT; i++)
-            {
-                //
-                // Connect to the command port.
-                //
-                try
-                {
-                    if (clientSocketInstance[i] == null)
-                        break;
-                    clientSocketInstance[i].readerCommandEndPoint.Port = Convert.ToInt32(CommandPortInput.Text);
-                    clientSocketInstance[i].readerDataEndPoint.Port = Convert.ToInt32(DataPortInput.Text);
-                    //
-                    // Close the socket if opened.
-                    //
-                    if (clientSocketInstance[i].commandSocket != null)
-                    {
-                        clientSocketInstance[i].commandSocket.Close();
-                    }
+        //public bool codeReaderConnect() {
+        //    bool flag = true;//是否连接成功的标识
+        //    //连接所有读码器socket
+        //    for (int i = 0; i < READER_COUNT; i++)
+        //    {
+        //        try
+        //        {
+        //            if (clientSocketInstance[i] == null)
+        //                break;
+        //            clientSocketInstance[i].readerCommandEndPoint.Port = Convert.ToInt32(CommandPortInput.Text);
+        //            clientSocketInstance[i].readerDataEndPoint.Port = Convert.ToInt32(DataPortInput.Text);
+        //            if (clientSocketInstance[i].commandSocket != null)
+        //            {
+        //                clientSocketInstance[i].commandSocket.Close();
+        //            }
+        //            clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //            clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
+        //        }
+        //        catch (ArgumentOutOfRangeException ex)
+        //        {
+        //            flag = false;
+        //            clientSocketInstance[i].commandSocket = null;
+        //            continue;
+        //        }
+        //        catch (SocketException ex)
+        //        {
+        //            flag = false;
+        //            clientSocketInstance[i].commandSocket = null;
+        //            continue;
+        //        }
+        //        try
+        //        {
+        //            if (clientSocketInstance[i].dataSocket != null)
+        //            {
+        //                clientSocketInstance[i].dataSocket.Close();
+        //            }
+        //            if (clientSocketInstance[i].readerCommandEndPoint.Port == clientSocketInstance[i].readerDataEndPoint.Port)
+        //            {
+        //                clientSocketInstance[i].dataSocket = clientSocketInstance[i].commandSocket;
+        //            }
+        //            else
+        //            {
+        //                clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //                clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
+        //                if (!listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
+        //                {
+        //                    this.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
+        //                    this.listBox_Reader.Update();
+        //                }
+        //            }
+        //            clientSocketInstance[i].dataSocket.ReceiveTimeout = 100;
+        //        }
 
-                    //
-                    // Create a new socket.
-                    //
-                    clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                     
+        //        catch (SocketException ex)
+        //        {
+        //            flag = false;
+        //            clientSocketInstance[i].dataSocket = null;
+        //            continue;
+        //        }
 
-                    clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
-                    
-                }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                     
-                    MessageBox.Show(ex.Message);
-                    clientSocketInstance[i].commandSocket = null;
-                    continue;
-                }
-                catch (SocketException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    clientSocketInstance[i].commandSocket = null;
-                    continue;
-                }
-
-                //
-                // Connect to the data port.
-                //
-                try
-                {
-                    //
-                    // Close the socket if opend.
-                    //
-                    if (clientSocketInstance[i].dataSocket != null)
-                    {
-                        clientSocketInstance[i].dataSocket.Close();
-                    }
-
-                    //
-                    // If the same port number is used for command port and data port, unify the sockets and skip a new connection. 
-                    //
-                    if (clientSocketInstance[i].readerCommandEndPoint.Port == clientSocketInstance[i].readerDataEndPoint.Port)
-                    {
-                        clientSocketInstance[i].dataSocket = clientSocketInstance[i].commandSocket;
-                    }
-                    else
-                    {
-                        //
-                        // Create a new socket.
-                        //
-                        clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        
-                        clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
-                        if (!listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
-                        {
-                            this.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
-                            this.listBox_Reader.Update();
-                        }
-                        //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connected.\r\n";
-                        //textBox_LogConsole.Update();
-                    }
-                   
-                    clientSocketInstance[i].dataSocket.ReceiveTimeout = 100;
-                }
-
-                catch (SocketException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    clientSocketInstance[i].dataSocket = null;
-                    continue;
-                }
-
-            }
-        }
-        public void codeReaderLon() {
-            string lon = "LON\r";   // CR is terminator
-            Byte[] command = ASCIIEncoding.ASCII.GetBytes(lon);
-            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
-            {
-                if (clientSocketInstance[i].commandSocket != null)
-                {
-                    clientSocketInstance[i].commandSocket.Send(command);
-                }
-                else
-                {
-                    MessageBox.Show("读码器已经断开连接，请重新连接扫码！");
-                }
-            }
-        }
-        public void codeReaderOff() {
-            string loff = "LOFF\r"; // CR is terminator
-            Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
-            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
-            {
-                if (clientSocketInstance[i].commandSocket != null)
-                {
-                    clientSocketInstance[i].commandSocket.Send(command);
-                }
-                else
-                {
-                    //MessageBox.Show("请重新连接读码器，然后再终止读码器扫描");
-                }
-            }
-        }
-        public void codeReaderDisConnect() {
-            //断开所有读码器连接
-            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
-            {
-                if (clientSocketInstance[i].commandSocket != null)
-                {
-                    clientSocketInstance[i].commandSocket.Close();
-                    clientSocketInstance[i].commandSocket = null;
-                }
-                if (clientSocketInstance[i].dataSocket != null)
-                {
-                    clientSocketInstance[i].dataSocket.Close();
-                    clientSocketInstance[i].dataSocket = null;
-                }
-            }
-        }
+        //    }
+        //    return flag;
+        //}
+        //public bool codeReaderLon() {
+        //    bool flag = true;
+        //    try
+        //    {
+        //        string lon = "LON\r";   // CR is terminator
+        //        Byte[] command = ASCIIEncoding.ASCII.GetBytes(lon);
+        //        for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+        //        {
+        //            if (clientSocketInstance[i].commandSocket != null)
+        //            {
+        //                clientSocketInstance[i].commandSocket.Send(command);
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("读码器已经断开连接，请重新连接扫码！");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex) {
+        //        flag = false;
+        //    }
+        //    return flag;
+        //}
+        //public void codeReaderOff() {
+        //    string loff = "LOFF\r"; // CR is terminator
+        //    Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
+        //    for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+        //    {
+        //        if (clientSocketInstance[i].commandSocket != null)
+        //        {
+        //            clientSocketInstance[i].commandSocket.Send(command);
+        //        }
+        //        else
+        //        {
+        //            //MessageBox.Show("请重新连接读码器，然后再终止读码器扫描");
+        //        }
+        //    }
+        //}
+        //public void codeReaderDisConnect() {
+        //    //断开所有读码器连接
+        //    for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+        //    {
+        //        if (clientSocketInstance[i].commandSocket != null)
+        //        {
+        //            clientSocketInstance[i].commandSocket.Close();
+        //            clientSocketInstance[i].commandSocket = null;
+        //        }
+        //        if (clientSocketInstance[i].dataSocket != null)
+        //        {
+        //            clientSocketInstance[i].dataSocket.Close();
+        //            clientSocketInstance[i].dataSocket = null;
+        //        }
+        //    }
+        //}
         public void codeReaderReceive()
         {
             try
@@ -715,9 +693,10 @@ namespace YYOPInspectionClient
                         else
                         {
                             recvBytes[recvSize] = 0;
-                            if (threadingProcessForm != null) {
+                            if (threadingProcessForm != null)
+                            {
                                 UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes));
-                               // UpdateTextBox(threadingProcessForm, Encoding.GetEncoding("UTF-8").GetString(recvBytes));
+                                // UpdateTextBox(threadingProcessForm, Encoding.GetEncoding("UTF-8").GetString(recvBytes));
                                 //this.Invoke((EventHandler)delegate { threadingProcessForm.textBox17.Text = Encoding.GetEncoding("Shift_JIS").GetString(recvBytes); });
                                 //MessageBox.Show(Encoding.GetEncoding("Shift_JIS").GetString(recvBytes));
                             }
@@ -738,12 +717,12 @@ namespace YYOPInspectionClient
 
         }
 
-        private void UpdateTextBox(ThreadingProcessForm form,string message)
+        private void UpdateTextBox(ThreadingProcessForm form, string message)
         {
             if (form.textBox17.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                form.textBox17.Invoke(md, new object[] { form,message });
+                form.textBox17.Invoke(md, new object[] { form, message });
             }
             else
             {

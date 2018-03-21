@@ -58,25 +58,6 @@ namespace YYOPInspectionClient
             }
         }
 
-        private void VideoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MainWindow window = new MainWindow();
-            window.Show();
-        }
-
-        private void CodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            YYKeyenceReaderConsole window = new YYKeyenceReaderConsole();
-            window.Show();
-        }
-
-        private void NewFormToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            ThreadingProcessForm form = new ThreadingProcessForm(this,mainWindow);
-            form.Show();
-        }
-
         #region 分页查询获取数据
 
         public void getThreadingProcessData()
@@ -130,42 +111,58 @@ namespace YYOPInspectionClient
                 this.dataGridView1.DataSource =list;
             }
             catch (Exception e) {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("服务器尚未开启......");
             }
            
         }
         #endregion
 
-        
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
             getThreadingProcessData();
         }
+ 
 
-        private void unSubmitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
+            form.Show();
+        }
+
+        private void 未提交ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UnSubmitForm form = new UnSubmitForm();
             form.Show();
-
         }
 
-        private void IndexWindow_Load(object sender, EventArgs e)
+        private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Form_load");
-            //adapter.controllInitializeSize(this);
+            YYKeyenceReaderConsole window = new YYKeyenceReaderConsole();
+            window.Show();
         }
 
-        private void IndexWindow_SizeChanged(object sender, EventArgs e)
+        private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("大小改变");
-            //adapter.controlAutoSize(this);
+            MainWindow window = new MainWindow();
+            window.Show();
         }
 
-        private void fTPToolStripMenuItem_Click(object sender, EventArgs e)
+        private void fTP设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FTPSetting setting = new FTPSetting();
             setting.Show();
+        }
+
+        private void 开启读码器ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 关闭读码器ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

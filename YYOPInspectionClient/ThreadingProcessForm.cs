@@ -20,7 +20,7 @@ namespace YYOPInspectionClient
         YYKeyenceReaderConsole codeReaderWindow;
         //时间戳(视频和form表单保存的目录名)
         private string timestamp = null;
-        //private List<string> videoTimestamp=new List<string>();
+        CodeReader codeReader = null;
         public ThreadingProcessForm(IndexWindow indexWindow,MainWindow mainWindow)
         {
             InitializeComponent();
@@ -28,62 +28,110 @@ namespace YYOPInspectionClient
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
             timestamp = getMesuringRecord();
-            codeReaderWindow = new YYKeyenceReaderConsole(this);
+            codeReader= new CodeReader(this);
+           // codeReaderWindow = new YYKeyenceReaderConsole(this);
         }
 
         #region 开始扫码事件
         private void button1_Click(object sender, EventArgs e)
         {
             string btnName = this.button1.Text;
-            if (btnName.Equals("开始扫码"))
+            if (codeReader != null)
             {
-                //首先连接扫码器
-                codeReaderWindow.codeReaderConnect();
-                //然后出发扫码
-                codeReaderWindow.codeReaderLon();
-                //获取扫码结果
-                //codeReaderWindow.codeReaderReceive();
-                this.button1.Text = "结束扫码";
+                if (btnName.Equals("开始扫码"))
+                {
+                    //连接是否成功
+                    if (codeReader.codeReaderConnect())
+                    {
+                        //成功进入开启读码器
+                        int res = codeReader.codeReaderLon();
+                        if (res == 0)
+                        {
+                            this.button1.Text = "结束扫码";
+                            //开启读码器成功，开始接收数据
+                            codeReader.beginReceive();
+                        }
+                        else if (res == 1)
+                        {
+                            MessageBox.Show("读码器已经断开连接，请重新连接读码器!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("系统繁忙,请稍后重试!");
+                        }
+                    }
+                    //首先连接扫码器
+                    //codeReaderWindow.codeReaderConnect();
+                    //然后出发扫码
+                    // codeReaderWindow.codeReaderLon();
+                    //获取扫码结果
+                    //codeReaderWindow.codeReaderReceive();
+
+                }
+                else
+                {
+                    //首先关闭扫码器
+                    // codeReaderWindow.codeReaderOff();
+                    //窗体关闭时监听  关闭连接
+                    closeCodeReader();
+                    codeReader.codeReaderDisConnect();
+                    this.button1.Text = "开始扫码";
+                }
             }
-            else
-            {
-                //首先关闭扫码器
-                codeReaderWindow.codeReaderOff();
-                //窗体关闭时监听  关闭连接
-                this.button1.Text = "开始扫码";
+            else {
+                MessageBox.Show("请重新新建表单!");
             }
+           
         }
         #endregion
 
         #region 开始录像事件
         private void button2_Click(object sender, EventArgs e)
         {
-                string btnName = this.button2.Text;
-                if (btnName.Equals("开始录像"))
+            if (mainWindow != null)
+            {
+                if (this.button2.Text == "开始录像")
                 {
-                   //如果时间戳不存在，生成时间戳，此时间戳与视频和txt保存关联
-                    if (timestamp== null||timestamp.Length<=0) {
-                      timestamp = getMesuringRecord();
+                    if (mainWindow.recordLogin() == 0)
+                    {
+                        if (mainWindow.recordPreview() == 0)
+                        {
+                            if (timestamp == null || timestamp.Length <= 0)
+                            {
+                                timestamp = getMesuringRecord();
+                            }
+                            if (!mainWindow.RecordVideo(timestamp))
+                            {
+                                MessageBox.Show("录像失败!");
+                            }
+                            else
+                            {
+                                this.button2.Text = "结束录像";
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("连接录像机失败!");
+                        }
                     }
-                    //videoTimestamp.Add(getMesuringRecord());
-                    //先判断是否登录
-                    mainWindow.recordLogin();
-                    //然后预览
-                    mainWindow.recordPreview();
-                    //然后开始录像
-                    mainWindow.RecordVideo(timestamp);
-                    this.button2.Text = "结束录像";
+                    else
+                    {
+                        MessageBox.Show("连接录像机失败!");
+                    }
                 }
                 else
                 {
-                    //停止录制的时候就是 先停止录制，然后停止预览，最后退出登陆
-                    mainWindow.RecordVideo(timestamp);
-                    mainWindow.recordPreview();
-                    mainWindow.recordLogin();
-
+                    mainWindow.stopRecordVideo();
+                    mainWindow.stopRecordPreview();
+                    mainWindow.recordLoginOut();
                     this.button2.Text = "开始录像";
                 }
-        }
+            }
+            else
+            {
+                MessageBox.Show("请重新新建表单!");
+            }
+        }  
         #endregion
 
         #region 表单提交事件
@@ -316,7 +364,11 @@ namespace YYOPInspectionClient
                 mainWindow.recordLogin();
                 this.button2.Text = "开始录像";
             }
-            codeReaderWindow.codeReaderDisConnect();
+            string codeBtnName = this.button1.Text;
+            if (!codeBtnName.Equals("开始扫码"))
+            {
+                closeCodeReader();
+            }
         }
         #endregion
 
@@ -339,6 +391,33 @@ namespace YYOPInspectionClient
             }
             return pathList;
         }
+        #endregion
+
+
+        #region 扫码器关闭方法
+        private void closeCodeReader()
+        {
+            codeReader.codeReaderOff();
+            if (codeReader != null)
+            {
+                DateTime start = DateTime.Now;
+                DateTime now = DateTime.Now;
+                TimeSpan ts = now - start;
+                while (true)
+                {
+                    ts = now - start;
+                    if (ts.TotalSeconds > 1)
+                    {
+                        codeReader.codeReaderDisConnect();
+                        break;
+                    }
+                    else
+                    {
+                        now = DateTime.Now;
+                    }
+                }
+            }
+        } 
         #endregion
     }
 }

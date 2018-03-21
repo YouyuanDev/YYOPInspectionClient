@@ -222,6 +222,7 @@
             this.DataPortInput.Name = "DataPortInput";
             this.DataPortInput.Size = new System.Drawing.Size(59, 21);
             this.DataPortInput.TabIndex = 44;
+            this.DataPortInput.Text = "9004";
             // 
             // CommandPortInput
             // 
@@ -231,6 +232,7 @@
             this.CommandPortInput.Name = "CommandPortInput";
             this.CommandPortInput.Size = new System.Drawing.Size(57, 21);
             this.CommandPortInput.TabIndex = 43;
+            this.CommandPortInput.Text = "9003";
             // 
             // YYKeyenceReaderConsole
             // 
@@ -282,7 +284,7 @@
         private System.Windows.Forms.Button connect;
         private System.Windows.Forms.Label Label2;
         private System.Windows.Forms.Label Label1;
-        private System.Windows.Forms.TextBox DataPortInput;
-        private System.Windows.Forms.TextBox CommandPortInput;
+        public System.Windows.Forms.TextBox DataPortInput;
+        public System.Windows.Forms.TextBox CommandPortInput;
     }
 }

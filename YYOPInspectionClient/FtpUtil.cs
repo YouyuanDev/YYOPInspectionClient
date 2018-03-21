@@ -20,8 +20,10 @@ namespace YYOPInspectionClient
             {
                 dirInfo = dirinfo;
                 fileInfo = fileinfo;
+                string ftpIP = ftp.txtIP.Text.Trim();
                 //MessageBox.Show(fileInfo.FullName);
-                Uri uri = new Uri("ftp://192.168.0.200/" + fileinfo.Name);
+                string uriUrl = "ftp://" + ftpIP + "/" + fileinfo.Name;
+                Uri uri = new Uri(uriUrl);
                 //定义FtpWebRequest,并设置相关属性
                 FtpWebRequest uploadRequest = (FtpWebRequest)WebRequest.Create(uri);
                 uploadRequest.Method = WebRequestMethods.Ftp.UploadFile;
