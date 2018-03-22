@@ -37,20 +37,42 @@ namespace YYOPInspectionClient
 
         private static void UploadVideo()
         {
+            string fileuploadpath = Application.StartupPath + "\\fileuploadrecord.txt";
+            string path = Application.StartupPath + "\\draft";
+            //按行读取出文件可上传的文件夹名
+            List<DirectoryInfo> dirs = new List<DirectoryInfo>();
+            
+            string line = null;
             while (true)
             {
+                //查询出可上传文件中的视频文件是哪些
+                StreamReader sr = new StreamReader(fileuploadpath, Encoding.Default);
+                while ((line = sr.ReadLine()) != null) {
+                    dirs.Add(new DirectoryInfo(path+"\\"+line));
+                }
+                sr.Close();
                 //遍历视频文件
-                string path = Application.StartupPath + "\\draft";
                 if (Directory.Exists(path))
                 {
                     DirectoryInfo folder = new DirectoryInfo(path);
-                    foreach (DirectoryInfo sonFolder in folder.GetDirectories())
+                    foreach (DirectoryInfo sonFolder in dirs)
                     {
-                        foreach (FileInfo file in sonFolder.GetFiles("*.mp4"))
-                        {
-                            //获取文件路径 
-                            FileInfo info = new FileInfo(file.FullName);
-                            FtpUtil.UploadFile(sonFolder, info);
+                        if (Directory.Exists(sonFolder.FullName)) {
+                            FileInfo[] files = sonFolder.GetFiles("*.mp4");
+                            if (files.Length > 0)
+                            {
+                                foreach (FileInfo file in files)
+                                {
+                                    //获取文件路径 
+                                    FileInfo info = new FileInfo(file.FullName);
+                                    FtpUtil.UploadFile(sonFolder, info);
+                                }
+                            }
+                            else
+                            {
+                                Directory.Delete(sonFolder.FullName);
+                                Util.deleteDirName(sonFolder.Name);
+                            }
                         }
                     }
                 }

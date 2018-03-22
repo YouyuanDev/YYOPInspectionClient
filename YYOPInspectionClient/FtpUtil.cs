@@ -48,30 +48,18 @@ namespace YYOPInspectionClient
                     fs.Close();
                     flag = true;
                 }
-                //byte[] buffer = new byte[1024];
-                //    int bytesRead;
-                //    while (true)
-                //    {
-                //        bytesRead = fileStream.Read(buffer, 0, buffer.Length);
-                //        if (bytesRead == 0)
-                //            break;
-                //        //本地的文件流数据写到请求流
-                //        requestStream.Write(buffer, 0, bytesRead);
-                //    }
-                //    requestStream.Close();
-                //    fileStream.Close();
-                
                 flag = true;
                 if (File.Exists(fileInfo.FullName))
                 {
                     File.Delete(fileInfo.FullName);
                 }
                 string fatherDir = dirinfo.FullName;
-               
+                string fatheDirName = dirinfo.Name;
                 //然后判断父目录中还有文件没，如果有父目录就不删除
                 if ((dirInfo.GetFiles().Length + dirInfo.GetDirectories().Length) == 0)
                 {
                     Directory.Delete(fatherDir);
+                    Util.deleteDirName(fatheDirName);
                 }
             }
             catch (Exception e) {

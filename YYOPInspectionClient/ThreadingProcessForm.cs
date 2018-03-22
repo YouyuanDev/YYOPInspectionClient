@@ -29,7 +29,7 @@ namespace YYOPInspectionClient
             this.mainWindow = mainWindow;
             timestamp = getMesuringRecord();
             codeReader= new CodeReader(this);
-           // codeReaderWindow = new YYKeyenceReaderConsole(this);
+            this.label11.Text = "";
         }
 
         #region 开始扫码事件
@@ -92,39 +92,48 @@ namespace YYOPInspectionClient
             {
                 if (this.button2.Text == "开始录像")
                 {
+                    this.label1.Text = "准备中......";
                     if (mainWindow.recordLogin() == 0)
                     {
+                        this.label1.Text = "连接中......";
                         if (mainWindow.recordPreview() == 0)
                         {
+                            this.label1.Text = "连接成功......";
                             if (timestamp == null || timestamp.Length <= 0)
                             {
                                 timestamp = getMesuringRecord();
                             }
                             if (!mainWindow.RecordVideo(timestamp))
                             {
+                                this.label1.Text = "录像失败......";
                                 MessageBox.Show("录像失败!");
                             }
                             else
                             {
+                                this.label1.Text = "录像中......";
                                 this.button2.Text = "结束录像";
                             }
                         }
                         else
                         {
-                            MessageBox.Show("连接录像机失败!");
+                            this.label1.Text = "录像机启动失败......";
+                            MessageBox.Show("录像机启动失败!");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("连接录像机失败!");
+                        this.label1.Text = "连接录像机失败,请检查网络......";
+                        MessageBox.Show("连接录像机失败,请检查网络!");
                     }
                 }
                 else
                 {
+                    this.label1.Text = "关闭中......";
                     mainWindow.stopRecordVideo();
                     mainWindow.stopRecordPreview();
                     mainWindow.recordLoginOut();
                     this.button2.Text = "开始录像";
+                    this.label1.Text = "";
                 }
             }
             else
@@ -138,9 +147,9 @@ namespace YYOPInspectionClient
         private void button3_Click(object sender, EventArgs e)
         {
             //获取时间戳，生成唯一工具使用记录编号
-            if (button2.Text.Trim() == "结束录像")
+            if (button2.Text.Trim() == "结束录像"|| button1.Text.Trim() == "结束扫码")
             {
-                MessageBox.Show("请关闭录像后提交！");
+                MessageBox.Show("录像机或读码器尚未关闭！");
             }
             else {
                 formSubmit();
@@ -319,6 +328,15 @@ namespace YYOPInspectionClient
             }
             finally
             {
+                //向可提交的视频文件中追加可提交文件夹名
+                string path=Application.StartupPath + "\\fileuploadrecord.txt";
+                FileStream fs = new FileStream(path,FileMode.Append,FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs,Encoding.Default);
+                if (timestamp != null && timestamp.Length > 0) {
+                    sw.WriteLine(timestamp);
+                }
+                sw.Close();
+                fs.Close();
                 //表单清理并关闭
                 indexWindow.getThreadingProcessData();
                 this.Close();

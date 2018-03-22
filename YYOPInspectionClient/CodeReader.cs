@@ -215,7 +215,10 @@ namespace YYOPInspectionClient
                             recvBytes[recvSize] = 0;
                             if (threadingProcessForm != null)
                             {
-                                UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes));
+                                string content= Encoding.UTF8.GetString(recvBytes);
+                                if (content != "Error") {
+                                    UpdateTextBox(threadingProcessForm,content);
+                                }
                             }
                             else
                             {

@@ -81,7 +81,6 @@
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="CodeReader.cs" />
-    <Compile Include="FormAdaptive.cs" />
     <Compile Include="FTPSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +122,7 @@
     <Compile Include="UnSubmitForm.Designer.cs">
       <DependentUpon>UnSubmitForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util.cs" />
     <Compile Include="YYKeyenceReaderConsole.cs">
       <SubType>Form</SubType>
     </Compile>

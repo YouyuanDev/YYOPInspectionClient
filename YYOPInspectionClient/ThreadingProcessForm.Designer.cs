@@ -115,6 +115,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.formpanel1.SuspendLayout();
             this.formpanel2.SuspendLayout();
             this.SuspendLayout();
@@ -435,6 +436,7 @@
             // formpanel2
             // 
             this.formpanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formpanel2.Controls.Add(this.label1);
             this.formpanel2.Controls.Add(this.button3);
             this.formpanel2.Controls.Add(this.button2);
             this.formpanel2.Controls.Add(this.comboBox1);
@@ -519,7 +521,7 @@
             "合格",
             "不合格",
             "待定"});
-            this.comboBox1.Location = new System.Drawing.Point(455, 306);
+            this.comboBox1.Location = new System.Drawing.Point(455, 299);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 20);
             this.comboBox1.TabIndex = 52;
@@ -952,6 +954,16 @@
             this.label45.TabIndex = 3;
             this.label45.Text = "螺纹检验信息>>";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(510, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 16);
+            this.label1.TabIndex = 55;
+            // 
             // ThreadingProcessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1062,5 +1074,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         public System.Windows.Forms.TextBox textBox17;
+        private System.Windows.Forms.Label label1;
     }
 }

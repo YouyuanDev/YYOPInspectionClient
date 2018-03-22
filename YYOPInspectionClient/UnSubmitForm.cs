@@ -216,7 +216,6 @@ namespace YYOPInspectionClient
             return videoPathList;
         }
         #endregion
-
         
         //private static void UploadVideo()
         //{
