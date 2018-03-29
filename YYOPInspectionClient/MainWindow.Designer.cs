@@ -70,7 +70,7 @@
             // RealPlayWnd
             // 
             this.RealPlayWnd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.RealPlayWnd.Location = new System.Drawing.Point(268, 135);
+            this.RealPlayWnd.Location = new System.Drawing.Point(281, 132);
             this.RealPlayWnd.Name = "RealPlayWnd";
             this.RealPlayWnd.Size = new System.Drawing.Size(428, 341);
             this.RealPlayWnd.TabIndex = 62;
@@ -190,7 +190,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(180, 350);
+            this.label14.Location = new System.Drawing.Point(103, 53);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(47, 12);
             this.label14.TabIndex = 67;
@@ -210,21 +210,23 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(109, 350);
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Location = new System.Drawing.Point(18, 53);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(29, 12);
+            this.label11.Size = new System.Drawing.Size(31, 14);
             this.label11.TabIndex = 65;
             this.label11.Text = "预览";
             this.label11.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // btnBMP
             // 
-            this.btnBMP.Location = new System.Drawing.Point(170, 320);
+            this.btnBMP.Location = new System.Drawing.Point(89, 14);
             this.btnBMP.Name = "btnBMP";
             this.btnBMP.Size = new System.Drawing.Size(79, 27);
             this.btnBMP.TabIndex = 66;
             this.btnBMP.Text = "Capture BMP";
             this.btnBMP.UseVisualStyleBackColor = true;
+            this.btnBMP.Click += new System.EventHandler(this.btnBMP_Click_1);
             // 
             // textBoxPort
             // 
@@ -282,6 +284,12 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btnRecord);
+            this.groupBox2.Controls.Add(this.btnPreview);
+            this.groupBox2.Controls.Add(this.btnBMP);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.btnJPEG);
+            this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Location = new System.Drawing.Point(88, 305);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(174, 171);
@@ -366,17 +374,18 @@
             // 
             // btnPreview
             // 
-            this.btnPreview.Location = new System.Drawing.Point(88, 320);
+            this.btnPreview.Location = new System.Drawing.Point(0, 14);
             this.btnPreview.Name = "btnPreview";
             this.btnPreview.Size = new System.Drawing.Size(75, 27);
             this.btnPreview.TabIndex = 64;
             this.btnPreview.Text = "Live View";
             this.btnPreview.UseVisualStyleBackColor = true;
+            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(187, 446);
+            this.label15.Location = new System.Drawing.Point(103, 137);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(65, 12);
             this.label15.TabIndex = 74;
@@ -384,12 +393,13 @@
             // 
             // btnJPEG
             // 
-            this.btnJPEG.Location = new System.Drawing.Point(88, 375);
+            this.btnJPEG.Location = new System.Drawing.Point(0, 72);
             this.btnJPEG.Name = "btnJPEG";
             this.btnJPEG.Size = new System.Drawing.Size(97, 47);
             this.btnJPEG.TabIndex = 70;
             this.btnJPEG.Text = "Capture JPEG";
             this.btnJPEG.UseVisualStyleBackColor = true;
+            this.btnJPEG.Click += new System.EventHandler(this.btnJPEG_Click_1);
             // 
             // MainWindow
             // 
@@ -401,15 +411,9 @@
             this.Controls.Add(this.label13);
             this.Controls.Add(this.comboBoxView);
             this.Controls.Add(this.TextBoxInfo);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.btnBMP);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.btnPreview);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.btnJPEG);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
             ((System.ComponentModel.ISupportInitialize)(this.RealPlayWnd)).EndInit();

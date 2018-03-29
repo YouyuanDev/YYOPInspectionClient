@@ -216,7 +216,7 @@ namespace YYOPInspectionClient
                             if (threadingProcessForm != null)
                             {
                                 string content= Encoding.UTF8.GetString(recvBytes);
-                                if (content != "Error") {
+                                if (!content.Contains("Error")) {
                                     UpdateTextBox(threadingProcessForm,content);
                                 }
                             }

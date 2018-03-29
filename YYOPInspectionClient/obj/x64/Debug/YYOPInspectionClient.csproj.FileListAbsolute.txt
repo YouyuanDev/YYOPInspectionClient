@@ -31,3 +31,7 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspect
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.csproj.GenerateResource.Cache
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.pdb
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.FTPSetting.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\YYOPInspectionClient.exe.manifest
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\YYOPInspectionClient.application
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.exe.manifest
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.application

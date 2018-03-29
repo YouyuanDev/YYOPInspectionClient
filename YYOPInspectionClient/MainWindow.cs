@@ -429,97 +429,7 @@ namespace YYOPInspectionClient
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
-            if (m_lUserID < 0)
-            {
-                MessageBox.Show("Please login the device firstly!");
-                return;
-            }
-
-            if (m_bRecord)
-            {
-                MessageBox.Show("Please stop recording firstly!");
-                return;
-            }
-
-            if (m_lRealHandle < 0)
-            {
-                CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
-                lpPreviewInfo.hPlayWnd = RealPlayWnd.Handle;//预览窗口 live view window
-                lpPreviewInfo.lChannel = iChannelNum[(int)iSelIndex];//预览的设备通道 the device channel number
-                lpPreviewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
-                lpPreviewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
-                lpPreviewInfo.bBlocked = true; //0- 非阻塞取流，1- 阻塞取流
-                lpPreviewInfo.dwDisplayBufNum = 15; //播放库显示缓冲区最大帧数
-
-                IntPtr pUser = IntPtr.Zero;//用户数据 user data 
-
-                if (comboBoxView.SelectedIndex == 0)
-                {
-                    //打开预览 Start live view 
-                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
-                }
-                else
-                {
-                    lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
-                    m_ptrRealHandle = RealPlayWnd.Handle;
-                    RealData = new CHCNetSDK.REALDATACALLBACK(RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
-                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, RealData, pUser);
-                }
-
-                if (m_lRealHandle < 0)
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
-                    DebugInfo(str);
-                    return;
-                }
-                else
-                {
-                    //预览成功
-                    DebugInfo("NET_DVR_RealPlay_V40 succ!");
-                    btnPreview.Text = "Stop View";
-                }
-            }
-            else
-            {
-                //停止预览 Stop live view 
-                if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
-                {
-                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
-                    DebugInfo(str);
-                    return;
-                }
-
-                if ((comboBoxView.SelectedIndex == 1) && (m_lPort >= 0))
-                {
-                    if (!PlayCtrl.PlayM4_Stop(m_lPort))
-                    {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
-                        str = "PlayM4_Stop failed, error code= " + iLastErr;
-                        DebugInfo(str);
-                    }
-                    if (!PlayCtrl.PlayM4_CloseStream(m_lPort))
-                    {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
-                        str = "PlayM4_CloseStream failed, error code= " + iLastErr;
-                        DebugInfo(str);
-                    }
-                    if (!PlayCtrl.PlayM4_FreePort(m_lPort))
-                    {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
-                        str = "PlayM4_FreePort failed, error code= " + iLastErr;
-                        DebugInfo(str);
-                    }
-                    m_lPort = -1;
-                }
-
-                DebugInfo("NET_DVR_StopRealPlay succ!");
-                m_lRealHandle = -1;
-                btnPreview.Text = "Live View";
-                RealPlayWnd.Invalidate();//刷新窗口 refresh the window
-            }
-            return;
+           
         }
 
         private void btnBMP_Click(object sender, EventArgs e)
@@ -529,56 +439,7 @@ namespace YYOPInspectionClient
 
         private void btnJPEG_Click(object sender, EventArgs e)
         {
-            int lChannel = iChannelNum[(int)iSelIndex]; //通道号 Channel number
-
-            CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
-            lpJpegPara.wPicQuality = 0; //图像质量 Image quality
-            lpJpegPara.wPicSize = 0xff; //抓图分辨率 Picture size: 0xff-Auto(使用当前码流分辨率) 
-            //抓图分辨率需要设备支持，更多取值请参考SDK文档
-
-            //JPEG抓图保存成文件 Capture a JPEG picture
-            string sJpegPicFileName;
-            sJpegPicFileName = "img\\" + GetTimeStamp() + "_capture.jpg";//图片保存路径和文件名 the path and file name to save
-
-            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture(m_lUserID, lChannel, ref lpJpegPara, sJpegPicFileName))
-            {
-                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                str = "NET_DVR_CaptureJPEGPicture failed, error code= " + iLastErr;
-                DebugInfo(str);
-                return;
-            }
-            else
-            {
-                str = "NET_DVR_CaptureJPEGPicture succ and the saved file is " + sJpegPicFileName;
-                DebugInfo(str);
-            }
-
-            //JEPG抓图，数据保存在缓冲区中 Capture a JPEG picture and save in the buffer
-            uint iBuffSize = 400000; //缓冲区大小需要不小于一张图片数据的大小 The buffer size should not be less than the picture size
-            byte[] byJpegPicBuffer = new byte[iBuffSize];
-            uint dwSizeReturned = 0;
-
-            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW(m_lUserID, lChannel, ref lpJpegPara, byJpegPicBuffer, iBuffSize, ref dwSizeReturned))
-            {
-                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                str = "NET_DVR_CaptureJPEGPicture_NEW failed, error code= " + iLastErr;
-                DebugInfo(str);
-                return;
-            }
-            else
-            {
-                //将缓冲区里的JPEG图片数据写入文件 save the data into a file
-                string str = "buffertest.jpg";
-                FileStream fs = new FileStream(str, FileMode.Create);
-                int iLen = (int)dwSizeReturned;
-                fs.Write(byJpegPicBuffer, 0, iLen);
-                fs.Close();
-
-                str = "NET_DVR_CaptureJPEGPicture_NEW succ and save the data in buffer to 'buffertest.jpg'.";
-                DebugInfo(str);
-            }
-
-            return;
+            
         }
 
         /// <summary> 
@@ -998,6 +859,158 @@ namespace YYOPInspectionClient
             InfoIPChannel();
         }
 
-        
+        private void btnPreview_Click_1(object sender, EventArgs e)
+        {
+            if (m_lUserID < 0)
+            {
+                MessageBox.Show("Please login the device firstly!");
+                return;
+            }
+
+            if (m_bRecord)
+            {
+                MessageBox.Show("Please stop recording firstly!");
+                return;
+            }
+
+            if (m_lRealHandle < 0)
+            {
+                CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
+                lpPreviewInfo.hPlayWnd = RealPlayWnd.Handle;//预览窗口 live view window
+                lpPreviewInfo.lChannel = iChannelNum[(int)iSelIndex];//预览的设备通道 the device channel number
+                lpPreviewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+                lpPreviewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+                lpPreviewInfo.bBlocked = true; //0- 非阻塞取流，1- 阻塞取流
+                lpPreviewInfo.dwDisplayBufNum = 15; //播放库显示缓冲区最大帧数
+
+                IntPtr pUser = IntPtr.Zero;//用户数据 user data 
+
+                if (comboBoxView.SelectedIndex == 0)
+                {
+                    //打开预览 Start live view 
+                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
+                }
+                else
+                {
+                    lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
+                    m_ptrRealHandle = RealPlayWnd.Handle;
+                    RealData = new CHCNetSDK.REALDATACALLBACK(RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
+                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, RealData, pUser);
+                }
+
+                if (m_lRealHandle < 0)
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
+                    DebugInfo(str);
+                    return;
+                }
+                else
+                {
+                    //预览成功
+                    DebugInfo("NET_DVR_RealPlay_V40 succ!");
+                    btnPreview.Text = "Stop View";
+                }
+            }
+            else
+            {
+                //停止预览 Stop live view 
+                if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
+                    DebugInfo(str);
+                    return;
+                }
+
+                if ((comboBoxView.SelectedIndex == 1) && (m_lPort >= 0))
+                {
+                    if (!PlayCtrl.PlayM4_Stop(m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
+                        str = "PlayM4_Stop failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    if (!PlayCtrl.PlayM4_CloseStream(m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
+                        str = "PlayM4_CloseStream failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    if (!PlayCtrl.PlayM4_FreePort(m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(m_lPort);
+                        str = "PlayM4_FreePort failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    m_lPort = -1;
+                }
+
+                DebugInfo("NET_DVR_StopRealPlay succ!");
+                m_lRealHandle = -1;
+                btnPreview.Text = "Live View";
+                RealPlayWnd.Invalidate();//刷新窗口 refresh the window
+            }
+            return;
+        }
+
+        private void btnBMP_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnJPEG_Click_1(object sender, EventArgs e)
+        {
+            int lChannel = iChannelNum[(int)iSelIndex]; //通道号 Channel number
+
+            CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
+            lpJpegPara.wPicQuality = 0; //图像质量 Image quality
+            lpJpegPara.wPicSize = 0xff; //抓图分辨率 Picture size: 0xff-Auto(使用当前码流分辨率) 
+            //抓图分辨率需要设备支持，更多取值请参考SDK文档
+
+            //JPEG抓图保存成文件 Capture a JPEG picture
+            string sJpegPicFileName;
+            sJpegPicFileName = "img\\" + GetTimeStamp() + "_capture.jpg";//图片保存路径和文件名 the path and file name to save
+
+            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture(m_lUserID, lChannel, ref lpJpegPara, sJpegPicFileName))
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_CaptureJPEGPicture failed, error code= " + iLastErr;
+                DebugInfo(str);
+                return;
+            }
+            else
+            {
+                str = "NET_DVR_CaptureJPEGPicture succ and the saved file is " + sJpegPicFileName;
+                DebugInfo(str);
+            }
+
+            //JEPG抓图，数据保存在缓冲区中 Capture a JPEG picture and save in the buffer
+            uint iBuffSize = 400000; //缓冲区大小需要不小于一张图片数据的大小 The buffer size should not be less than the picture size
+            byte[] byJpegPicBuffer = new byte[iBuffSize];
+            uint dwSizeReturned = 0;
+
+            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW(m_lUserID, lChannel, ref lpJpegPara, byJpegPicBuffer, iBuffSize, ref dwSizeReturned))
+            {
+                iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                str = "NET_DVR_CaptureJPEGPicture_NEW failed, error code= " + iLastErr;
+                DebugInfo(str);
+                return;
+            }
+            else
+            {
+                //将缓冲区里的JPEG图片数据写入文件 save the data into a file
+                string str = "buffertest.jpg";
+                FileStream fs = new FileStream(str, FileMode.Create);
+                int iLen = (int)dwSizeReturned;
+                fs.Write(byJpegPicBuffer, 0, iLen);
+                fs.Close();
+
+                str = "NET_DVR_CaptureJPEGPicture_NEW succ and save the data in buffer to 'buffertest.jpg'.";
+                DebugInfo(str);
+            }
+
+            return;
+        }
     }
 }
