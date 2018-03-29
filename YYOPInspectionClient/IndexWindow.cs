@@ -22,6 +22,7 @@ namespace YYOPInspectionClient
         public IndexWindow()
         {
             InitializeComponent();
+            this.Font = new Font("宋体", 14, FontStyle.Bold);
             getThreadingProcessData();
             try {
                 thread = new Thread(UploadVideo);

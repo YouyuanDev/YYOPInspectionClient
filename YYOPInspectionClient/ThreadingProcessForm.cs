@@ -17,70 +17,91 @@ namespace YYOPInspectionClient
     {
         private IndexWindow indexWindow;
         private MainWindow mainWindow;
-        YYKeyenceReaderConsole codeReaderWindow;
+        // YYKeyenceReaderConsole codeReaderWindow;
+        AutoSize auto=new AutoSize();
         //时间戳(视频和form表单保存的目录名)
         private string timestamp = null;
+
+        private static ThreadingProcessForm myForm = null;
+
         CodeReader codeReader = null;
+
+        public static ThreadingProcessForm getMyForm()
+        {
+            return myForm;
+        }
+
+
         public ThreadingProcessForm(IndexWindow indexWindow,MainWindow mainWindow)
         {
             InitializeComponent();
+            this.Font = new Font("宋体", 15, FontStyle.Bold);
             this.comboBox1.SelectedIndex =0;
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
             timestamp = getMesuringRecord();
             codeReader= new CodeReader(this);
-            this.label11.Text = "";
-        }
+
+            myForm = this;
+         }
 
         #region 开始扫码事件
         private void button1_Click(object sender, EventArgs e)
         {
             string btnName = this.button1.Text;
-            if (codeReader != null)
+            //先判断是否连接上读码器，如果没有连接上则提示
+            // YYKeyenceReaderConsole console = new YYKeyenceReaderConsole();
+            MessageBox.Show(YYKeyenceReaderConsole.clientSocketInstance.Length.ToString());
+            int resLon = YYKeyenceReaderConsole.codeReaderLon();
+            //读码器已经连接上
+            if (resLon == 0)
             {
-                if (btnName.Equals("开始扫码"))
-                {
-                    //连接是否成功
-                    if (codeReader.codeReaderConnect())
-                    {
-                        //成功进入开启读码器
-                        int res = codeReader.codeReaderLon();
-                        if (res == 0)
-                        {
-                            this.button1.Text = "结束扫码";
-                            //开启读码器成功，开始接收数据
-                            codeReader.beginReceive();
-                        }
-                        else if (res == 1)
-                        {
-                            MessageBox.Show("读码器已经断开连接，请重新连接读码器!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("系统繁忙,请稍后重试!");
-                        }
-                    }
-                    //首先连接扫码器
-                    //codeReaderWindow.codeReaderConnect();
-                    //然后出发扫码
-                    // codeReaderWindow.codeReaderLon();
-                    //获取扫码结果
-                    //codeReaderWindow.codeReaderReceive();
-
-                }
-                else
-                {
-                    //首先关闭扫码器
-                    // codeReaderWindow.codeReaderOff();
-                    //窗体关闭时监听  关闭连接
-                    closeCodeReader();
-                    codeReader.codeReaderDisConnect();
-                    this.button1.Text = "开始扫码";
-                }
+                //然后开启循环读取数据
+                YYKeyenceReaderConsole.threadingProcessForm = this;
+                //YYKeyenceReaderConsole.codeReaderReceive();
+            }
+            else if (resLon == 1)
+            {
+                MessageBox.Show("请检查读码器是否连接或已经断开连接!");
             }
             else {
-                MessageBox.Show("请重新新建表单!");
+                MessageBox.Show("请检查网络设备!");
             }
+            //if (codeReader != null)
+            //{
+            //    if (btnName.Equals("开始扫码"))
+            //    {
+            //        //连接是否成功
+            //        if (codeReader.codeReaderConnect())
+            //        {
+            //            //成功进入开启读码器
+            //            int res = codeReader.codeReaderLon();
+            //            if (res == 0)
+            //            {
+            //                this.button1.Text = "结束扫码";
+            //                //开启读码器成功，开始接收数据
+            //                codeReader.beginReceive();
+            //            }
+            //            else if (res == 1)
+            //            {
+            //                MessageBox.Show("读码器已经断开连接，请重新连接读码器!");
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show("系统繁忙,请稍后重试!");
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        closeCodeReader();
+            //        codeReader.codeReaderDisConnect();
+            //        this.button1.Text = "开始扫码";
+            //    }
+            //}
+            //else {
+            //    MessageBox.Show("请重新新建表单!");
+            //}
            
         }
         #endregion
@@ -435,7 +456,12 @@ namespace YYOPInspectionClient
                     }
                 }
             }
-        } 
+        }
         #endregion
+
+        private void ThreadingProcessForm_SizeChanged(object sender, EventArgs e)
+        {
+            auto.controlAutoSize(this);
+        }
     }
 }

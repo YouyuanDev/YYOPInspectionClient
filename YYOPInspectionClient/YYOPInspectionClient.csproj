@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoSize.cs" />
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="CodeReader.cs" />
