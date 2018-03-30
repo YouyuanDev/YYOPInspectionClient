@@ -19,6 +19,8 @@ namespace YYOPInspectionClient
     public partial class IndexWindow : Form
     {
         private static Thread thread = null;
+        private YYKeyenceReaderConsole readerCodeWindow = null;
+        private MainWindow videoWindow=null;
         public IndexWindow()
         {
             InitializeComponent();
@@ -162,14 +164,21 @@ namespace YYOPInspectionClient
 
         private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            YYKeyenceReaderConsole window = new YYKeyenceReaderConsole();
-            window.Show();
+            if (readerCodeWindow == null)
+            {
+                readerCodeWindow = new YYKeyenceReaderConsole();
+            }
+            readerCodeWindow.Show();
+           
         }
 
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.Show();
+            if (videoWindow== null)
+            {
+                videoWindow = new MainWindow();
+            }
+            videoWindow.Show();
         }
 
         private void fTP设置ToolStripMenuItem_Click(object sender, EventArgs e)

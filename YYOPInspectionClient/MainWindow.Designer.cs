@@ -55,13 +55,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btnRecord = new System.Windows.Forms.Button();
+            this.btnPreview = new System.Windows.Forms.Button();
+            this.btnJPEG = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.textBoxUserName = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnPreview = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnJPEG = new System.Windows.Forms.Button();
+            this.btnHide = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.RealPlayWnd)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -324,6 +325,35 @@
             this.btnRecord.UseVisualStyleBackColor = true;
             this.btnRecord.Click += new System.EventHandler(this.btnRecord_Click);
             // 
+            // btnPreview
+            // 
+            this.btnPreview.Location = new System.Drawing.Point(0, 14);
+            this.btnPreview.Name = "btnPreview";
+            this.btnPreview.Size = new System.Drawing.Size(75, 27);
+            this.btnPreview.TabIndex = 64;
+            this.btnPreview.Text = "Live View";
+            this.btnPreview.UseVisualStyleBackColor = true;
+            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
+            // 
+            // btnJPEG
+            // 
+            this.btnJPEG.Location = new System.Drawing.Point(0, 72);
+            this.btnJPEG.Name = "btnJPEG";
+            this.btnJPEG.Size = new System.Drawing.Size(97, 47);
+            this.btnJPEG.TabIndex = 70;
+            this.btnJPEG.Text = "Capture JPEG";
+            this.btnJPEG.UseVisualStyleBackColor = true;
+            this.btnJPEG.Click += new System.EventHandler(this.btnJPEG_Click_1);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(103, 137);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(65, 12);
+            this.label15.TabIndex = 74;
+            this.label15.Text = "客户端录像";
+            // 
             // textBoxUserName
             // 
             this.textBoxUserName.Location = new System.Drawing.Point(121, 81);
@@ -338,7 +368,7 @@
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(78, 50);
             this.btnLogin.TabIndex = 19;
-            this.btnLogin.Text = "Login";
+            this.btnLogin.Text = "登录";
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // groupBox3
@@ -372,40 +402,23 @@
             this.label4.TabIndex = 17;
             this.label4.Text = "Device Port";
             // 
-            // btnPreview
+            // btnHide
             // 
-            this.btnPreview.Location = new System.Drawing.Point(0, 14);
-            this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(75, 27);
-            this.btnPreview.TabIndex = 64;
-            this.btnPreview.Text = "Live View";
-            this.btnPreview.UseVisualStyleBackColor = true;
-            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(103, 137);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(65, 12);
-            this.label15.TabIndex = 74;
-            this.label15.Text = "客户端录像";
-            // 
-            // btnJPEG
-            // 
-            this.btnJPEG.Location = new System.Drawing.Point(0, 72);
-            this.btnJPEG.Name = "btnJPEG";
-            this.btnJPEG.Size = new System.Drawing.Size(97, 47);
-            this.btnJPEG.TabIndex = 70;
-            this.btnJPEG.Text = "Capture JPEG";
-            this.btnJPEG.UseVisualStyleBackColor = true;
-            this.btnJPEG.Click += new System.EventHandler(this.btnJPEG_Click_1);
+            this.btnHide.Location = new System.Drawing.Point(646, 597);
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(126, 47);
+            this.btnHide.TabIndex = 77;
+            this.btnHide.Text = "关闭";
+            this.btnHide.UseVisualStyleBackColor = true;
+            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 656);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnHide);
             this.Controls.Add(this.RealPlayWnd);
             this.Controls.Add(this.listViewIPChannel);
             this.Controls.Add(this.label13);
@@ -462,5 +475,6 @@
         private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnJPEG;
+        private System.Windows.Forms.Button btnHide;
     }
 }

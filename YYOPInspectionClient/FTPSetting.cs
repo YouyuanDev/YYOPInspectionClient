@@ -14,6 +14,7 @@ namespace YYOPInspectionClient
         public FTPSetting()
         {
             InitializeComponent();
+            this.Font = new Font("宋体", 12, FontStyle.Bold);
         }
     }
 }

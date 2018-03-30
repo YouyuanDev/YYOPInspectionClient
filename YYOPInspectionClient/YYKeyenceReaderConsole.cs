@@ -29,10 +29,7 @@ namespace YYOPInspectionClient
             InitializeComponent();
             if(myselfForm==null)
                myselfForm = this;
-            //
-            // Allocate Instances of ClientSocket, and set IP address, command port number and
-            // data port number.
-            //
+            this.Font = new Font("宋体", 12, FontStyle.Bold);
             clientSocketInstance = new ClientSocket[READER_COUNT];
             //this.threadingProcessForm = threadingProcessForm;
             int readerIndex = 0;
@@ -91,8 +88,8 @@ namespace YYOPInspectionClient
 
         private void connect_Click(object sender, EventArgs e)
         {
-            this.connect.Text = "Connecting...";
-            this.connect.Update();
+            //this.connect.Text = "Connect...";
+            //this.connect.Update();
             //连接所有读码器socket
             for (int i = 0; i < READER_COUNT; i++)
             {
@@ -215,10 +212,8 @@ namespace YYOPInspectionClient
                 }
 
             }
-
-
-            this.connect.Text = "Connect All";
-            this.connect.Update();
+            //this.connect.Text = "Connect All";
+            //this.connect.Update();
 
         }
 
@@ -257,31 +252,32 @@ namespace YYOPInspectionClient
 
         private void lon_Click(object sender, EventArgs e)
         {
-            //
-            // Send "LON" command.
-            // 
-            string lon = "LON\r";   // CR is terminator
-            Byte[] command = ASCIIEncoding.ASCII.GetBytes(lon);
+            codeReaderLon();
+            ////
+            //// Send "LON" command.
+            //// 
+            //string lon = "LON\r";   // CR is terminator
+            //Byte[] command = ASCIIEncoding.ASCII.GetBytes(lon);
 
-            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
-            {
-                if (clientSocketInstance[i].commandSocket != null)
-                {
-                    clientSocketInstance[i].commandSocket.Send(command);
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON sent.");
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON Sent.\r\n";
-                    // textBox_LogConsole.Update();
-                    // MessageBox.Show(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON Sent.");
-                }
-                else
-                {
+            //for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+            //{
+            //    if (clientSocketInstance[i].commandSocket != null)
+            //    {
+            //        clientSocketInstance[i].commandSocket.Send(command);
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON sent.");
+            //        //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON Sent.\r\n";
+            //        // textBox_LogConsole.Update();
+            //        // MessageBox.Show(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON Sent.");
+            //    }
+            //    else
+            //    {
 
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.");
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.\r\n";
-                    //textBox_LogConsole.Update();
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.");
+            //        //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.\r\n";
+            //        //textBox_LogConsole.Update();
 
-                }
-            }
+            //    }
+            //}
         }
 
         private void loff_Click(object sender, EventArgs e)
@@ -290,7 +286,7 @@ namespace YYOPInspectionClient
             //
             // Send "LOFF" command.
             //  
-
+            
             string loff = "LOFF\r"; // CR is terminator
             Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
 
@@ -300,18 +296,10 @@ namespace YYOPInspectionClient
                 {
                     clientSocketInstance[i].commandSocket.Send(command);
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LOFF sent.");
-
-
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + "LOFF sent.\r\n";
-                    //textBox_LogConsole.Update();
                 }
                 else
                 {
-
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected");
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + "is disconnected.\r\n";
-                    //textBox_LogConsole.Update();
-                    //MessageBox.Show(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.");
                 }
             }
 
@@ -396,6 +384,7 @@ namespace YYOPInspectionClient
                             // Terminating null to handle as string.
                             //
                             recvBytes[recvSize] = 0;
+                            SetText(Encoding.GetEncoding("Shift_JIS").GetString(recvBytes));
                             //this.SetText("[" + clientSocketInstance[i].readerDataEndPoint.ToString() + "] " + Encoding.GetEncoding("Shift_JIS").GetString(recvBytes) + "\r\n");
 
                             //MessageBox.Show(clientSocketInstance[i].readerDataEndPoint.ToString() + "\r\n" + Encoding.GetEncoding("Shift_JIS").GetString(recvBytes)+"\r\n");
@@ -591,6 +580,7 @@ namespace YYOPInspectionClient
                     else
                     {
                         flag = 1;
+                        SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LON sent.");
                         //MessageBox.Show("读码器已经断开连接，请重新连接扫码！");
                     }
                 }
@@ -602,6 +592,27 @@ namespace YYOPInspectionClient
             return flag;
         }
 
+        public static void codeReaderOff() {
+            string loff = "LOFF\r"; // CR is terminator
+            Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
+            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+            {
+                if (clientSocketInstance[i].commandSocket != null)
+                {
+                    clientSocketInstance[i].commandSocket.Send(command);
+                    SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LOFF sent.");
+                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + "LOFF sent.\r\n";
+                    //textBox_LogConsole.Update();
+                }
+                else
+                {
+                    SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected");
+                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + "is disconnected.\r\n";
+                    //textBox_LogConsole.Update();
+                    //MessageBox.Show(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected.");
+                }
+            }
+        }
 
 
         //更新表单中的读码器值
@@ -618,7 +629,7 @@ namespace YYOPInspectionClient
         //    }
         //}
        
-        public static void codeReaderReceive()
+        public void codeReaderReceive()
         {
             try
             {
@@ -655,14 +666,9 @@ namespace YYOPInspectionClient
                             recvBytes[recvSize] = 0;
                             if (threadingProcessForm != null)
                             {
-                                
-                                UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes));
-                                // UpdateTextBox(threadingProcessForm, Encoding.GetEncoding("UTF-8").GetString(recvBytes));
-                                //this.Invoke((EventHandler)delegate { threadingProcessForm.textBox17.Text = Encoding.GetEncoding("Shift_JIS").GetString(recvBytes); });
-                                //MessageBox.Show(Encoding.GetEncoding("Shift_JIS").GetString(recvBytes));
-                                //ThreadingProcessForm.getMyForm().textBox17.Text = Encoding.UTF8.GetString(recvBytes);
-                                SetText(Encoding.UTF8.GetString(recvBytes));
+                                 UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes));
                             }
+                            SetText(DateTime.Now.ToString()+"    "+Encoding.UTF8.GetString(recvBytes));
                         }
                     }
                     if (ACCURACY > 0)
@@ -688,14 +694,28 @@ namespace YYOPInspectionClient
                 form.textBox17.Text = message;
             }
         }
-        private static void SetText(string text)
+        private  void SetText(string text)
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
-            if (myselfForm.textbox_DataConsole.InvokeRequired)
+            if (this.textbox_DataConsole.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetText);
+                this.textbox_DataConsole.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this.textbox_DataConsole.AppendText(text);
+                this.textbox_DataConsole.AppendText("\r\n");
+                this.textbox_DataConsole.Refresh();
+            }
+        }
+
+        private static void SetTextTwo(string text) {
+            if (myselfForm.textbox_DataConsole.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetTextTwo);
                 myselfForm.textbox_DataConsole.Invoke(d, new object[] { text });
             }
             else
@@ -706,5 +726,9 @@ namespace YYOPInspectionClient
             }
         }
 
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

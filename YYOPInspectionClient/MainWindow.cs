@@ -16,23 +16,29 @@ namespace YYOPInspectionClient
     public partial class MainWindow : Form
     {
         private bool m_bInitSDK = false;
-        private bool m_bRecord = false;
-        private uint iLastErr = 0;
-        private Int32 m_lUserID = -1;
-        private Int32 m_lRealHandle = -1;
+        //private bool m_bRecord = false;
+        private static bool m_bRecord = false;
+        //private uint iLastErr = 0;
+        // private Int32 m_lUserID = -1;
+        // private Int32 m_lRealHandle = -1;
+        private static uint iLastErr = 0;
+        private static Int32 m_lUserID = -1;
+        private static Int32 m_lRealHandle = -1;
         private string str1;
         private string str2;
         private Int32 i = 0;
         private Int32 m_lTree = 0;
-        private string str;
-        private long iSelIndex = 0;
+        //private string str;
+        // private long iSelIndex = 0;
+        private static string str;
+        private static long iSelIndex = 0;
         private uint dwAChanTotalNum = 0;
         private uint dwDChanTotalNum = 0;
         private Int32 m_lPort = -1;
         private IntPtr m_ptrRealHandle;
         private int[] iIPDevID = new int[96];
-        private int[] iChannelNum = new int[96];
-
+        //private int[] iChannelNum = new int[96];
+        private static int[] iChannelNum = new int[96];
         private CHCNetSDK.REALDATACALLBACK RealData = null;
         public CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo;
         public CHCNetSDK.NET_DVR_IPPARACFG_V40 m_struIpParaCfgV40;
@@ -41,9 +47,15 @@ namespace YYOPInspectionClient
         public CHCNetSDK.NET_DVR_IPCHANINFO_V40 m_struChanInfoV40;
         private PlayCtrl.DECCBFUN m_fDisplayFun = null;
         public delegate void MyDebugInfo(string str);
+        public static MainWindow mainWindowForm = null;
+        private delegate void SetLogCallback(string message);
         public MainWindow()
         {
             InitializeComponent();
+            this.Font = new Font("宋体", 12, FontStyle.Bold);
+            if (mainWindowForm == null) {
+                mainWindowForm = this;
+            }
             m_bInitSDK = CHCNetSDK.NET_DVR_Init();
             if (m_bInitSDK == false)
             {
@@ -64,16 +76,26 @@ namespace YYOPInspectionClient
                 }
             }
         }
-
-        public void DebugInfo(string str)
+        public static void DebugInfo(string str)
         {
-            if (str.Length > 0)
+            str = str + "\r\n";
+            if (mainWindowForm.TextBoxInfo.InvokeRequired)
             {
-                str += "\n";
-                TextBoxInfo.AppendText(str);
+                SetLogCallback d = new SetLogCallback(DebugInfo);
+                mainWindowForm.TextBoxInfo.Invoke(d, new object[] { str });
             }
+            else
+            {
+                mainWindowForm.TextBoxInfo.AppendText(str);
+                 
+            }
+            //if (str.Length > 0)
+            //{
+            //    str += "\n";
+            //    mainWindowForm.TextBoxInfo.AppendText(str);
+            //}
         }
-
+        //登录事件
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (m_lUserID < 0)
@@ -107,16 +129,18 @@ namespace YYOPInspectionClient
                 if (m_lUserID < 0)
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
+                    //str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
+                    str = "登录录像机失败,请检查录像机网络,错误代码:"+iLastErr;
                     DebugInfo(str);
                     return;
                 }
                 else
                 {
                     //登录成功
-                    DebugInfo("NET_DVR_Login_V30 succ!");
-                    btnLogin.Text = "Logout";
-
+                    //DebugInfo("NET_DVR_Login_V30 succ!");
+                    DebugInfo("登录成功,连接上录像机!");
+                    //btnLogin.Text = "Logout";
+                    btnLogin.Text = "退出";
                     dwAChanTotalNum = (uint)DeviceInfo.byChanNum;
                     dwDChanTotalNum = (uint)DeviceInfo.byIPChanNum + 256 * (uint)DeviceInfo.byHighDChanNum;
                     if (dwDChanTotalNum > 0)
@@ -142,21 +166,25 @@ namespace YYOPInspectionClient
                 //注销登录 Logout the device
                 if (m_lRealHandle >= 0)
                 {
-                    DebugInfo("Please stop live view firstly"); //登出前先停止预览 Stop live view before logout
+                    //DebugInfo("Please stop live view firstly"); //登出前先停止预览 Stop live view before logout
+                    DebugInfo("请先停止预览，然后再退出登录!");
                     return;
                 }
 
                 if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_Logout failed, error code= " + iLastErr;
+                    str = "退出登录失败,错误代码:"+iLastErr;
+                    //str = "NET_DVR_Logout failed, error code= " + iLastErr;
                     DebugInfo(str);
                     return;
                 }
-                DebugInfo("NET_DVR_Logout succ!");
+                // DebugInfo("NET_DVR_Logout succ!");
+                DebugInfo("退出成功!");
                 listViewIPChannel.Items.Clear();//清空通道列表 Clean up the channel list
                 m_lUserID = -1;
-                btnLogin.Text = "Login";
+                // btnLogin.Text = "Login";
+                btnLogin.Text = "登录";
             }
             return;
         }
@@ -456,12 +484,24 @@ namespace YYOPInspectionClient
         {
             //录像保存路径和文件名 the path and file name to save
             //根据时间戳保存视频文件
+            string sVideoDir = Application.StartupPath+"\\vcr\\";
+            string sVideoFileName = sVideoDir + GetTimeStamp() + "_vcr.mp4";
 
-            string sVideoFileName;
-            sVideoFileName = "vcr\\" + GetTimeStamp() + "_vcr.mp4";
-
+            if (!Directory.Exists(sVideoDir)) {
+                Directory.CreateDirectory(sVideoDir);
+            }
+            
             if (m_bRecord == false)
             {
+                if (m_lUserID<0)
+                {
+                    DebugInfo("录像失败,请先登录!");
+                    return;
+                }
+                if (m_lRealHandle < 0) {
+                    DebugInfo("录像失败,请先开启预览!");
+                    return;
+                }
                 //强制I帧 Make one key frame
                 int lChannel = iChannelNum[(int)iSelIndex]; //通道号 Channel number
                 CHCNetSDK.NET_DVR_MakeKeyFrame(m_lUserID, lChannel);
@@ -470,14 +510,14 @@ namespace YYOPInspectionClient
                 if (!CHCNetSDK.NET_DVR_SaveRealData(m_lRealHandle, sVideoFileName))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_SaveRealData failed, error code= " + iLastErr;
-                    DebugInfo(str);
+                    //str = "NET_DVR_SaveRealData failed, error code= " + iLastErr;
+                    DebugInfo("录像失败,错误代码:"+iLastErr);
                     return;
                 }
                 else
                 {
-
-                    DebugInfo("NET_DVR_SaveRealData succ!");
+                    DebugInfo("录像成功,录像中......");
+                    //DebugInfo("NET_DVR_SaveRealData succ!");
                     btnRecord.Text = "Stop";
                     m_bRecord = true;
                 }
@@ -488,15 +528,14 @@ namespace YYOPInspectionClient
                 if (!CHCNetSDK.NET_DVR_StopSaveRealData(m_lRealHandle))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_StopSaveRealData failed, error code= " + iLastErr;
-                    DebugInfo(str);
+                    //str = "NET_DVR_StopSaveRealData failed, error code= " + iLastErr;
+                    DebugInfo("停止录像失败,错误代码:"+iLastErr);
                     return;
                 }
                 else
                 {
-                    str = "NET_DVR_StopSaveRealData succ and the saved file is " + sVideoFileName;
-
-                    DebugInfo(str);
+                    //str = "NET_DVR_StopSaveRealData succ and the saved file is " + sVideoFileName;
+                    DebugInfo("录像完成,视频保存位置:"+sVideoFileName);
                     btnRecord.Text = "Record";
                     m_bRecord = false;
                 }
@@ -717,11 +756,21 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 录制视频函数
-        public bool RecordVideo(string timestamp)
+        public static int RecordVideo(string timestamp)
         {
-            bool flag = true;
+            int flag = 0;
             try
             {
+                if (m_lUserID < 0)
+                {
+                    DebugInfo("录像失败,请先登录[表单发过来请求]!");
+                    return 1;
+                }
+                if (m_lRealHandle < 0)
+                {
+                    DebugInfo("录像失败,请先开启预览[表单发过来请求]!");
+                    return 2;
+                }
                 string coupingDir = Application.StartupPath + "\\draft\\" + timestamp + "\\";
                 string sVideoFileName = coupingDir + GetTimeStamp() + "_vcr.mp4";
                 if (m_bRecord == false)
@@ -739,20 +788,20 @@ namespace YYOPInspectionClient
                     {
                         //MessageBox.Show("开始录像");
                         iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                        str = "NET_DVR_SaveRealData failed, error code= " + iLastErr;
-                        //DebugInfo(str);
-                        return false;
+                        //str = "NET_DVR_SaveRealData failed, error code= " + iLastErr;
+                        DebugInfo("录像失败[表单发过来请求],错误代码:"+iLastErr);
+                        return 3;
                     }
                     else
                     {
-                        DebugInfo("NET_DVR_SaveRealData succ!");
-                        btnRecord.Text = "Stop";
+                        DebugInfo("录像成功[表单发过来请求]!");
+                        //btnRecord.Text = "Stop";
                         m_bRecord = true;
                     }
                 }
             }
             catch (Exception e) {
-                flag = false;
+                flag = 4;
             }
             return flag;
            
@@ -760,7 +809,7 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 停止视频录制
-        public void stopRecordVideo()
+        public static void stopRecordVideo()
         {
             if (!CHCNetSDK.NET_DVR_StopSaveRealData(m_lRealHandle))
             {
@@ -771,9 +820,6 @@ namespace YYOPInspectionClient
             }
             else
             {
-                //str = "NET_DVR_StopSaveRealData succ and the saved file is " + sVideoFileName;
-                //DebugInfo(str);
-                btnRecord.Text = "Record";
                 m_bRecord = false;
             }
         } 
@@ -858,18 +904,20 @@ namespace YYOPInspectionClient
             }
             InfoIPChannel();
         }
-
+        //预览事件
         private void btnPreview_Click_1(object sender, EventArgs e)
         {
             if (m_lUserID < 0)
             {
-                MessageBox.Show("Please login the device firstly!");
+                MessageBox.Show("请检查是否登录录像机!");
+                //MessageBox.Show("Please login the device firstly!");
                 return;
             }
 
             if (m_bRecord)
             {
-                MessageBox.Show("Please stop recording firstly!");
+                MessageBox.Show("预览前请先停止正在录制的录像机!");
+                //MessageBox.Show("Please stop recording firstly!");
                 return;
             }
 
@@ -901,14 +949,16 @@ namespace YYOPInspectionClient
                 if (m_lRealHandle < 0)
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
+                    str = "预览失败,错误代码:"+iLastErr;
+                    //str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
                     DebugInfo(str);
                     return;
                 }
                 else
                 {
                     //预览成功
-                    DebugInfo("NET_DVR_RealPlay_V40 succ!");
+                    DebugInfo("预览成功!");
+                    //DebugInfo("NET_DVR_RealPlay_V40 succ!");
                     btnPreview.Text = "Stop View";
                 }
             }
@@ -918,7 +968,8 @@ namespace YYOPInspectionClient
                 if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
+                    str = "停止预览失败,错误代码:"+iLastErr;
+                    //str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
                     DebugInfo(str);
                     return;
                 }
@@ -945,8 +996,8 @@ namespace YYOPInspectionClient
                     }
                     m_lPort = -1;
                 }
-
-                DebugInfo("NET_DVR_StopRealPlay succ!");
+                DebugInfo("停止预览成功!");
+                //DebugInfo("NET_DVR_StopRealPlay succ!");
                 m_lRealHandle = -1;
                 btnPreview.Text = "Live View";
                 RealPlayWnd.Invalidate();//刷新窗口 refresh the window
@@ -1011,6 +1062,11 @@ namespace YYOPInspectionClient
             }
 
             return;
+        }
+
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

@@ -22,6 +22,7 @@ namespace YYOPInspectionClient
         public UnSubmitForm()
         {
             InitializeComponent();
+            this.Font = new Font("宋体", 12, FontStyle.Bold);
             getUnSummitFile();
         }
         #region 获取所有没有上传的数据文件

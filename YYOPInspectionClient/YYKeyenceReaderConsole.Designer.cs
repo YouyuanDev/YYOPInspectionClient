@@ -47,6 +47,7 @@
             this.Label1 = new System.Windows.Forms.Label();
             this.DataPortInput = new System.Windows.Forms.TextBox();
             this.CommandPortInput = new System.Windows.Forms.TextBox();
+            this.btnHide = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label5
@@ -56,25 +57,25 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 61;
-            this.label5.Text = "Data Log";
+            this.label5.Text = "数据日志";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(20, 19);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 12);
+            this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 60;
-            this.label4.Text = "Command Log";
+            this.label4.Text = "命令日志";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(414, 19);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 12);
+            this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 59;
-            this.label3.Text = "Online Readers";
+            this.label3.Text = "在线Ip";
             // 
             // button_Reset
             // 
@@ -82,7 +83,7 @@
             this.button_Reset.Name = "button_Reset";
             this.button_Reset.Size = new System.Drawing.Size(138, 61);
             this.button_Reset.TabIndex = 58;
-            this.button_Reset.Text = "RESET";
+            this.button_Reset.Text = "重置";
             this.button_Reset.UseVisualStyleBackColor = true;
             this.button_Reset.Click += new System.EventHandler(this.button_Reset_Click);
             // 
@@ -92,7 +93,7 @@
             this.button_Tune.Name = "button_Tune";
             this.button_Tune.Size = new System.Drawing.Size(71, 61);
             this.button_Tune.TabIndex = 57;
-            this.button_Tune.Text = "Tune";
+            this.button_Tune.Text = "学习";
             this.button_Tune.UseVisualStyleBackColor = true;
             this.button_Tune.Click += new System.EventHandler(this.button_Tune_Click);
             // 
@@ -111,7 +112,7 @@
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(373, 59);
             this.button_Clear.TabIndex = 55;
-            this.button_Clear.Text = "Clear Logs";
+            this.button_Clear.Text = "清除日志";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
@@ -121,7 +122,7 @@
             this.button_FTune.Name = "button_FTune";
             this.button_FTune.Size = new System.Drawing.Size(71, 61);
             this.button_FTune.TabIndex = 54;
-            this.button_FTune.Text = "FTune";
+            this.button_FTune.Text = "自动对焦";
             this.button_FTune.UseVisualStyleBackColor = true;
             this.button_FTune.Click += new System.EventHandler(this.button_FTune_Click);
             // 
@@ -151,28 +152,28 @@
             this.receive.Name = "receive";
             this.receive.Size = new System.Drawing.Size(178, 52);
             this.receive.TabIndex = 51;
-            this.receive.Text = "Receive Data";
+            this.receive.Text = "接收数据";
             this.receive.UseVisualStyleBackColor = true;
             this.receive.UseWaitCursor = true;
             this.receive.Click += new System.EventHandler(this.receive_Click);
             // 
             // loff
             // 
-            this.loff.Location = new System.Drawing.Point(1026, 451);
+            this.loff.Location = new System.Drawing.Point(1026, 415);
             this.loff.Name = "loff";
-            this.loff.Size = new System.Drawing.Size(178, 116);
+            this.loff.Size = new System.Drawing.Size(178, 91);
             this.loff.TabIndex = 50;
-            this.loff.Text = "Trigger LOFF";
+            this.loff.Text = "结束读码";
             this.loff.UseVisualStyleBackColor = true;
             this.loff.Click += new System.EventHandler(this.loff_Click);
             // 
             // lon
             // 
-            this.lon.Location = new System.Drawing.Point(831, 451);
+            this.lon.Location = new System.Drawing.Point(831, 415);
             this.lon.Name = "lon";
-            this.lon.Size = new System.Drawing.Size(189, 116);
+            this.lon.Size = new System.Drawing.Size(189, 91);
             this.lon.TabIndex = 49;
-            this.lon.Text = "Trigger LON";
+            this.lon.Text = "开始读码";
             this.lon.UseVisualStyleBackColor = true;
             this.lon.Click += new System.EventHandler(this.lon_Click);
             // 
@@ -182,7 +183,7 @@
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(156, 62);
             this.disconnect.TabIndex = 48;
-            this.disconnect.Text = "Disconnect All";
+            this.disconnect.Text = "断开读码器";
             this.disconnect.UseVisualStyleBackColor = true;
             this.disconnect.Click += new System.EventHandler(this.disconnect_Click);
             // 
@@ -192,7 +193,7 @@
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(138, 62);
             this.connect.TabIndex = 47;
-            this.connect.Text = "Connect All";
+            this.connect.Text = "连接读码器";
             this.connect.UseVisualStyleBackColor = true;
             this.connect.Click += new System.EventHandler(this.connect_Click);
             // 
@@ -201,18 +202,18 @@
             this.Label2.AutoSize = true;
             this.Label2.Location = new System.Drawing.Point(1060, 40);
             this.Label2.Name = "Label2";
-            this.Label2.Size = new System.Drawing.Size(59, 12);
+            this.Label2.Size = new System.Drawing.Size(53, 12);
             this.Label2.TabIndex = 46;
-            this.Label2.Text = "Data Port";
+            this.Label2.Text = "数据端口";
             // 
             // Label1
             // 
             this.Label1.AutoSize = true;
             this.Label1.Location = new System.Drawing.Point(829, 40);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(77, 12);
+            this.Label1.Size = new System.Drawing.Size(53, 12);
             this.Label1.TabIndex = 45;
-            this.Label1.Text = "Command Port";
+            this.Label1.Text = "命令端口";
             // 
             // DataPortInput
             // 
@@ -234,11 +235,23 @@
             this.CommandPortInput.TabIndex = 43;
             this.CommandPortInput.Text = "9003";
             // 
+            // btnHide
+            // 
+            this.btnHide.Location = new System.Drawing.Point(1026, 583);
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(178, 35);
+            this.btnHide.TabIndex = 62;
+            this.btnHide.Text = "关闭";
+            this.btnHide.UseVisualStyleBackColor = true;
+            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
+            // 
             // YYKeyenceReaderConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1221, 641);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnHide);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -278,7 +291,6 @@
         private System.Windows.Forms.TextBox textbox_DataConsole;
         private System.Windows.Forms.TextBox textBox_LogConsole;
         private System.Windows.Forms.Button receive;
-        private System.Windows.Forms.Button loff;
         private System.Windows.Forms.Button lon;
         private System.Windows.Forms.Button disconnect;
         private System.Windows.Forms.Button connect;
@@ -286,5 +298,7 @@
         private System.Windows.Forms.Label Label1;
         public System.Windows.Forms.TextBox DataPortInput;
         public System.Windows.Forms.TextBox CommandPortInput;
+        private System.Windows.Forms.Button btnHide;
+        internal System.Windows.Forms.Button loff;
     }
 }

@@ -24,7 +24,7 @@ namespace YYOPInspectionClient
 
         private static ThreadingProcessForm myForm = null;
 
-        CodeReader codeReader = null;
+       // CodeReader codeReader = null;
 
         public static ThreadingProcessForm getMyForm()
         {
@@ -40,8 +40,7 @@ namespace YYOPInspectionClient
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
             timestamp = getMesuringRecord();
-            codeReader= new CodeReader(this);
-
+           // codeReader= new CodeReader(this);
             myForm = this;
          }
 
@@ -49,24 +48,32 @@ namespace YYOPInspectionClient
         private void button1_Click(object sender, EventArgs e)
         {
             string btnName = this.button1.Text;
-            //先判断是否连接上读码器，如果没有连接上则提示
-            // YYKeyenceReaderConsole console = new YYKeyenceReaderConsole();
-            MessageBox.Show(YYKeyenceReaderConsole.clientSocketInstance.Length.ToString());
-            int resLon = YYKeyenceReaderConsole.codeReaderLon();
-            //读码器已经连接上
-            if (resLon == 0)
+            if (btnName == "结束扫码")
             {
-                //然后开启循环读取数据
-                YYKeyenceReaderConsole.threadingProcessForm = this;
-                //YYKeyenceReaderConsole.codeReaderReceive();
+                //YYKeyenceReaderConsole
+                YYKeyenceReaderConsole.codeReaderOff();
+                this.button1.Text = "开始扫码";
             }
-            else if (resLon == 1)
-            {
-                MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+            else if (btnName == "开始扫码") {
+                //先判断是否连接上读码器，如果没有连接上则提示
+                int resLon = YYKeyenceReaderConsole.codeReaderLon();
+                //读码器已经连接上
+                if (resLon == 0)
+                {
+                    //然后开启循环读取数据
+                    YYKeyenceReaderConsole.threadingProcessForm = this;
+                    this.button1.Text = "结束扫码";
+                }
+                else if (resLon == 1)
+                {
+                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                }
+                else
+                {
+                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                }
             }
-            else {
-                MessageBox.Show("请检查网络设备!");
-            }
+            
             //if (codeReader != null)
             //{
             //    if (btnName.Equals("开始扫码"))
@@ -109,58 +116,89 @@ namespace YYOPInspectionClient
         #region 开始录像事件
         private void button2_Click(object sender, EventArgs e)
         {
-            if (mainWindow != null)
+            if (this.button2.Text == "开始录像")
             {
-                if (this.button2.Text == "开始录像")
+                if (timestamp == null || timestamp.Length <= 0)
                 {
-                    this.label1.Text = "准备中......";
-                    if (mainWindow.recordLogin() == 0)
-                    {
-                        this.label1.Text = "连接中......";
-                        if (mainWindow.recordPreview() == 0)
-                        {
-                            this.label1.Text = "连接成功......";
-                            if (timestamp == null || timestamp.Length <= 0)
-                            {
-                                timestamp = getMesuringRecord();
-                            }
-                            if (!mainWindow.RecordVideo(timestamp))
-                            {
-                                this.label1.Text = "录像失败......";
-                                MessageBox.Show("录像失败!");
-                            }
-                            else
-                            {
-                                this.label1.Text = "录像中......";
-                                this.button2.Text = "结束录像";
-                            }
-                        }
-                        else
-                        {
-                            this.label1.Text = "录像机启动失败......";
-                            MessageBox.Show("录像机启动失败!");
-                        }
-                    }
-                    else
-                    {
-                        this.label1.Text = "连接录像机失败,请检查网络......";
-                        MessageBox.Show("连接录像机失败,请检查网络!");
-                    }
+                    timestamp = getMesuringRecord();
                 }
-                else
-                {
-                    this.label1.Text = "关闭中......";
-                    mainWindow.stopRecordVideo();
-                    mainWindow.stopRecordPreview();
-                    mainWindow.recordLoginOut();
-                    this.button2.Text = "开始录像";
-                    this.label1.Text = "";
+                int result = MainWindow.RecordVideo(timestamp);
+                switch (result) {
+                    case 0:
+                        this.button2.Text = "结束录像";
+                        break;
+                    case 1:
+                        MessageBox.Show("录像失败,请先登录录像机!");
+                        break;
+                    case 2:
+                        MessageBox.Show("录像失败,请先开启录像机预览!");
+                        break;
+                    case 3:
+                        MessageBox.Show("录像失败,请检查配置!");
+                        break;
+                    case 4:
+                        MessageBox.Show("录像失败!");
+                        break;
                 }
             }
-            else
-            {
-                MessageBox.Show("请重新新建表单!");
+            else if (this.button2.Text == "结束录像") {
+                MainWindow.stopRecordVideo();
+                this.button2.Text = "开始录像";
             }
+            //
+
+            //if (mainWindow != null)
+            //{
+            //    if (this.button2.Text == "开始录像")
+            //    {
+            //        this.label1.Text = "准备中......";
+            //        if (mainWindow.recordLogin() == 0)
+            //        {
+            //            this.label1.Text = "连接中......";
+            //            if (mainWindow.recordPreview() == 0)
+            //            {
+            //                this.label1.Text = "连接成功......";
+            //                if (timestamp == null || timestamp.Length <= 0)
+            //                {
+            //                    timestamp = getMesuringRecord();
+            //                }
+            //                if (!mainWindow.RecordVideo(timestamp))
+            //                {
+            //                    this.label1.Text = "录像失败......";
+            //                    MessageBox.Show("录像失败!");
+            //                }
+            //                else
+            //                {
+            //                    this.label1.Text = "录像中......";
+            //                    this.button2.Text = "结束录像";
+            //                }
+            //            }
+            //            else
+            //            {
+            //                this.label1.Text = "录像机启动失败......";
+            //                MessageBox.Show("录像机启动失败!");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            this.label1.Text = "连接录像机失败,请检查网络......";
+            //            MessageBox.Show("连接录像机失败,请检查网络!");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        this.label1.Text = "关闭中......";
+            //        mainWindow.stopRecordVideo();
+            //        mainWindow.stopRecordPreview();
+            //        mainWindow.recordLoginOut();
+            //        this.button2.Text = "开始录像";
+            //        this.label1.Text = "";
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("请重新新建表单!");
+            //}
         }  
         #endregion
 
@@ -396,18 +434,18 @@ namespace YYOPInspectionClient
         private void ThreadingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //窗口关闭时判断是否结束录像
-            string btnName = this.button2.Text;
-            if (!btnName.Equals("开始录像")) {
-                mainWindow.RecordVideo(timestamp);
-                mainWindow.recordPreview();
-                mainWindow.recordLogin();
-                this.button2.Text = "开始录像";
-            }
-            string codeBtnName = this.button1.Text;
-            if (!codeBtnName.Equals("开始扫码"))
-            {
-                closeCodeReader();
-            }
+            //string btnName = this.button2.Text;
+            //if (!btnName.Equals("开始录像")) {
+            //    mainWindow.RecordVideo(timestamp);
+            //    mainWindow.recordPreview();
+            //    mainWindow.recordLogin();
+            //    this.button2.Text = "开始录像";
+            //}
+            //string codeBtnName = this.button1.Text;
+            //if (!codeBtnName.Equals("开始扫码"))
+            //{
+            //   // closeCodeReader();
+            //}
         }
         #endregion
 
@@ -433,31 +471,31 @@ namespace YYOPInspectionClient
         #endregion
 
 
-        #region 扫码器关闭方法
-        private void closeCodeReader()
-        {
-            codeReader.codeReaderOff();
-            if (codeReader != null)
-            {
-                DateTime start = DateTime.Now;
-                DateTime now = DateTime.Now;
-                TimeSpan ts = now - start;
-                while (true)
-                {
-                    ts = now - start;
-                    if (ts.TotalSeconds > 1)
-                    {
-                        codeReader.codeReaderDisConnect();
-                        break;
-                    }
-                    else
-                    {
-                        now = DateTime.Now;
-                    }
-                }
-            }
-        }
-        #endregion
+        //#region 扫码器关闭方法
+        //private void closeCodeReader()
+        //{
+        //    //codeReader.codeReaderOff();
+        //    //if (codeReader != null)
+        //    //{
+        //    //    DateTime start = DateTime.Now;
+        //    //    DateTime now = DateTime.Now;
+        //    //    TimeSpan ts = now - start;
+        //    //    while (true)
+        //    //    {
+        //    //        ts = now - start;
+        //    //        if (ts.TotalSeconds > 1)
+        //    //        {
+        //    //            codeReader.codeReaderDisConnect();
+        //    //            break;
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            now = DateTime.Now;
+        //    //        }
+        //    //    }
+        //    //}
+        //}
+        //#endregion
 
         private void ThreadingProcessForm_SizeChanged(object sender, EventArgs e)
         {
