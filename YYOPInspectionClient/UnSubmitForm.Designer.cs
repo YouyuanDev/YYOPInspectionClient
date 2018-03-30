@@ -34,6 +34,7 @@
             this.checkbox1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.filename = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSelectAll = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,9 +49,9 @@
             // 
             // btnUpload
             // 
-            this.btnUpload.Location = new System.Drawing.Point(443, 278);
+            this.btnUpload.Location = new System.Drawing.Point(443, 196);
             this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(75, 23);
+            this.btnUpload.Size = new System.Drawing.Size(75, 53);
             this.btnUpload.TabIndex = 2;
             this.btnUpload.Text = "上传";
             this.btnUpload.UseVisualStyleBackColor = true;
@@ -63,11 +64,12 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.checkbox1,
             this.filename});
-            this.dataGridView1.Location = new System.Drawing.Point(4, 3);
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(433, 298);
+            this.dataGridView1.Size = new System.Drawing.Size(433, 313);
             this.dataGridView1.TabIndex = 3;
             // 
             // checkbox1
@@ -86,17 +88,28 @@
             // 
             this.btnSelectAll.Location = new System.Drawing.Point(443, 12);
             this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 44);
             this.btnSelectAll.TabIndex = 4;
             this.btnSelectAll.Text = "全选";
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(443, 255);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 51);
+            this.btnClose.TabIndex = 5;
+            this.btnClose.Text = "关闭";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // UnSubmitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(530, 313);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnUpload);
@@ -116,5 +129,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn checkbox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn filename;
         private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Button btnClose;
     }
 }

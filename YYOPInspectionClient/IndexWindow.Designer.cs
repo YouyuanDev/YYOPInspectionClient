@@ -76,6 +76,7 @@
             this.读码器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -89,10 +90,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.dataGridView1);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Location = new System.Drawing.Point(0, 29);
+            this.panel1.Location = new System.Drawing.Point(0, 50);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1210, 519);
+            this.panel1.Size = new System.Drawing.Size(1210, 560);
             this.panel1.TabIndex = 4;
             // 
             // dataGridView1
@@ -130,12 +131,15 @@
             this.tool_measuring_record_no,
             this.inspection_result,
             this.inspection_time});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 41);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 64);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1210, 478);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(1210, 496);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // id
             // 
@@ -313,6 +317,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.dtpEndTime);
             this.panel2.Controls.Add(this.dtpBeginTime);
             this.panel2.Controls.Add(this.textBox2);
@@ -322,54 +327,56 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Location = new System.Drawing.Point(0, 4);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1212, 44);
+            this.panel2.Size = new System.Drawing.Size(1212, 64);
             this.panel2.TabIndex = 0;
             // 
             // dtpEndTime
             // 
             this.dtpEndTime.CustomFormat = "yyyy-MM-dd";
+            this.dtpEndTime.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dtpEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEndTime.Location = new System.Drawing.Point(627, 12);
+            this.dtpEndTime.Location = new System.Drawing.Point(610, 23);
             this.dtpEndTime.Name = "dtpEndTime";
-            this.dtpEndTime.Size = new System.Drawing.Size(153, 21);
+            this.dtpEndTime.Size = new System.Drawing.Size(110, 29);
             this.dtpEndTime.TabIndex = 8;
             this.dtpEndTime.Value = new System.DateTime(2018, 3, 30, 0, 0, 0, 0);
             // 
             // dtpBeginTime
             // 
             this.dtpBeginTime.CustomFormat = "yyyy-MM-dd";
+            this.dtpBeginTime.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dtpBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpBeginTime.Location = new System.Drawing.Point(417, 11);
+            this.dtpBeginTime.Location = new System.Drawing.Point(411, 22);
             this.dtpBeginTime.Name = "dtpBeginTime";
-            this.dtpBeginTime.Size = new System.Drawing.Size(139, 21);
+            this.dtpBeginTime.Size = new System.Drawing.Size(118, 29);
             this.dtpBeginTime.TabIndex = 7;
             this.dtpBeginTime.Value = new System.DateTime(2018, 3, 14, 0, 0, 0, 0);
             // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox2.Location = new System.Drawing.Point(247, 10);
+            this.textBox2.Location = new System.Drawing.Point(250, 21);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 29);
+            this.textBox2.Size = new System.Drawing.Size(73, 29);
             this.textBox2.TabIndex = 6;
             // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(65, 10);
+            this.textBox1.Location = new System.Drawing.Point(88, 20);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 29);
+            this.textBox1.Size = new System.Drawing.Size(78, 29);
             this.textBox1.TabIndex = 5;
             // 
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearch.Location = new System.Drawing.Point(783, 9);
+            this.btnSearch.Location = new System.Drawing.Point(734, 12);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(102, 22);
+            this.btnSearch.Size = new System.Drawing.Size(90, 38);
             this.btnSearch.TabIndex = 4;
             this.btnSearch.Text = "查找";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -377,47 +384,48 @@
             // 
             // label4
             // 
-            this.label4.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(553, 5);
+            this.label4.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(527, 5);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(90, 30);
+            this.label4.Size = new System.Drawing.Size(90, 54);
             this.label4.TabIndex = 3;
-            this.label4.Text = "结束时间：";
+            this.label4.Text = "结束时间";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
-            this.label3.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(343, 5);
+            this.label3.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(319, 5);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 30);
+            this.label3.Size = new System.Drawing.Size(96, 54);
             this.label3.TabIndex = 2;
-            this.label3.Text = "开始时间：";
+            this.label3.Text = "开始时间";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(164, 5);
+            this.label2.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(159, 5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 30);
+            this.label2.Size = new System.Drawing.Size(114, 54);
             this.label2.TabIndex = 1;
-            this.label2.Text = "操作工工号：";
+            this.label2.Text = "操作工工号";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(2, 5);
+            this.label1.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(0, 5);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 30);
+            this.label1.Size = new System.Drawing.Size(95, 54);
             this.label1.TabIndex = 0;
-            this.label1.Text = "接箍编号：";
+            this.label1.Text = "接箍编号";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // menuStrip1
             // 
+            this.menuStrip1.AutoSize = false;
             this.menuStrip1.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold);
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -425,8 +433,8 @@
             this.toolStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(10, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1211, 27);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(20, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1211, 50);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -436,20 +444,26 @@
             this.新建ToolStripMenuItem,
             this.未提交ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
+            this.toolStripMenuItem1.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(93, 46);
             this.toolStripMenuItem1.Text = "表单";
             // 
             // 新建ToolStripMenuItem
             // 
+            this.新建ToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.新建ToolStripMenuItem.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold);
+            this.新建ToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 20, 0, 0);
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.新建ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(172, 62);
             this.新建ToolStripMenuItem.Text = "新建";
             this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
             // 未提交ToolStripMenuItem
             // 
             this.未提交ToolStripMenuItem.Name = "未提交ToolStripMenuItem";
-            this.未提交ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.未提交ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.未提交ToolStripMenuItem.Size = new System.Drawing.Size(172, 62);
             this.未提交ToolStripMenuItem.Text = "未提交";
             this.未提交ToolStripMenuItem.Click += new System.EventHandler(this.未提交ToolStripMenuItem_Click);
             // 
@@ -460,41 +474,59 @@
             this.录像设置ToolStripMenuItem,
             this.fTP设置ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(44, 21);
+            this.toolStripMenuItem2.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(93, 46);
             this.toolStripMenuItem2.Text = "设置";
             // 
             // 读码器设置ToolStripMenuItem
             // 
+            this.读码器设置ToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 20, 0, 0);
             this.读码器设置ToolStripMenuItem.Name = "读码器设置ToolStripMenuItem";
-            this.读码器设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.读码器设置ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.读码器设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
             this.读码器设置ToolStripMenuItem.Text = "读码器设置";
             this.读码器设置ToolStripMenuItem.Click += new System.EventHandler(this.读码器设置ToolStripMenuItem_Click);
             // 
             // 录像设置ToolStripMenuItem
             // 
             this.录像设置ToolStripMenuItem.Name = "录像设置ToolStripMenuItem";
-            this.录像设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.录像设置ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.录像设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
             this.录像设置ToolStripMenuItem.Text = "录像设置";
             this.录像设置ToolStripMenuItem.Click += new System.EventHandler(this.录像设置ToolStripMenuItem_Click);
             // 
             // fTP设置ToolStripMenuItem
             // 
+            this.fTP设置ToolStripMenuItem.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold);
             this.fTP设置ToolStripMenuItem.Name = "fTP设置ToolStripMenuItem";
-            this.fTP设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.fTP设置ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.fTP设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
             this.fTP设置ToolStripMenuItem.Text = "FTP设置";
+            this.fTP设置ToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             this.fTP设置ToolStripMenuItem.Click += new System.EventHandler(this.fTP设置ToolStripMenuItem_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(873, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(90, 38);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "详细";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // IndexWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1211, 552);
+            this.ClientSize = new System.Drawing.Size(1211, 614);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Name = "IndexWindow";
             this.Text = "主页";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexWindow_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -503,7 +535,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -556,5 +587,6 @@
         private System.Windows.Forms.ToolStripMenuItem 读码器设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fTP设置ToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }

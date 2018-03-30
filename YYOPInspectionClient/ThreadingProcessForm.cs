@@ -51,8 +51,10 @@ namespace YYOPInspectionClient
             if (btnName == "结束扫码")
             {
                 //YYKeyenceReaderConsole
+                this.lblReaderStatus.Text = "读码器连接成功...";
                 YYKeyenceReaderConsole.codeReaderOff();
                 this.button1.Text = "开始扫码";
+                this.lblReaderStatus.Text = "读码完成...";
             }
             else if (btnName == "开始扫码") {
                 //先判断是否连接上读码器，如果没有连接上则提示
@@ -61,15 +63,18 @@ namespace YYOPInspectionClient
                 if (resLon == 0)
                 {
                     //然后开启循环读取数据
+                    this.lblReaderStatus.Text = "读取中...";
                     YYKeyenceReaderConsole.threadingProcessForm = this;
                     this.button1.Text = "结束扫码";
                 }
                 else if (resLon == 1)
                 {
+                    this.lblReaderStatus.Text = "读码器尚未连接...";
                     MessageBox.Show("请检查读码器是否连接或已经断开连接!");
                 }
                 else
                 {
+                    this.lblReaderStatus.Text = "读码器尚未连接...";
                     MessageBox.Show("请检查读码器是否连接或已经断开连接!");
                 }
             }
@@ -122,18 +127,23 @@ namespace YYOPInspectionClient
                 {
                     timestamp = getMesuringRecord();
                 }
+                this.lblVideoStatus.Text = "开始录像...";
                 int result = MainWindow.RecordVideo(timestamp);
                 switch (result) {
                     case 0:
+                        this.lblVideoStatus.Text = "录像中...";
                         this.button2.Text = "结束录像";
                         break;
                     case 1:
+                        this.lblVideoStatus.Text = "录像机未连接...";
                         MessageBox.Show("录像失败,请先登录录像机!");
                         break;
                     case 2:
+                        this.lblVideoStatus.Text = "录像机未启动...";
                         MessageBox.Show("录像失败,请先开启录像机预览!");
                         break;
                     case 3:
+                        this.lblVideoStatus.Text = "录像失败...";
                         MessageBox.Show("录像失败,请检查配置!");
                         break;
                     case 4:
@@ -144,6 +154,7 @@ namespace YYOPInspectionClient
             else if (this.button2.Text == "结束录像") {
                 MainWindow.stopRecordVideo();
                 this.button2.Text = "开始录像";
+                this.lblVideoStatus.Text = "录像完成...";
             }
             //
 
@@ -263,7 +274,7 @@ namespace YYOPInspectionClient
             string caliper_tolerance = HttpUtility.UrlEncode(this.textBox15.Text, Encoding.UTF8);//游标卡尺零值误差
             string collar_gauge_no = HttpUtility.UrlEncode(this.textBox16.Text, Encoding.UTF8);//内径止通规编号
             //------------------螺纹检验表
-            string couping_no = HttpUtility.UrlEncode(this.textBox17.Text, Encoding.UTF8);//接箍编号
+            string couping_no = HttpUtility.UrlEncode(this.textBox17.Text.TrimEnd(), Encoding.UTF8);//接箍编号
             string process_no = HttpUtility.UrlEncode(this.textBox20.Text, Encoding.UTF8);//工位编号
             string operator_no = HttpUtility.UrlEncode(this.textBox19.Text, Encoding.UTF8);//操作工编号
             string visual_inspection = HttpUtility.UrlEncode(this.textBox21.Text, Encoding.UTF8);//视觉检验
@@ -292,6 +303,7 @@ namespace YYOPInspectionClient
             ASCIIEncoding encoding = new ASCIIEncoding();
             string content = "";
             string json = "";
+            MessageBox.Show(couping_no);
             try
             {
                 //拼接json格式字符串
@@ -500,6 +512,19 @@ namespace YYOPInspectionClient
         private void ThreadingProcessForm_SizeChanged(object sender, EventArgs e)
         {
             auto.controlAutoSize(this);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            //关闭之前判断是否关闭读码器和结束录像
+            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            {
+                MessageBox.Show("录像机或读码器尚未关闭！");
+            }
+            else {
+                this.Close();
+            }
+
         }
     }
 }

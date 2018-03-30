@@ -95,6 +95,12 @@
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="CodeReader.cs" />
+    <Compile Include="DataShowForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataShowForm.Designer.cs">
+      <DependentUpon>DataShowForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FTPSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     <Compile Include="YYKeyenceReaderConsole.Designer.cs">
       <DependentUpon>YYKeyenceReaderConsole.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DataShowForm.resx">
+      <DependentUpon>DataShowForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FTPSetting.resx">
       <DependentUpon>FTPSetting.cs</DependentUpon>
     </EmbeddedResource>

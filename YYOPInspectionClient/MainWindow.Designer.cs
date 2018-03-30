@@ -71,7 +71,7 @@
             // RealPlayWnd
             // 
             this.RealPlayWnd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.RealPlayWnd.Location = new System.Drawing.Point(281, 132);
+            this.RealPlayWnd.Location = new System.Drawing.Point(224, 132);
             this.RealPlayWnd.Name = "RealPlayWnd";
             this.RealPlayWnd.Size = new System.Drawing.Size(428, 341);
             this.RealPlayWnd.TabIndex = 62;
@@ -84,7 +84,7 @@
             this.ColumnHeader2});
             this.listViewIPChannel.FullRowSelect = true;
             this.listViewIPChannel.GridLines = true;
-            this.listViewIPChannel.Location = new System.Drawing.Point(88, 135);
+            this.listViewIPChannel.Location = new System.Drawing.Point(31, 135);
             this.listViewIPChannel.MultiSelect = false;
             this.listViewIPChannel.Name = "listViewIPChannel";
             this.listViewIPChannel.Size = new System.Drawing.Size(174, 91);
@@ -107,11 +107,12 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(168, 242);
+            this.label13.Location = new System.Drawing.Point(111, 242);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(77, 12);
             this.label13.TabIndex = 75;
             this.label13.Text = "刷新通道列表";
+            this.label13.Visible = false;
             // 
             // comboBoxView
             // 
@@ -119,17 +120,17 @@
             this.comboBoxView.Items.AddRange(new object[] {
             "Direct:直接预览 ",
             "Callback:回调解码 "});
-            this.comboBoxView.Location = new System.Drawing.Point(88, 279);
+            this.comboBoxView.Location = new System.Drawing.Point(31, 279);
             this.comboBoxView.Name = "comboBoxView";
             this.comboBoxView.Size = new System.Drawing.Size(139, 20);
             this.comboBoxView.TabIndex = 76;
             // 
             // TextBoxInfo
             // 
-            this.TextBoxInfo.Location = new System.Drawing.Point(88, 500);
+            this.TextBoxInfo.Location = new System.Drawing.Point(31, 500);
             this.TextBoxInfo.Multiline = true;
             this.TextBoxInfo.Name = "TextBoxInfo";
-            this.TextBoxInfo.Size = new System.Drawing.Size(515, 148);
+            this.TextBoxInfo.Size = new System.Drawing.Size(621, 148);
             this.TextBoxInfo.TabIndex = 72;
             // 
             // checkBoxHiDDNS
@@ -196,28 +197,26 @@
             this.label14.Size = new System.Drawing.Size(47, 12);
             this.label14.TabIndex = 67;
             this.label14.Text = "BMP抓图";
-            this.label14.Click += new System.EventHandler(this.btnBMP_Click);
+            this.label14.Visible = false;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(92, 237);
+            this.btnRefresh.Location = new System.Drawing.Point(31, 237);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(70, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(74, 36);
             this.btnRefresh.TabIndex = 73;
-            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Text = "刷新通道";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label11.Location = new System.Drawing.Point(18, 53);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(31, 14);
+            this.label11.Size = new System.Drawing.Size(29, 12);
             this.label11.TabIndex = 65;
             this.label11.Text = "预览";
-            this.label11.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // btnBMP
             // 
@@ -227,6 +226,7 @@
             this.btnBMP.TabIndex = 66;
             this.btnBMP.Text = "Capture BMP";
             this.btnBMP.UseVisualStyleBackColor = true;
+            this.btnBMP.Visible = false;
             this.btnBMP.Click += new System.EventHandler(this.btnBMP_Click_1);
             // 
             // textBoxPort
@@ -262,6 +262,7 @@
             this.label10.Size = new System.Drawing.Size(29, 12);
             this.label10.TabIndex = 28;
             this.label10.Text = "登录";
+            this.label10.Visible = false;
             // 
             // label3
             // 
@@ -285,13 +286,12 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btnRecord);
-            this.groupBox2.Controls.Add(this.btnPreview);
             this.groupBox2.Controls.Add(this.btnBMP);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.btnJPEG);
             this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Location = new System.Drawing.Point(88, 305);
+            this.groupBox2.Location = new System.Drawing.Point(668, 279);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(174, 171);
             this.groupBox2.TabIndex = 68;
@@ -313,7 +313,7 @@
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 43;
             this.label9.Text = "JPEG抓图";
-            this.label9.Click += new System.EventHandler(this.btnJPEG_Click);
+            this.label9.Visible = false;
             // 
             // btnRecord
             // 
@@ -323,15 +323,16 @@
             this.btnRecord.TabIndex = 44;
             this.btnRecord.Text = "Record";
             this.btnRecord.UseVisualStyleBackColor = true;
+            this.btnRecord.Visible = false;
             this.btnRecord.Click += new System.EventHandler(this.btnRecord_Click);
             // 
             // btnPreview
             // 
-            this.btnPreview.Location = new System.Drawing.Point(0, 14);
+            this.btnPreview.Location = new System.Drawing.Point(31, 325);
             this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(75, 27);
+            this.btnPreview.Size = new System.Drawing.Size(139, 125);
             this.btnPreview.TabIndex = 64;
-            this.btnPreview.Text = "Live View";
+            this.btnPreview.Text = "启动录像机";
             this.btnPreview.UseVisualStyleBackColor = true;
             this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
             // 
@@ -343,6 +344,7 @@
             this.btnJPEG.TabIndex = 70;
             this.btnJPEG.Text = "Capture JPEG";
             this.btnJPEG.UseVisualStyleBackColor = true;
+            this.btnJPEG.Visible = false;
             this.btnJPEG.Click += new System.EventHandler(this.btnJPEG_Click_1);
             // 
             // label15
@@ -353,6 +355,7 @@
             this.label15.Size = new System.Drawing.Size(65, 12);
             this.label15.TabIndex = 74;
             this.label15.Text = "客户端录像";
+            this.label15.Visible = false;
             // 
             // textBoxUserName
             // 
@@ -388,9 +391,9 @@
             this.groupBox3.Controls.Add(this.textBoxUserName);
             this.groupBox3.Controls.Add(this.btnLogin);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(88, 9);
+            this.groupBox3.Location = new System.Drawing.Point(31, 9);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(608, 117);
+            this.groupBox3.Size = new System.Drawing.Size(621, 117);
             this.groupBox3.TabIndex = 69;
             this.groupBox3.TabStop = false;
             // 
@@ -404,7 +407,7 @@
             // 
             // btnHide
             // 
-            this.btnHide.Location = new System.Drawing.Point(646, 597);
+            this.btnHide.Location = new System.Drawing.Point(662, 597);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(126, 47);
             this.btnHide.TabIndex = 77;
@@ -416,11 +419,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 656);
+            this.ClientSize = new System.Drawing.Size(840, 656);
             this.ControlBox = false;
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.RealPlayWnd);
             this.Controls.Add(this.listViewIPChannel);
+            this.Controls.Add(this.btnPreview);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.comboBoxView);
             this.Controls.Add(this.TextBoxInfo);

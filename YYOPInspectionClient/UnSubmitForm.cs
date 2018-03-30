@@ -54,7 +54,9 @@ namespace YYOPInspectionClient
                 {
                     this.dataGridView1.Rows[i].Cells[0].Value = true;
                 }
-                this.btnSelectAll.Text = "取消全选";
+                if (this.dataGridView1.Rows.Count > 0) {
+                    this.btnSelectAll.Text = "取消全选";
+                }
             }
             else
             {
@@ -216,8 +218,13 @@ namespace YYOPInspectionClient
             }
             return videoPathList;
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
         #endregion
-        
+
         //private static void UploadVideo()
         //{
         //    string path = Application.StartupPath + "\\draft";

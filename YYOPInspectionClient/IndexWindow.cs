@@ -24,7 +24,9 @@ namespace YYOPInspectionClient
         public IndexWindow()
         {
             InitializeComponent();
-            this.Font = new Font("宋体", 14, FontStyle.Bold);
+            this.Font = new Font("宋体", 12, FontStyle.Bold);
+            AutoSize autoSize= new AutoSize();
+            autoSize.controllInitializeSize(this);
             getThreadingProcessData();
             try {
                 thread = new Thread(UploadVideo);
@@ -40,6 +42,15 @@ namespace YYOPInspectionClient
 
         private static void UploadVideo()
         {
+            //删除vcr中的垃圾视频
+            string trashDir = Application.StartupPath + "\\vcr";
+            if (Directory.Exists(trashDir)) {
+                DirectoryInfo dirInfo = new DirectoryInfo(trashDir);
+                foreach (FileInfo file in dirInfo.GetFiles("*.mp4")) {
+                    File.Delete(file.FullName);
+                }
+            }
+
             string fileuploadpath = Application.StartupPath + "\\fileuploadrecord.txt";
             string path = Application.StartupPath + "\\draft";
             //按行读取出文件可上传的文件夹名
@@ -132,6 +143,7 @@ namespace YYOPInspectionClient
                 string jsons = content;
                 JObject jobject = JObject.Parse(jsons);
                 string rowsJson = jobject["rowsData"].ToString();
+               // MessageBox.Show(rowsJson);
                 List<ThreadingProcess> list = JsonConvert.DeserializeObject<List<ThreadingProcess>>(rowsJson);
                 this.dataGridView1.DataSource =list;
             }
@@ -195,6 +207,92 @@ namespace YYOPInspectionClient
         private void 关闭读码器ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void IndexWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 判断读码器和录像机是否关闭
+            DateTime start = DateTime.Now;
+            DateTime now = DateTime.Now;
+            TimeSpan ts = now - start;
+            while (true)
+            {
+                ts = now - start;
+                if (ts.TotalSeconds > 1)
+                {
+                    if (YYKeyenceReaderConsole.myselfForm != null) {
+                        YYKeyenceReaderConsole.codeReaderOff();
+                    }
+                    break;
+                }
+                else
+                {
+                    now = DateTime.Now;
+                }
+            }
+            if (MainWindow.mainWindowForm != null) {
+                MainWindow.stopRecordVideo();
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DataShowForm form = new DataShowForm();
+            form.Show();
+            //string[] str = new string[dataGridView1.Rows.Count];
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (dataGridView1.Rows[i].Selected == true)
+                {
+
+                    form.textBox1.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox2.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox3.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox4.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox5.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox6.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox7.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox8.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox9.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox10.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox11.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox12.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox13.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox14.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox15.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox16.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox17.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox18.Text = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                    form.textBox19.Text = dataGridView1.Rows[i].Cells[3].Value.ToString();
+                    form.textBox20.Text = dataGridView1.Rows[i].Cells[2].Value.ToString();
+                    form.textBox21.Text = dataGridView1.Rows[i].Cells[4].Value.ToString();
+                    form.textBox22.Text = dataGridView1.Rows[i].Cells[5].Value.ToString();
+                    form.textBox23.Text = dataGridView1.Rows[i].Cells[6].Value.ToString();
+                    form.textBox24.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox25.Text = dataGridView1.Rows[i].Cells[8].Value.ToString();
+                    form.textBox26.Text = dataGridView1.Rows[i].Cells[9].Value.ToString();
+                    form.textBox27.Text = dataGridView1.Rows[i].Cells[7].Value.ToString();
+                    form.textBox28.Text = dataGridView1.Rows[i].Cells[10].Value.ToString();
+                    form.textBox29.Text = dataGridView1.Rows[i].Cells[11].Value.ToString();
+                    form.textBox30.Text = dataGridView1.Rows[i].Cells[12].Value.ToString();
+                    form.textBox31.Text = dataGridView1.Rows[i].Cells[13].Value.ToString();
+                    form.textBox32.Text = dataGridView1.Rows[i].Cells[14].Value.ToString();
+                    form.textBox33.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                    form.textBox34.Text = dataGridView1.Rows[i].Cells[15].Value.ToString();
+                    form.textBox35.Text = dataGridView1.Rows[i].Cells[16].Value.ToString();
+                    form.textBox36.Text = dataGridView1.Rows[i].Cells[17].Value.ToString();
+                    form.textBox37.Text = dataGridView1.Rows[i].Cells[18].Value.ToString();
+                    form.textBox38.Text = dataGridView1.Rows[i].Cells[19].Value.ToString();
+                    form.textBox39.Text = dataGridView1.Rows[i].Cells[20].Value.ToString();
+                    form.textBox40.Text = dataGridView1.Rows[i].Cells[21].Value.ToString();
+                    form.textBox41.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                }
+            }
         }
     }
 }

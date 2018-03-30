@@ -34,6 +34,7 @@
             this.txtFtpPwd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtIP = new System.Windows.Forms.TextBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -88,11 +89,22 @@
             this.txtIP.TabIndex = 5;
             this.txtIP.Text = "192.168.0.200";
             // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(228, 165);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 39);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "关闭";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // FTPSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(322, 221);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.txtIP);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtFtpPwd);
@@ -114,5 +126,6 @@
         public System.Windows.Forms.TextBox txtFtpPwd;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.TextBox txtIP;
+        private System.Windows.Forms.Button btnClose;
     }
 }

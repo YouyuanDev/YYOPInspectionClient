@@ -71,7 +71,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(414, 19);
+            this.label3.Location = new System.Drawing.Point(246, 19);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 59;
@@ -79,17 +79,17 @@
             // 
             // button_Reset
             // 
-            this.button_Reset.Location = new System.Drawing.Point(831, 151);
+            this.button_Reset.Location = new System.Drawing.Point(525, 151);
             this.button_Reset.Name = "button_Reset";
             this.button_Reset.Size = new System.Drawing.Size(138, 61);
             this.button_Reset.TabIndex = 58;
-            this.button_Reset.Text = "重置";
+            this.button_Reset.Text = "重置读码器";
             this.button_Reset.UseVisualStyleBackColor = true;
             this.button_Reset.Click += new System.EventHandler(this.button_Reset_Click);
             // 
             // button_Tune
             // 
-            this.button_Tune.Location = new System.Drawing.Point(1133, 151);
+            this.button_Tune.Location = new System.Drawing.Point(827, 151);
             this.button_Tune.Name = "button_Tune";
             this.button_Tune.Size = new System.Drawing.Size(71, 61);
             this.button_Tune.TabIndex = 57;
@@ -101,14 +101,14 @@
             // 
             this.listBox_Reader.FormattingEnabled = true;
             this.listBox_Reader.ItemHeight = 12;
-            this.listBox_Reader.Location = new System.Drawing.Point(416, 40);
+            this.listBox_Reader.Location = new System.Drawing.Point(253, 40);
             this.listBox_Reader.Name = "listBox_Reader";
-            this.listBox_Reader.Size = new System.Drawing.Size(367, 256);
+            this.listBox_Reader.Size = new System.Drawing.Size(263, 256);
             this.listBox_Reader.TabIndex = 56;
             // 
             // button_Clear
             // 
-            this.button_Clear.Location = new System.Drawing.Point(831, 237);
+            this.button_Clear.Location = new System.Drawing.Point(525, 237);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(373, 59);
             this.button_Clear.TabIndex = 55;
@@ -118,7 +118,7 @@
             // 
             // button_FTune
             // 
-            this.button_FTune.Location = new System.Drawing.Point(1048, 151);
+            this.button_FTune.Location = new System.Drawing.Point(742, 151);
             this.button_FTune.Name = "button_FTune";
             this.button_FTune.Size = new System.Drawing.Size(71, 61);
             this.button_FTune.TabIndex = 54;
@@ -133,7 +133,7 @@
             this.textbox_DataConsole.Name = "textbox_DataConsole";
             this.textbox_DataConsole.ReadOnly = true;
             this.textbox_DataConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textbox_DataConsole.Size = new System.Drawing.Size(761, 313);
+            this.textbox_DataConsole.Size = new System.Drawing.Size(494, 313);
             this.textbox_DataConsole.TabIndex = 53;
             // 
             // textBox_LogConsole
@@ -143,23 +143,24 @@
             this.textBox_LogConsole.Name = "textBox_LogConsole";
             this.textBox_LogConsole.ReadOnly = true;
             this.textBox_LogConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_LogConsole.Size = new System.Drawing.Size(358, 251);
+            this.textBox_LogConsole.Size = new System.Drawing.Size(211, 251);
             this.textBox_LogConsole.TabIndex = 52;
             // 
             // receive
             // 
-            this.receive.Location = new System.Drawing.Point(831, 336);
+            this.receive.Location = new System.Drawing.Point(525, 566);
             this.receive.Name = "receive";
             this.receive.Size = new System.Drawing.Size(178, 52);
             this.receive.TabIndex = 51;
             this.receive.Text = "接收数据";
             this.receive.UseVisualStyleBackColor = true;
             this.receive.UseWaitCursor = true;
+            this.receive.Visible = false;
             this.receive.Click += new System.EventHandler(this.receive_Click);
             // 
             // loff
             // 
-            this.loff.Location = new System.Drawing.Point(1026, 415);
+            this.loff.Location = new System.Drawing.Point(720, 320);
             this.loff.Name = "loff";
             this.loff.Size = new System.Drawing.Size(178, 91);
             this.loff.TabIndex = 50;
@@ -169,7 +170,7 @@
             // 
             // lon
             // 
-            this.lon.Location = new System.Drawing.Point(831, 415);
+            this.lon.Location = new System.Drawing.Point(525, 319);
             this.lon.Name = "lon";
             this.lon.Size = new System.Drawing.Size(189, 91);
             this.lon.TabIndex = 49;
@@ -179,7 +180,7 @@
             // 
             // disconnect
             // 
-            this.disconnect.Location = new System.Drawing.Point(1048, 83);
+            this.disconnect.Location = new System.Drawing.Point(742, 83);
             this.disconnect.Name = "disconnect";
             this.disconnect.Size = new System.Drawing.Size(156, 62);
             this.disconnect.TabIndex = 48;
@@ -189,7 +190,7 @@
             // 
             // connect
             // 
-            this.connect.Location = new System.Drawing.Point(831, 83);
+            this.connect.Location = new System.Drawing.Point(525, 83);
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(138, 62);
             this.connect.TabIndex = 47;
@@ -200,7 +201,7 @@
             // Label2
             // 
             this.Label2.AutoSize = true;
-            this.Label2.Location = new System.Drawing.Point(1060, 40);
+            this.Label2.Location = new System.Drawing.Point(754, 40);
             this.Label2.Name = "Label2";
             this.Label2.Size = new System.Drawing.Size(53, 12);
             this.Label2.TabIndex = 46;
@@ -209,7 +210,7 @@
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(829, 40);
+            this.Label1.Location = new System.Drawing.Point(523, 40);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(53, 12);
             this.Label1.TabIndex = 45;
@@ -218,7 +219,7 @@
             // DataPortInput
             // 
             this.DataPortInput.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.DataPortInput.Location = new System.Drawing.Point(1145, 37);
+            this.DataPortInput.Location = new System.Drawing.Point(839, 37);
             this.DataPortInput.MaxLength = 5;
             this.DataPortInput.Name = "DataPortInput";
             this.DataPortInput.Size = new System.Drawing.Size(59, 21);
@@ -228,7 +229,7 @@
             // CommandPortInput
             // 
             this.CommandPortInput.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.CommandPortInput.Location = new System.Drawing.Point(952, 37);
+            this.CommandPortInput.Location = new System.Drawing.Point(646, 37);
             this.CommandPortInput.MaxLength = 5;
             this.CommandPortInput.Name = "CommandPortInput";
             this.CommandPortInput.Size = new System.Drawing.Size(57, 21);
@@ -237,9 +238,9 @@
             // 
             // btnHide
             // 
-            this.btnHide.Location = new System.Drawing.Point(1026, 583);
+            this.btnHide.Location = new System.Drawing.Point(720, 566);
             this.btnHide.Name = "btnHide";
-            this.btnHide.Size = new System.Drawing.Size(178, 35);
+            this.btnHide.Size = new System.Drawing.Size(178, 52);
             this.btnHide.TabIndex = 62;
             this.btnHide.Text = "关闭";
             this.btnHide.UseVisualStyleBackColor = true;
@@ -249,7 +250,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1221, 641);
+            this.ClientSize = new System.Drawing.Size(917, 641);
             this.ControlBox = false;
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.label5);
@@ -273,6 +274,7 @@
             this.Controls.Add(this.CommandPortInput);
             this.Name = "YYKeyenceReaderConsole";
             this.Text = "YYKeyenceReaderConsole";
+            this.Load += new System.EventHandler(this.YYKeyenceReaderConsole_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
