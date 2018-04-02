@@ -23,7 +23,8 @@ namespace YYOPInspectionClient
         // private Int32 m_lRealHandle = -1;
         private static uint iLastErr = 0;
         private static Int32 m_lUserID = -1;
-        private static Int32 m_lRealHandle = -1;
+        //private static Int32 m_lRealHandle = -1;
+        public static Int32 m_lRealHandle = -1;
         private string str1;
         private string str2;
         private Int32 i = 0;
@@ -31,14 +32,15 @@ namespace YYOPInspectionClient
         //private string str;
         // private long iSelIndex = 0;
         private static string str;
-        private static long iSelIndex = 0;
+        public static long iSelIndex = 0;
         private uint dwAChanTotalNum = 0;
         private uint dwDChanTotalNum = 0;
         private Int32 m_lPort = -1;
         private IntPtr m_ptrRealHandle;
         private int[] iIPDevID = new int[96];
         //private int[] iChannelNum = new int[96];
-        private static int[] iChannelNum = new int[96];
+        //private static int[] iChannelNum = new int[96];
+        public static int[] iChannelNum = new int[96];
         private CHCNetSDK.REALDATACALLBACK RealData = null;
         public CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo;
         public CHCNetSDK.NET_DVR_IPPARACFG_V40 m_struIpParaCfgV40;
@@ -49,6 +51,17 @@ namespace YYOPInspectionClient
         public delegate void MyDebugInfo(string str);
         public static MainWindow mainWindowForm = null;
         private delegate void SetLogCallback(string message);
+
+        //新增，保存窗体的大小和初始位置  保存录像显示窗口的大小和初始位置
+        public static int mainWindowX = 0;
+        public static int mainWindowY = 0;
+        public static int mainWindowWidth = 0;
+        public static int mainWindowHeight = 0;
+        public static int realTimeX = 0;
+        public static int realTimeY = 0;
+        public static int realTimeWidth = 0;
+        public static int realTimeHeigh = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,6 +69,13 @@ namespace YYOPInspectionClient
             if (mainWindowForm == null) {
                 mainWindowForm = this;
             }
+            //初始化数据
+            mainWindowX = this.Left;mainWindowY = this.Top;
+            mainWindowWidth = this.Width;mainWindowHeight = this.Height;
+            realTimeX = RealPlayWnd.Left;realTimeY = RealPlayWnd.Top;
+            realTimeWidth = RealPlayWnd.Width;realTimeHeigh = RealPlayWnd.Height;
+            RealPlayWnd.Dock = DockStyle.None;
+
             m_bInitSDK = CHCNetSDK.NET_DVR_Init();
             if (m_bInitSDK == false)
             {
@@ -987,10 +1007,55 @@ namespace YYOPInspectionClient
                 DebugInfo("停止预览成功!");
                 //DebugInfo("NET_DVR_StopRealPlay succ!");
                 m_lRealHandle = -1;
-                btnPreview.Text = "Live View";
+                btnPreview.Text = "启动录像机";
                 RealPlayWnd.Invalidate();//刷新窗口 refresh the window
             }
             return;
+        }
+
+       // 表单开启录像成功后实时显示预览
+        public static void RealTimePreview(MainWindow window)
+        {
+            window.RealPlayWnd.BringToFront();
+            //if (m_lRealHandle < 0)
+            //{
+            //    CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
+            //    lpPreviewInfo.hPlayWnd = tpForm.picRealTImePreview.Handle;//预览窗口 live view window
+            //    lpPreviewInfo.lChannel = iChannelNum[(int)iSelIndex];//预览的设备通道 the device channel number
+            //    lpPreviewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+            //    lpPreviewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+            //    lpPreviewInfo.bBlocked = true; //0- 非阻塞取流，1- 阻塞取流
+            //    lpPreviewInfo.dwDisplayBufNum = 15; //播放库显示缓冲区最大帧数
+            //    IntPtr pUser = IntPtr.Zero;//用户数据 user data 
+            //    if (mainWindowForm.comboBoxView.SelectedIndex == 0)
+            //    {
+            //        //打开预览 Start live view 
+            //        m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
+            //    }
+            //    else
+            //    {
+            //        lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
+            //        mainWindowForm.m_ptrRealHandle = mainWindowForm.RealPlayWnd.Handle;
+            //        mainWindowForm.RealData = new CHCNetSDK.REALDATACALLBACK(mainWindowForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
+            //        m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, mainWindowForm.RealData, pUser);
+            //    }
+
+            //    if (m_lRealHandle < 0)
+            //    {
+            //        iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+            //        str = "预览失败,错误代码:" + iLastErr;
+            //        //str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
+            //        DebugInfo(str);
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        //预览成功
+            //        DebugInfo("预览成功!");
+            //        //DebugInfo("NET_DVR_RealPlay_V40 succ!");
+            //        mainWindowForm.btnPreview.Text = "关闭录像机";
+            //    }
+            //}
         }
 
         private void btnBMP_Click_1(object sender, EventArgs e)

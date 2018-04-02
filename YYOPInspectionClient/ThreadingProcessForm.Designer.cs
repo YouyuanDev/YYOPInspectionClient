@@ -62,6 +62,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.formpanel2 = new System.Windows.Forms.Panel();
+            this.lblVideoStatus = new System.Windows.Forms.Label();
+            this.lblReaderStatus = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -116,11 +119,10 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.lblReaderStatus = new System.Windows.Forms.Label();
-            this.lblVideoStatus = new System.Windows.Forms.Label();
+            this.picRealTImePreview = new System.Windows.Forms.PictureBox();
             this.formpanel1.SuspendLayout();
             this.formpanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // formpanel1
@@ -444,6 +446,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formpanel2.AutoSize = true;
             this.formpanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formpanel2.Controls.Add(this.picRealTImePreview);
             this.formpanel2.Controls.Add(this.lblVideoStatus);
             this.formpanel2.Controls.Add(this.lblReaderStatus);
             this.formpanel2.Controls.Add(this.btnClose);
@@ -503,6 +506,36 @@
             this.formpanel2.Name = "formpanel2";
             this.formpanel2.Size = new System.Drawing.Size(972, 401);
             this.formpanel2.TabIndex = 1;
+            // 
+            // lblVideoStatus
+            // 
+            this.lblVideoStatus.AutoSize = true;
+            this.lblVideoStatus.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblVideoStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblVideoStatus.Location = new System.Drawing.Point(632, 15);
+            this.lblVideoStatus.Name = "lblVideoStatus";
+            this.lblVideoStatus.Size = new System.Drawing.Size(0, 16);
+            this.lblVideoStatus.TabIndex = 58;
+            // 
+            // lblReaderStatus
+            // 
+            this.lblReaderStatus.AutoSize = true;
+            this.lblReaderStatus.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblReaderStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblReaderStatus.Location = new System.Drawing.Point(399, 15);
+            this.lblReaderStatus.Name = "lblReaderStatus";
+            this.lblReaderStatus.Size = new System.Drawing.Size(0, 16);
+            this.lblReaderStatus.TabIndex = 57;
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(632, 329);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(96, 35);
+            this.btnClose.TabIndex = 56;
+            this.btnClose.Text = "关闭";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label1
             // 
@@ -977,35 +1010,13 @@
             this.label45.TabIndex = 3;
             this.label45.Text = "螺纹检验信息>>";
             // 
-            // btnClose
+            // picRealTImePreview
             // 
-            this.btnClose.Location = new System.Drawing.Point(632, 329);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(96, 35);
-            this.btnClose.TabIndex = 56;
-            this.btnClose.Text = "关闭";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // lblReaderStatus
-            // 
-            this.lblReaderStatus.AutoSize = true;
-            this.lblReaderStatus.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblReaderStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblReaderStatus.Location = new System.Drawing.Point(399, 15);
-            this.lblReaderStatus.Name = "lblReaderStatus";
-            this.lblReaderStatus.Size = new System.Drawing.Size(0, 16);
-            this.lblReaderStatus.TabIndex = 57;
-            // 
-            // lblVideoStatus
-            // 
-            this.lblVideoStatus.AutoSize = true;
-            this.lblVideoStatus.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblVideoStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblVideoStatus.Location = new System.Drawing.Point(632, 15);
-            this.lblVideoStatus.Name = "lblVideoStatus";
-            this.lblVideoStatus.Size = new System.Drawing.Size(0, 16);
-            this.lblVideoStatus.TabIndex = 58;
+            this.picRealTImePreview.Location = new System.Drawing.Point(874, 5);
+            this.picRealTImePreview.Name = "picRealTImePreview";
+            this.picRealTImePreview.Size = new System.Drawing.Size(85, 93);
+            this.picRealTImePreview.TabIndex = 59;
+            this.picRealTImePreview.TabStop = false;
             // 
             // ThreadingProcessForm
             // 
@@ -1025,6 +1036,7 @@
             this.formpanel1.PerformLayout();
             this.formpanel2.ResumeLayout(false);
             this.formpanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1123,5 +1135,6 @@
         private System.Windows.Forms.Button btnClose;
         public System.Windows.Forms.Label lblReaderStatus;
         public System.Windows.Forms.Label lblVideoStatus;
+        public System.Windows.Forms.PictureBox picRealTImePreview;
     }
 }

@@ -85,6 +85,9 @@
             this.label16 = new System.Windows.Forms.Label();
             this.textBox24 = new System.Windows.Forms.TextBox();
             this.formpanel2 = new System.Windows.Forms.Panel();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.textBox19 = new System.Windows.Forms.TextBox();
@@ -114,9 +117,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.formpanel1.SuspendLayout();
             this.formpanel2.SuspendLayout();
             this.SuspendLayout();
@@ -667,6 +668,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formpanel2.AutoSize = true;
             this.formpanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formpanel2.Controls.Add(this.btnClose);
             this.formpanel2.Controls.Add(this.textBox33);
             this.formpanel2.Controls.Add(this.textBox18);
             this.formpanel2.Controls.Add(this.label31);
@@ -723,6 +725,31 @@
             this.formpanel2.Name = "formpanel2";
             this.formpanel2.Size = new System.Drawing.Size(945, 338);
             this.formpanel2.TabIndex = 5;
+            // 
+            // textBox33
+            // 
+            this.textBox33.Location = new System.Drawing.Point(456, 300);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.ReadOnly = true;
+            this.textBox33.Size = new System.Drawing.Size(100, 21);
+            this.textBox33.TabIndex = 60;
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(159, 13);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.ReadOnly = true;
+            this.textBox18.Size = new System.Drawing.Size(100, 21);
+            this.textBox18.TabIndex = 59;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(18, 18);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(53, 12);
+            this.label31.TabIndex = 58;
+            this.label31.Text = "流水号：";
             // 
             // textBox21
             // 
@@ -985,30 +1012,15 @@
             this.label11.TabIndex = 8;
             this.label11.Text = "工具信息";
             // 
-            // label31
+            // btnClose
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(18, 18);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(53, 12);
-            this.label31.TabIndex = 58;
-            this.label31.Text = "流水号：";
-            // 
-            // textBox18
-            // 
-            this.textBox18.Location = new System.Drawing.Point(159, 13);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.ReadOnly = true;
-            this.textBox18.Size = new System.Drawing.Size(100, 21);
-            this.textBox18.TabIndex = 59;
-            // 
-            // textBox33
-            // 
-            this.textBox33.Location = new System.Drawing.Point(456, 300);
-            this.textBox33.Name = "textBox33";
-            this.textBox33.ReadOnly = true;
-            this.textBox33.Size = new System.Drawing.Size(100, 21);
-            this.textBox33.TabIndex = 60;
+            this.btnClose.Location = new System.Drawing.Point(768, 286);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(100, 32);
+            this.btnClose.TabIndex = 61;
+            this.btnClose.Text = "关闭";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // DataShowForm
             // 
@@ -1122,5 +1134,6 @@
         public System.Windows.Forms.TextBox textBox19;
         public System.Windows.Forms.TextBox textBox18;
         public System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.Button btnClose;
     }
 }

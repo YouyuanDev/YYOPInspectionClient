@@ -29,11 +29,6 @@
         private void InitializeComponent()
         {
             this.RealPlayWnd = new System.Windows.Forms.PictureBox();
-            this.listViewIPChannel = new System.Windows.Forms.ListView();
-            this.ColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ColumnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBoxView = new System.Windows.Forms.ComboBox();
             this.TextBoxInfo = new System.Windows.Forms.TextBox();
             this.checkBoxHiDDNS = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,7 +37,6 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.btnBMP = new System.Windows.Forms.Button();
             this.textBoxPort = new System.Windows.Forms.TextBox();
@@ -55,7 +49,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btnRecord = new System.Windows.Forms.Button();
-            this.btnPreview = new System.Windows.Forms.Button();
             this.btnJPEG = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxUserName = new System.Windows.Forms.TextBox();
@@ -63,71 +56,34 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnHide = new System.Windows.Forms.Button();
+            this.btnPreview = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.comboBoxView = new System.Windows.Forms.ComboBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.listViewIPChannel = new System.Windows.Forms.ListView();
+            this.ColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ColumnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.RealPlayWnd)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // RealPlayWnd
             // 
             this.RealPlayWnd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.RealPlayWnd.Location = new System.Drawing.Point(224, 132);
+            this.RealPlayWnd.Location = new System.Drawing.Point(223, 132);
             this.RealPlayWnd.Name = "RealPlayWnd";
             this.RealPlayWnd.Size = new System.Drawing.Size(428, 341);
             this.RealPlayWnd.TabIndex = 62;
             this.RealPlayWnd.TabStop = false;
             // 
-            // listViewIPChannel
-            // 
-            this.listViewIPChannel.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ColumnHeader1,
-            this.ColumnHeader2});
-            this.listViewIPChannel.FullRowSelect = true;
-            this.listViewIPChannel.GridLines = true;
-            this.listViewIPChannel.Location = new System.Drawing.Point(31, 135);
-            this.listViewIPChannel.MultiSelect = false;
-            this.listViewIPChannel.Name = "listViewIPChannel";
-            this.listViewIPChannel.Size = new System.Drawing.Size(174, 91);
-            this.listViewIPChannel.TabIndex = 63;
-            this.listViewIPChannel.UseCompatibleStateImageBehavior = false;
-            this.listViewIPChannel.View = System.Windows.Forms.View.Details;
-            this.listViewIPChannel.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewIPChannel_ItemSelectionChanged);
-            this.listViewIPChannel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewIPChannel_MouseClick);
-            // 
-            // ColumnHeader1
-            // 
-            this.ColumnHeader1.Text = "通道 Channel";
-            this.ColumnHeader1.Width = 90;
-            // 
-            // ColumnHeader2
-            // 
-            this.ColumnHeader2.Text = "状态 Status";
-            this.ColumnHeader2.Width = 90;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(111, 242);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(77, 12);
-            this.label13.TabIndex = 75;
-            this.label13.Text = "刷新通道列表";
-            this.label13.Visible = false;
-            // 
-            // comboBoxView
-            // 
-            this.comboBoxView.FormattingEnabled = true;
-            this.comboBoxView.Items.AddRange(new object[] {
-            "Direct:直接预览 ",
-            "Callback:回调解码 "});
-            this.comboBoxView.Location = new System.Drawing.Point(31, 279);
-            this.comboBoxView.Name = "comboBoxView";
-            this.comboBoxView.Size = new System.Drawing.Size(139, 20);
-            this.comboBoxView.TabIndex = 76;
-            // 
             // TextBoxInfo
             // 
-            this.TextBoxInfo.Location = new System.Drawing.Point(31, 500);
+            this.TextBoxInfo.Location = new System.Drawing.Point(5, 17);
             this.TextBoxInfo.Multiline = true;
             this.TextBoxInfo.Name = "TextBoxInfo";
             this.TextBoxInfo.Size = new System.Drawing.Size(621, 148);
@@ -198,16 +154,6 @@
             this.label14.TabIndex = 67;
             this.label14.Text = "BMP抓图";
             this.label14.Visible = false;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(31, 237);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(74, 36);
-            this.btnRefresh.TabIndex = 73;
-            this.btnRefresh.Text = "刷新通道";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // label11
             // 
@@ -326,16 +272,6 @@
             this.btnRecord.Visible = false;
             this.btnRecord.Click += new System.EventHandler(this.btnRecord_Click);
             // 
-            // btnPreview
-            // 
-            this.btnPreview.Location = new System.Drawing.Point(31, 325);
-            this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(139, 125);
-            this.btnPreview.TabIndex = 64;
-            this.btnPreview.Text = "启动录像机";
-            this.btnPreview.UseVisualStyleBackColor = true;
-            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
-            // 
             // btnJPEG
             // 
             this.btnJPEG.Location = new System.Drawing.Point(0, 72);
@@ -407,7 +343,7 @@
             // 
             // btnHide
             // 
-            this.btnHide.Location = new System.Drawing.Point(662, 597);
+            this.btnHide.Location = new System.Drawing.Point(645, 30);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(126, 47);
             this.btnHide.TabIndex = 77;
@@ -415,20 +351,107 @@
             this.btnHide.UseVisualStyleBackColor = true;
             this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
+            // btnPreview
+            // 
+            this.btnPreview.Location = new System.Drawing.Point(6, 210);
+            this.btnPreview.Name = "btnPreview";
+            this.btnPreview.Size = new System.Drawing.Size(139, 125);
+            this.btnPreview.TabIndex = 64;
+            this.btnPreview.Text = "启动录像机";
+            this.btnPreview.UseVisualStyleBackColor = true;
+            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click_1);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(86, 127);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(77, 12);
+            this.label13.TabIndex = 75;
+            this.label13.Text = "刷新通道列表";
+            this.label13.Visible = false;
+            // 
+            // comboBoxView
+            // 
+            this.comboBoxView.FormattingEnabled = true;
+            this.comboBoxView.Items.AddRange(new object[] {
+            "Direct:直接预览 ",
+            "Callback:回调解码 "});
+            this.comboBoxView.Location = new System.Drawing.Point(6, 164);
+            this.comboBoxView.Name = "comboBoxView";
+            this.comboBoxView.Size = new System.Drawing.Size(139, 20);
+            this.comboBoxView.TabIndex = 76;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(6, 122);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(74, 36);
+            this.btnRefresh.TabIndex = 73;
+            this.btnRefresh.Text = "刷新通道";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // listViewIPChannel
+            // 
+            this.listViewIPChannel.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ColumnHeader1,
+            this.ColumnHeader2});
+            this.listViewIPChannel.FullRowSelect = true;
+            this.listViewIPChannel.GridLines = true;
+            this.listViewIPChannel.Location = new System.Drawing.Point(6, 20);
+            this.listViewIPChannel.MultiSelect = false;
+            this.listViewIPChannel.Name = "listViewIPChannel";
+            this.listViewIPChannel.Size = new System.Drawing.Size(174, 91);
+            this.listViewIPChannel.TabIndex = 63;
+            this.listViewIPChannel.UseCompatibleStateImageBehavior = false;
+            this.listViewIPChannel.View = System.Windows.Forms.View.Details;
+            this.listViewIPChannel.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewIPChannel_ItemSelectionChanged);
+            this.listViewIPChannel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewIPChannel_MouseClick);
+            // 
+            // ColumnHeader1
+            // 
+            this.ColumnHeader1.Text = "通道 Channel";
+            this.ColumnHeader1.Width = 90;
+            // 
+            // ColumnHeader2
+            // 
+            this.ColumnHeader2.Text = "状态 Status";
+            this.ColumnHeader2.Width = 90;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnPreview);
+            this.groupBox1.Controls.Add(this.listViewIPChannel);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.btnRefresh);
+            this.groupBox1.Controls.Add(this.comboBoxView);
+            this.groupBox1.Location = new System.Drawing.Point(31, 132);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(191, 341);
+            this.groupBox1.TabIndex = 78;
+            this.groupBox1.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.TextBoxInfo);
+            this.groupBox4.Controls.Add(this.btnHide);
+            this.groupBox4.Location = new System.Drawing.Point(37, 479);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(787, 165);
+            this.groupBox4.TabIndex = 79;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "groupBox4";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(840, 656);
             this.ControlBox = false;
-            this.Controls.Add(this.btnHide);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.RealPlayWnd);
-            this.Controls.Add(this.listViewIPChannel);
-            this.Controls.Add(this.btnPreview);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.comboBoxView);
-            this.Controls.Add(this.TextBoxInfo);
-            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Name = "MainWindow";
@@ -438,19 +461,15 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox RealPlayWnd;
-        private System.Windows.Forms.ListView listViewIPChannel;
-        private System.Windows.Forms.ColumnHeader ColumnHeader1;
-        private System.Windows.Forms.ColumnHeader ColumnHeader2;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox comboBoxView;
         private System.Windows.Forms.TextBox TextBoxInfo;
         private System.Windows.Forms.CheckBox checkBoxHiDDNS;
         private System.Windows.Forms.Label label1;
@@ -459,7 +478,6 @@
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btnBMP;
         private System.Windows.Forms.TextBox textBoxPort;
@@ -468,17 +486,26 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnRecord;
         private System.Windows.Forms.TextBox textBoxUserName;
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnJPEG;
         private System.Windows.Forms.Button btnHide;
+        private System.Windows.Forms.Button btnPreview;
+        private System.Windows.Forms.Label label13;
+        public System.Windows.Forms.ComboBox comboBoxView;
+        private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.ListView listViewIPChannel;
+        private System.Windows.Forms.ColumnHeader ColumnHeader1;
+        private System.Windows.Forms.ColumnHeader ColumnHeader2;
+        public System.Windows.Forms.GroupBox groupBox3;
+        public System.Windows.Forms.GroupBox groupBox1;
+        public System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.GroupBox groupBox4;
+        public System.Windows.Forms.PictureBox RealPlayWnd;
     }
 }

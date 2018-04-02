@@ -34,6 +34,24 @@ namespace YYOPInspectionClient
         private float thread_throug_hole_size;
         private String video_no;
         private String tool_measuring_record_no;
+
+        private String thread_pitch_gauge_no;
+        private String thread_pitch_calibration_framwork;
+        private String sealing_surface_gauge_no;
+        private String sealing_surface_calibration_ring_no;
+        private String depth_caliper_no;
+        private String threading_distance_gauge_no;
+        private String thread_distance_calibration_sample_no;
+        private String taper_gauge_no;
+        private String tooth_height_gauge_no;
+        private String tooth_height_calibration_sample_no;
+        private String tooth_width_stop_gauge_no;
+        private String thread_min_length_sample_no;
+        private String coupling_length_sample_no;
+        private String caliper_no;
+        private String caliper_tolerance;
+        private String collar_gauge_no;
+
         private String inspection_result;
 
         public int Id
@@ -399,6 +417,214 @@ namespace YYOPInspectionClient
             set
             {
                 inspection_result = value;
+            }
+        }
+
+        public string Thread_pitch_gauge_no
+        {
+            get
+            {
+                return thread_pitch_gauge_no;
+            }
+
+            set
+            {
+                thread_pitch_gauge_no = value;
+            }
+        }
+
+        public string Thread_pitch_calibration_framwork
+        {
+            get
+            {
+                return thread_pitch_calibration_framwork;
+            }
+
+            set
+            {
+                thread_pitch_calibration_framwork = value;
+            }
+        }
+
+        public string Sealing_surface_gauge_no
+        {
+            get
+            {
+                return sealing_surface_gauge_no;
+            }
+
+            set
+            {
+                sealing_surface_gauge_no = value;
+            }
+        }
+
+        public string Sealing_surface_calibration_ring_no
+        {
+            get
+            {
+                return sealing_surface_calibration_ring_no;
+            }
+
+            set
+            {
+                sealing_surface_calibration_ring_no = value;
+            }
+        }
+
+        public string Depth_caliper_no
+        {
+            get
+            {
+                return depth_caliper_no;
+            }
+
+            set
+            {
+                depth_caliper_no = value;
+            }
+        }
+
+        public string Threading_distance_gauge_no
+        {
+            get
+            {
+                return threading_distance_gauge_no;
+            }
+
+            set
+            {
+                threading_distance_gauge_no = value;
+            }
+        }
+
+        public string Thread_distance_calibration_sample_no
+        {
+            get
+            {
+                return thread_distance_calibration_sample_no;
+            }
+
+            set
+            {
+                thread_distance_calibration_sample_no = value;
+            }
+        }
+
+        public string Taper_gauge_no
+        {
+            get
+            {
+                return taper_gauge_no;
+            }
+
+            set
+            {
+                taper_gauge_no = value;
+            }
+        }
+
+        public string Tooth_height_gauge_no
+        {
+            get
+            {
+                return tooth_height_gauge_no;
+            }
+
+            set
+            {
+                tooth_height_gauge_no = value;
+            }
+        }
+
+        public string Tooth_height_calibration_sample_no
+        {
+            get
+            {
+                return tooth_height_calibration_sample_no;
+            }
+
+            set
+            {
+                tooth_height_calibration_sample_no = value;
+            }
+        }
+
+        public string Tooth_width_stop_gauge_no
+        {
+            get
+            {
+                return tooth_width_stop_gauge_no;
+            }
+
+            set
+            {
+                tooth_width_stop_gauge_no = value;
+            }
+        }
+
+        public string Thread_min_length_sample_no
+        {
+            get
+            {
+                return thread_min_length_sample_no;
+            }
+
+            set
+            {
+                thread_min_length_sample_no = value;
+            }
+        }
+
+        public string Coupling_length_sample_no
+        {
+            get
+            {
+                return coupling_length_sample_no;
+            }
+
+            set
+            {
+                coupling_length_sample_no = value;
+            }
+        }
+
+        public string Caliper_no
+        {
+            get
+            {
+                return caliper_no;
+            }
+
+            set
+            {
+                caliper_no = value;
+            }
+        }
+
+        public string Caliper_tolerance
+        {
+            get
+            {
+                return caliper_tolerance;
+            }
+
+            set
+            {
+                caliper_tolerance = value;
+            }
+        }
+
+        public string Collar_gauge_no
+        {
+            get
+            {
+                return collar_gauge_no;
+            }
+
+            set
+            {
+                collar_gauge_no = value;
             }
         }
     }

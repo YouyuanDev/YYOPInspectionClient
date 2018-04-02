@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NVRCsharpDemo;
+
 namespace YYOPInspectionClient
 {
     public partial class ThreadingProcessForm : Form
@@ -40,7 +42,7 @@ namespace YYOPInspectionClient
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
             timestamp = getMesuringRecord();
-           // codeReader= new CodeReader(this);
+            this.lblVideoStatus.Text = "录像未启动...";
             myForm = this;
          }
 
@@ -132,6 +134,7 @@ namespace YYOPInspectionClient
                 switch (result) {
                     case 0:
                         this.lblVideoStatus.Text = "录像中...";
+                        RealTimePreview();
                         this.button2.Text = "结束录像";
                         break;
                     case 1:
@@ -153,6 +156,7 @@ namespace YYOPInspectionClient
             }
             else if (this.button2.Text == "结束录像") {
                 MainWindow.stopRecordVideo();
+                RestoreSetting();
                 this.button2.Text = "开始录像";
                 this.lblVideoStatus.Text = "录像完成...";
             }
@@ -244,8 +248,11 @@ namespace YYOPInspectionClient
                 case "不合格":
                     result = 1;
                     break;
-                case "":
+                case "待定":
                     result = 2;
+                    break;
+                case "合格":
+                    result = 0;
                     break;
             }
             return result;
@@ -303,7 +310,6 @@ namespace YYOPInspectionClient
             ASCIIEncoding encoding = new ASCIIEncoding();
             string content = "";
             string json = "";
-            MessageBox.Show(couping_no);
             try
             {
                 //拼接json格式字符串
@@ -351,16 +357,18 @@ namespace YYOPInspectionClient
                 sb.Append("\"arg39\"" + ":" + "\"" + thread_tooth_angle + "\",");
                 sb.Append("\"arg40\"" + ":" + "\"" + thread_throug_hole_size + "\",");
                 sb.Append("\"arg41\"" + ":" + "\"" + video_no + "\",");
-                sb.Append("\"arg42 \"" + ":" + "\"" + inspection_result + "\"");
+                sb.Append("\"arg42\"" + ":" + "\"" + inspection_result + "\"");
                 sb.Append("}");
                 json= sb.ToString();
                 JObject o = JObject.Parse(json);
                 String param = o.ToString();
+                 
                 byte[] data = encoding.GetBytes(param);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/ThreadingOperation/saveThreadingProcessByWinform.action");
                 request.KeepAlive = false;
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
+               
                 request.ContentLength = data.Length;
                 Stream sm = request.GetRequestStream();
                 sm.Write(data, 0, data.Length);
@@ -525,6 +533,48 @@ namespace YYOPInspectionClient
                 this.Close();
             }
 
+        }
+        public void RealTimePreview() {
+            MainWindow mainWindow=MainWindow.mainWindowForm;
+            MessageBox.Show((mainWindow==null).ToString());
+            if (mainWindow != null) {
+                mainWindow.groupBox1.Hide(); mainWindow.groupBox2.Hide();
+                mainWindow.groupBox3.Hide(); mainWindow.groupBox4.Hide();
+                int width = mainWindow.Width;
+                int height = mainWindow.Height;
+                mainWindow.RealPlayWnd.Left= 0;
+                mainWindow.RealPlayWnd.Top= 0;
+                mainWindow.RealPlayWnd.Width = width;
+                mainWindow.RealPlayWnd.Height = height;
+                mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
+                mainWindow.Width = 150;
+                mainWindow.Height = 150;
+                int x = Screen.PrimaryScreen.WorkingArea.Width-mainWindow.RealPlayWnd.Width+20;
+                int y = Screen.PrimaryScreen.WorkingArea.Height/2 - mainWindow.RealPlayWnd.Height;
+                mainWindow.Location = new Point(x,y);
+                mainWindow.Show();
+                mainWindow.TopMost = true;
+            }
+        }
+        public void RestoreSetting() {
+            MainWindow mainWindow = MainWindow.mainWindowForm;
+            if (mainWindow != null) {
+                mainWindow.Left = MainWindow.mainWindowX;
+                mainWindow.Top = MainWindow.mainWindowY;
+                mainWindow.Width = MainWindow.mainWindowWidth;
+                mainWindow.Height = MainWindow.mainWindowHeight;
+                mainWindow.RealPlayWnd.Left = MainWindow.realTimeX;
+                mainWindow.RealPlayWnd.Top = MainWindow.realTimeY;
+                mainWindow.RealPlayWnd.Width = MainWindow.realTimeWidth;
+                mainWindow.RealPlayWnd.Height = MainWindow.realTimeHeigh;
+                mainWindow.RealPlayWnd.Dock = DockStyle.None;
+                mainWindow.groupBox1.Show();
+                mainWindow.groupBox2.Show();
+                mainWindow.groupBox3.Show();
+                mainWindow.groupBox4.Show();
+                mainWindow.TopMost = false;
+                mainWindow.Hide();
+            }
         }
     }
 }

@@ -27,6 +27,9 @@ namespace YYOPInspectionClient
             this.Font = new Font("宋体", 12, FontStyle.Bold);
             AutoSize autoSize= new AutoSize();
             autoSize.controllInitializeSize(this);
+            this.dtpEndTime.Value = DateTime.Now;
+            //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
+            //string end_time = HttpUtility.UrlEncode(DateTime.Now.ToString("yyyy-MM-dd"),Encoding.UTF8);
             getThreadingProcessData();
             try {
                 thread = new Thread(UploadVideo);
@@ -102,10 +105,10 @@ namespace YYOPInspectionClient
             {
                 string couping_no = HttpUtility.UrlEncode(this.textBox1.Text.Trim(), Encoding.UTF8);
                 string operator_no = HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
+                string pageCurrent = HttpUtility.UrlEncode("", Encoding.UTF8);
+                string pageSize = HttpUtility.UrlEncode("", Encoding.UTF8);
                 string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
                 string end_time = HttpUtility.UrlEncode(this.dtpEndTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
-                string pageCurrent = HttpUtility.UrlEncode("", Encoding.UTF8);
-               string pageSize = HttpUtility.UrlEncode("", Encoding.UTF8);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
                 sb.Append("\"couping_no\"" + ":" + "\"" + couping_no + "\",");
@@ -125,27 +128,28 @@ namespace YYOPInspectionClient
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
                 request.ContentLength = data.Length;
-                Stream sm = request.GetRequestStream();
-                sm.Write(data, 0, data.Length);
-                sm.Close();
+                using (Stream sm = request.GetRequestStream()) {
+                    sm.Write(data, 0, data.Length);
+                }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[256];
-                int count = streamRead.Read(readBuff, 0, 256);
+                Char[] readBuff = new Char[1024];
+                int count = streamRead.Read(readBuff, 0, 1024);
                 while (count > 0)
                 {
                     String outputData = new String(readBuff, 0, count);
                     content += outputData;
-                    count = streamRead.Read(readBuff, 0, 256);
+                    count = streamRead.Read(readBuff, 0, 1024);
                 }
                 response.Close();
                 string jsons = content;
-                JObject jobject = JObject.Parse(jsons);
-                string rowsJson = jobject["rowsData"].ToString();
-               // MessageBox.Show(rowsJson);
-                List<ThreadingProcess> list = JsonConvert.DeserializeObject<List<ThreadingProcess>>(rowsJson);
-                this.dataGridView1.DataSource =list;
+                if (jsons != null) {
+                    JObject jobject = JObject.Parse(jsons);
+                    string rowsJson = jobject["rowsData"].ToString();
+                    List<ThreadingProcess> list = JsonConvert.DeserializeObject<List<ThreadingProcess>>(rowsJson);
+                    this.dataGridView1.DataSource = list;
+                }
             }
             catch (Exception e) {
                 MessageBox.Show("服务器尚未开启......");
@@ -242,57 +246,193 @@ namespace YYOPInspectionClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataShowForm form = new DataShowForm();
-            form.Show();
-            //string[] str = new string[dataGridView1.Rows.Count];
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            try
             {
-                if (dataGridView1.Rows[i].Selected == true)
+                DataShowForm form = new DataShowForm();
+                form.Show();
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
+                    if (dataGridView1.Rows[i].Selected == true)
+                    {
+                        if (dataGridView1.Rows[i].Cells["thread_pitch_gauge_no"].Value != null) {
+                            form.textBox1.Text = dataGridView1.Rows[i].Cells["thread_pitch_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_pitch_calibration_framwork"].Value != null) {
+                            form.textBox2.Text =dataGridView1.Rows[i].Cells["thread_pitch_calibration_framwork"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["sealing_surface_gauge_no"].Value != null) {
+                            form.textBox3.Text = dataGridView1.Rows[i].Cells["sealing_surface_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["sealing_surface_calibration_ring_no"].Value != null)
+                        {
+                            form.textBox4.Text = dataGridView1.Rows[i].Cells["sealing_surface_calibration_ring_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["depth_caliper_no"].Value != null)
+                        {
+                            form.textBox5.Text = dataGridView1.Rows[i].Cells["depth_caliper_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["threading_distance_gauge_no"].Value != null)
+                        {
+                            form.textBox6.Text = dataGridView1.Rows[i].Cells["threading_distance_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_distance_calibration_sample_no"].Value != null)
+                        {
+                            form.textBox7.Text = dataGridView1.Rows[i].Cells["thread_distance_calibration_sample_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["taper_gauge_no"].Value != null)
+                        {
+                            form.textBox8.Text = dataGridView1.Rows[i].Cells["taper_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["tooth_height_gauge_no"].Value != null)
+                        {
+                            form.textBox9.Text = dataGridView1.Rows[i].Cells["tooth_height_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["tooth_height_calibration_sample_no"].Value != null)
+                        {
+                            form.textBox10.Text = dataGridView1.Rows[i].Cells["tooth_height_calibration_sample_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["tooth_width_stop_gauge_no"].Value != null)
+                        {
+                            form.textBox11.Text = dataGridView1.Rows[i].Cells["tooth_width_stop_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_min_length_sample_no"].Value != null) {
+                            form.textBox12.Text = dataGridView1.Rows[i].Cells["thread_min_length_sample_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["coupling_length_sample_no"].Value != null)
+                        {
+                            form.textBox13.Text = dataGridView1.Rows[i].Cells["coupling_length_sample_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["caliper_no"].Value != null)
+                        {
+                            form.textBox14.Text = dataGridView1.Rows[i].Cells["caliper_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["caliper_tolerance"].Value != null)
+                        {
+                            form.textBox15.Text = dataGridView1.Rows[i].Cells["caliper_tolerance"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["collar_gauge_no"].Value != null)
+                        {
+                            form.textBox16.Text = dataGridView1.Rows[i].Cells["collar_gauge_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["couping_no"].Value != null)
+                        {
+                            form.textBox17.Text = dataGridView1.Rows[i].Cells["couping_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["id"].Value != null)
+                        {
+                            form.textBox18.Text = dataGridView1.Rows[i].Cells["id"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["operator_no"].Value != null)
+                        {
+                            form.textBox19.Text = dataGridView1.Rows[i].Cells["operator_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["process_no"].Value != null)
+                        {
+                            form.textBox20.Text = dataGridView1.Rows[i].Cells["process_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["visual_inspection"].Value != null) {
+                            form.textBox21.Text = dataGridView1.Rows[i].Cells["visual_inspection"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_max"].Value != null)
+                        {
+                            form.textBox22.Text = dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_max"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_avg"].Value != null)
+                        {
+                            form.textBox23.Text = dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_avg"].Value.ToString();
 
-                    form.textBox1.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox2.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox3.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox4.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox5.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox6.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox7.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox8.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox9.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox10.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox11.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox12.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox13.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox14.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox15.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox16.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox17.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox18.Text = dataGridView1.Rows[i].Cells[0].Value.ToString();
-                    form.textBox19.Text = dataGridView1.Rows[i].Cells[3].Value.ToString();
-                    form.textBox20.Text = dataGridView1.Rows[i].Cells[2].Value.ToString();
-                    form.textBox21.Text = dataGridView1.Rows[i].Cells[4].Value.ToString();
-                    form.textBox22.Text = dataGridView1.Rows[i].Cells[5].Value.ToString();
-                    form.textBox23.Text = dataGridView1.Rows[i].Cells[6].Value.ToString();
-                    form.textBox24.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox25.Text = dataGridView1.Rows[i].Cells[8].Value.ToString();
-                    form.textBox26.Text = dataGridView1.Rows[i].Cells[9].Value.ToString();
-                    form.textBox27.Text = dataGridView1.Rows[i].Cells[7].Value.ToString();
-                    form.textBox28.Text = dataGridView1.Rows[i].Cells[10].Value.ToString();
-                    form.textBox29.Text = dataGridView1.Rows[i].Cells[11].Value.ToString();
-                    form.textBox30.Text = dataGridView1.Rows[i].Cells[12].Value.ToString();
-                    form.textBox31.Text = dataGridView1.Rows[i].Cells[13].Value.ToString();
-                    form.textBox32.Text = dataGridView1.Rows[i].Cells[14].Value.ToString();
-                    form.textBox33.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-                    form.textBox34.Text = dataGridView1.Rows[i].Cells[15].Value.ToString();
-                    form.textBox35.Text = dataGridView1.Rows[i].Cells[16].Value.ToString();
-                    form.textBox36.Text = dataGridView1.Rows[i].Cells[17].Value.ToString();
-                    form.textBox37.Text = dataGridView1.Rows[i].Cells[18].Value.ToString();
-                    form.textBox38.Text = dataGridView1.Rows[i].Cells[19].Value.ToString();
-                    form.textBox39.Text = dataGridView1.Rows[i].Cells[20].Value.ToString();
-                    form.textBox40.Text = dataGridView1.Rows[i].Cells[21].Value.ToString();
-                    form.textBox41.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_min"].Value != null)
+                        {
+                            form.textBox24.Text = dataGridView1.Rows[i].Cells["thread_tooth_pitch_diameter_min"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_max"].Value != null)
+                        {
+                            form.textBox25.Text = dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_max"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_avg"].Value != null)
+                        {
+                            form.textBox26.Text = dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_avg"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_min"].Value != null)
+                        {
+                            form.textBox27.Text = dataGridView1.Rows[i].Cells["thread_sealing_surface_diameter_min"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_sealing_surface_ovality"].Value != null)
+                        {
+                            form.textBox28.Text = dataGridView1.Rows[i].Cells["thread_sealing_surface_ovality"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_width"].Value != null)
+                        {
+                            form.textBox29.Text = dataGridView1.Rows[i].Cells["thread_width"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_pitch"].Value != null) {
+                            form.textBox30.Text = dataGridView1.Rows[i].Cells["thread_pitch"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_taper"].Value != null)
+                        {
+                            form.textBox31.Text = dataGridView1.Rows[i].Cells["thread_taper"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_height"].Value != null)
+                        {
+                            form.textBox32.Text = dataGridView1.Rows[i].Cells["thread_height"].Value.ToString();
+                        }
+
+                        if (dataGridView1.Rows[i].Cells["inspection_result"].Value != null)
+                        {
+                            string res= dataGridView1.Rows[i].Cells["inspection_result"].Value.ToString();
+                            int result = Convert.ToInt32(res);
+                            if (result == 0) {
+                                form.textBox33.Text = "合格";
+                            }
+                            else if (result == 1) {
+                                form.textBox33.Text = "不合格";
+                            }
+                            else {
+                                form.textBox33.Text = "待定";
+                            }
+                        }
+                        else
+                        {
+                            form.textBox33.Text = "";
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_length_min"].Value != null) {
+                            form.textBox34.Text = dataGridView1.Rows[i].Cells["thread_length_min"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_bearing_surface_width"].Value != null)
+                        {
+                            form.textBox35.Text = dataGridView1.Rows[i].Cells["thread_bearing_surface_width"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["couping_inner_end_depth"].Value != null)
+                        {
+                            form.textBox36.Text = dataGridView1.Rows[i].Cells["couping_inner_end_depth"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_hole_inner_diameter"].Value != null)
+                        {
+                            form.textBox37.Text = dataGridView1.Rows[i].Cells["thread_hole_inner_diameter"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["couping_od"].Value != null)
+                        {
+                            form.textBox38.Text = dataGridView1.Rows[i].Cells["couping_od"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["couping_length"].Value != null) {
+                            form.textBox39.Text = dataGridView1.Rows[i].Cells["couping_length"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_tooth_angle"].Value != null)
+                        {
+                            form.textBox40.Text = dataGridView1.Rows[i].Cells["thread_tooth_angle"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_throug_hole_size"].Value != null)
+                        {
+                            form.textBox41.Text = dataGridView1.Rows[i].Cells["thread_throug_hole_size"].Value.ToString();
+                        }
+                    }
                 }
             }
+            catch (Exception ex) {
+                throw ex;
+            }
+           
         }
     }
 }
