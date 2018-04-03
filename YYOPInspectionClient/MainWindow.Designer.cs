@@ -163,6 +163,7 @@
             this.label11.Size = new System.Drawing.Size(29, 12);
             this.label11.TabIndex = 65;
             this.label11.Text = "预览";
+            this.label11.Visible = false;
             // 
             // btnBMP
             // 
@@ -229,6 +230,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btnRecord);
@@ -242,6 +244,7 @@
             this.groupBox2.Size = new System.Drawing.Size(174, 171);
             this.groupBox2.TabIndex = 68;
             this.groupBox2.TabStop = false;
+            this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupBox2_Paint);
             // 
             // label12
             // 
@@ -441,7 +444,6 @@
             this.groupBox4.Size = new System.Drawing.Size(787, 165);
             this.groupBox4.TabIndex = 79;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "groupBox4";
             // 
             // MainWindow
             // 
@@ -455,7 +457,8 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.ShowInTaskbar = false;
+            this.Text = "录像设置";
             ((System.ComponentModel.ISupportInitialize)(this.RealPlayWnd)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

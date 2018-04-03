@@ -22,7 +22,7 @@ namespace YYOPInspectionClient
                 string line = ""; ;
                 while ((line=reader.ReadLine())!= null)
                 {
-                    Console.WriteLine("输出的值"+line.ToString());
+                    //Console.WriteLine("输出的值"+line.ToString());
                     //如果这一行里面有abe这三个字符，就不加入到text中，如果没有就加入
                     if (line.ToString().Trim()!= dirName)
                     {
@@ -31,7 +31,7 @@ namespace YYOPInspectionClient
                     line = reader.ReadLine();
                 }
             }
-            Console.WriteLine("最终文本"+text);
+            //Console.WriteLine("最终文本"+text);
             //定义一个写入流，将值写入到里面去 
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Write)) {
                 fs.Seek(0,SeekOrigin.Begin);

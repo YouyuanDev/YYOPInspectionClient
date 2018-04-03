@@ -160,60 +160,6 @@ namespace YYOPInspectionClient
                 this.button2.Text = "开始录像";
                 this.lblVideoStatus.Text = "录像完成...";
             }
-            //
-
-            //if (mainWindow != null)
-            //{
-            //    if (this.button2.Text == "开始录像")
-            //    {
-            //        this.label1.Text = "准备中......";
-            //        if (mainWindow.recordLogin() == 0)
-            //        {
-            //            this.label1.Text = "连接中......";
-            //            if (mainWindow.recordPreview() == 0)
-            //            {
-            //                this.label1.Text = "连接成功......";
-            //                if (timestamp == null || timestamp.Length <= 0)
-            //                {
-            //                    timestamp = getMesuringRecord();
-            //                }
-            //                if (!mainWindow.RecordVideo(timestamp))
-            //                {
-            //                    this.label1.Text = "录像失败......";
-            //                    MessageBox.Show("录像失败!");
-            //                }
-            //                else
-            //                {
-            //                    this.label1.Text = "录像中......";
-            //                    this.button2.Text = "结束录像";
-            //                }
-            //            }
-            //            else
-            //            {
-            //                this.label1.Text = "录像机启动失败......";
-            //                MessageBox.Show("录像机启动失败!");
-            //            }
-            //        }
-            //        else
-            //        {
-            //            this.label1.Text = "连接录像机失败,请检查网络......";
-            //            MessageBox.Show("连接录像机失败,请检查网络!");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        this.label1.Text = "关闭中......";
-            //        mainWindow.stopRecordVideo();
-            //        mainWindow.stopRecordPreview();
-            //        mainWindow.recordLoginOut();
-            //        this.button2.Text = "开始录像";
-            //        this.label1.Text = "";
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("请重新新建表单!");
-            //}
         }  
         #endregion
 
@@ -530,13 +476,13 @@ namespace YYOPInspectionClient
                 MessageBox.Show("录像机或读码器尚未关闭！");
             }
             else {
+                RestoreSetting();
                 this.Close();
             }
 
         }
         public void RealTimePreview() {
             MainWindow mainWindow=MainWindow.mainWindowForm;
-            MessageBox.Show((mainWindow==null).ToString());
             if (mainWindow != null) {
                 mainWindow.groupBox1.Hide(); mainWindow.groupBox2.Hide();
                 mainWindow.groupBox3.Hide(); mainWindow.groupBox4.Hide();
@@ -549,9 +495,10 @@ namespace YYOPInspectionClient
                 mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
                 mainWindow.Width = 150;
                 mainWindow.Height = 150;
-                int x = Screen.PrimaryScreen.WorkingArea.Width-mainWindow.RealPlayWnd.Width+20;
+                int x = Screen.PrimaryScreen.WorkingArea.Width-mainWindow.RealPlayWnd.Width-10;
                 int y = Screen.PrimaryScreen.WorkingArea.Height/2 - mainWindow.RealPlayWnd.Height;
                 mainWindow.Location = new Point(x,y);
+                mainWindow.FormBorderStyle = FormBorderStyle.None;
                 mainWindow.Show();
                 mainWindow.TopMost = true;
             }
@@ -573,6 +520,7 @@ namespace YYOPInspectionClient
                 mainWindow.groupBox3.Show();
                 mainWindow.groupBox4.Show();
                 mainWindow.TopMost = false;
+                mainWindow.FormBorderStyle=FormBorderStyle.Sizable;
                 mainWindow.Hide();
             }
         }

@@ -62,6 +62,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.formpanel2 = new System.Windows.Forms.Panel();
+            this.picRealTImePreview = new System.Windows.Forms.PictureBox();
             this.lblVideoStatus = new System.Windows.Forms.Label();
             this.lblReaderStatus = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
@@ -119,7 +120,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
-            this.picRealTImePreview = new System.Windows.Forms.PictureBox();
             this.formpanel1.SuspendLayout();
             this.formpanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).BeginInit();
@@ -506,6 +506,14 @@
             this.formpanel2.Name = "formpanel2";
             this.formpanel2.Size = new System.Drawing.Size(972, 401);
             this.formpanel2.TabIndex = 1;
+            // 
+            // picRealTImePreview
+            // 
+            this.picRealTImePreview.Location = new System.Drawing.Point(874, 5);
+            this.picRealTImePreview.Name = "picRealTImePreview";
+            this.picRealTImePreview.Size = new System.Drawing.Size(85, 93);
+            this.picRealTImePreview.TabIndex = 59;
+            this.picRealTImePreview.TabStop = false;
             // 
             // lblVideoStatus
             // 
@@ -1010,25 +1018,18 @@
             this.label45.TabIndex = 3;
             this.label45.Text = "螺纹检验信息>>";
             // 
-            // picRealTImePreview
-            // 
-            this.picRealTImePreview.Location = new System.Drawing.Point(874, 5);
-            this.picRealTImePreview.Name = "picRealTImePreview";
-            this.picRealTImePreview.Size = new System.Drawing.Size(85, 93);
-            this.picRealTImePreview.TabIndex = 59;
-            this.picRealTImePreview.TabStop = false;
-            // 
             // ThreadingProcessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(972, 621);
+            this.ControlBox = false;
             this.Controls.Add(this.label45);
             this.Controls.Add(this.label38);
             this.Controls.Add(this.formpanel2);
             this.Controls.Add(this.formpanel1);
             this.Name = "ThreadingProcessForm";
-            this.Text = "ThreadingProcessForm";
+            this.Text = "表单";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ThreadingProcessForm_FormClosing);
             this.SizeChanged += new System.EventHandler(this.ThreadingProcessForm_SizeChanged);

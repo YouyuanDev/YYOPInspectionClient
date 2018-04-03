@@ -14,6 +14,7 @@ namespace YYOPInspectionClient
         public DataShowForm()
         {
             InitializeComponent();
+            this.Font = new Font("宋体",12, FontStyle.Bold);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

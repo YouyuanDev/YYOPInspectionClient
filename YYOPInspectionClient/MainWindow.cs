@@ -75,7 +75,6 @@ namespace YYOPInspectionClient
             realTimeX = RealPlayWnd.Left;realTimeY = RealPlayWnd.Top;
             realTimeWidth = RealPlayWnd.Width;realTimeHeigh = RealPlayWnd.Height;
             RealPlayWnd.Dock = DockStyle.None;
-
             m_bInitSDK = CHCNetSDK.NET_DVR_Init();
             if (m_bInitSDK == false)
             {
@@ -1120,6 +1119,11 @@ namespace YYOPInspectionClient
         private void btnHide_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        private void groupBox2_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(this.BackColor);
         }
     }
 }

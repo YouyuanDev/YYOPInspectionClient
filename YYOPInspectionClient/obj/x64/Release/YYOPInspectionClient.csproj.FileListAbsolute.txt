@@ -17,4 +17,3 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.application
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.exe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.DataShowForm.resources
-C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.csprojResolveAssemblyReference.cache

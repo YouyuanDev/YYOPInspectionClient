@@ -46,55 +46,74 @@ namespace YYOPInspectionClient
         private static void UploadVideo()
         {
             //删除vcr中的垃圾视频
-            string trashDir = Application.StartupPath + "\\vcr";
-            if (Directory.Exists(trashDir)) {
-                DirectoryInfo dirInfo = new DirectoryInfo(trashDir);
-                foreach (FileInfo file in dirInfo.GetFiles("*.mp4")) {
-                    File.Delete(file.FullName);
-                }
-            }
-
-            string fileuploadpath = Application.StartupPath + "\\fileuploadrecord.txt";
-            string path = Application.StartupPath + "\\draft";
-            //按行读取出文件可上传的文件夹名
-            List<DirectoryInfo> dirs = new List<DirectoryInfo>();
-            
-            string line = null;
-            while (true)
+            try
             {
-                //查询出可上传文件中的视频文件是哪些
-                StreamReader sr = new StreamReader(fileuploadpath, Encoding.Default);
-                while ((line = sr.ReadLine()) != null) {
-                    dirs.Add(new DirectoryInfo(path+"\\"+line));
-                }
-                sr.Close();
-                //遍历视频文件
-                if (Directory.Exists(path))
+                string trashDir = Application.StartupPath + "\\vcr";
+                if (Directory.Exists(trashDir))
                 {
-                    DirectoryInfo folder = new DirectoryInfo(path);
-                    foreach (DirectoryInfo sonFolder in dirs)
+                    DirectoryInfo dirInfo = new DirectoryInfo(trashDir);
+                    foreach (FileInfo file in dirInfo.GetFiles("*.mp4"))
                     {
-                        if (Directory.Exists(sonFolder.FullName)) {
-                            FileInfo[] files = sonFolder.GetFiles("*.mp4");
-                            if (files.Length > 0)
+                        File.Delete(file.FullName);
+                    }
+                }
+
+                string fileuploadpath = Application.StartupPath + "\\fileuploadrecord.txt";
+                string path = Application.StartupPath + "\\draft";
+                //按行读取出文件可上传的文件夹名
+                List<DirectoryInfo> dirs = new List<DirectoryInfo>();
+
+                string line = null;
+                while (true)
+                {
+                    //查询出可上传文件中的视频文件是哪些
+                    StreamReader sr = new StreamReader(fileuploadpath, Encoding.Default);
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        //line = line.Replace("\r\n","");
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            dirs.Add(new DirectoryInfo(path + "\\" + line));
+                            //Console.WriteLine("-===" + line + ":" + line.Length);
+                        }
+                    }
+                    sr.Close();
+                    //遍历视频文件
+                    if (Directory.Exists(path))
+                    {
+                        DirectoryInfo folder = new DirectoryInfo(path);
+                        if (dirs.Count > 0)
+                        {
+                            foreach (DirectoryInfo sonFolder in dirs)
                             {
-                                foreach (FileInfo file in files)
+                                if (Directory.Exists(sonFolder.FullName))
                                 {
-                                    //获取文件路径 
-                                    FileInfo info = new FileInfo(file.FullName);
-                                    FtpUtil.UploadFile(sonFolder, info);
+                                    FileInfo[] files = sonFolder.GetFiles("*.mp4");
+                                    if (files.Length > 0)
+                                    {
+                                        foreach (FileInfo file in files)
+                                        {
+                                            //获取文件路径 
+                                            FileInfo info = new FileInfo(file.FullName);
+                                            FtpUtil.UploadFile(sonFolder, info);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Directory.Delete(sonFolder.FullName, true);
+                                        Util.deleteDirName(sonFolder.Name);
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                Directory.Delete(sonFolder.FullName);
-                                Util.deleteDirName(sonFolder.Name);
                             }
                         }
                     }
+                    Thread.Sleep(3000);
                 }
-                Thread.Sleep(3000);
             }
+            catch (Exception e) {
+                thread.Abort();
+            }
+            
         }
 
         #region 分页查询获取数据

@@ -273,7 +273,7 @@
             this.Controls.Add(this.DataPortInput);
             this.Controls.Add(this.CommandPortInput);
             this.Name = "YYKeyenceReaderConsole";
-            this.Text = "YYKeyenceReaderConsole";
+            this.Text = "读码器设置";
             this.Load += new System.EventHandler(this.YYKeyenceReaderConsole_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

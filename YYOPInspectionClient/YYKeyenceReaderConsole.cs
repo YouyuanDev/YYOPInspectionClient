@@ -57,8 +57,7 @@ namespace YYOPInspectionClient
                     {
                         //MessageBox.Show(strIPArray[i].ToString());
                         clientSocketInstance[readerIndex] = new ClientSocket(strIPArray[i], CommandPort, DataPort);  // 9003 for command, 9004 for data
-
-                        setLogText(clientSocketInstance[readerIndex].readerCommandEndPoint.ToString() + " Failed to connect.");
+                        //setLogText(clientSocketInstance[readerIndex].readerCommandEndPoint.ToString() + " 连接失败.");
                         readerIndex++;
                     }
                 }
@@ -114,12 +113,12 @@ namespace YYOPInspectionClient
                     // Create a new socket.
                     //
                     clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connecting..");
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接中,请等待...");
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connecting..\r\n";
                     //textBox_LogConsole.Update();
 
                     clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connected.");
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接成功.");
                    
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connected.\r\n";
                     //textBox_LogConsole.Update();
@@ -129,7 +128,7 @@ namespace YYOPInspectionClient
                     //
                     // Catch exceptions and show the message.
                     //
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.");
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
                     MessageBox.Show(ex.Message);
@@ -141,7 +140,7 @@ namespace YYOPInspectionClient
                     //
                     // Catch exceptions and show the message.
                     //
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " failed to connect.");
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
                     MessageBox.Show(ex.Message);
@@ -175,12 +174,12 @@ namespace YYOPInspectionClient
                         // Create a new socket.
                         //
                         clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " Connecting..");
+                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接中,请等待...");
                         //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connecting..\r\n";
                         //textBox_LogConsole.Update();
 
                         clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
-                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " connected.");
+                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接成功.");
                         if (!listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
                         {
                             this.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
@@ -203,7 +202,7 @@ namespace YYOPInspectionClient
                     //
                     // Catch exceptions and show the message.
                     //
-                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " failed to connect.");
+                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接失败.");
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerDataEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
                     MessageBox.Show(ex.Message);
@@ -229,7 +228,7 @@ namespace YYOPInspectionClient
                 {
                     clientSocketInstance[i].commandSocket.Close();
                     clientSocketInstance[i].commandSocket = null;
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " disconnected.");
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 断开连接成功.");
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Disconnected.\r\n";
                     //textBox_LogConsole.Update();
                 }
@@ -241,7 +240,7 @@ namespace YYOPInspectionClient
                 {
                     clientSocketInstance[i].dataSocket.Close();
                     clientSocketInstance[i].dataSocket = null;
-                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " disconnected.");
+                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 断开连接成功.");
                     this.listBox_Reader.Items.Remove(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
                     this.listBox_Reader.Update();
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerDataEndPoint.ToString() + " Disconnected.\r\n";

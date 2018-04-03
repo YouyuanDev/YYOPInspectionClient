@@ -112,7 +112,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "FTPSetting";
-            this.Text = "FTPSetting";
+            this.Text = "FTP设置";
             this.ResumeLayout(false);
             this.PerformLayout();
 
