@@ -171,6 +171,7 @@ namespace YYOPInspectionClient
                 }
             }
             catch (Exception e) {
+                throw e;
                 MessageBox.Show("服务器尚未开启......");
             }
            

@@ -95,6 +95,7 @@
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
     <Compile Include="CodeReader.cs" />
+    <Compile Include="ComboxItem.cs" />
     <Compile Include="DataShowForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +120,12 @@
     </Compile>
     <Compile Include="IPChannelConfig.Designer.cs">
       <DependentUpon>IPChannelConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginWinform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginWinform.Designer.cs">
+      <DependentUpon>LoginWinform.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -160,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IPChannelConfig.resx">
       <DependentUpon>IPChannelConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginWinform.resx">
+      <DependentUpon>LoginWinform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

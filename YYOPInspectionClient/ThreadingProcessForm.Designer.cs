@@ -120,6 +120,22 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
+            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox42 = new System.Windows.Forms.TextBox();
+            this.textBox43 = new System.Windows.Forms.TextBox();
+            this.textBox44 = new System.Windows.Forms.TextBox();
+            this.textBox45 = new System.Windows.Forms.TextBox();
+            this.textBox46 = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.formpanel1.SuspendLayout();
             this.formpanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).BeginInit();
@@ -130,6 +146,20 @@
             this.formpanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formpanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formpanel1.Controls.Add(this.textBox46);
+            this.formpanel1.Controls.Add(this.textBox45);
+            this.formpanel1.Controls.Add(this.textBox44);
+            this.formpanel1.Controls.Add(this.textBox43);
+            this.formpanel1.Controls.Add(this.textBox42);
+            this.formpanel1.Controls.Add(this.textBox33);
+            this.formpanel1.Controls.Add(this.textBox18);
+            this.formpanel1.Controls.Add(this.label50);
+            this.formpanel1.Controls.Add(this.label49);
+            this.formpanel1.Controls.Add(this.label48);
+            this.formpanel1.Controls.Add(this.label47);
+            this.formpanel1.Controls.Add(this.label46);
+            this.formpanel1.Controls.Add(this.label31);
+            this.formpanel1.Controls.Add(this.label11);
             this.formpanel1.Controls.Add(this.label26);
             this.formpanel1.Controls.Add(this.textBox16);
             this.formpanel1.Controls.Add(this.textBox15);
@@ -164,7 +194,7 @@
             this.formpanel1.Controls.Add(this.label2);
             this.formpanel1.Location = new System.Drawing.Point(0, 25);
             this.formpanel1.Name = "formpanel1";
-            this.formpanel1.Size = new System.Drawing.Size(972, 180);
+            this.formpanel1.Size = new System.Drawing.Size(972, 218);
             this.formpanel1.TabIndex = 0;
             this.formpanel1.Tag = "";
             // 
@@ -446,6 +476,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formpanel2.AutoSize = true;
             this.formpanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formpanel2.Controls.Add(this.comboBox2);
+            this.formpanel2.Controls.Add(this.label51);
             this.formpanel2.Controls.Add(this.picRealTImePreview);
             this.formpanel2.Controls.Add(this.lblVideoStatus);
             this.formpanel2.Controls.Add(this.lblReaderStatus);
@@ -502,9 +534,9 @@
             this.formpanel2.Controls.Add(this.label20);
             this.formpanel2.Controls.Add(this.label19);
             this.formpanel2.Controls.Add(this.label18);
-            this.formpanel2.Location = new System.Drawing.Point(0, 222);
+            this.formpanel2.Location = new System.Drawing.Point(0, 263);
             this.formpanel2.Name = "formpanel2";
-            this.formpanel2.Size = new System.Drawing.Size(972, 401);
+            this.formpanel2.Size = new System.Drawing.Size(972, 362);
             this.formpanel2.TabIndex = 1;
             // 
             // picRealTImePreview
@@ -537,7 +569,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(632, 329);
+            this.btnClose.Location = new System.Drawing.Point(632, 321);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 35);
             this.btnClose.TabIndex = 56;
@@ -557,7 +589,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(768, 329);
+            this.button3.Location = new System.Drawing.Point(768, 319);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 35);
             this.button3.TabIndex = 54;
@@ -1012,11 +1044,153 @@
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(2, 207);
+            this.label45.Location = new System.Drawing.Point(2, 246);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(89, 12);
             this.label45.TabIndex = 3;
             this.label45.Text = "螺纹检验信息>>";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(10, 159);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "合同号：";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(241, 159);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(41, 12);
+            this.label31.TabIndex = 36;
+            this.label31.Text = "炉号：";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(499, 159);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(53, 12);
+            this.label46.TabIndex = 37;
+            this.label46.Text = "试批号：";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(713, 159);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(41, 12);
+            this.label47.TabIndex = 38;
+            this.label47.Text = "钢级：";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(10, 192);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(41, 12);
+            this.label48.TabIndex = 39;
+            this.label48.Text = "材质：";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(241, 191);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(65, 12);
+            this.label49.TabIndex = 40;
+            this.label49.Text = "生产区域：";
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(499, 194);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(53, 12);
+            this.label50.TabIndex = 41;
+            this.label50.Text = "机床号：";
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(117, 157);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.Size = new System.Drawing.Size(100, 21);
+            this.textBox18.TabIndex = 42;
+            this.textBox18.Text = "1";
+            // 
+            // textBox33
+            // 
+            this.textBox33.Location = new System.Drawing.Point(372, 156);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.Size = new System.Drawing.Size(100, 21);
+            this.textBox33.TabIndex = 43;
+            this.textBox33.Text = "1";
+            // 
+            // textBox42
+            // 
+            this.textBox42.Location = new System.Drawing.Point(607, 158);
+            this.textBox42.Name = "textBox42";
+            this.textBox42.Size = new System.Drawing.Size(100, 21);
+            this.textBox42.TabIndex = 44;
+            this.textBox42.Text = "1";
+            // 
+            // textBox43
+            // 
+            this.textBox43.Location = new System.Drawing.Point(832, 159);
+            this.textBox43.Name = "textBox43";
+            this.textBox43.Size = new System.Drawing.Size(100, 21);
+            this.textBox43.TabIndex = 45;
+            this.textBox43.Text = "1";
+            // 
+            // textBox44
+            // 
+            this.textBox44.Location = new System.Drawing.Point(117, 188);
+            this.textBox44.Name = "textBox44";
+            this.textBox44.Size = new System.Drawing.Size(100, 21);
+            this.textBox44.TabIndex = 46;
+            this.textBox44.Text = "1";
+            // 
+            // textBox45
+            // 
+            this.textBox45.Location = new System.Drawing.Point(372, 187);
+            this.textBox45.Name = "textBox45";
+            this.textBox45.Size = new System.Drawing.Size(100, 21);
+            this.textBox45.TabIndex = 47;
+            this.textBox45.Text = "1";
+            // 
+            // textBox46
+            // 
+            this.textBox46.Location = new System.Drawing.Point(607, 189);
+            this.textBox46.Name = "textBox46";
+            this.textBox46.Size = new System.Drawing.Size(100, 21);
+            this.textBox46.TabIndex = 48;
+            this.textBox46.Text = "1";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(16, 336);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(65, 12);
+            this.label51.TabIndex = 60;
+            this.label51.Text = "标准编号：";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "合格",
+            "不合格",
+            "待定"});
+            this.comboBox2.Location = new System.Drawing.Point(161, 325);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 28);
+            this.comboBox2.TabIndex = 61;
             // 
             // ThreadingProcessForm
             // 
@@ -1137,5 +1311,21 @@
         public System.Windows.Forms.Label lblReaderStatus;
         public System.Windows.Forms.Label lblVideoStatus;
         public System.Windows.Forms.PictureBox picRealTImePreview;
+        private System.Windows.Forms.TextBox textBox46;
+        private System.Windows.Forms.TextBox textBox45;
+        private System.Windows.Forms.TextBox textBox44;
+        private System.Windows.Forms.TextBox textBox43;
+        private System.Windows.Forms.TextBox textBox42;
+        private System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }

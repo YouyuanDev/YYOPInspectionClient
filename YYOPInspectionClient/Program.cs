@@ -18,7 +18,7 @@ namespace YYOPInspectionClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new IndexWindow());
+            Application.Run(new LoginWinform());
         }
     }
 }

@@ -44,6 +44,8 @@ namespace YYOPInspectionClient
             timestamp = getMesuringRecord();
             this.lblVideoStatus.Text = "录像未启动...";
             myForm = this;
+            //绑定接受标准编号
+
          }
 
         #region 开始扫码事件
@@ -226,6 +228,15 @@ namespace YYOPInspectionClient
             string caliper_no = HttpUtility.UrlEncode(this.textBox14.Text, Encoding.UTF8);//游标卡尺编号
             string caliper_tolerance = HttpUtility.UrlEncode(this.textBox15.Text, Encoding.UTF8);//游标卡尺零值误差
             string collar_gauge_no = HttpUtility.UrlEncode(this.textBox16.Text, Encoding.UTF8);//内径止通规编号
+
+            string contract_no = HttpUtility.UrlEncode(this.textBox18.Text, Encoding.UTF8);//合同号
+            string heat_no = HttpUtility.UrlEncode(this.textBox33.Text, Encoding.UTF8);//炉号
+            string test_batch_no = HttpUtility.UrlEncode(this.textBox42.Text, Encoding.UTF8);//试批号
+            string steel_grade = HttpUtility.UrlEncode(this.textBox43.Text, Encoding.UTF8);//钢级
+            string texture = HttpUtility.UrlEncode(this.textBox44.Text, Encoding.UTF8);//材质
+            string production_area = HttpUtility.UrlEncode(this.textBox45.Text, Encoding.UTF8);//生产区域
+            string machine_no = HttpUtility.UrlEncode(this.textBox46.Text, Encoding.UTF8);//机床号
+
             //------------------螺纹检验表
             string couping_no = HttpUtility.UrlEncode(this.textBox17.Text.TrimEnd(), Encoding.UTF8);//接箍编号
             string process_no = HttpUtility.UrlEncode(this.textBox20.Text, Encoding.UTF8);//工位编号
@@ -250,6 +261,8 @@ namespace YYOPInspectionClient
             string couping_length = HttpUtility.UrlEncode(this.textBox39.Text, Encoding.UTF8);//接箍长度
             string thread_tooth_angle = HttpUtility.UrlEncode(this.textBox40.Text, Encoding.UTF8);//牙型角度
             string thread_throug_hole_size = HttpUtility.UrlEncode(this.textBox41.Text, Encoding.UTF8);//镗孔尺寸
+
+            string acceptance_criteria = HttpUtility.UrlEncode(this.comboBox2.SelectedItem.ToString(), Encoding.UTF8);//接受标准编号
             //然后根据时间戳生成的目录搜索录制的视频文件获取文件名集合保存到video_no中
             string video_no =getVideoPath(timestamp); //HttpUtility.UrlEncode(this.textBox2.Text, Encoding.UTF8);//视频编号
             string inspection_result = HttpUtility.UrlEncode(getInspectionResult(this.comboBox1.SelectedItem.ToString()).ToString(), Encoding.UTF8);//检验结果
@@ -304,6 +317,15 @@ namespace YYOPInspectionClient
                 sb.Append("\"arg40\"" + ":" + "\"" + thread_throug_hole_size + "\",");
                 sb.Append("\"arg41\"" + ":" + "\"" + video_no + "\",");
                 sb.Append("\"arg42\"" + ":" + "\"" + inspection_result + "\"");
+
+                sb.Append("\"arg43\"" + ":" + "\"" + contract_no + "\",");
+                sb.Append("\"arg44\"" + ":" + "\"" + heat_no + "\",");
+                sb.Append("\"arg45\"" + ":" + "\"" + test_batch_no + "\",");
+                sb.Append("\"arg46\"" + ":" + "\"" + steel_grade + "\",");
+                sb.Append("\"arg47\"" + ":" + "\"" + texture + "\",");
+                sb.Append("\"arg48\"" + ":" + "\"" + production_area + "\",");
+                sb.Append("\"arg49\"" + ":" + "\"" + machine_no + "\",");
+                sb.Append("\"arg50\"" + ":" + "\"" + acceptance_criteria + "\"");
                 sb.Append("}");
                 json= sb.ToString();
                 JObject o = JObject.Parse(json);
@@ -434,6 +456,56 @@ namespace YYOPInspectionClient
             }
             return pathList;
         }
+        #endregion
+
+        #region 获取所有标准
+        private void BindAcceptanceCriteria()
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                String content = "";
+                JObject o = JObject.Parse(sb.ToString());
+                String param = o.ToString();
+                byte[] data = encoding.GetBytes(param);
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/AcceptanceCriteriaOperation/getAllDropDownAcceptanceCriteriaByWinform.action");
+                request.KeepAlive = false;
+                request.Method = "POST";
+                request.ContentType = "application/json;characterSet:UTF-8";
+                request.ContentLength = data.Length;
+                using (Stream sm = request.GetRequestStream())
+                {
+                    sm.Write(data, 0, data.Length);
+                }
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream streamResponse = response.GetResponseStream();
+                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                Char[] readBuff = new Char[1024];
+                int count = streamRead.Read(readBuff, 0, 1024);
+                while (count > 0)
+                {
+                    String outputData = new String(readBuff, 0, count);
+                    content += outputData;
+                    count = streamRead.Read(readBuff, 0, 1024);
+                }
+                response.Close();
+                string jsons = content;
+                if (jsons != null)
+                {
+                    JObject jobject = JObject.Parse(jsons);
+                    string rowsJson = jobject["rowsData"].ToString();
+                    List<ComboxItem> list = JsonConvert.DeserializeObject<List<ComboxItem>>(rowsJson);
+                    this.comboBox2.DataSource = list;
+                    this.comboBox2.ValueMember = "id";
+                    this.comboBox2.DisplayMember = "text";
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("服务器尚未开启......");
+            }
+        } 
         #endregion
 
 
