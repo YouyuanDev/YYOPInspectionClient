@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace YYOPInspectionClient
 {
-    public partial class LoginWinform : Form
+    public partial class 登录 : Form
     {
-        public LoginWinform()
+        public 登录()
         {
             InitializeComponent();
         }
@@ -23,6 +23,7 @@ namespace YYOPInspectionClient
         {
             string uname = this.textBox1.Text.Trim();
             string upwd = this.textBox2.Text.Trim();
+            var httpStatusCode = 200;
             try
             {
                 //StringBuilder sb = new StringBuilder();
@@ -31,7 +32,7 @@ namespace YYOPInspectionClient
                 //JObject o = JObject.Parse(sb.ToString());
                 String param = "";
                 byte[] data = encoding.GetBytes(param);
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/Login/commitLogin.action?employee_no="+uname+"&ppassword="+upwd);
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/Login/commitLogin.action?employee_no=" + uname + "&ppassword=" + upwd);
                 request.KeepAlive = false;
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
@@ -55,15 +56,14 @@ namespace YYOPInspectionClient
                 string jsons = content;
                 if (jsons != null)
                 {
-                   
+
                     JObject jobject = JObject.Parse(jsons);
-                    string result =jobject["success"].ToString();
-                    MessageBox.Show(result);
-                    if (result=="True")
+                    string result = jobject["success"].ToString();
+                    if (result == "True")
                     {
-                        IndexWindow index = new IndexWindow();
-                        index.Show();
-                        this.Close();
+                        // this.Close();
+                        new IndexWindow().Show();
+                        this.Hide();
                     }
                     else {
                         MessageBox.Show("用户名或密码错误!");
@@ -73,16 +73,29 @@ namespace YYOPInspectionClient
                     //this.comboBox2.ValueMember = "id";
                     //this.comboBox2.DisplayMember = "text";
                 }
+                httpStatusCode = Convert.ToInt32(response.StatusCode);
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                throw ex;
-                if (uname == "admin" && upwd == "admin") {
+                var rsp = ex.Response as HttpWebResponse;
+                httpStatusCode =Convert.ToInt32(rsp.StatusCode);
+            } catch (Exception ec) {
+                MessageBox.Show("服务器尚未开启......");
+                if (uname == "admin" && upwd == "admin")
+                {
                     IndexWindow index = new IndexWindow();
                     index.Show();
                     this.Close();
                 }
-                MessageBox.Show("服务器尚未开启......");
+            }
+            if (httpStatusCode!= 200){
+                MessageBox.Show("服务器未响应.....");
+                if (uname == "admin" && upwd == "admin")
+                {
+                    IndexWindow index = new IndexWindow();
+                    index.Show();
+                    this.Close();
+                }
             }
         }
     }

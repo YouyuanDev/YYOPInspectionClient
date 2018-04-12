@@ -31,16 +31,17 @@ namespace YYOPInspectionClient
             //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
             //string end_time = HttpUtility.UrlEncode(DateTime.Now.ToString("yyyy-MM-dd"),Encoding.UTF8);
             getThreadingProcessData();
-            try {
+            try
+            {
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 thread.Abort();
             }
-           
+
         }
 
         private static void UploadVideo()
@@ -171,7 +172,6 @@ namespace YYOPInspectionClient
                 }
             }
             catch (Exception e) {
-                throw e;
                 MessageBox.Show("服务器尚未开启......");
             }
            
@@ -445,6 +445,45 @@ namespace YYOPInspectionClient
                         if (dataGridView1.Rows[i].Cells["thread_throug_hole_size"].Value != null)
                         {
                             form.textBox41.Text = dataGridView1.Rows[i].Cells["thread_throug_hole_size"].Value.ToString();
+                        }
+
+
+                        //新增
+                        if (dataGridView1.Rows[i].Cells["contract_no"].Value != null)
+                        {
+                            form.textBox48.Text = dataGridView1.Rows[i].Cells["contract_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["heat_no"].Value != null)
+                        {
+                            form.textBox47.Text = dataGridView1.Rows[i].Cells["heat_no"].Value.ToString();
+                        }
+
+                        if (dataGridView1.Rows[i].Cells["test_batch_no"].Value != null)
+                        {
+                            form.textBox42.Text = dataGridView1.Rows[i].Cells["test_batch_no"].Value.ToString();
+                        }
+
+                        if (dataGridView1.Rows[i].Cells["steel_grade"].Value != null)
+                        {
+                            form.textBox43.Text = dataGridView1.Rows[i].Cells["steel_grade"].Value.ToString();
+                        }
+
+                        if (dataGridView1.Rows[i].Cells["texture"].Value != null)
+                        {
+                            form.textBox44.Text = dataGridView1.Rows[i].Cells["texture"].Value.ToString();
+                        }
+
+                        if (dataGridView1.Rows[i].Cells["production_area"].Value != null)
+                        {
+                            form.textBox45.Text = dataGridView1.Rows[i].Cells["production_area"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["machine_no"].Value != null)
+                        {
+                            form.textBox46.Text = dataGridView1.Rows[i].Cells["machine_no"].Value.ToString();
+                        }
+                        if (dataGridView1.Rows[i].Cells["thread_acceptance_criteria_no"].Value != null)
+                        {
+                            form.textBox49.Text = dataGridView1.Rows[i].Cells["thread_acceptance_criteria_no"].Value.ToString();
                         }
                     }
                 }

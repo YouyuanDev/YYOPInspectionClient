@@ -18,4 +18,4 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.exe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.DataShowForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.csprojResolveAssemblyReference.cache
-C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.LoginWinform.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.登录.resources

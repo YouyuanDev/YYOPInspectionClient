@@ -1,6 +1,6 @@
 ﻿namespace YYOPInspectionClient
 {
-    partial class LoginWinform
+    partial class 登录
     {
         /// <summary>
         /// Required designer variable.
@@ -78,7 +78,7 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // LoginWinform
+            // 登录
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -88,8 +88,8 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "LoginWinform";
-            this.Text = "LoginWinform";
+            this.Name = "登录";
+            this.Text = "登录";
             this.ResumeLayout(false);
             this.PerformLayout();
 

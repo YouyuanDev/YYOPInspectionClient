@@ -51,7 +51,14 @@ namespace YYOPInspectionClient
         private String caliper_no;
         private String caliper_tolerance;
         private String collar_gauge_no;
-
+        private String thread_acceptance_criteria_no;
+        private string contract_no;
+        private string heat_no;
+        private string test_batch_no;
+        private string steel_grade;
+        private string texture;
+        private string production_area;
+        private string machine_no;
         private String inspection_result;
 
         public int Id
@@ -411,12 +418,12 @@ namespace YYOPInspectionClient
         {
             get
             {
-                return inspection_result;
+                return Inspection_result1;
             }
 
             set
             {
-                inspection_result = value;
+                Inspection_result1 = value;
             }
         }
 
@@ -625,6 +632,123 @@ namespace YYOPInspectionClient
             set
             {
                 collar_gauge_no = value;
+            }
+        }
+
+        public string Thread_acceptance_criteria_no
+        {
+            get
+            {
+                return thread_acceptance_criteria_no;
+            }
+
+            set
+            {
+                thread_acceptance_criteria_no = value;
+            }
+        }
+
+        public string Contract_no
+        {
+            get
+            {
+                return contract_no;
+            }
+
+            set
+            {
+                contract_no = value;
+            }
+        }
+
+        public string Heat_no
+        {
+            get
+            {
+                return heat_no;
+            }
+
+            set
+            {
+                heat_no = value;
+            }
+        }
+
+        public string Test_batch_no
+        {
+            get
+            {
+                return test_batch_no;
+            }
+
+            set
+            {
+                test_batch_no = value;
+            }
+        }
+
+        public string Steel_grade
+        {
+            get
+            {
+                return steel_grade;
+            }
+
+            set
+            {
+                steel_grade = value;
+            }
+        }
+
+        public string Texture
+        {
+            get
+            {
+                return texture;
+            }
+
+            set
+            {
+                texture = value;
+            }
+        }
+
+        public string Production_area
+        {
+            get
+            {
+                return production_area;
+            }
+
+            set
+            {
+                production_area = value;
+            }
+        }
+
+        public string Machine_no
+        {
+            get
+            {
+                return machine_no;
+            }
+
+            set
+            {
+                machine_no = value;
+            }
+        }
+
+        public string Inspection_result1
+        {
+            get
+            {
+                return inspection_result;
+            }
+
+            set
+            {
+                inspection_result = value;
             }
         }
     }

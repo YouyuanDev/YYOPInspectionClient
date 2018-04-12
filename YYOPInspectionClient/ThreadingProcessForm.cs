@@ -45,7 +45,7 @@ namespace YYOPInspectionClient
             this.lblVideoStatus.Text = "录像未启动...";
             myForm = this;
             //绑定接受标准编号
-
+            BindAcceptanceCriteria();
          }
 
         #region 开始扫码事件
@@ -261,8 +261,7 @@ namespace YYOPInspectionClient
             string couping_length = HttpUtility.UrlEncode(this.textBox39.Text, Encoding.UTF8);//接箍长度
             string thread_tooth_angle = HttpUtility.UrlEncode(this.textBox40.Text, Encoding.UTF8);//牙型角度
             string thread_throug_hole_size = HttpUtility.UrlEncode(this.textBox41.Text, Encoding.UTF8);//镗孔尺寸
-
-            string acceptance_criteria = HttpUtility.UrlEncode(this.comboBox2.SelectedItem.ToString(), Encoding.UTF8);//接受标准编号
+            string acceptance_criteria = HttpUtility.UrlEncode(this.comboBox2.Text.ToString(), Encoding.UTF8);//接受标准编号
             //然后根据时间戳生成的目录搜索录制的视频文件获取文件名集合保存到video_no中
             string video_no =getVideoPath(timestamp); //HttpUtility.UrlEncode(this.textBox2.Text, Encoding.UTF8);//视频编号
             string inspection_result = HttpUtility.UrlEncode(getInspectionResult(this.comboBox1.SelectedItem.ToString()).ToString(), Encoding.UTF8);//检验结果
@@ -316,7 +315,7 @@ namespace YYOPInspectionClient
                 sb.Append("\"arg39\"" + ":" + "\"" + thread_tooth_angle + "\",");
                 sb.Append("\"arg40\"" + ":" + "\"" + thread_throug_hole_size + "\",");
                 sb.Append("\"arg41\"" + ":" + "\"" + video_no + "\",");
-                sb.Append("\"arg42\"" + ":" + "\"" + inspection_result + "\"");
+                sb.Append("\"arg42\"" + ":" + "\"" + inspection_result + "\",");
 
                 sb.Append("\"arg43\"" + ":" + "\"" + contract_no + "\",");
                 sb.Append("\"arg44\"" + ":" + "\"" + heat_no + "\",");
@@ -463,11 +462,11 @@ namespace YYOPInspectionClient
         {
             try
             {
-                StringBuilder sb = new StringBuilder();
+               // StringBuilder sb = new StringBuilder();
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                JObject o = JObject.Parse(sb.ToString());
-                String param = o.ToString();
+                //JObject o = JObject.Parse(sb.ToString());
+                String param ="";
                 byte[] data = encoding.GetBytes(param);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/AcceptanceCriteriaOperation/getAllDropDownAcceptanceCriteriaByWinform.action");
                 request.KeepAlive = false;
