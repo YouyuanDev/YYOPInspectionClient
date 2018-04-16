@@ -136,6 +136,12 @@
     <Compile Include="PlayCtrl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ThreadingForm.Designer.cs">
+      <DependentUpon>ThreadingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThreadingProcess.cs" />
     <Compile Include="ThreadingProcessForm.cs">
       <SubType>Form</SubType>
@@ -184,6 +190,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ThreadingForm.resx">
+      <DependentUpon>ThreadingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ThreadingProcessForm.resx">
       <DependentUpon>ThreadingProcessForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -229,7 +238,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Unsubmitted\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,3 +19,4 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.DataShowForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.csprojResolveAssemblyReference.cache
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.登录.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.ThreadingForm.resources

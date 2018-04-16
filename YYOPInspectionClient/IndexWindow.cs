@@ -27,10 +27,10 @@ namespace YYOPInspectionClient
             this.Font = new Font("宋体", 12, FontStyle.Bold);
             AutoSize autoSize= new AutoSize();
             autoSize.controllInitializeSize(this);
-            this.dtpEndTime.Value = DateTime.Now;
+            //this.dtpEndTime.Value = DateTime.Now;
             //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
             //string end_time = HttpUtility.UrlEncode(DateTime.Now.ToString("yyyy-MM-dd"),Encoding.UTF8);
-            getThreadingProcessData();
+           // getThreadingProcessData();
             try
             {
                 thread = new Thread(UploadVideo);
@@ -123,18 +123,18 @@ namespace YYOPInspectionClient
         {
             try
             {
-                string couping_no = HttpUtility.UrlEncode(this.textBox1.Text.Trim(), Encoding.UTF8);
-                string operator_no = HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
+                //string couping_no = HttpUtility.UrlEncode(this.textBox1.Text.Trim(), Encoding.UTF8);
+                //string operator_no = HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
                 string pageCurrent = HttpUtility.UrlEncode("", Encoding.UTF8);
                 string pageSize = HttpUtility.UrlEncode("", Encoding.UTF8);
-                string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
-                string end_time = HttpUtility.UrlEncode(this.dtpEndTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
+                //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
+                //string end_time = HttpUtility.UrlEncode(this.dtpEndTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
                 sb.Append("\"couping_no\"" + ":" + "\"" + couping_no + "\",");
                 sb.Append("\"operator_no\"" + ":" + "\"" + operator_no + "\",");
-                sb.Append("\"begin_time\"" + ":" + "\"" + begin_time + "\",");
-                sb.Append("\"end_time\"" + ":" + "\"" + end_time + "\",");
+                //sb.Append("\"begin_time\"" + ":" + "\"" + begin_time + "\",");
+                //sb.Append("\"end_time\"" + ":" + "\"" + end_time + "\",");
                 sb.Append("\"pageCurrent\"" + ":" + "\"" + pageCurrent + "\",");
                 sb.Append("\"pageSize\"" + ":" + "\"" + pageSize + "\"");
                 sb.Append("}");
