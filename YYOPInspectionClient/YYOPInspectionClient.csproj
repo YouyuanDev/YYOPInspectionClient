@@ -102,6 +102,12 @@
     <Compile Include="DataShowForm.Designer.cs">
       <DependentUpon>DataShowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlphabetKeyboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlphabetKeyboardForm.Designer.cs">
+      <DependentUpon>AlphabetKeyboardForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FTPSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +174,9 @@
     <Compile Include="YYKeyenceReaderConsole.Designer.cs">
       <DependentUpon>YYKeyenceReaderConsole.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AlphabetKeyboardForm.resx">
+      <DependentUpon>AlphabetKeyboardForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataShowForm.resx">
       <DependentUpon>DataShowForm.cs</DependentUpon>
     </EmbeddedResource>
