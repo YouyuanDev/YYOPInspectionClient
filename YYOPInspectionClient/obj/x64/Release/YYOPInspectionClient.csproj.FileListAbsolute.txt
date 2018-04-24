@@ -18,7 +18,11 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.exe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.DataShowForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.csprojResolveAssemblyReference.cache
-C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.登录.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.ThreadingForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.NumberKeyboardForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.AlphabetKeyboardForm.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\AutoUpdater.NET.dll
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\AutoUpdater.NET.pdb
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\AutoUpdater.NET.xml
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.ServerSetting.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.LoginWinform.resources

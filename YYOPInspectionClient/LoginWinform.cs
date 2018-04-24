@@ -9,14 +9,30 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using AutoUpdaterDotNET;
+using System.Threading;
 
 namespace YYOPInspectionClient
 {
-    public partial class 登录 : Form
+    public partial class LoginWinform : Form
     {
-        public 登录()
+        Thread threadUpdate = null;
+        public LoginWinform()
         {
             InitializeComponent();
+            //检查更新
+            threadUpdate = new Thread(UpdateClient);
+            threadUpdate.Start();
+        }
+        private void UpdateClient() {
+            try
+            {
+                AutoUpdater.Start("http://localhost:8080/upload/clientapp/ClientAPPAutoUpdater.xml");
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                threadUpdate.Abort();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

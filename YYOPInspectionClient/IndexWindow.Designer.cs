@@ -83,6 +83,10 @@
             this.thread_acceptance_criteria_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -97,10 +101,7 @@
             this.读码器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -590,6 +591,42 @@
             this.panel2.Size = new System.Drawing.Size(1212, 64);
             this.panel2.TabIndex = 0;
             // 
+            // comboBox4
+            // 
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(507, 23);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(79, 20);
+            this.comboBox4.TabIndex = 13;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(342, 22);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(79, 20);
+            this.comboBox3.TabIndex = 12;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(176, 22);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(79, 20);
+            this.comboBox2.TabIndex = 11;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(51, 23);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(79, 20);
+            this.comboBox1.TabIndex = 10;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(697, 12);
@@ -684,7 +721,7 @@
             this.新建ToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 20, 0, 0);
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
             this.新建ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(172, 62);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(158, 62);
             this.新建ToolStripMenuItem.Text = "新建";
             this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
@@ -692,7 +729,7 @@
             // 
             this.未提交ToolStripMenuItem.Name = "未提交ToolStripMenuItem";
             this.未提交ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
-            this.未提交ToolStripMenuItem.Size = new System.Drawing.Size(172, 62);
+            this.未提交ToolStripMenuItem.Size = new System.Drawing.Size(158, 62);
             this.未提交ToolStripMenuItem.Text = "未提交";
             this.未提交ToolStripMenuItem.Click += new System.EventHandler(this.未提交ToolStripMenuItem_Click);
             // 
@@ -701,7 +738,8 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.读码器设置ToolStripMenuItem,
             this.录像设置ToolStripMenuItem,
-            this.fTP设置ToolStripMenuItem});
+            this.fTP设置ToolStripMenuItem,
+            this.服务器设置ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.toolStripMenuItem2.Size = new System.Drawing.Size(93, 46);
@@ -734,41 +772,13 @@
             this.fTP设置ToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             this.fTP设置ToolStripMenuItem.Click += new System.EventHandler(this.fTP设置ToolStripMenuItem_Click);
             // 
-            // comboBox1
+            // 服务器设置ToolStripMenuItem
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(51, 23);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(79, 20);
-            this.comboBox1.TabIndex = 10;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(176, 22);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(79, 20);
-            this.comboBox2.TabIndex = 11;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(342, 22);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(79, 20);
-            this.comboBox3.TabIndex = 12;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(507, 23);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(79, 20);
-            this.comboBox4.TabIndex = 13;
+            this.服务器设置ToolStripMenuItem.Name = "服务器设置ToolStripMenuItem";
+            this.服务器设置ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
+            this.服务器设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
+            this.服务器设置ToolStripMenuItem.Text = "服务器设置";
+            this.服务器设置ToolStripMenuItem.Click += new System.EventHandler(this.服务器设置ToolStripMenuItem_Click);
             // 
             // IndexWindow
             // 
@@ -866,5 +876,6 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
     }
 }

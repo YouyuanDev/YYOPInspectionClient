@@ -329,13 +329,11 @@ namespace YYOPInspectionClient
                 json= sb.ToString();
                 JObject o = JObject.Parse(json);
                 String param = o.ToString();
-                 
                 byte[] data = encoding.GetBytes(param);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/ThreadingOperation/saveThreadingProcessByWinform.action");
                 request.KeepAlive = false;
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
-               
                 request.ContentLength = data.Length;
                 Stream sm = request.GetRequestStream();
                 sm.Write(data, 0, data.Length);

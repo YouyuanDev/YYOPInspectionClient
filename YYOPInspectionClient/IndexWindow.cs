@@ -493,5 +493,10 @@ namespace YYOPInspectionClient
             }
            
         }
+
+        private void 服务器设置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ServerSetting().Show();
+        }
     }
 }
