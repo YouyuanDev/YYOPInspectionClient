@@ -26,3 +26,5 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\AutoUpdater.NET.pdb
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\AutoUpdater.NET.xml
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.ServerSetting.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.LoginWinform.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.Form1.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Release\YYOPInspectionClient.Form2.resources
