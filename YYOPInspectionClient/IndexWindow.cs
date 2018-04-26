@@ -30,7 +30,8 @@ namespace YYOPInspectionClient
             //this.dtpEndTime.Value = DateTime.Now;
             //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
             //string end_time = HttpUtility.UrlEncode(DateTime.Now.ToString("yyyy-MM-dd"),Encoding.UTF8);
-           // getThreadingProcessData();
+            getSearchParam();
+            getThreadingProcessData();
             try
             {
                 thread = new Thread(UploadVideo);
@@ -41,9 +42,114 @@ namespace YYOPInspectionClient
             {
                 thread.Abort();
             }
-
         }
 
+        #region 获取检验记录的查询条件参数
+        private void getSearchParam()
+        {
+            
+                try
+                {
+                    string od = this.cmbOd.Text;
+                    string wt = this.cmbWt.Text;
+                    string thread_type = this.cmbThreadType.Text;
+                    string acceptance_no = this.cmbAcceptanceNo.Text;
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("{");
+                    sb.Append("\"od\"" + ":" + "\"" + od + "\",");
+                    sb.Append("\"wt\"" + ":" + "\"" + wt + "\",");
+                    sb.Append("\"thread_type\"" + ":" + "\"" + thread_type + "\",");
+                    sb.Append("\"acceptance_no\"" + ":" + "\"" + acceptance_no + "\"");
+                    sb.Append("}");
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    String content = "";
+                    JObject o = JObject.Parse(sb.ToString());
+                    String param = o.ToString();
+                    byte[] data = encoding.GetBytes(param);
+                    string url = CommonUtil.getServerIpAndPort() + "Contract/getAllContractNoOfWinform.action";
+                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+                    request.KeepAlive = false;
+                    request.Method = "POST";
+                    request.ContentType = "application/json;characterSet:UTF-8";
+                    request.ContentLength = data.Length;
+                    using (Stream sm = request.GetRequestStream())
+                    {
+                        sm.Write(data, 0, data.Length);
+                    }
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    Stream streamResponse = response.GetResponseStream();
+                    StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                    Char[] readBuff = new Char[1024];
+                    int count = streamRead.Read(readBuff, 0, 1024);
+                    while (count > 0)
+                    {
+                        String outputData = new String(readBuff, 0, count);
+                        content += outputData;
+                        count = streamRead.Read(readBuff, 0, 1024);
+                    }
+                    response.Close();
+                    string jsons = content;
+                    if (jsons != null)
+                    {
+                        JObject jobject = JObject.Parse(jsons);
+                        string rowsJson = jobject["rowsData"].ToString();
+                        List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
+                        List<ComboxItem> odList = new List<ComboxItem>();
+                        List<ComboxItem> wtList = new List<ComboxItem>();
+                        List<ComboxItem> threadTypeList = new List<ComboxItem>();
+                        List<ComboxItem> acceptanceNoList = new List<ComboxItem>();
+                        odList.Add(new ComboxItem() { Id="",Text=""});
+                        wtList.Add(new ComboxItem() { Id = "", Text = "" });
+                        threadTypeList.Add(new ComboxItem() { Id = "", Text = "" });
+                       acceptanceNoList.Add(new ComboxItem() { Id = "", Text = "" });
+                    foreach (ContractInfo item in list)
+                        {
+                            if(!string.IsNullOrWhiteSpace(item.Od))
+                                odList.Add(new ComboxItem() { Id = item.Od, Text =item.Od});
+                            if(!string.IsNullOrWhiteSpace(item.Wt))
+                                wtList.Add(new ComboxItem() { Id =item.Wt, Text = item.Wt });
+                            if(!string.IsNullOrWhiteSpace(item.Threading_type))
+                                threadTypeList.Add(new ComboxItem() { Id = item.Threading_type, Text = item.Threading_type });
+                            if(!string.IsNullOrWhiteSpace(item.Thread_acceptance_criteria_no))
+                                acceptanceNoList.Add(new ComboxItem() { Id = item.Thread_acceptance_criteria_no, Text = item.Thread_acceptance_criteria_no });
+                        }
+                        if (odList.Count > 0)
+                        {
+                            this.cmbOd.DataSource = odList;
+                            this.cmbOd.ValueMember = "id";
+                            this.cmbOd.DisplayMember = "text";
+                            this.cmbOd.SelectedIndex = 0;
+                        }
+                        if (wtList.Count > 0)
+                        {
+                            this.cmbWt.DataSource = wtList;
+                            this.cmbWt.ValueMember = "id";
+                            this.cmbWt.DisplayMember = "text";
+                            this.cmbWt.SelectedIndex = 0;
+                        }
+                        if (threadTypeList.Count > 0)
+                        {
+                            this.cmbThreadType.DataSource = threadTypeList;
+                            this.cmbThreadType.ValueMember = "id";
+                            this.cmbThreadType.DisplayMember = "text";
+                            this.cmbThreadType.SelectedIndex = 0;
+                        }
+                        if (acceptanceNoList.Count > 0)
+                        {
+                            this.cmbAcceptanceNo.DataSource = acceptanceNoList;
+                            this.cmbAcceptanceNo.ValueMember = "id";
+                            this.cmbAcceptanceNo.DisplayMember = "text";
+                            this.cmbAcceptanceNo.SelectedIndex = 0;
+                        }
+                    }
+            }
+            catch (Exception e) {
+                Console.WriteLine("获取查询条件时失败......");
+            }
+        }
+        #endregion
+
+        #region 多线程上传视频
         private static void UploadVideo()
         {
             //删除vcr中的垃圾视频
@@ -111,11 +217,13 @@ namespace YYOPInspectionClient
                     Thread.Sleep(3000);
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 thread.Abort();
             }
-            
-        }
+
+        } 
+        #endregion
 
         #region 分页查询获取数据
 
@@ -123,27 +231,24 @@ namespace YYOPInspectionClient
         {
             try
             {
-                //string couping_no = HttpUtility.UrlEncode(this.textBox1.Text.Trim(), Encoding.UTF8);
-                //string operator_no = HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
-                string pageCurrent = HttpUtility.UrlEncode("", Encoding.UTF8);
-                string pageSize = HttpUtility.UrlEncode("", Encoding.UTF8);
-                //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
-                //string end_time = HttpUtility.UrlEncode(this.dtpEndTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
+                string od = this.cmbOd.Text;
+                string wt = this.cmbWt.Text;
+                string thread_type = this.cmbThreadType.Text;
+                string acceptance_no = this.cmbAcceptanceNo.Text;
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
-                sb.Append("\"couping_no\"" + ":" + "\"" + couping_no + "\",");
-                sb.Append("\"operator_no\"" + ":" + "\"" + operator_no + "\",");
-                //sb.Append("\"begin_time\"" + ":" + "\"" + begin_time + "\",");
-                //sb.Append("\"end_time\"" + ":" + "\"" + end_time + "\",");
-                sb.Append("\"pageCurrent\"" + ":" + "\"" + pageCurrent + "\",");
-                sb.Append("\"pageSize\"" + ":" + "\"" + pageSize + "\"");
+                sb.Append("\"od\"" + ":" + "\"" + od + "\",");
+                sb.Append("\"wt\"" + ":" + "\"" + wt + "\",");
+                sb.Append("\"thread_type\"" + ":" + "\"" + thread_type + "\",");
+                sb.Append("\"acceptance_no\"" + ":" + "\"" + acceptance_no + "\"");
                 sb.Append("}");
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
                 JObject o = JObject.Parse(sb.ToString());
                 String param = o.ToString();
                 byte[] data = encoding.GetBytes(param);
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/ThreadingOperation/getThreadingProcessByLike.action");
+                string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/getThreadInspectionRecordOfWinform.action";
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
@@ -167,37 +272,43 @@ namespace YYOPInspectionClient
                 if (jsons != null) {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    List<ThreadingProcess> list = JsonConvert.DeserializeObject<List<ThreadingProcess>>(rowsJson);
+                    List<ThreadInspectionRecord>list= JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
                     this.dataGridView1.DataSource = list;
                 }
             }
             catch (Exception e) {
-                MessageBox.Show("服务器尚未开启......");
+                Console.WriteLine("获取检验记录时失败......");
             }
            
         }
         #endregion
 
-
+        #region 点击搜索事件
         private void btnSearch_Click(object sender, EventArgs e)
         {
             getThreadingProcessData();
         }
- 
+        #endregion
 
+        #region 菜单栏新建表单事件
         private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
-            ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
+            //ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
+            ThreadingForm form = new ThreadingForm();
             form.Show();
         }
+        #endregion
 
+        #region 菜单栏未提交事件
         private void 未提交ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UnSubmitForm form = new UnSubmitForm();
             form.Show();
         }
+        #endregion
 
+        #region 菜单栏读码器设置事件
         private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (readerCodeWindow == null)
@@ -205,23 +316,28 @@ namespace YYOPInspectionClient
                 readerCodeWindow = new YYKeyenceReaderConsole();
             }
             readerCodeWindow.Show();
-           
-        }
 
+        }
+        #endregion
+
+        #region 菜单栏录像设置事件
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (videoWindow== null)
+            if (videoWindow == null)
             {
                 videoWindow = new MainWindow();
             }
             videoWindow.Show();
         }
+        #endregion
 
+        #region 菜单栏FTP设置事件
         private void fTP设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FTPSetting setting = new FTPSetting();
             setting.Show();
-        }
+        } 
+        #endregion
 
         private void 开启读码器ToolStripMenuItem_Click(object sender, EventArgs e)
         {

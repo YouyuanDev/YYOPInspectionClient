@@ -11,6 +11,8 @@ namespace YYOPInspectionClient
 {
     public partial class AlphabetKeyboardForm : Form
     {
+        public  TextBox inputTxt;
+        public  List<TextBox> flpTabOneTxtList;
         public AlphabetKeyboardForm()
         {
             InitializeComponent();
@@ -93,7 +95,6 @@ namespace YYOPInspectionClient
             //清屏
             this.Textbox_display.Text = "";
         }
-
         private void button_close_Click(object sender, EventArgs e)
         {
             this.Textbox_display.Text = "";
@@ -103,7 +104,15 @@ namespace YYOPInspectionClient
         private void button_enter_Click(object sender, EventArgs e)
         {
             //输入
-
+            if (inputTxt != null) {
+                inputTxt.Text = Textbox_display.Text.Trim();
+                this.Textbox_display.Text = "";
+                int index = flpTabOneTxtList.IndexOf(inputTxt);
+                if(index<flpTabOneTxtList.Count-1)
+                    index++;
+                TextBox tb = flpTabOneTxtList[index];
+                tb.Focus();
+            }
         }
 
         private void button_backspace_Click(object sender, EventArgs e)
@@ -113,5 +122,7 @@ namespace YYOPInspectionClient
                 this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
 
         }
+
+         
     }
 }

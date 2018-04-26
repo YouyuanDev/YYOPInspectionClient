@@ -630,7 +630,6 @@
         #endregion
 
         private System.Windows.Forms.Button button_clear;
-        private System.Windows.Forms.TextBox Textbox_display;
         private System.Windows.Forms.Button button_enter;
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Button button_backspace;
@@ -674,5 +673,6 @@
         private System.Windows.Forms.Button buttonP;
         private System.Windows.Forms.Button button_cap;
         private System.Windows.Forms.Button dot;
+        public System.Windows.Forms.TextBox Textbox_display;
     }
 }

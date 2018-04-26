@@ -246,7 +246,7 @@
             this.button_clear.UseVisualStyleBackColor = true;
             this.button_clear.Click += new System.EventHandler(this.button_clear_Click);
             // 
-            // KeyboardForm
+            // NumberKeyboardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -271,7 +271,7 @@
             this.Controls.Add(this.num2);
             this.Controls.Add(this.num1);
             this.MaximizeBox = false;
-            this.Name = "KeyboardForm";
+            this.Name = "NumberKeyboardForm";
             this.Text = "数字键盘";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -296,7 +296,7 @@
         private System.Windows.Forms.Button button_close;
         private System.Windows.Forms.Button button_accept;
         private System.Windows.Forms.Button button_not_accept;
-        private System.Windows.Forms.TextBox Textbox_display;
         private System.Windows.Forms.Button button_clear;
+        public System.Windows.Forms.TextBox Textbox_display;
     }
 }

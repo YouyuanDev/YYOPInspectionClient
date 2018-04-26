@@ -19,11 +19,15 @@ namespace YYOPInspectionClient
         //防止合同combobox自动执行选中事件
         private bool flag = false;
         private StringBuilder sb = new StringBuilder();
+        private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
+        private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
+        private List<TextBox> flpTabOneTxtList = new List<TextBox>();
+        private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         public ThreadingForm()
         {
             InitializeComponent();
-             
-
+            englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
+            numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
             //this.Font = new Font("宋体", 15, FontStyle.Bold);
             //1------------初始化合同Combobox
             InitContractList();
@@ -86,7 +90,6 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-
         #region 初始化检验记录表单
         public void InitThreadForm()
         {
@@ -97,7 +100,6 @@ namespace YYOPInspectionClient
             }
         } 
         #endregion
-
 
         #region 根据合同编号初始化检验记录表单
         public void GetThreadFormInitData(string contract_no)
@@ -250,13 +252,23 @@ namespace YYOPInspectionClient
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        TextBox tb0 = new TextBox { Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(60, 40) };
+                        Label lbl0_1 = new Label {Text=obj["measure_tool1"].ToString()+":",Location=new Point(10,40),Width=90,TextAlign=ContentAlignment.MiddleRight };
+                        pnl0.Controls.Add(lbl0_1);
+                        TextBox tb0 = new TextBox { Tag="English",Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 40) };
                         pnl0.Controls.Add(tb0);
+                        tb0.Enter += new EventHandler(txt_Enter);
+                        tb0.MouseDown+=new MouseEventHandler(txt_MouseDown);
+                        tb0.Leave += new EventHandler(txt_Leave);
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        TextBox tb1 = new TextBox { Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(60, 90) };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90),Width = 90, TextAlign = ContentAlignment.MiddleRight };
+                        pnl0.Controls.Add(lbl0_2);
+                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 90) };
                         pnl0.Controls.Add(tb1);
+                        tb1.Enter += new EventHandler(txt_Enter);
+                        tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
+                        tb1.Leave += new EventHandler(txt_Leave);
                     }
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
@@ -293,21 +305,39 @@ namespace YYOPInspectionClient
                     panel1.Controls.Add(lbl1_4);
                 }
 
-                //判断是否是A端B端
+                //判断是否有A端B端
                 if (true)
                 {
-                    TextBox tb3 = new TextBox { Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
-                    TextBox tb4 = new TextBox { Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(60, 120) };
+                    Label lbl1_5 = new Label {Text="A:",Location=new Point(20,80),Width=20, TextAlign = ContentAlignment.MiddleRight };
+                    TextBox tb3 = new TextBox { Tag="Number",Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
+                    Label lbl1_6 = new Label { Text="B:", Location = new Point(20,120), Width = 20,TextAlign=ContentAlignment.MiddleRight };
+                    TextBox tb4 = new TextBox { Tag = "Number",Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(60, 120) };
+                    panel1.Controls.Add(lbl1_5);
+                    panel1.Controls.Add(lbl1_6);
                     panel1.Controls.Add(tb3);
                     panel1.Controls.Add(tb4);
+                    tb3.Enter += new EventHandler(txt_Enter);
+                    tb3.MouseDown += new MouseEventHandler(txt_MouseDown);
+                    tb3.Leave += new EventHandler(txt_Leave);
+                    tb4.Enter += new EventHandler(txt_Enter);
+                    tb4.MouseDown += new MouseEventHandler(txt_MouseDown);
+                    tb4.Leave += new EventHandler(txt_Leave);
                 }
                 else
                 {
-                    TextBox tb5 = new TextBox { Name = obj["measure_item_code"].ToString() + "_Value", Location = new Point(60, 80) };
+                    TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
                     panel1.Controls.Add(tb5);
+                    tb5.Enter += new EventHandler(txt_Enter);
+                    tb5.MouseDown += new MouseEventHandler(txt_MouseDown);
+
+                    tb5.Leave += new EventHandler(txt_Leave);
                 }
                 this.flpTabTwoContent.Controls.Add(panel1);
             }
+            flpTabOneTxtList.Clear();
+            flpTabTwoTxtList.Clear();
+            GoThroughControls(this.flpTabOneContent,flpTabOneTxtList);
+            GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
         } 
         #endregion
 
@@ -355,51 +385,161 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        private void ThreadFormSubmit() {
-            sb.Remove(0,sb.Length);
+        #region 表单提交
+        private void ThreadFormSubmit()
+        {
+            sb.Remove(0, sb.Length);
             sb.Append("{");
-            sb.Append("\"couping_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
-            sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.SelectedValue.ToString(), Encoding.UTF8) + "\",");
-            sb.Append("\"production_line\"" + ":" + "\"" + HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) + "\",");
-            sb.Append("\"machine_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) + "\",");
+            sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
+            sb.Append("\"couping_no\"" + ":" + "\"" + txtCoupingNo.Text.Trim() + "\",");
+            sb.Append("\"contract_no\"" + ":" + "\"" + this.cmbContractNo.SelectedValue.ToString() + "\",");
+            sb.Append("\"production_line\"" + ":" + "\"" + txtProductionArea.Text.Trim() + "\",");
+            sb.Append("\"machine_no\"" + ":" + "\"" + txtMachineNo.Text.Trim() + "\",");
             //sb.Append("\"process_no\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
-            sb.Append("\"operator_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8) + "\",");
+            sb.Append("\"operator_no\"" + ":" + "\"" + txtOperatorNo.Text.Trim() + "\",");
             sb.Append("\"production_crew\"" + ":" + "\"" + this.cmbProductionCrew.Text + "\",");
-             sb.Append("\"production_shift\"" + ":" + "\"" + this.cmbProductionShift.Text + "\",");
-            sb.Append("\"video_no\"" + ":" + "\"" + HttpUtility.UrlEncode("", Encoding.UTF8) + "\",");
+            sb.Append("\"production_shift\"" + ":" + "\"" + this.cmbProductionShift.Text + "\",");
+            sb.Append("\"video_no\"" + ":" + "\"" + "" + "\",");
             //sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
-            GoThroughControls(this.flpTabOneContent);
-            GoThroughControls(this.flpTabTwoContent);
+            foreach (TextBox tb in flpTabOneTxtList)
+            {
+                sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
+            }
+            foreach (TextBox tb in flpTabTwoTxtList)
+            {
+                sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
+            }
             string formData = sb.ToString();
-            formData = formData.Substring(0, formData.LastIndexOf(","));
-            sb.Append("}");
-            MessageBox.Show(formData);
-        }
-
+            formData = formData.Substring(0, formData.LastIndexOf(",")) + "}";
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            String content = "";
+            JObject o = JObject.Parse(formData);
+            String param = o.ToString();
+            byte[] data = encoding.GetBytes(param);
+            string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.KeepAlive = false;
+            request.Method = "POST";
+            request.ContentType = "application/json;characterSet:UTF-8";
+            request.ContentLength = data.Length;
+            using (Stream sm = request.GetRequestStream())
+            {
+                sm.Write(data, 0, data.Length);
+            }
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream streamResponse = response.GetResponseStream();
+            StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+            Char[] readBuff = new Char[1024];
+            int count = streamRead.Read(readBuff, 0, 1024);
+            while (count > 0)
+            {
+                String outputData = new String(readBuff, 0, count);
+                content += outputData;
+                count = streamRead.Read(readBuff, 0, 1024);
+            }
+            response.Close();
+            string jsons = content;
+            MessageBox.Show(jsons);
+            if (jsons != null)
+            {
+                JObject jobject = JObject.Parse(jsons);
+                string rowsJson = jobject["rowsData"].ToString();
+                if (rowsJson.Trim().Equals("success"))
+                {
+                    MessageBox.Show("提交成功!");
+                }
+                else {
+                    MessageBox.Show("提交失败,表单暂时保存在本地!");
+                }
+            }
+        } 
+        #endregion
 
         #region 遍历封装提交项函数
-        private void GoThroughControls(Control parContainer)
+        private void GoThroughControls(Control parContainer,List<TextBox>list)
         {
             for (int index = 0; index < parContainer.Controls.Count; index++)
             {
                 // 如果是容器类控件，递归调用自己
                 if (parContainer.Controls[index].HasChildren)
                 {
-                    GoThroughControls(parContainer.Controls[index]);
+                    GoThroughControls(parContainer.Controls[index],list);
                 }
                 else
                 {
                     switch (parContainer.Controls[index].GetType().Name)
                     {
                         case "TextBox":
-                            sb.Append("\""+ parContainer.Controls[index].Name+ "\"" + ":" + "\""+ HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
+                            list.Add((TextBox)parContainer.Controls[index]);
+                            //sb.Append("\""+ parContainer.Controls[index].Name+ "\"" + ":" + "\""+ HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
                             //parContainer.Controls[index].Text = "";
                             break;
                     }
                 }
             }
-        } 
+        }
         #endregion
 
+        #region 时间改变事件
+        private void dtpInspectionTime_ValueChanged(object sender, EventArgs e)
+        {
+            this.dtpInspectionTime.Value = DateTime.Now;
+        }
+        #endregion
+
+        #region 输入框获取焦点事件
+        private void txt_Enter(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Tag.Equals("English"))
+            {
+                englishKeyboard.inputTxt = tb;
+                englishKeyboard.Textbox_display.Text = tb.Text.Trim();
+                englishKeyboard.Show();
+            }
+            else
+            {
+                numberKeyboard.inputTxt = tb;
+                numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                numberKeyboard.Show();
+            }
+        }
+        #endregion
+
+        #region 输入框失去焦点事件
+        private void txt_Leave(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Tag.Equals("English"))
+            {
+                englishKeyboard.Hide();
+            }
+            else
+            {
+                numberKeyboard.Hide();
+            }
+        }
+        #endregion
+
+        #region 鼠标点击输入框事件
+        private void txt_MouseDown(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Tag.Equals("English"))
+            {
+                englishKeyboard.inputTxt = tb;
+                englishKeyboard.Textbox_display.Text = tb.Text.Trim();
+                englishKeyboard.Show();
+                englishKeyboard.TopMost = true;
+            }
+            else
+            {
+                numberKeyboard.inputTxt = tb;
+                numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                numberKeyboard.Show();
+                numberKeyboard.TopMost = true;
+            }
+        } 
+        #endregion
     }
 }

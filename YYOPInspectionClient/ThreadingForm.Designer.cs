@@ -41,11 +41,12 @@
             this.label14 = new System.Windows.Forms.Label();
             this.flpTabOneContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabOneTitle = new System.Windows.Forms.Panel();
+            this.cmbProductionShift = new System.Windows.Forms.ComboBox();
+            this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
             this.cmbContractNo = new System.Windows.Forms.ComboBox();
             this.txtOperatorName = new System.Windows.Forms.TextBox();
             this.txtOperatorNo = new System.Windows.Forms.TextBox();
             this.txtMachineNo = new System.Windows.Forms.TextBox();
-            this.txtInspectionTime = new System.Windows.Forms.TextBox();
             this.txtProductionArea = new System.Windows.Forms.TextBox();
             this.txtCriteriaNo = new System.Windows.Forms.TextBox();
             this.txtTreadWt = new System.Windows.Forms.TextBox();
@@ -68,6 +69,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
+            this.btnFormClose = new System.Windows.Forms.Button();
+            this.btnFormSubmit = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.txtBatchNo = new System.Windows.Forms.TextBox();
@@ -80,10 +83,7 @@
             this.lblSteelGrade = new System.Windows.Forms.Label();
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
-            this.btnFormSubmit = new System.Windows.Forms.Button();
-            this.btnFormClose = new System.Windows.Forms.Button();
-            this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
-            this.cmbProductionShift = new System.Windows.Forms.ComboBox();
+            this.dtpInspectionTime = new System.Windows.Forms.DateTimePicker();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
@@ -139,6 +139,7 @@
             // 
             this.txtThreadDrawingNo.Location = new System.Drawing.Point(654, 15);
             this.txtThreadDrawingNo.Name = "txtThreadDrawingNo";
+            this.txtThreadDrawingNo.ReadOnly = true;
             this.txtThreadDrawingNo.Size = new System.Drawing.Size(100, 21);
             this.txtThreadDrawingNo.TabIndex = 7;
             // 
@@ -146,6 +147,7 @@
             // 
             this.txtSealPatternNo.Location = new System.Drawing.Point(448, 15);
             this.txtSealPatternNo.Name = "txtSealPatternNo";
+            this.txtSealPatternNo.ReadOnly = true;
             this.txtSealPatternNo.Size = new System.Drawing.Size(100, 21);
             this.txtSealPatternNo.TabIndex = 6;
             // 
@@ -153,6 +155,7 @@
             // 
             this.txtHandbookNo.Location = new System.Drawing.Point(235, 16);
             this.txtHandbookNo.Name = "txtHandbookNo";
+            this.txtHandbookNo.ReadOnly = true;
             this.txtHandbookNo.Size = new System.Drawing.Size(100, 21);
             this.txtHandbookNo.TabIndex = 5;
             // 
@@ -160,6 +163,7 @@
             // 
             this.txtDrawingNo.Location = new System.Drawing.Point(64, 16);
             this.txtDrawingNo.Name = "txtDrawingNo";
+            this.txtDrawingNo.ReadOnly = true;
             this.txtDrawingNo.Size = new System.Drawing.Size(100, 21);
             this.txtDrawingNo.TabIndex = 4;
             // 
@@ -211,13 +215,13 @@
             // 
             // pnlTabOneTitle
             // 
+            this.pnlTabOneTitle.Controls.Add(this.dtpInspectionTime);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionShift);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionCrew);
             this.pnlTabOneTitle.Controls.Add(this.cmbContractNo);
             this.pnlTabOneTitle.Controls.Add(this.txtOperatorName);
             this.pnlTabOneTitle.Controls.Add(this.txtOperatorNo);
             this.pnlTabOneTitle.Controls.Add(this.txtMachineNo);
-            this.pnlTabOneTitle.Controls.Add(this.txtInspectionTime);
             this.pnlTabOneTitle.Controls.Add(this.txtProductionArea);
             this.pnlTabOneTitle.Controls.Add(this.txtCriteriaNo);
             this.pnlTabOneTitle.Controls.Add(this.txtTreadWt);
@@ -242,6 +246,32 @@
             this.pnlTabOneTitle.Size = new System.Drawing.Size(1143, 132);
             this.pnlTabOneTitle.TabIndex = 0;
             // 
+            // cmbProductionShift
+            // 
+            this.cmbProductionShift.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProductionShift.FormattingEnabled = true;
+            this.cmbProductionShift.Items.AddRange(new object[] {
+            "白班",
+            "夜班"});
+            this.cmbProductionShift.Location = new System.Drawing.Point(534, 60);
+            this.cmbProductionShift.Name = "cmbProductionShift";
+            this.cmbProductionShift.Size = new System.Drawing.Size(121, 20);
+            this.cmbProductionShift.TabIndex = 28;
+            // 
+            // cmbProductionCrew
+            // 
+            this.cmbProductionCrew.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProductionCrew.FormattingEnabled = true;
+            this.cmbProductionCrew.Items.AddRange(new object[] {
+            "甲",
+            "乙",
+            "丙",
+            "丁"});
+            this.cmbProductionCrew.Location = new System.Drawing.Point(328, 63);
+            this.cmbProductionCrew.Name = "cmbProductionCrew";
+            this.cmbProductionCrew.Size = new System.Drawing.Size(121, 20);
+            this.cmbProductionCrew.TabIndex = 27;
+            // 
             // cmbContractNo
             // 
             this.cmbContractNo.FormattingEnabled = true;
@@ -255,6 +285,7 @@
             // 
             this.txtOperatorName.Location = new System.Drawing.Point(534, 106);
             this.txtOperatorName.Name = "txtOperatorName";
+            this.txtOperatorName.ReadOnly = true;
             this.txtOperatorName.Size = new System.Drawing.Size(100, 21);
             this.txtOperatorName.TabIndex = 25;
             // 
@@ -262,6 +293,7 @@
             // 
             this.txtOperatorNo.Location = new System.Drawing.Point(328, 106);
             this.txtOperatorNo.Name = "txtOperatorNo";
+            this.txtOperatorNo.ReadOnly = true;
             this.txtOperatorNo.Size = new System.Drawing.Size(100, 21);
             this.txtOperatorNo.TabIndex = 24;
             // 
@@ -269,15 +301,9 @@
             // 
             this.txtMachineNo.Location = new System.Drawing.Point(87, 106);
             this.txtMachineNo.Name = "txtMachineNo";
+            this.txtMachineNo.ReadOnly = true;
             this.txtMachineNo.Size = new System.Drawing.Size(100, 21);
             this.txtMachineNo.TabIndex = 23;
-            // 
-            // txtInspectionTime
-            // 
-            this.txtInspectionTime.Location = new System.Drawing.Point(942, 63);
-            this.txtInspectionTime.Name = "txtInspectionTime";
-            this.txtInspectionTime.Size = new System.Drawing.Size(100, 21);
-            this.txtInspectionTime.TabIndex = 22;
             // 
             // txtProductionArea
             // 
@@ -290,6 +316,7 @@
             // 
             this.txtCriteriaNo.Location = new System.Drawing.Point(87, 54);
             this.txtCriteriaNo.Name = "txtCriteriaNo";
+            this.txtCriteriaNo.ReadOnly = true;
             this.txtCriteriaNo.Size = new System.Drawing.Size(100, 21);
             this.txtCriteriaNo.TabIndex = 18;
             // 
@@ -297,6 +324,7 @@
             // 
             this.txtTreadWt.Location = new System.Drawing.Point(942, 16);
             this.txtTreadWt.Name = "txtTreadWt";
+            this.txtTreadWt.ReadOnly = true;
             this.txtTreadWt.Size = new System.Drawing.Size(100, 21);
             this.txtTreadWt.TabIndex = 17;
             // 
@@ -304,6 +332,7 @@
             // 
             this.txtOdDiameter.Location = new System.Drawing.Point(732, 13);
             this.txtOdDiameter.Name = "txtOdDiameter";
+            this.txtOdDiameter.ReadOnly = true;
             this.txtOdDiameter.Size = new System.Drawing.Size(100, 21);
             this.txtOdDiameter.TabIndex = 16;
             // 
@@ -311,6 +340,7 @@
             // 
             this.txtThreadType.Location = new System.Drawing.Point(534, 16);
             this.txtThreadType.Name = "txtThreadType";
+            this.txtThreadType.ReadOnly = true;
             this.txtThreadType.Size = new System.Drawing.Size(100, 21);
             this.txtThreadType.TabIndex = 15;
             // 
@@ -318,6 +348,7 @@
             // 
             this.txtMachiningContractNo.Location = new System.Drawing.Point(328, 13);
             this.txtMachiningContractNo.Name = "txtMachiningContractNo";
+            this.txtMachiningContractNo.ReadOnly = true;
             this.txtMachiningContractNo.Size = new System.Drawing.Size(100, 21);
             this.txtMachiningContractNo.TabIndex = 13;
             // 
@@ -416,9 +447,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(459, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 12);
+            this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 2;
-            this.label3.Text = "螺纹:";
+            this.label3.Text = "螺纹类型:";
             // 
             // label2
             // 
@@ -484,6 +515,26 @@
             this.pnlTabTwoTitle.Name = "pnlTabTwoTitle";
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1193, 96);
             this.pnlTabTwoTitle.TabIndex = 0;
+            // 
+            // btnFormClose
+            // 
+            this.btnFormClose.Location = new System.Drawing.Point(914, 35);
+            this.btnFormClose.Name = "btnFormClose";
+            this.btnFormClose.Size = new System.Drawing.Size(101, 39);
+            this.btnFormClose.TabIndex = 13;
+            this.btnFormClose.Text = "关闭";
+            this.btnFormClose.UseVisualStyleBackColor = true;
+            this.btnFormClose.Click += new System.EventHandler(this.btnFormClose_Click);
+            // 
+            // btnFormSubmit
+            // 
+            this.btnFormSubmit.Location = new System.Drawing.Point(1037, 35);
+            this.btnFormSubmit.Name = "btnFormSubmit";
+            this.btnFormSubmit.Size = new System.Drawing.Size(95, 39);
+            this.btnFormSubmit.TabIndex = 12;
+            this.btnFormSubmit.Text = "提交";
+            this.btnFormSubmit.UseVisualStyleBackColor = true;
+            this.btnFormSubmit.Click += new System.EventHandler(this.btnFormSubmit_Click);
             // 
             // button2
             // 
@@ -587,51 +638,15 @@
             this.lblOd.TabIndex = 0;
             this.lblOd.Text = "label72";
             // 
-            // btnFormSubmit
+            // dtpInspectionTime
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(1037, 35);
-            this.btnFormSubmit.Name = "btnFormSubmit";
-            this.btnFormSubmit.Size = new System.Drawing.Size(95, 39);
-            this.btnFormSubmit.TabIndex = 12;
-            this.btnFormSubmit.Text = "提交";
-            this.btnFormSubmit.UseVisualStyleBackColor = true;
-            this.btnFormSubmit.Click += new System.EventHandler(this.btnFormSubmit_Click);
-            // 
-            // btnFormClose
-            // 
-            this.btnFormClose.Location = new System.Drawing.Point(914, 35);
-            this.btnFormClose.Name = "btnFormClose";
-            this.btnFormClose.Size = new System.Drawing.Size(101, 39);
-            this.btnFormClose.TabIndex = 13;
-            this.btnFormClose.Text = "关闭";
-            this.btnFormClose.UseVisualStyleBackColor = true;
-            this.btnFormClose.Click += new System.EventHandler(this.btnFormClose_Click);
-            // 
-            // cmbProductionCrew
-            // 
-            this.cmbProductionCrew.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProductionCrew.FormattingEnabled = true;
-            this.cmbProductionCrew.Items.AddRange(new object[] {
-            "甲",
-            "乙",
-            "丙",
-            "丁"});
-            this.cmbProductionCrew.Location = new System.Drawing.Point(328, 63);
-            this.cmbProductionCrew.Name = "cmbProductionCrew";
-            this.cmbProductionCrew.Size = new System.Drawing.Size(121, 20);
-            this.cmbProductionCrew.TabIndex = 27;
-            // 
-            // cmbProductionShift
-            // 
-            this.cmbProductionShift.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProductionShift.FormattingEnabled = true;
-            this.cmbProductionShift.Items.AddRange(new object[] {
-            "白班",
-            "夜班"});
-            this.cmbProductionShift.Location = new System.Drawing.Point(534, 60);
-            this.cmbProductionShift.Name = "cmbProductionShift";
-            this.cmbProductionShift.Size = new System.Drawing.Size(121, 20);
-            this.cmbProductionShift.TabIndex = 28;
+            this.dtpInspectionTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.dtpInspectionTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpInspectionTime.Location = new System.Drawing.Point(942, 61);
+            this.dtpInspectionTime.Name = "dtpInspectionTime";
+            this.dtpInspectionTime.Size = new System.Drawing.Size(151, 21);
+            this.dtpInspectionTime.TabIndex = 29;
+            this.dtpInspectionTime.ValueChanged += new System.EventHandler(this.dtpInspectionTime_ValueChanged);
             // 
             // ThreadingForm
             // 
@@ -687,7 +702,6 @@
         private System.Windows.Forms.TextBox txtOperatorName;
         private System.Windows.Forms.TextBox txtOperatorNo;
         private System.Windows.Forms.TextBox txtMachineNo;
-        private System.Windows.Forms.TextBox txtInspectionTime;
         private System.Windows.Forms.TextBox txtProductionArea;
         private System.Windows.Forms.TextBox txtCriteriaNo;
         private System.Windows.Forms.TextBox txtTreadWt;
@@ -712,5 +726,6 @@
         private System.Windows.Forms.Button btnFormClose;
         private System.Windows.Forms.ComboBox cmbProductionShift;
         private System.Windows.Forms.ComboBox cmbProductionCrew;
+        private System.Windows.Forms.DateTimePicker dtpInspectionTime;
     }
 }

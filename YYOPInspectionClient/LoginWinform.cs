@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows.Forms;
 using AutoUpdaterDotNET;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace YYOPInspectionClient
 {
@@ -35,20 +36,26 @@ namespace YYOPInspectionClient
             }
         }
 
+        #region 用户点击登录事件
         private void button1_Click(object sender, EventArgs e)
         {
-            string uname = this.textBox1.Text.Trim();
+            string employee_no = this.textBox1.Text.Trim();
             string upwd = this.textBox2.Text.Trim();
             var httpStatusCode = 200;
             try
             {
-                //StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("{");
+                sb.Append("\"employee_no\"" + ":" + "\"" + employee_no + "\",");
+                sb.Append("\"ppassword\"" + ":" + "\"" + upwd + "\"");
+                sb.Append("}");
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                //JObject o = JObject.Parse(sb.ToString());
-                String param = "";
+                JObject o = JObject.Parse(sb.ToString());
+                String param = o.ToString();
                 byte[] data = encoding.GetBytes(param);
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/Login/commitLogin.action?employee_no=" + uname + "&ppassword=" + upwd);
+                string url = CommonUtil.getServerIpAndPort() + "Login/userLoginOfWinform.action";
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
                 request.ContentType = "application/json;characterSet:UTF-8";
@@ -72,47 +79,53 @@ namespace YYOPInspectionClient
                 string jsons = content;
                 if (jsons != null)
                 {
-
-                    JObject jobject = JObject.Parse(jsons);
-                    string result = jobject["success"].ToString();
-                    if (result == "True")
+                    if (jsons.Trim().Equals("{}"))
                     {
-                        // this.Close();
-                        new IndexWindow().Show();
-                        this.Hide();
-                    }
-                    else {
                         MessageBox.Show("用户名或密码错误!");
                     }
-                    //List<ComboxItem> list = JsonConvert.DeserializeObject<List<ComboxItem>>(rowsJson);
-                    //this.comboBox2.DataSource = list;
-                    //this.comboBox2.ValueMember = "id";
-                    //this.comboBox2.DisplayMember = "text";
+                    else {
+                        JObject jobject = JObject.Parse(jsons);
+                        string rowsJson = jobject["rowsData"].ToString();
+                        if (rowsJson != null)
+                        {
+                            Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
+                            new IndexWindow().Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("用户名或密码错误!");
+                        }
+                    }
                 }
                 httpStatusCode = Convert.ToInt32(response.StatusCode);
             }
             catch (WebException ex)
             {
                 var rsp = ex.Response as HttpWebResponse;
-                httpStatusCode =Convert.ToInt32(rsp.StatusCode);
-            } catch (Exception ec) {
+                httpStatusCode = Convert.ToInt32(rsp.StatusCode);
+            }
+            catch (Exception ec)
+            {
                 MessageBox.Show("服务器尚未开启......");
-                if (uname == "admin" && upwd == "admin")
+                if (employee_no == "admin" && upwd == "admin")
                 {
                     IndexWindow index = new IndexWindow();
                     index.Show();
                     this.Close();
                 }
             }
-            if (httpStatusCode!= 200){
+            if (httpStatusCode != 200)
+            {
                 MessageBox.Show("服务器未响应.....");
-                if (uname == "admin" && upwd == "admin")
+                if (employee_no == "admin" && upwd == "admin")
                 {
                     IndexWindow index = new IndexWindow();
                     index.Show();
                     this.Close();
                 }
             }
-        }
+        } 
+        #endregion
     }
 }

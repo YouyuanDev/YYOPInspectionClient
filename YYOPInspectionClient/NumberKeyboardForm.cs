@@ -11,6 +11,8 @@ namespace YYOPInspectionClient
 {
     public partial class NumberKeyboardForm : Form
     {
+        public TextBox inputTxt;
+        public List<TextBox> flpTabTwoTxtList;
         public NumberKeyboardForm()
         {
             InitializeComponent();
@@ -69,6 +71,15 @@ namespace YYOPInspectionClient
                 this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
             }
             //
+            if (inputTxt != null) {
+                inputTxt.Text = this.Textbox_display.Text.Trim();
+                this.Textbox_display.Text = "";
+                int index = flpTabTwoTxtList.IndexOf(inputTxt);
+                if (index < flpTabTwoTxtList.Count - 1)
+                    index++;
+                TextBox tb = flpTabTwoTxtList[index];
+                tb.Focus();
+            }
         }
 
         private void button_backspace_Click(object sender, EventArgs e)

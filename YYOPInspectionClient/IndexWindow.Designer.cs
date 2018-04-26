@@ -30,63 +30,11 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.test_batch_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.steel_grade = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.texture = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_area = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.couping_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.process_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.visual_inspection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_tooth_pitch_diameter_max = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_tooth_pitch_diameter_avg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_tooth_pitch_diameter_min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_sealing_surface_diameter_max = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_sealing_surface_diameter_avg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_sealing_surface_diameter_min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_sealing_surface_ovality = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_width = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_pitch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_taper = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_height = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_length_min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_bearing_surface_width = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.couping_inner_end_depth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_hole_inner_diameter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.couping_od = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.couping_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_tooth_angle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_throug_hole_size = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tool_measuring_record_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_pitch_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_pitch_calibration_framwork = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sealing_surface_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sealing_surface_calibration_ring_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.depth_caliper_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.threading_distance_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_distance_calibration_sample_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.taper_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tooth_height_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tooth_height_calibration_sample_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tooth_width_stop_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_min_length_sample_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coupling_length_sample_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.caliper_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.caliper_tolerance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.collar_gauge_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_acceptance_criteria_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbAcceptanceNo = new System.Windows.Forms.ComboBox();
+            this.cmbThreadType = new System.Windows.Forms.ComboBox();
+            this.cmbWt = new System.Windows.Forms.ComboBox();
+            this.cmbOd = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -102,6 +50,18 @@
             this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.couping_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_area = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.visual_inspection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.thread_tooth_pitch_diameter_max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.thread_acceptance_criteria_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -126,58 +86,19 @@
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.contract_no,
+            this.couping_no,
             this.heat_no,
-            this.test_batch_no,
-            this.steel_grade,
-            this.texture,
             this.production_area,
             this.machine_no,
-            this.couping_no,
-            this.process_no,
             this.operator_no,
             this.visual_inspection,
             this.thread_tooth_pitch_diameter_max,
-            this.thread_tooth_pitch_diameter_avg,
-            this.thread_tooth_pitch_diameter_min,
-            this.thread_sealing_surface_diameter_max,
-            this.thread_sealing_surface_diameter_avg,
-            this.thread_sealing_surface_diameter_min,
-            this.thread_sealing_surface_ovality,
-            this.thread_width,
-            this.thread_pitch,
-            this.thread_taper,
-            this.thread_height,
-            this.thread_length_min,
-            this.thread_bearing_surface_width,
-            this.couping_inner_end_depth,
-            this.thread_hole_inner_diameter,
-            this.couping_od,
-            this.couping_length,
-            this.thread_tooth_angle,
-            this.thread_throug_hole_size,
             this.video_no,
-            this.tool_measuring_record_no,
-            this.thread_pitch_gauge_no,
-            this.thread_pitch_calibration_framwork,
-            this.sealing_surface_gauge_no,
-            this.sealing_surface_calibration_ring_no,
-            this.depth_caliper_no,
-            this.threading_distance_gauge_no,
-            this.thread_distance_calibration_sample_no,
-            this.taper_gauge_no,
-            this.tooth_height_gauge_no,
-            this.tooth_height_calibration_sample_no,
-            this.tooth_width_stop_gauge_no,
-            this.thread_min_length_sample_no,
-            this.coupling_length_sample_no,
-            this.caliper_no,
-            this.caliper_tolerance,
-            this.collar_gauge_no,
-            this.inspection_result,
             this.thread_acceptance_criteria_no,
             this.inspection_time});
             this.dataGridView1.Location = new System.Drawing.Point(0, 64);
@@ -190,384 +111,6 @@
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "流水号";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            // 
-            // contract_no
-            // 
-            this.contract_no.DataPropertyName = "contract_no";
-            this.contract_no.HeaderText = "合同号";
-            this.contract_no.Name = "contract_no";
-            this.contract_no.ReadOnly = true;
-            // 
-            // heat_no
-            // 
-            this.heat_no.DataPropertyName = "heat_no";
-            this.heat_no.HeaderText = "炉号";
-            this.heat_no.Name = "heat_no";
-            this.heat_no.ReadOnly = true;
-            // 
-            // test_batch_no
-            // 
-            this.test_batch_no.DataPropertyName = "test_batch_no";
-            this.test_batch_no.HeaderText = "试批号";
-            this.test_batch_no.Name = "test_batch_no";
-            this.test_batch_no.ReadOnly = true;
-            // 
-            // steel_grade
-            // 
-            this.steel_grade.DataPropertyName = "steel_grade";
-            this.steel_grade.HeaderText = "钢级";
-            this.steel_grade.Name = "steel_grade";
-            this.steel_grade.ReadOnly = true;
-            // 
-            // texture
-            // 
-            this.texture.DataPropertyName = "texture";
-            this.texture.HeaderText = "材质";
-            this.texture.Name = "texture";
-            this.texture.ReadOnly = true;
-            // 
-            // production_area
-            // 
-            this.production_area.DataPropertyName = "production_area";
-            this.production_area.HeaderText = "生产区域";
-            this.production_area.Name = "production_area";
-            this.production_area.ReadOnly = true;
-            // 
-            // machine_no
-            // 
-            this.machine_no.DataPropertyName = "machine_no";
-            this.machine_no.HeaderText = "机床号";
-            this.machine_no.Name = "machine_no";
-            this.machine_no.ReadOnly = true;
-            // 
-            // couping_no
-            // 
-            this.couping_no.DataPropertyName = "couping_no";
-            this.couping_no.HeaderText = "接箍编号";
-            this.couping_no.Name = "couping_no";
-            this.couping_no.ReadOnly = true;
-            // 
-            // process_no
-            // 
-            this.process_no.DataPropertyName = "process_no";
-            this.process_no.HeaderText = "工位编号";
-            this.process_no.Name = "process_no";
-            this.process_no.ReadOnly = true;
-            // 
-            // operator_no
-            // 
-            this.operator_no.DataPropertyName = "operator_no";
-            this.operator_no.HeaderText = "操作工工号";
-            this.operator_no.Name = "operator_no";
-            this.operator_no.ReadOnly = true;
-            // 
-            // visual_inspection
-            // 
-            this.visual_inspection.DataPropertyName = "visual_inspection";
-            this.visual_inspection.HeaderText = "视觉检验";
-            this.visual_inspection.Name = "visual_inspection";
-            this.visual_inspection.ReadOnly = true;
-            // 
-            // thread_tooth_pitch_diameter_max
-            // 
-            this.thread_tooth_pitch_diameter_max.DataPropertyName = "thread_tooth_pitch_diameter_max";
-            this.thread_tooth_pitch_diameter_max.HeaderText = "螺纹齿顶中径最大值";
-            this.thread_tooth_pitch_diameter_max.Name = "thread_tooth_pitch_diameter_max";
-            this.thread_tooth_pitch_diameter_max.ReadOnly = true;
-            // 
-            // thread_tooth_pitch_diameter_avg
-            // 
-            this.thread_tooth_pitch_diameter_avg.DataPropertyName = "thread_tooth_pitch_diameter_avg";
-            this.thread_tooth_pitch_diameter_avg.HeaderText = "螺纹齿顶中径平均值";
-            this.thread_tooth_pitch_diameter_avg.Name = "thread_tooth_pitch_diameter_avg";
-            this.thread_tooth_pitch_diameter_avg.ReadOnly = true;
-            // 
-            // thread_tooth_pitch_diameter_min
-            // 
-            this.thread_tooth_pitch_diameter_min.DataPropertyName = "thread_tooth_pitch_diameter_min";
-            this.thread_tooth_pitch_diameter_min.HeaderText = "螺纹齿顶中径最小值";
-            this.thread_tooth_pitch_diameter_min.Name = "thread_tooth_pitch_diameter_min";
-            this.thread_tooth_pitch_diameter_min.ReadOnly = true;
-            // 
-            // thread_sealing_surface_diameter_max
-            // 
-            this.thread_sealing_surface_diameter_max.DataPropertyName = "thread_sealing_surface_diameter_max";
-            this.thread_sealing_surface_diameter_max.HeaderText = "螺纹密封面直径最大值";
-            this.thread_sealing_surface_diameter_max.Name = "thread_sealing_surface_diameter_max";
-            this.thread_sealing_surface_diameter_max.ReadOnly = true;
-            // 
-            // thread_sealing_surface_diameter_avg
-            // 
-            this.thread_sealing_surface_diameter_avg.DataPropertyName = "thread_sealing_surface_diameter_avg";
-            this.thread_sealing_surface_diameter_avg.HeaderText = "螺纹密封面直径平均值";
-            this.thread_sealing_surface_diameter_avg.Name = "thread_sealing_surface_diameter_avg";
-            this.thread_sealing_surface_diameter_avg.ReadOnly = true;
-            // 
-            // thread_sealing_surface_diameter_min
-            // 
-            this.thread_sealing_surface_diameter_min.DataPropertyName = "thread_sealing_surface_diameter_min";
-            this.thread_sealing_surface_diameter_min.HeaderText = "螺纹密封面直径最小值";
-            this.thread_sealing_surface_diameter_min.Name = "thread_sealing_surface_diameter_min";
-            this.thread_sealing_surface_diameter_min.ReadOnly = true;
-            this.thread_sealing_surface_diameter_min.Visible = false;
-            // 
-            // thread_sealing_surface_ovality
-            // 
-            this.thread_sealing_surface_ovality.DataPropertyName = "thread_sealing_surface_ovality";
-            this.thread_sealing_surface_ovality.HeaderText = "螺纹及密封面椭圆度";
-            this.thread_sealing_surface_ovality.Name = "thread_sealing_surface_ovality";
-            this.thread_sealing_surface_ovality.ReadOnly = true;
-            // 
-            // thread_width
-            // 
-            this.thread_width.DataPropertyName = "thread_width";
-            this.thread_width.HeaderText = "螺纹齿宽";
-            this.thread_width.Name = "thread_width";
-            this.thread_width.ReadOnly = true;
-            // 
-            // thread_pitch
-            // 
-            this.thread_pitch.DataPropertyName = "thread_pitch";
-            this.thread_pitch.HeaderText = "螺纹螺距";
-            this.thread_pitch.Name = "thread_pitch";
-            this.thread_pitch.ReadOnly = true;
-            // 
-            // thread_taper
-            // 
-            this.thread_taper.DataPropertyName = "thread_taper";
-            this.thread_taper.HeaderText = "螺纹锥度";
-            this.thread_taper.Name = "thread_taper";
-            this.thread_taper.ReadOnly = true;
-            // 
-            // thread_height
-            // 
-            this.thread_height.DataPropertyName = "thread_height";
-            this.thread_height.HeaderText = "螺纹齿高";
-            this.thread_height.Name = "thread_height";
-            this.thread_height.ReadOnly = true;
-            // 
-            // thread_length_min
-            // 
-            this.thread_length_min.DataPropertyName = "thread_length_min";
-            this.thread_length_min.HeaderText = "最小螺纹长度";
-            this.thread_length_min.Name = "thread_length_min";
-            this.thread_length_min.ReadOnly = true;
-            // 
-            // thread_bearing_surface_width
-            // 
-            this.thread_bearing_surface_width.DataPropertyName = "thread_bearing_surface_width";
-            this.thread_bearing_surface_width.HeaderText = "承载面宽度";
-            this.thread_bearing_surface_width.Name = "thread_bearing_surface_width";
-            this.thread_bearing_surface_width.ReadOnly = true;
-            // 
-            // couping_inner_end_depth
-            // 
-            this.couping_inner_end_depth.DataPropertyName = "couping_inner_end_depth";
-            this.couping_inner_end_depth.HeaderText = "内端面宽度";
-            this.couping_inner_end_depth.Name = "couping_inner_end_depth";
-            this.couping_inner_end_depth.ReadOnly = true;
-            // 
-            // thread_hole_inner_diameter
-            // 
-            this.thread_hole_inner_diameter.DataPropertyName = "thread_hole_inner_diameter";
-            this.thread_hole_inner_diameter.HeaderText = "通孔内径";
-            this.thread_hole_inner_diameter.Name = "thread_hole_inner_diameter";
-            this.thread_hole_inner_diameter.ReadOnly = true;
-            // 
-            // couping_od
-            // 
-            this.couping_od.DataPropertyName = "couping_od";
-            this.couping_od.HeaderText = "接箍外径";
-            this.couping_od.Name = "couping_od";
-            this.couping_od.ReadOnly = true;
-            // 
-            // couping_length
-            // 
-            this.couping_length.DataPropertyName = "couping_length";
-            this.couping_length.HeaderText = "接箍长度";
-            this.couping_length.Name = "couping_length";
-            this.couping_length.ReadOnly = true;
-            // 
-            // thread_tooth_angle
-            // 
-            this.thread_tooth_angle.DataPropertyName = "thread_tooth_angle";
-            this.thread_tooth_angle.HeaderText = "牙型角度";
-            this.thread_tooth_angle.Name = "thread_tooth_angle";
-            this.thread_tooth_angle.ReadOnly = true;
-            // 
-            // thread_throug_hole_size
-            // 
-            this.thread_throug_hole_size.DataPropertyName = "thread_throug_hole_size";
-            this.thread_throug_hole_size.HeaderText = "镗孔尺寸";
-            this.thread_throug_hole_size.Name = "thread_throug_hole_size";
-            this.thread_throug_hole_size.ReadOnly = true;
-            // 
-            // video_no
-            // 
-            this.video_no.DataPropertyName = "video_no";
-            this.video_no.HeaderText = "视频编号";
-            this.video_no.Name = "video_no";
-            this.video_no.ReadOnly = true;
-            // 
-            // tool_measuring_record_no
-            // 
-            this.tool_measuring_record_no.DataPropertyName = "tool_measuring_record_no";
-            this.tool_measuring_record_no.HeaderText = "螺纹测量工具编号";
-            this.tool_measuring_record_no.Name = "tool_measuring_record_no";
-            this.tool_measuring_record_no.ReadOnly = true;
-            // 
-            // thread_pitch_gauge_no
-            // 
-            this.thread_pitch_gauge_no.DataPropertyName = "thread_pitch_gauge_no";
-            this.thread_pitch_gauge_no.HeaderText = "螺纹中径规编号";
-            this.thread_pitch_gauge_no.Name = "thread_pitch_gauge_no";
-            this.thread_pitch_gauge_no.ReadOnly = true;
-            // 
-            // thread_pitch_calibration_framwork
-            // 
-            this.thread_pitch_calibration_framwork.DataPropertyName = "thread_pitch_calibration_framwork";
-            this.thread_pitch_calibration_framwork.HeaderText = "螺纹中径校对座架";
-            this.thread_pitch_calibration_framwork.Name = "thread_pitch_calibration_framwork";
-            this.thread_pitch_calibration_framwork.ReadOnly = true;
-            // 
-            // sealing_surface_gauge_no
-            // 
-            this.sealing_surface_gauge_no.DataPropertyName = "sealing_surface_gauge_no";
-            this.sealing_surface_gauge_no.HeaderText = "密封面规编号";
-            this.sealing_surface_gauge_no.Name = "sealing_surface_gauge_no";
-            this.sealing_surface_gauge_no.ReadOnly = true;
-            // 
-            // sealing_surface_calibration_ring_no
-            // 
-            this.sealing_surface_calibration_ring_no.DataPropertyName = "sealing_surface_calibration_ring_no";
-            this.sealing_surface_calibration_ring_no.HeaderText = "密封面校对环编号";
-            this.sealing_surface_calibration_ring_no.Name = "sealing_surface_calibration_ring_no";
-            this.sealing_surface_calibration_ring_no.ReadOnly = true;
-            this.sealing_surface_calibration_ring_no.Visible = false;
-            // 
-            // depth_caliper_no
-            // 
-            this.depth_caliper_no.DataPropertyName = "depth_caliper_no";
-            this.depth_caliper_no.HeaderText = "深度游标卡尺编号";
-            this.depth_caliper_no.Name = "depth_caliper_no";
-            this.depth_caliper_no.ReadOnly = true;
-            this.depth_caliper_no.Visible = false;
-            // 
-            // threading_distance_gauge_no
-            // 
-            this.threading_distance_gauge_no.DataPropertyName = "threading_distance_gauge_no";
-            this.threading_distance_gauge_no.HeaderText = "螺距表编号";
-            this.threading_distance_gauge_no.Name = "threading_distance_gauge_no";
-            this.threading_distance_gauge_no.ReadOnly = true;
-            this.threading_distance_gauge_no.Visible = false;
-            // 
-            // thread_distance_calibration_sample_no
-            // 
-            this.thread_distance_calibration_sample_no.DataPropertyName = "thread_distance_calibration_sample_no";
-            this.thread_distance_calibration_sample_no.HeaderText = "螺距样块编号";
-            this.thread_distance_calibration_sample_no.Name = "thread_distance_calibration_sample_no";
-            this.thread_distance_calibration_sample_no.ReadOnly = true;
-            this.thread_distance_calibration_sample_no.Visible = false;
-            // 
-            // taper_gauge_no
-            // 
-            this.taper_gauge_no.DataPropertyName = "taper_gauge_no";
-            this.taper_gauge_no.HeaderText = "锥度表编号";
-            this.taper_gauge_no.Name = "taper_gauge_no";
-            this.taper_gauge_no.ReadOnly = true;
-            this.taper_gauge_no.Visible = false;
-            // 
-            // tooth_height_gauge_no
-            // 
-            this.tooth_height_gauge_no.DataPropertyName = "tooth_height_gauge_no";
-            this.tooth_height_gauge_no.HeaderText = "齿高表编号";
-            this.tooth_height_gauge_no.Name = "tooth_height_gauge_no";
-            this.tooth_height_gauge_no.ReadOnly = true;
-            this.tooth_height_gauge_no.Visible = false;
-            // 
-            // tooth_height_calibration_sample_no
-            // 
-            this.tooth_height_calibration_sample_no.DataPropertyName = "tooth_height_calibration_sample_no";
-            this.tooth_height_calibration_sample_no.HeaderText = "齿高样块编号";
-            this.tooth_height_calibration_sample_no.Name = "tooth_height_calibration_sample_no";
-            this.tooth_height_calibration_sample_no.ReadOnly = true;
-            this.tooth_height_calibration_sample_no.Visible = false;
-            // 
-            // tooth_width_stop_gauge_no
-            // 
-            this.tooth_width_stop_gauge_no.DataPropertyName = "tooth_width_stop_gauge_no";
-            this.tooth_width_stop_gauge_no.HeaderText = "齿宽止通规";
-            this.tooth_width_stop_gauge_no.Name = "tooth_width_stop_gauge_no";
-            this.tooth_width_stop_gauge_no.ReadOnly = true;
-            this.tooth_width_stop_gauge_no.Visible = false;
-            // 
-            // thread_min_length_sample_no
-            // 
-            this.thread_min_length_sample_no.DataPropertyName = "thread_min_length_sample_no";
-            this.thread_min_length_sample_no.HeaderText = "螺纹最小长度样板";
-            this.thread_min_length_sample_no.Name = "thread_min_length_sample_no";
-            this.thread_min_length_sample_no.ReadOnly = true;
-            this.thread_min_length_sample_no.Visible = false;
-            // 
-            // coupling_length_sample_no
-            // 
-            this.coupling_length_sample_no.DataPropertyName = "coupling_length_sample_no";
-            this.coupling_length_sample_no.HeaderText = "接箍长度样板";
-            this.coupling_length_sample_no.Name = "coupling_length_sample_no";
-            this.coupling_length_sample_no.ReadOnly = true;
-            this.coupling_length_sample_no.Visible = false;
-            // 
-            // caliper_no
-            // 
-            this.caliper_no.DataPropertyName = "caliper_no";
-            this.caliper_no.HeaderText = "游标卡尺编号";
-            this.caliper_no.Name = "caliper_no";
-            this.caliper_no.ReadOnly = true;
-            this.caliper_no.Visible = false;
-            // 
-            // caliper_tolerance
-            // 
-            this.caliper_tolerance.DataPropertyName = "caliper_tolerance";
-            this.caliper_tolerance.HeaderText = "游标卡尺零值误差";
-            this.caliper_tolerance.Name = "caliper_tolerance";
-            this.caliper_tolerance.ReadOnly = true;
-            this.caliper_tolerance.Visible = false;
-            // 
-            // collar_gauge_no
-            // 
-            this.collar_gauge_no.DataPropertyName = "collar_gauge_no";
-            this.collar_gauge_no.HeaderText = "内径止通规编号";
-            this.collar_gauge_no.Name = "collar_gauge_no";
-            this.collar_gauge_no.ReadOnly = true;
-            this.collar_gauge_no.Visible = false;
-            // 
-            // inspection_result
-            // 
-            this.inspection_result.DataPropertyName = "inspection_result";
-            this.inspection_result.HeaderText = "检验结果";
-            this.inspection_result.Name = "inspection_result";
-            this.inspection_result.ReadOnly = true;
-            // 
-            // thread_acceptance_criteria_no
-            // 
-            this.thread_acceptance_criteria_no.DataPropertyName = "thread_acceptance_criteria_no";
-            this.thread_acceptance_criteria_no.HeaderText = "标准编号";
-            this.thread_acceptance_criteria_no.Name = "thread_acceptance_criteria_no";
-            this.thread_acceptance_criteria_no.ReadOnly = true;
-            // 
-            // inspection_time
-            // 
-            this.inspection_time.DataPropertyName = "inspection_time";
-            this.inspection_time.HeaderText = "检验时间";
-            this.inspection_time.Name = "inspection_time";
-            this.inspection_time.ReadOnly = true;
-            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -575,10 +118,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.comboBox4);
-            this.panel2.Controls.Add(this.comboBox3);
-            this.panel2.Controls.Add(this.comboBox2);
-            this.panel2.Controls.Add(this.comboBox1);
+            this.panel2.Controls.Add(this.cmbAcceptanceNo);
+            this.panel2.Controls.Add(this.cmbThreadType);
+            this.panel2.Controls.Add(this.cmbWt);
+            this.panel2.Controls.Add(this.cmbOd);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.btnSearch);
             this.panel2.Controls.Add(this.label4);
@@ -591,45 +134,45 @@
             this.panel2.Size = new System.Drawing.Size(1212, 64);
             this.panel2.TabIndex = 0;
             // 
-            // comboBox4
+            // cmbAcceptanceNo
             // 
-            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(507, 23);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(79, 20);
-            this.comboBox4.TabIndex = 13;
+            this.cmbAcceptanceNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAcceptanceNo.FormattingEnabled = true;
+            this.cmbAcceptanceNo.Location = new System.Drawing.Point(507, 23);
+            this.cmbAcceptanceNo.Name = "cmbAcceptanceNo";
+            this.cmbAcceptanceNo.Size = new System.Drawing.Size(104, 20);
+            this.cmbAcceptanceNo.TabIndex = 13;
             // 
-            // comboBox3
+            // cmbThreadType
             // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(342, 22);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(79, 20);
-            this.comboBox3.TabIndex = 12;
+            this.cmbThreadType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbThreadType.FormattingEnabled = true;
+            this.cmbThreadType.Location = new System.Drawing.Point(342, 22);
+            this.cmbThreadType.Name = "cmbThreadType";
+            this.cmbThreadType.Size = new System.Drawing.Size(79, 20);
+            this.cmbThreadType.TabIndex = 12;
             // 
-            // comboBox2
+            // cmbWt
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(176, 22);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(79, 20);
-            this.comboBox2.TabIndex = 11;
+            this.cmbWt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbWt.FormattingEnabled = true;
+            this.cmbWt.Location = new System.Drawing.Point(176, 22);
+            this.cmbWt.Name = "cmbWt";
+            this.cmbWt.Size = new System.Drawing.Size(79, 20);
+            this.cmbWt.TabIndex = 11;
             // 
-            // comboBox1
+            // cmbOd
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(51, 23);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(79, 20);
-            this.comboBox1.TabIndex = 10;
+            this.cmbOd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOd.FormattingEnabled = true;
+            this.cmbOd.Location = new System.Drawing.Point(51, 23);
+            this.cmbOd.Name = "cmbOd";
+            this.cmbOd.Size = new System.Drawing.Size(79, 20);
+            this.cmbOd.TabIndex = 10;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(697, 12);
+            this.button1.Location = new System.Drawing.Point(724, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 38);
             this.button1.TabIndex = 9;
@@ -640,7 +183,7 @@
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearch.Location = new System.Drawing.Point(595, 12);
+            this.btnSearch.Location = new System.Drawing.Point(617, 12);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(90, 38);
             this.btnSearch.TabIndex = 4;
@@ -780,6 +323,90 @@
             this.服务器设置ToolStripMenuItem.Text = "服务器设置";
             this.服务器设置ToolStripMenuItem.Click += new System.EventHandler(this.服务器设置ToolStripMenuItem_Click);
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "流水号";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            // 
+            // contract_no
+            // 
+            this.contract_no.DataPropertyName = "thread_inspection_record_code";
+            this.contract_no.HeaderText = "接箍检验编号";
+            this.contract_no.Name = "contract_no";
+            this.contract_no.ReadOnly = true;
+            // 
+            // couping_no
+            // 
+            this.couping_no.DataPropertyName = "couping_no";
+            this.couping_no.HeaderText = "接箍编号";
+            this.couping_no.Name = "couping_no";
+            this.couping_no.ReadOnly = true;
+            // 
+            // heat_no
+            // 
+            this.heat_no.DataPropertyName = "contract_no";
+            this.heat_no.HeaderText = "合同号";
+            this.heat_no.Name = "heat_no";
+            this.heat_no.ReadOnly = true;
+            // 
+            // production_area
+            // 
+            this.production_area.DataPropertyName = "production_line";
+            this.production_area.HeaderText = "生产区域";
+            this.production_area.Name = "production_area";
+            this.production_area.ReadOnly = true;
+            // 
+            // machine_no
+            // 
+            this.machine_no.DataPropertyName = "machine_no";
+            this.machine_no.HeaderText = "机床号";
+            this.machine_no.Name = "machine_no";
+            this.machine_no.ReadOnly = true;
+            // 
+            // operator_no
+            // 
+            this.operator_no.DataPropertyName = "operator_no";
+            this.operator_no.HeaderText = "操作工工号";
+            this.operator_no.Name = "operator_no";
+            this.operator_no.ReadOnly = true;
+            // 
+            // visual_inspection
+            // 
+            this.visual_inspection.DataPropertyName = "production_crew";
+            this.visual_inspection.HeaderText = "班别";
+            this.visual_inspection.Name = "visual_inspection";
+            this.visual_inspection.ReadOnly = true;
+            // 
+            // thread_tooth_pitch_diameter_max
+            // 
+            this.thread_tooth_pitch_diameter_max.DataPropertyName = "production_shift";
+            this.thread_tooth_pitch_diameter_max.HeaderText = "班次";
+            this.thread_tooth_pitch_diameter_max.Name = "thread_tooth_pitch_diameter_max";
+            this.thread_tooth_pitch_diameter_max.ReadOnly = true;
+            // 
+            // video_no
+            // 
+            this.video_no.DataPropertyName = "video_no";
+            this.video_no.HeaderText = "视频编号";
+            this.video_no.Name = "video_no";
+            this.video_no.ReadOnly = true;
+            // 
+            // thread_acceptance_criteria_no
+            // 
+            this.thread_acceptance_criteria_no.DataPropertyName = "inspection_result";
+            this.thread_acceptance_criteria_no.HeaderText = "检验结果";
+            this.thread_acceptance_criteria_no.Name = "thread_acceptance_criteria_no";
+            this.thread_acceptance_criteria_no.ReadOnly = true;
+            // 
+            // inspection_time
+            // 
+            this.inspection_time.DataPropertyName = "inspection_time";
+            this.inspection_time.HeaderText = "检验时间";
+            this.inspection_time.Name = "inspection_time";
+            this.inspection_time.ReadOnly = true;
+            // 
             // IndexWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -820,62 +447,22 @@
         private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fTP设置ToolStripMenuItem;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cmbAcceptanceNo;
+        private System.Windows.Forms.ComboBox cmbThreadType;
+        private System.Windows.Forms.ComboBox cmbWt;
+        private System.Windows.Forms.ComboBox cmbOd;
+        private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn couping_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn heat_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn test_batch_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn steel_grade;
-        private System.Windows.Forms.DataGridViewTextBoxColumn texture;
         private System.Windows.Forms.DataGridViewTextBoxColumn production_area;
         private System.Windows.Forms.DataGridViewTextBoxColumn machine_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn couping_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn process_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn operator_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn visual_inspection;
         private System.Windows.Forms.DataGridViewTextBoxColumn thread_tooth_pitch_diameter_max;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_tooth_pitch_diameter_avg;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_tooth_pitch_diameter_min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_sealing_surface_diameter_max;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_sealing_surface_diameter_avg;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_sealing_surface_diameter_min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_sealing_surface_ovality;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_width;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_pitch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_taper;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_height;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_length_min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_bearing_surface_width;
-        private System.Windows.Forms.DataGridViewTextBoxColumn couping_inner_end_depth;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_hole_inner_diameter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn couping_od;
-        private System.Windows.Forms.DataGridViewTextBoxColumn couping_length;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_tooth_angle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_throug_hole_size;
         private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tool_measuring_record_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_pitch_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_pitch_calibration_framwork;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sealing_surface_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sealing_surface_calibration_ring_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn depth_caliper_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn threading_distance_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_distance_calibration_sample_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn taper_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tooth_height_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tooth_height_calibration_sample_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tooth_width_stop_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_min_length_sample_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_length_sample_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn caliper_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn caliper_tolerance;
-        private System.Windows.Forms.DataGridViewTextBoxColumn collar_gauge_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn thread_acceptance_criteria_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
     }
 }

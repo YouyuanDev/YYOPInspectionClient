@@ -18,8 +18,8 @@ namespace YYOPInspectionClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ThreadingForm());
-            //Application.Run(new LoginWinform());
+            //Application.Run(new ThreadingForm());
+            Application.Run(new LoginWinform());
         }
     }
 }
