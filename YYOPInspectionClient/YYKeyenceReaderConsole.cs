@@ -20,9 +20,10 @@ namespace YYOPInspectionClient
         public static ClientSocket[] clientSocketInstance;  //基恩士读码器clientSocket数组
         private Thread threadReceive;  //接受各读码器server端数据的线程
         //delegate void SetTextCallback(string text);   //用于子线程修改textbox
-        public static ThreadingProcessForm threadingProcessForm=null;
+        //public static ThreadingProcessForm threadingProcessForm=null;
+        public static ThreadingForm threadingProcessForm = null;
         private delegate void SetTextCallback(string message);
-        private delegate void UpdateTextBoxDelegate(ThreadingProcessForm threadingProcessForm, string message);
+        private delegate void UpdateTextBoxDelegate(ThreadingForm threadingProcessForm, string message);
         public static YYKeyenceReaderConsole myselfForm=null;
         public YYKeyenceReaderConsole()
         {
@@ -591,16 +592,16 @@ namespace YYOPInspectionClient
 
         }
 
-        private static void UpdateTextBox(ThreadingProcessForm form, string message)
+        private static void UpdateTextBox(ThreadingForm form, string message)
         {
-            if (form.textBox17.InvokeRequired)
+            if (form.txtCoupingNo.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                form.textBox17.Invoke(md, new object[] { form, message });
+                form.txtCoupingNo.Invoke(md, new object[] { form, message });
             }
             else
             {
-                form.textBox17.Text = message;
+                form.txtCoupingNo.Text = message;
             }
         }
        

@@ -7,18 +7,18 @@ namespace YYOPInspectionClient
 {
     public class Person
     {
-        private string id;
-        private String employee_no;
-        private String pname;
-        private String ppassword;
-        private String pidcard_no;
-        private String pmobile;
-        private string page;
-        private String psex;
-        private String pstatus;
-        private String pdepartment;
-        private string pregister_time;
-        private String role_no_list;
+        public static string id;
+        public static String employee_no;
+        public static String pname;
+        private static String ppassword;
+        private static String pidcard_no;
+        private static String pmobile;
+        private static string page;
+        private static String psex;
+        private static String pstatus;
+        private static String pdepartment;
+        private static string pregister_time;
+        private static String role_no_list;
 
         public string Id
         {
@@ -52,7 +52,6 @@ namespace YYOPInspectionClient
             {
                 return pname;
             }
-
             set
             {
                 pname = value;

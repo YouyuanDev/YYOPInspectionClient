@@ -231,10 +231,10 @@ namespace YYOPInspectionClient
         {
             try
             {
-                string od = this.cmbOd.Text;
-                string wt = this.cmbWt.Text;
-                string thread_type = this.cmbThreadType.Text;
-                string acceptance_no = this.cmbAcceptanceNo.Text;
+                string od = this.cmbOd.SelectedValue.ToString();
+                string wt = this.cmbWt.SelectedValue.ToString();
+                string thread_type = this.cmbThreadType.SelectedValue.ToString();
+                string acceptance_no = this.cmbAcceptanceNo.SelectedValue.ToString();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
                 sb.Append("\"od\"" + ":" + "\"" + od + "\",");
@@ -272,8 +272,14 @@ namespace YYOPInspectionClient
                 if (jsons != null) {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    List<ThreadInspectionRecord>list= JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
-                    this.dataGridView1.DataSource = list;
+                    if (!rowsJson.Trim().Equals("{}"))
+                    {
+                        List<ThreadInspectionRecord> list = JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
+                        this.dataGridView1.DataSource = list;
+                    }
+                    else {
+                        this.dataGridView1.DataSource = null;
+                    }
                 }
             }
             catch (Exception e) {
@@ -614,5 +620,33 @@ namespace YYOPInspectionClient
         {
             new ServerSetting().Show();
         }
+
+        #region 详细信息
+        private void btnDetail_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int index = this.dataGridView1.CurrentRow.Index;
+                string inspection_no =Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
+                string operator_no =Convert.ToString(this.dataGridView1.Rows[index].Cells["operator_no"].Value);
+                string thread_inspection_record_code = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
+                DetailForm form = new DetailForm(operator_no,inspection_no, thread_inspection_record_code);
+                form.txtProductionArea.Text= Convert.ToString(this.dataGridView1.Rows[index].Cells["production_line"].Value);
+                form.txtMachineNo.Text = Convert.ToString(this.dataGridView1.Rows[index].Cells["machine_no"].Value);
+                form.txtOperatorNo.Text = operator_no;
+                form.txtCoupingNo.Text = Convert.ToString(this.dataGridView1.Rows[index].Cells["couping_no"].Value);
+                form.cmbProductionCrew.SelectedIndex = form.cmbProductionCrew.Items.IndexOf(this.dataGridView1.Rows[index].Cells["production_crew"].Value);
+                form.cmbProductionShift.SelectedIndex = form.cmbProductionShift.Items.IndexOf(this.dataGridView1.Rows[index].Cells["production_shift"].Value);
+                form.cmbContractNo.SelectedValue=Convert.ToString(this.dataGridView1.Rows[index].Cells["contract_no"].Value);
+                form.Show();
+            }
+            catch (Exception ex) {
+                Console.WriteLine("获取选中的接箍检验记录编号时出错......");
+            }
+            
+        }
+        #endregion
+
+        
     }
 }

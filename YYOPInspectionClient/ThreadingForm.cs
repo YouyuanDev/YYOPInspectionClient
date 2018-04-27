@@ -23,11 +23,30 @@ namespace YYOPInspectionClient
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
-        public ThreadingForm()
+        private IndexWindow indexWindow;
+        private MainWindow mainWindow;
+        // YYKeyenceReaderConsole codeReaderWindow;
+        AutoSize auto = new AutoSize();
+        //时间戳(视频和form表单保存的目录名)
+        private string timestamp = null;
+
+        private static ThreadingForm myForm = null;
+        public static ThreadingForm getMyForm()
+        {
+            return myForm;
+        }
+
+        public ThreadingForm(IndexWindow indexWindow, MainWindow mainWindow)
         {
             InitializeComponent();
             englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
             numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
+            numberKeyboard.containerControl = this.flpTabTwoContent;
+            this.indexWindow = indexWindow;
+            this.mainWindow = mainWindow;
+            timestamp =CommonUtil.getMesuringRecord();
+            this.lblVideoStatus.Text = "录像未启动...";
+            myForm = this;
             //this.Font = new Font("宋体", 15, FontStyle.Bold);
             //1------------初始化合同Combobox
             InitContractList();
@@ -217,7 +236,6 @@ namespace YYOPInspectionClient
                 this.lblSteelGrade.Text = "钢级:" + contractObj["wt"].ToString();
             else
                 this.lblSteelGrade.Text = "";
-
             if (!string.IsNullOrWhiteSpace(contractObj["customer_spec"].ToString()))
                 this.txtCriteriaNo.Text = contractObj["customer_spec"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["graph_no"].ToString()))
@@ -232,6 +250,10 @@ namespace YYOPInspectionClient
                 this.txtHeatNo.Text = contractObj["pipe_heat_no"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["pipe_lot_no"].ToString()))
                 this.txtBatchNo.Text = contractObj["pipe_lot_no"].ToString();
+            if (!string.IsNullOrWhiteSpace(Person.employee_no))
+                this.txtOperatorNo.Text = Person.employee_no;
+            if (!string.IsNullOrWhiteSpace(Person.pname))
+                this.txtOperatorName.Text = Person.pname;
         }
         #endregion
 
@@ -283,10 +305,10 @@ namespace YYOPInspectionClient
                 if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value))
                 {
                     float item_max_val = Convert.ToSingle(item_max_value);
-                    float item_min_val = Convert.ToInt32(item_min_value);
+                    float item_min_val = Convert.ToSingle(item_min_value);
                     if (item_min_val > 0 || item_max_val > 0)
                     {
-                        Label lbl1_1 = new Label { Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(18, 50) };
+                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(18, 50) };
                         panel1.Controls.Add(lbl1_1);
                         //添加频率
                         Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(120, 50) };
@@ -306,7 +328,7 @@ namespace YYOPInspectionClient
                 }
 
                 //判断是否有A端B端
-                if (true)
+                if(Convert.ToInt32(obj["both_ends"].ToString())==1)
                 {
                     Label lbl1_5 = new Label {Text="A:",Location=new Point(20,80),Width=20, TextAlign = ContentAlignment.MiddleRight };
                     TextBox tb3 = new TextBox { Tag="Number",Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
@@ -381,77 +403,108 @@ namespace YYOPInspectionClient
         #region 表单关闭事件
         private void btnFormClose_Click(object sender, EventArgs e)
         {
-
+            //关闭之前判断是否关闭读码器和结束录像
+            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            {
+                MessageBox.Show("录像机或读码器尚未关闭！");
+            }
+            else
+            {
+                RestoreSetting();
+                this.Close();
+            }
         }
         #endregion
 
         #region 表单提交
         private void ThreadFormSubmit()
         {
-            sb.Remove(0, sb.Length);
-            sb.Append("{");
-            sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
-            sb.Append("\"couping_no\"" + ":" + "\"" + txtCoupingNo.Text.Trim() + "\",");
-            sb.Append("\"contract_no\"" + ":" + "\"" + this.cmbContractNo.SelectedValue.ToString() + "\",");
-            sb.Append("\"production_line\"" + ":" + "\"" + txtProductionArea.Text.Trim() + "\",");
-            sb.Append("\"machine_no\"" + ":" + "\"" + txtMachineNo.Text.Trim() + "\",");
-            //sb.Append("\"process_no\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
-            sb.Append("\"operator_no\"" + ":" + "\"" + txtOperatorNo.Text.Trim() + "\",");
-            sb.Append("\"production_crew\"" + ":" + "\"" + this.cmbProductionCrew.Text + "\",");
-            sb.Append("\"production_shift\"" + ":" + "\"" + this.cmbProductionShift.Text + "\",");
-            sb.Append("\"video_no\"" + ":" + "\"" + "" + "\",");
-            //sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
-            foreach (TextBox tb in flpTabOneTxtList)
-            {
-                sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
-            }
-            foreach (TextBox tb in flpTabTwoTxtList)
-            {
-                sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
-            }
-            string formData = sb.ToString();
-            formData = formData.Substring(0, formData.LastIndexOf(",")) + "}";
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            String content = "";
-            JObject o = JObject.Parse(formData);
-            String param = o.ToString();
-            byte[] data = encoding.GetBytes(param);
-            string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-            request.KeepAlive = false;
-            request.Method = "POST";
-            request.ContentType = "application/json;characterSet:UTF-8";
-            request.ContentLength = data.Length;
-            using (Stream sm = request.GetRequestStream())
-            {
-                sm.Write(data, 0, data.Length);
-            }
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream streamResponse = response.GetResponseStream();
-            StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-            Char[] readBuff = new Char[1024];
-            int count = streamRead.Read(readBuff, 0, 1024);
-            while (count > 0)
-            {
-                String outputData = new String(readBuff, 0, count);
-                content += outputData;
-                count = streamRead.Read(readBuff, 0, 1024);
-            }
-            response.Close();
-            string jsons = content;
-            MessageBox.Show(jsons);
-            if (jsons != null)
-            {
-                JObject jobject = JObject.Parse(jsons);
-                string rowsJson = jobject["rowsData"].ToString();
-                if (rowsJson.Trim().Equals("success"))
+            String param = "";
+            try {
+                sb.Remove(0, sb.Length);
+                sb.Append("{");
+                sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
+                sb.Append("\"couping_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.SelectedValue.ToString(), Encoding.UTF8) + "\",");
+                sb.Append("\"production_line\"" + ":" + "\"" + HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"machine_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) + "\",");
+                //sb.Append("\"process_no\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"operator_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"production_crew\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8) + "\",");
+                sb.Append("\"production_shift\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) + "\",");
+                sb.Append("\"video_no\"" + ":" + "\"" + "" + "\",");
+                //sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
+                foreach (TextBox tb in flpTabOneTxtList)
                 {
-                    MessageBox.Show("提交成功!");
+                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
                 }
-                else {
-                    MessageBox.Show("提交失败,表单暂时保存在本地!");
+                foreach (TextBox tb in flpTabTwoTxtList)
+                {
+                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
                 }
+                string formData = sb.ToString();
+                MessageBox.Show(formData);
+                formData = formData.Substring(0, formData.LastIndexOf(",")) + "}";
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                String content = "";
+                JObject o = JObject.Parse(formData);
+                param = o.ToString();
+                //MessageBox.Show(param);
+                byte[] data = encoding.GetBytes(param);
+                string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.KeepAlive = false;
+                request.Method = "POST";
+                request.ContentType = "application/json;characterSet:utf-8";
+                request.ContentLength = data.Length;
+                using (Stream sm = request.GetRequestStream())
+                {
+                    sm.Write(data, 0, data.Length);
+                }
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream streamResponse = response.GetResponseStream();
+                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                Char[] readBuff = new Char[1024];
+                int count = streamRead.Read(readBuff, 0, 1024);
+                while (count > 0)
+                {
+                    String outputData = new String(readBuff, 0, count);
+                    content += outputData;
+                    count = streamRead.Read(readBuff, 0, 1024);
+                }
+                response.Close();
+                string jsons = content;
+                if (jsons != null)
+                {
+                    JObject jobject = JObject.Parse(jsons);
+                    string rowsJson = jobject["rowsData"].ToString();
+                    if (rowsJson.Trim().Equals("success"))
+                    {
+                        MessageBox.Show("提交成功!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("提交失败,表单暂时保存在本地!");
+                    }
+                }
+            } catch (Exception e) {
+                string coupingDir = Application.StartupPath + "\\unsubmit";
+                CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
+            finally{
+                //向可提交的视频文件中追加可提交文件夹名
+                //string path = Application.StartupPath + "\\fileuploadrecord.txt";
+                //FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write);
+                //StreamWriter sw = new StreamWriter(fs, Encoding.Default);
+                //if (timestamp != null && timestamp.Length > 0)
+                //{
+                //    sw.WriteLine(timestamp);
+                //}
+                //sw.Close();
+                //fs.Close();
+                indexWindow.getThreadingProcessData();
+            }
+            
         } 
         #endregion
 
@@ -539,7 +592,139 @@ namespace YYOPInspectionClient
                 numberKeyboard.Show();
                 numberKeyboard.TopMost = true;
             }
-        } 
+        }
+
         #endregion
+
+        #region 扫码事件
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string btnName = this.button1.Text;
+            if (btnName == "结束扫码")
+            {
+                //YYKeyenceReaderConsole
+                this.lblReaderStatus.Text = "读码器连接成功...";
+                YYKeyenceReaderConsole.codeReaderOff();
+                this.button1.Text = "开始扫码";
+                this.lblReaderStatus.Text = "读码完成...";
+            }
+            else if (btnName == "开始扫码")
+            {
+                //先判断是否连接上读码器，如果没有连接上则提示
+                int resLon = YYKeyenceReaderConsole.codeReaderLon();
+                //读码器已经连接上
+                if (resLon == 0)
+                {
+                    //然后开启循环读取数据
+                    this.lblReaderStatus.Text = "读取中...";
+                    YYKeyenceReaderConsole.threadingProcessForm = this;
+                    this.button1.Text = "结束扫码";
+                }
+                else if (resLon == 1)
+                {
+                    this.lblReaderStatus.Text = "读码器尚未连接...";
+                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                }
+                else
+                {
+                    this.lblReaderStatus.Text = "读码器尚未连接...";
+                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                }
+            }
+        }
+        #endregion
+
+        #region 录制视频事件
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (this.button2.Text == "开始录像")
+            {
+                if (timestamp == null || timestamp.Length <= 0)
+                {
+                    timestamp =CommonUtil.getMesuringRecord();
+                }
+                this.lblVideoStatus.Text = "开始录像...";
+                int result = MainWindow.RecordVideo(timestamp);
+                switch (result)
+                {
+                    case 0:
+                        this.lblVideoStatus.Text = "录像中...";
+                        RealTimePreview();
+                        this.button2.Text = "结束录像";
+                        break;
+                    case 1:
+                        this.lblVideoStatus.Text = "录像机未连接...";
+                        MessageBox.Show("录像失败,请先登录录像机!");
+                        break;
+                    case 2:
+                        this.lblVideoStatus.Text = "录像机未启动...";
+                        MessageBox.Show("录像失败,请先开启录像机预览!");
+                        break;
+                    case 3:
+                        this.lblVideoStatus.Text = "录像失败...";
+                        MessageBox.Show("录像失败,请检查配置!");
+                        break;
+                    case 4:
+                        MessageBox.Show("录像失败!");
+                        break;
+                }
+            }
+            else if (this.button2.Text == "结束录像")
+            {
+                MainWindow.stopRecordVideo();
+                RestoreSetting();
+                this.button2.Text = "开始录像";
+                this.lblVideoStatus.Text = "录像完成...";
+            }
+        }
+        #endregion
+
+        public void RealTimePreview()
+        {
+            MainWindow mainWindow = MainWindow.mainWindowForm;
+            if (mainWindow != null)
+            {
+                mainWindow.groupBox1.Hide(); mainWindow.groupBox2.Hide();
+                mainWindow.groupBox3.Hide(); mainWindow.groupBox4.Hide();
+                int width = mainWindow.Width;
+                int height = mainWindow.Height;
+                mainWindow.RealPlayWnd.Left = 0;
+                mainWindow.RealPlayWnd.Top = 0;
+                mainWindow.RealPlayWnd.Width = width;
+                mainWindow.RealPlayWnd.Height = height;
+                mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
+                mainWindow.Width = 150;
+                mainWindow.Height = 150;
+                int x = Screen.PrimaryScreen.WorkingArea.Width - mainWindow.RealPlayWnd.Width - 10;
+                int y = Screen.PrimaryScreen.WorkingArea.Height / 2 - mainWindow.RealPlayWnd.Height;
+                mainWindow.Location = new Point(x, y);
+                mainWindow.FormBorderStyle = FormBorderStyle.None;
+                mainWindow.Show();
+                mainWindow.TopMost = true;
+            }
+        }
+        public void RestoreSetting()
+        {
+            MainWindow mainWindow = MainWindow.mainWindowForm;
+            if (mainWindow != null)
+            {
+                mainWindow.Left = MainWindow.mainWindowX;
+                mainWindow.Top = MainWindow.mainWindowY;
+                mainWindow.Width = MainWindow.mainWindowWidth;
+                mainWindow.Height = MainWindow.mainWindowHeight;
+                mainWindow.RealPlayWnd.Left = MainWindow.realTimeX;
+                mainWindow.RealPlayWnd.Top = MainWindow.realTimeY;
+                mainWindow.RealPlayWnd.Width = MainWindow.realTimeWidth;
+                mainWindow.RealPlayWnd.Height = MainWindow.realTimeHeigh;
+                mainWindow.RealPlayWnd.Dock = DockStyle.None;
+                mainWindow.groupBox1.Show();
+                mainWindow.groupBox2.Show();
+                mainWindow.groupBox3.Show();
+                mainWindow.groupBox4.Show();
+                mainWindow.TopMost = false;
+                mainWindow.FormBorderStyle = FormBorderStyle.Sizable;
+                mainWindow.Hide();
+            }
+        }
     }
 }

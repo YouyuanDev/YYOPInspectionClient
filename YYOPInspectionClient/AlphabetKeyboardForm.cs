@@ -106,12 +106,14 @@ namespace YYOPInspectionClient
             //输入
             if (inputTxt != null) {
                 inputTxt.Text = Textbox_display.Text.Trim();
+               
                 this.Textbox_display.Text = "";
                 int index = flpTabOneTxtList.IndexOf(inputTxt);
                 if(index<flpTabOneTxtList.Count-1)
                     index++;
                 TextBox tb = flpTabOneTxtList[index];
                 tb.Focus();
+
             }
         }
 

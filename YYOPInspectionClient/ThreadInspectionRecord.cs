@@ -7,7 +7,7 @@ namespace YYOPInspectionClient
 {
     public class ThreadInspectionRecord
     {
-        private int id;
+        private string id;
         private String thread_inspection_record_code;
         private String couping_no;
         private String contract_no;
@@ -18,10 +18,10 @@ namespace YYOPInspectionClient
         private String production_crew;
         private String production_shift;
         private String video_no;
-        private DateTime inspection_time;
+        private string inspection_time;
         private String inspection_result;
 
-        public int Id
+        public string Id
         {
             get
             {
@@ -164,7 +164,7 @@ namespace YYOPInspectionClient
             }
         }
 
-        public DateTime Inspection_time
+        public string Inspection_time
         {
             get
             {

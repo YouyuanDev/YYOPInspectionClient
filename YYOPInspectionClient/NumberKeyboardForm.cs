@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace YYOPInspectionClient
     {
         public TextBox inputTxt;
         public List<TextBox> flpTabTwoTxtList;
+        public Control containerControl=null;
         public NumberKeyboardForm()
         {
             InitializeComponent();
@@ -74,6 +76,97 @@ namespace YYOPInspectionClient
             if (inputTxt != null) {
                 inputTxt.Text = this.Textbox_display.Text.Trim();
                 this.Textbox_display.Text = "";
+                string inputTxtName = inputTxt.Name;
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(inputTxtName))
+                    {
+                        //获取和该控件相同名称的Label
+                        if (inputTxtName.Contains("_A_Value"))
+                        {
+                           inputTxtName=inputTxtName.Replace("_A_Value", "");
+                        }
+                        if (inputTxtName.Contains("_B_Value"))
+                        {
+                            inputTxtName=inputTxtName.Replace("_B_Value", "");
+                        }
+                       
+                        if (containerControl != null)
+                        {
+                            Label lbl =(Label)GetControlInstance(containerControl,inputTxtName+"_lbl");
+                            if (lbl != null) {
+                                float val1 = 0f, val2 = 0;
+                                string lblTag = Convert.ToString(lbl.Tag);
+                                if (!string.IsNullOrWhiteSpace(lblTag))
+                                {
+                                    string[] valArr = lblTag.Split(new char[] { '-' });
+                                    if (valArr.Length > 0)
+                                    {
+                                        val1 = Convert.ToSingle(valArr[0]);
+                                        if (valArr.Length > 1)
+                                        {
+                                            val2 = Convert.ToSingle(valArr[1]);
+                                        }
+                                    }
+                                    if (val1 > 0)
+                                    {
+                                        float inputVal = Convert.ToSingle(inputTxt.Text);
+                                        if (inputVal < val1)
+                                        {
+                                            inputTxt.BackColor = Color.LightCoral;
+                                        }
+                                    }
+                                    if (val2 > 0)
+                                    {
+                                        float inputVal = Convert.ToSingle(inputTxt.Text);
+                                        if (inputVal > val2)
+                                        {
+                                            inputTxt.BackColor = Color.LightCoral;
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                        else {
+                            MessageBox.Show("没有初始化");
+                        }
+                       
+                        //if (obj != null) {
+                        //    Label nowLbl = (Label)obj;
+                        //    string lblTag =Convert.ToString(nowLbl.Tag);
+                        //    float val1 = 0f, val2 = 0 ;
+                        //    if (!string.IsNullOrWhiteSpace(lblTag)) {
+                        //        string[] valArr = lblTag.Split(new char[] { '-'});
+                        //        if (valArr.Length > 0) {
+                        //            val1 =Convert.ToSingle(valArr[0]);
+                        //            if (valArr.Length > 1) {
+                        //                val2= Convert.ToSingle(valArr[1]);
+                        //            }
+                        //        }
+                        //    }
+                        //    if (val1 > 0) {
+                        //        float inputVal = Convert.ToSingle(inputTxt.Text);
+                        //        if (inputVal < val1){
+                        //            inputTxt.BackColor = Color.LightCoral;
+                        //        }
+                        //    }
+                        //    if (val2 > 0) {
+                        //        float inputVal = Convert.ToSingle(inputTxt.Text);
+                        //        if (inputVal>val2)
+                        //        {
+                        //            inputTxt.BackColor = Color.LightCoral;
+                        //        }
+                        //    }
+                        //}
+                    }
+
+                }
+                catch (Exception ex) {
+                    Console.WriteLine("判断大小的时候错误.......");
+                }
+                
+
                 int index = flpTabTwoTxtList.IndexOf(inputTxt);
                 if (index < flpTabTwoTxtList.Count - 1)
                     index++;
@@ -105,5 +198,55 @@ namespace YYOPInspectionClient
         {
             this.Textbox_display.Text = "0";
         }
+
+        public static Control GetControl(Control ct, string name)
+        {
+            
+            Control[] ctls = ct.Controls.Find(name, false);
+            
+            if (ctls.Length > 0)
+            {
+                return ctls[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #region 根据控件名找到该控件
+        private object GetControlInstance(object obj, string strControlName)
+        {
+            IEnumerator Controls = null;//所有控件
+            Control c = null;//当前控件
+            Object cResult = null;//查找结果
+            if (obj.GetType() == this.GetType())//窗体
+            {
+                Controls = this.Controls.GetEnumerator();
+            }
+            else//控件
+            {
+                Controls = ((Control)obj).Controls.GetEnumerator();
+            }
+            while (Controls.MoveNext())//遍历操作
+            {
+                c = (Control)Controls.Current;//当前控件
+                if (c.HasChildren)//当前控件是个容器
+                {
+                    cResult = GetControlInstance(c, strControlName);//递归查找
+                    if (cResult == null)//当前容器中没有，跳出，继续查找
+                        continue;
+                    else//找到控件，返回
+                        return cResult;
+                }
+                else if (c.Name == strControlName)//不是容器，同时找到控件，返回
+                {
+                    return c;
+                }
+            }
+            return null;//控件不存在
+        } 
+        #endregion
+
     }
 }

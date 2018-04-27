@@ -89,9 +89,39 @@ namespace YYOPInspectionClient
                 binaryReader.Close();
             }
             return flag;
-        }  
+        }
         #endregion
 
-        
+        #region 写入未提交成功的表单
+        public static void writeUnSubmitForm(string couping_no, string jsonData,string savePath)
+        {
+            //未提交成功的json数据文件名:接箍编号_时间戳
+            string timestamp = getMesuringRecord();
+            string unsubmitFileName = couping_no + "_" + timestamp + ".txt";
+             
+            if (!File.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            string coupingTxt = savePath+"\\" + unsubmitFileName;
+            if (!File.Exists(coupingTxt))
+            {
+                FileStream fs = new FileStream(coupingTxt, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.Write(jsonData);
+                sw.Close();
+                fs.Close();
+            }
+        }
+
+        #endregion
+
+        #region  获取时间戳
+        public static string getMesuringRecord()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalMilliseconds).ToString();
+        }
+        #endregion
     }
 }

@@ -35,7 +35,7 @@
             this.cmbThreadType = new System.Windows.Forms.ComboBox();
             this.cmbWt = new System.Windows.Forms.ComboBox();
             this.cmbOd = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnDetail = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -51,16 +51,16 @@
             this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.thread_inspection_record_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.couping_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_area = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.visual_inspection = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_tooth_pitch_diameter_max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_crew = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_shift = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_acceptance_criteria_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -90,16 +90,16 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
-            this.contract_no,
+            this.thread_inspection_record_code,
             this.couping_no,
-            this.heat_no,
-            this.production_area,
+            this.contract_no,
+            this.production_line,
             this.machine_no,
             this.operator_no,
-            this.visual_inspection,
-            this.thread_tooth_pitch_diameter_max,
+            this.production_crew,
+            this.production_shift,
             this.video_no,
-            this.thread_acceptance_criteria_no,
+            this.inspection_result,
             this.inspection_time});
             this.dataGridView1.Location = new System.Drawing.Point(0, 64);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
@@ -122,7 +122,7 @@
             this.panel2.Controls.Add(this.cmbThreadType);
             this.panel2.Controls.Add(this.cmbWt);
             this.panel2.Controls.Add(this.cmbOd);
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.btnDetail);
             this.panel2.Controls.Add(this.btnSearch);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.label3);
@@ -170,15 +170,15 @@
             this.cmbOd.Size = new System.Drawing.Size(79, 20);
             this.cmbOd.TabIndex = 10;
             // 
-            // button1
+            // btnDetail
             // 
-            this.button1.Location = new System.Drawing.Point(724, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 38);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "详细";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDetail.Location = new System.Drawing.Point(724, 12);
+            this.btnDetail.Name = "btnDetail";
+            this.btnDetail.Size = new System.Drawing.Size(90, 38);
+            this.btnDetail.TabIndex = 9;
+            this.btnDetail.Text = "详细";
+            this.btnDetail.UseVisualStyleBackColor = true;
+            this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
             // 
             // btnSearch
             // 
@@ -330,12 +330,12 @@
             this.id.Name = "id";
             this.id.ReadOnly = true;
             // 
-            // contract_no
+            // thread_inspection_record_code
             // 
-            this.contract_no.DataPropertyName = "thread_inspection_record_code";
-            this.contract_no.HeaderText = "接箍检验编号";
-            this.contract_no.Name = "contract_no";
-            this.contract_no.ReadOnly = true;
+            this.thread_inspection_record_code.DataPropertyName = "thread_inspection_record_code";
+            this.thread_inspection_record_code.HeaderText = "接箍检验编号";
+            this.thread_inspection_record_code.Name = "thread_inspection_record_code";
+            this.thread_inspection_record_code.ReadOnly = true;
             // 
             // couping_no
             // 
@@ -344,19 +344,19 @@
             this.couping_no.Name = "couping_no";
             this.couping_no.ReadOnly = true;
             // 
-            // heat_no
+            // contract_no
             // 
-            this.heat_no.DataPropertyName = "contract_no";
-            this.heat_no.HeaderText = "合同号";
-            this.heat_no.Name = "heat_no";
-            this.heat_no.ReadOnly = true;
+            this.contract_no.DataPropertyName = "contract_no";
+            this.contract_no.HeaderText = "合同号";
+            this.contract_no.Name = "contract_no";
+            this.contract_no.ReadOnly = true;
             // 
-            // production_area
+            // production_line
             // 
-            this.production_area.DataPropertyName = "production_line";
-            this.production_area.HeaderText = "生产区域";
-            this.production_area.Name = "production_area";
-            this.production_area.ReadOnly = true;
+            this.production_line.DataPropertyName = "production_line";
+            this.production_line.HeaderText = "生产区域";
+            this.production_line.Name = "production_line";
+            this.production_line.ReadOnly = true;
             // 
             // machine_no
             // 
@@ -372,19 +372,19 @@
             this.operator_no.Name = "operator_no";
             this.operator_no.ReadOnly = true;
             // 
-            // visual_inspection
+            // production_crew
             // 
-            this.visual_inspection.DataPropertyName = "production_crew";
-            this.visual_inspection.HeaderText = "班别";
-            this.visual_inspection.Name = "visual_inspection";
-            this.visual_inspection.ReadOnly = true;
+            this.production_crew.DataPropertyName = "production_crew";
+            this.production_crew.HeaderText = "班别";
+            this.production_crew.Name = "production_crew";
+            this.production_crew.ReadOnly = true;
             // 
-            // thread_tooth_pitch_diameter_max
+            // production_shift
             // 
-            this.thread_tooth_pitch_diameter_max.DataPropertyName = "production_shift";
-            this.thread_tooth_pitch_diameter_max.HeaderText = "班次";
-            this.thread_tooth_pitch_diameter_max.Name = "thread_tooth_pitch_diameter_max";
-            this.thread_tooth_pitch_diameter_max.ReadOnly = true;
+            this.production_shift.DataPropertyName = "production_shift";
+            this.production_shift.HeaderText = "班次";
+            this.production_shift.Name = "production_shift";
+            this.production_shift.ReadOnly = true;
             // 
             // video_no
             // 
@@ -393,12 +393,12 @@
             this.video_no.Name = "video_no";
             this.video_no.ReadOnly = true;
             // 
-            // thread_acceptance_criteria_no
+            // inspection_result
             // 
-            this.thread_acceptance_criteria_no.DataPropertyName = "inspection_result";
-            this.thread_acceptance_criteria_no.HeaderText = "检验结果";
-            this.thread_acceptance_criteria_no.Name = "thread_acceptance_criteria_no";
-            this.thread_acceptance_criteria_no.ReadOnly = true;
+            this.inspection_result.DataPropertyName = "inspection_result";
+            this.inspection_result.HeaderText = "检验结果";
+            this.inspection_result.Name = "inspection_result";
+            this.inspection_result.ReadOnly = true;
             // 
             // inspection_time
             // 
@@ -446,23 +446,23 @@
         private System.Windows.Forms.ToolStripMenuItem 读码器设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fTP设置ToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnDetail;
         private System.Windows.Forms.ComboBox cmbAcceptanceNo;
         private System.Windows.Forms.ComboBox cmbThreadType;
         private System.Windows.Forms.ComboBox cmbWt;
         private System.Windows.Forms.ComboBox cmbOd;
         private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn thread_inspection_record_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn couping_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn heat_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn production_area;
+        private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_line;
         private System.Windows.Forms.DataGridViewTextBoxColumn machine_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn operator_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn visual_inspection;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_tooth_pitch_diameter_max;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_crew;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_shift;
         private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_acceptance_criteria_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
     }
 }
