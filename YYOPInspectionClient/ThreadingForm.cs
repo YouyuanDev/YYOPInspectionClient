@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,24 +37,28 @@ namespace YYOPInspectionClient
             return myForm;
         }
 
+        #region 窗体构造函数
         public ThreadingForm(IndexWindow indexWindow, MainWindow mainWindow)
         {
             InitializeComponent();
             englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
+            englishKeyboard.containerControl = this.flpTabOneContent;
             numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
             numberKeyboard.containerControl = this.flpTabTwoContent;
+
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
-            timestamp =CommonUtil.getMesuringRecord();
+            timestamp = CommonUtil.getMesuringRecord();
             this.lblVideoStatus.Text = "录像未启动...";
             myForm = this;
-            //this.Font = new Font("宋体", 15, FontStyle.Bold);
+            //this.Font = new Font("宋体", 12, FontStyle.Bold);
             //1------------初始化合同Combobox
             InitContractList();
             flag = true;
             //2------------初始化检验记录表单
             InitThreadForm();
-        }
+        } 
+        #endregion
 
         #region 初始化表单合同数组
         public void InitContractList()
@@ -269,8 +274,8 @@ namespace YYOPInspectionClient
                 string measure_tool2 = obj["measure_tool2"].ToString();
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
                 {
-                    Panel pnl0 = new Panel() { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(30, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                    Panel pnl0 = new Panel() { Width = 300, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(30, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
@@ -295,8 +300,8 @@ namespace YYOPInspectionClient
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
                 //初始化测量值表单
-                Panel panel1 = new Panel { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(20, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                Panel panel1 = new Panel { Width = 300, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(),Name= obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(20, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                 panel1.Controls.Add(lbl1_0);
                 string item_min_value = obj["item_min_value"].ToString();
                 string item_max_value = obj["item_max_value"].ToString();
@@ -549,12 +554,14 @@ namespace YYOPInspectionClient
                 englishKeyboard.inputTxt = tb;
                 englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                 englishKeyboard.Show();
+                SetAlphaKeyboardText(tb.Name);
             }
             else
             {
                 numberKeyboard.inputTxt = tb;
                 numberKeyboard.Textbox_display.Text = tb.Text.Trim();
                 numberKeyboard.Show();
+                SetNumberKeyboardText(tb.Name);
             }
         }
         #endregion
@@ -584,6 +591,7 @@ namespace YYOPInspectionClient
                 englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                 englishKeyboard.Show();
                 englishKeyboard.TopMost = true;
+                SetAlphaKeyboardText(tb.Name);
             }
             else
             {
@@ -591,6 +599,7 @@ namespace YYOPInspectionClient
                 numberKeyboard.Textbox_display.Text = tb.Text.Trim();
                 numberKeyboard.Show();
                 numberKeyboard.TopMost = true;
+                SetNumberKeyboardText(tb.Name);
             }
         }
 
@@ -679,6 +688,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 小窗口显示实时录制视频内容
         public void RealTimePreview()
         {
             MainWindow mainWindow = MainWindow.mainWindowForm;
@@ -703,6 +713,9 @@ namespace YYOPInspectionClient
                 mainWindow.TopMost = true;
             }
         }
+        #endregion
+
+        #region 重置录像机设置
         public void RestoreSetting()
         {
             MainWindow mainWindow = MainWindow.mainWindowForm;
@@ -725,6 +738,89 @@ namespace YYOPInspectionClient
                 mainWindow.FormBorderStyle = FormBorderStyle.Sizable;
                 mainWindow.Hide();
             }
+        } 
+        #endregion
+
+        #region 窗体Load事件
+        private void ThreadingForm_Load(object sender, EventArgs e)
+        {
+            auto.controllInitializeSize(this);
         }
+        #endregion
+
+        #region 窗体大小改变事件
+        private void ThreadingForm_SizeChanged(object sender, EventArgs e)
+        {
+            auto.controlAutoSize(this);
+        }
+        #endregion
+
+        #region 根据控件名找到该控件
+        private object GetControlInstance(object obj, string strControlName)
+        {
+            IEnumerator Controls = null;//所有控件
+            Control c = null;//当前控件
+            Object cResult = null;//查找结果
+            if (obj.GetType() == this.GetType())//窗体
+            {
+                Controls = this.Controls.GetEnumerator();
+            }
+            else//控件
+            {
+                Controls = ((Control)obj).Controls.GetEnumerator();
+            }
+            while (Controls.MoveNext())//遍历操作
+            {
+                c = (Control)Controls.Current;//当前控件
+                if (c.HasChildren)//当前控件是个容器
+                {
+                    cResult = GetControlInstance(c, strControlName);//递归查找
+                    if (cResult == null)//当前容器中没有，跳出，继续查找
+                        continue;
+                    else//找到控件，返回
+                        return cResult;
+                }
+                else if (c.Name == strControlName)//不是容器，同时找到控件，返回
+                {
+                    return c;
+                }
+            }
+            return null;//控件不存在
+        }
+        #endregion
+
+        #region 设置数字键盘Title
+        private void SetNumberKeyboardText(string inputTxtName)
+        {
+            if (inputTxtName.Contains("_A_Value"))
+            {
+                inputTxtName = inputTxtName.Replace("_A_Value", "");
+            }
+            if (inputTxtName.Contains("_B_Value"))
+            {
+                inputTxtName = inputTxtName.Replace("_B_Value", "");
+            }
+            Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
+            if (lbl != null)
+                numberKeyboard.Text = lbl.Text;
+        }
+        #endregion
+
+        #region 设置英文键盘Title
+        private void SetAlphaKeyboardText(string inputTxtName)
+        {
+            if (inputTxtName.Contains("_measure_tool1"))
+            {
+                inputTxtName = inputTxtName.Replace("_measure_tool1", "");
+            }
+            if (inputTxtName.Contains("_measure_tool2"))
+            {
+                inputTxtName = inputTxtName.Replace("_measure_tool2", "");
+            }
+            Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
+            if (lbl != null)
+                englishKeyboard.Text = lbl.Text;
+        }
+        #endregion
     }
 }

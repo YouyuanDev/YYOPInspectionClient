@@ -68,7 +68,7 @@ namespace YYOPInspectionClient
                 {
                     //然后开启循环读取数据
                     this.lblReaderStatus.Text = "读取中...";
-                    YYKeyenceReaderConsole.threadingProcessForm = this;
+                   // YYKeyenceReaderConsole.threadingProcessForm = this;
                     this.button1.Text = "结束扫码";
                 }
                 else if (resLon == 1)

@@ -27,11 +27,10 @@ namespace YYOPInspectionClient
             this.Font = new Font("宋体", 12, FontStyle.Bold);
             AutoSize autoSize= new AutoSize();
             autoSize.controllInitializeSize(this);
-            //this.dtpEndTime.Value = DateTime.Now;
-            //string begin_time = HttpUtility.UrlEncode(this.dtpBeginTime.Value.ToString("yyyy-MM-dd"), Encoding.UTF8);
-            //string end_time = HttpUtility.UrlEncode(DateTime.Now.ToString("yyyy-MM-dd"),Encoding.UTF8);
+           
             getSearchParam();
             getThreadingProcessData();
+            this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体",18, FontStyle.Bold);
             try
             {
                 thread = new Thread(UploadVideo);
@@ -275,6 +274,9 @@ namespace YYOPInspectionClient
                     if (!rowsJson.Trim().Equals("{}"))
                     {
                         List<ThreadInspectionRecord> list = JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
+                        foreach (ThreadInspectionRecord item in list) {
+                            item.Inspection_time = CommonUtil.ConvertTimeStamp(item.Inspection_time);
+                        }
                         this.dataGridView1.DataSource = list;
                     }
                     else {
@@ -301,7 +303,7 @@ namespace YYOPInspectionClient
         {
             MainWindow mainWindow = new MainWindow();
             //ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
-            ThreadingForm form = new ThreadingForm();
+            ThreadingForm form = new ThreadingForm(this,mainWindow);
             form.Show();
         }
         #endregion
@@ -646,7 +648,5 @@ namespace YYOPInspectionClient
             
         }
         #endregion
-
-        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace YYOPInspectionClient
     {
         public  TextBox inputTxt;
         public  List<TextBox> flpTabOneTxtList;
+        public Control containerControl = null;
         public AlphabetKeyboardForm()
         {
             InitializeComponent();
@@ -104,16 +106,14 @@ namespace YYOPInspectionClient
         private void button_enter_Click(object sender, EventArgs e)
         {
             //输入
-            if (inputTxt != null) {
+            if (inputTxt != null){
                 inputTxt.Text = Textbox_display.Text.Trim();
-               
                 this.Textbox_display.Text = "";
                 int index = flpTabOneTxtList.IndexOf(inputTxt);
                 if(index<flpTabOneTxtList.Count-1)
                     index++;
                 TextBox tb = flpTabOneTxtList[index];
                 tb.Focus();
-
             }
         }
 
@@ -124,7 +124,39 @@ namespace YYOPInspectionClient
                 this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
 
         }
+        #region 根据控件名找到该控件
+        private object GetControlInstance(object obj, string strControlName)
+        {
+            IEnumerator Controls = null;//所有控件
+            Control c = null;//当前控件
+            Object cResult = null;//查找结果
+            if (obj.GetType() == this.GetType())//窗体
+            {
+                Controls = this.Controls.GetEnumerator();
+            }
+            else//控件
+            {
+                Controls = ((Control)obj).Controls.GetEnumerator();
+            }
+            while (Controls.MoveNext())//遍历操作
+            {
+                c = (Control)Controls.Current;//当前控件
+                if (c.HasChildren)//当前控件是个容器
+                {
+                    cResult = GetControlInstance(c, strControlName);//递归查找
+                    if (cResult == null)//当前容器中没有，跳出，继续查找
+                        continue;
+                    else//找到控件，返回
+                        return cResult;
+                }
+                else if (c.Name == strControlName)//不是容器，同时找到控件，返回
+                {
+                    return c;
+                }
+            }
+            return null;//控件不存在
+        }
+        #endregion
 
-         
     }
 }

@@ -12,27 +12,36 @@ using System.Windows.Forms;
 using AutoUpdaterDotNET;
 using System.Threading;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
         Thread threadUpdate = null;
+        AutoSize auto = new AutoSize();
         public LoginWinform()
         {
             InitializeComponent();
             //检查更新
-            threadUpdate = new Thread(UpdateClient);
-            threadUpdate.Start();
+            //threadUpdate = new Thread(UpdateClient);
+            //threadUpdate.Start();
+            //UpdateClient();
         }
         private void UpdateClient() {
             try
             {
-                AutoUpdater.Start("http://localhost:8080/upload/clientapp/ClientAPPAutoUpdater.xml");
+                MessageBox.Show(Assembly.GetEntryAssembly().GetName().Version.ToString() + "版本");
+                //MessageBox.Show(Assembly.GetEntryAssembly().GetName().Version.ToString() + "hhhh");
+                string url = CommonUtil.getServerIpAndPort() + "upload/clientapp/ClientAPPAutoUpdater.xml";
+                AutoUpdater.Start(url);
+                AutoUpdater.Mandatory = true;
+                AutoUpdater.RunUpdateAsAdmin = false;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
-                threadUpdate.Abort();
+               // threadUpdate.Abort();
             }
         }
 
@@ -125,7 +134,17 @@ namespace YYOPInspectionClient
                     this.Close();
                 }
             }
-        } 
+        }
         #endregion
+
+        private void LoginWinform_Load(object sender, EventArgs e)
+        {
+            auto.controllInitializeSize(this);
+        }
+
+        private void LoginWinform_SizeChanged(object sender, EventArgs e)
+        {
+            auto.controlAutoSize(this);
+        }
     }
 }

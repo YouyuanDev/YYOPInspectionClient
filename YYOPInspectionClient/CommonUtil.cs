@@ -123,5 +123,22 @@ namespace YYOPInspectionClient
             return Convert.ToInt64(ts.TotalMilliseconds).ToString();
         }
         #endregion
+
+        public static string ConvertTimeStamp(string time) {
+            string returntime = time;
+            try
+            {
+                long jsTimeStamp = long.Parse(time);
+                System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+                DateTime dt = startTime.AddMilliseconds(jsTimeStamp);
+                returntime = dt.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            catch (Exception e) {
+                Console.WriteLine("日期转化失败!");
+            }
+            return returntime;
+        }
+
+
     }
 }
