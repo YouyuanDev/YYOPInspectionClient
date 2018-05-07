@@ -70,7 +70,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
-            this.picRealTImePreview = new System.Windows.Forms.PictureBox();
             this.lblVideoStatus = new System.Windows.Forms.Label();
             this.lblReaderStatus = new System.Windows.Forms.Label();
             this.btnFormClose = new System.Windows.Forms.Button();
@@ -87,13 +86,13 @@
             this.lblSteelGrade = new System.Windows.Forms.Label();
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
+            this.lblTimer = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
             this.pnlTabOneTitle.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.pnlTabTwoTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -526,7 +525,7 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTabTwoTitle.Controls.Add(this.picRealTImePreview);
+            this.pnlTabTwoTitle.Controls.Add(this.lblTimer);
             this.pnlTabTwoTitle.Controls.Add(this.lblVideoStatus);
             this.pnlTabTwoTitle.Controls.Add(this.lblReaderStatus);
             this.pnlTabTwoTitle.Controls.Add(this.btnFormClose);
@@ -548,19 +547,11 @@
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1193, 96);
             this.pnlTabTwoTitle.TabIndex = 0;
             // 
-            // picRealTImePreview
-            // 
-            this.picRealTImePreview.Location = new System.Drawing.Point(1104, 3);
-            this.picRealTImePreview.Name = "picRealTImePreview";
-            this.picRealTImePreview.Size = new System.Drawing.Size(85, 93);
-            this.picRealTImePreview.TabIndex = 60;
-            this.picRealTImePreview.TabStop = false;
-            // 
             // lblVideoStatus
             // 
             this.lblVideoStatus.AutoSize = true;
             this.lblVideoStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblVideoStatus.Location = new System.Drawing.Point(810, 64);
+            this.lblVideoStatus.Location = new System.Drawing.Point(704, 65);
             this.lblVideoStatus.Name = "lblVideoStatus";
             this.lblVideoStatus.Size = new System.Drawing.Size(64, 16);
             this.lblVideoStatus.TabIndex = 15;
@@ -570,7 +561,7 @@
             // 
             this.lblReaderStatus.AutoSize = true;
             this.lblReaderStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblReaderStatus.Location = new System.Drawing.Point(626, 64);
+            this.lblReaderStatus.Location = new System.Drawing.Point(580, 63);
             this.lblReaderStatus.Name = "lblReaderStatus";
             this.lblReaderStatus.Size = new System.Drawing.Size(64, 16);
             this.lblReaderStatus.TabIndex = 14;
@@ -578,7 +569,7 @@
             // 
             // btnFormClose
             // 
-            this.btnFormClose.Location = new System.Drawing.Point(914, 5);
+            this.btnFormClose.Location = new System.Drawing.Point(854, 54);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(101, 39);
             this.btnFormClose.TabIndex = 13;
@@ -588,7 +579,7 @@
             // 
             // btnFormSubmit
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(914, 50);
+            this.btnFormSubmit.Location = new System.Drawing.Point(972, 54);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(101, 39);
             this.btnFormSubmit.TabIndex = 12;
@@ -598,19 +589,19 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(743, 16);
+            this.button2.Location = new System.Drawing.Point(696, 16);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 39);
+            this.button2.Size = new System.Drawing.Size(119, 39);
             this.button2.TabIndex = 11;
-            this.button2.Text = "开始视频记录";
+            this.button2.Text = "开始录制视频";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(628, 16);
+            this.button1.Location = new System.Drawing.Point(574, 16);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 39);
+            this.button1.Size = new System.Drawing.Size(116, 39);
             this.button1.TabIndex = 10;
             this.button1.Text = "开始扫码";
             this.button1.UseVisualStyleBackColor = true;
@@ -700,11 +691,22 @@
             this.lblOd.TabIndex = 0;
             this.lblOd.Text = "label72";
             // 
+            // lblTimer
+            // 
+            this.lblTimer.AutoSize = true;
+            this.lblTimer.ForeColor = System.Drawing.Color.Red;
+            this.lblTimer.Location = new System.Drawing.Point(851, 27);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(16, 16);
+            this.lblTimer.TabIndex = 16;
+            this.lblTimer.Text = " ";
+            // 
             // ThreadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 891);
+            this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Name = "ThreadingForm";
             this.Text = "表单";
@@ -721,7 +723,6 @@
             this.tabPage2.ResumeLayout(false);
             this.pnlTabTwoTitle.ResumeLayout(false);
             this.pnlTabTwoTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picRealTImePreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -768,8 +769,6 @@
         private System.Windows.Forms.ComboBox cmbContractNo;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox txtBatchNo;
-        private System.Windows.Forms.TextBox txtHeatNo;
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.Label label77;
         private System.Windows.Forms.Label label76;
@@ -785,7 +784,9 @@
         private System.Windows.Forms.DateTimePicker dtpInspectionTime;
         private System.Windows.Forms.Label lblVideoStatus;
         private System.Windows.Forms.Label lblReaderStatus;
-        public System.Windows.Forms.PictureBox picRealTImePreview;
         public System.Windows.Forms.TextBox txtCoupingNo;
+        public System.Windows.Forms.TextBox txtBatchNo;
+        public System.Windows.Forms.TextBox txtHeatNo;
+        public System.Windows.Forms.Label lblTimer;
     }
 }

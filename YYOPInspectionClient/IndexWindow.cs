@@ -21,21 +21,22 @@ namespace YYOPInspectionClient
         private static Thread thread = null;
         private YYKeyenceReaderConsole readerCodeWindow = null;
         private MainWindow videoWindow=null;
+        private ThreadingForm threadFrom = null;
+       
         public IndexWindow()
         {
             InitializeComponent();
             this.Font = new Font("宋体", 12, FontStyle.Bold);
             AutoSize autoSize= new AutoSize();
             autoSize.controllInitializeSize(this);
-           
             getSearchParam();
             getThreadingProcessData();
             this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体",18, FontStyle.Bold);
             try
             {
-                thread = new Thread(UploadVideo);
-                thread.Start();
-                thread.IsBackground = true;
+                //thread = new Thread(UploadVideo);
+                //thread.Start();
+                //thread.IsBackground = true;
             }
             catch (Exception e)
             {
@@ -151,69 +152,45 @@ namespace YYOPInspectionClient
         #region 多线程上传视频
         private static void UploadVideo()
         {
-            //删除vcr中的垃圾视频
             try
             {
-                string trashDir = Application.StartupPath + "\\vcr";
-                if (Directory.Exists(trashDir))
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(trashDir);
-                    foreach (FileInfo file in dirInfo.GetFiles("*.mp4"))
-                    {
-                        File.Delete(file.FullName);
-                    }
-                }
-
-                string fileuploadpath = Application.StartupPath + "\\fileuploadrecord.txt";
+                string baPath= Application.StartupPath + "\\";
+                string ffmpegPath = baPath+ "ffmpeg.exe";
                 string path = Application.StartupPath + "\\draft";
-                //按行读取出文件可上传的文件夹名
-                List<DirectoryInfo> dirs = new List<DirectoryInfo>();
-
-                string line = null;
                 while (true)
                 {
-                    //查询出可上传文件中的视频文件是哪些
-                    StreamReader sr = new StreamReader(fileuploadpath, Encoding.Default);
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        //line = line.Replace("\r\n","");
-                        if (!string.IsNullOrWhiteSpace(line))
-                        {
-                            dirs.Add(new DirectoryInfo(path + "\\" + line));
-                            //Console.WriteLine("-===" + line + ":" + line.Length);
-                        }
-                    }
-                    sr.Close();
-                    //遍历视频文件
                     if (Directory.Exists(path))
                     {
                         DirectoryInfo folder = new DirectoryInfo(path);
-                        if (dirs.Count > 0)
+                        foreach (DirectoryInfo sonFolder in folder.GetDirectories())
                         {
-                            foreach (DirectoryInfo sonFolder in dirs)
+                            FileInfo[] files = sonFolder.GetFiles("*.mp4");
+                            if (files.Length > 0)
                             {
-                                if (Directory.Exists(sonFolder.FullName))
+                                foreach (FileInfo file in files)
                                 {
-                                    FileInfo[] files = sonFolder.GetFiles("*.mp4");
-                                    if (files.Length > 0)
+                                    if (file.Length > 0)
                                     {
-                                        foreach (FileInfo file in files)
+                                        if (!CommonUtil.JudgeFileIsUsing(file.FullName))
                                         {
-                                            //获取文件路径 
-                                            FileInfo info = new FileInfo(file.FullName);
-                                            FtpUtil.UploadFile(sonFolder, info);
+                                            //视频格式转换，上传
+                                            CommonUtil.FormatVideo(ffmpegPath, sonFolder.FullName, file.FullName);
                                         }
                                     }
-                                    else
-                                    {
-                                        Directory.Delete(sonFolder.FullName, true);
-                                        Util.deleteDirName(sonFolder.Name);
+                                    else {
+                                        File.Delete(file.FullName);
                                     }
+                                    
                                 }
+
                             }
+                            else {
+                                Directory.Delete(sonFolder.FullName, true);
+                            }
+                               
                         }
                     }
-                    Thread.Sleep(3000);
+                    Thread.Sleep(5000);
                 }
             }
             catch (Exception e)
@@ -303,8 +280,16 @@ namespace YYOPInspectionClient
         {
             MainWindow mainWindow = new MainWindow();
             //ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
-            ThreadingForm form = new ThreadingForm(this,mainWindow);
-            form.Show();
+            if (threadFrom != null)
+            {
+                threadFrom.Show();
+            }
+            else
+            {
+                threadFrom = new ThreadingForm(this, mainWindow);
+                threadFrom.Show();
+            }
+            //form.Show();
         }
         #endregion
 

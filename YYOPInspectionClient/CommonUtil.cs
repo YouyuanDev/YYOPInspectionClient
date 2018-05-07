@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 namespace YYOPInspectionClient
@@ -74,6 +76,8 @@ namespace YYOPInspectionClient
                     if (returnValue.Trim().Equals("success"))
                     {
                         flag = true;
+                        //删除文件
+                        Console.WriteLine("上传完成--------------------------------------");
                     }
                     response.Close();
                     readStream.Close();
@@ -87,6 +91,9 @@ namespace YYOPInspectionClient
             {
                 fileStream.Close();
                 binaryReader.Close();
+            }
+            if (flag) {
+                File.Delete(filePath);
             }
             return flag;
         }
@@ -124,7 +131,107 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        public static string ConvertTimeStamp(string time) {
+        #region 判断文件是否被其他进程占用
+        public static bool JudgeFileIsUsing(string fileFullName)
+        {
+            bool result = false;
+            if (!System.IO.File.Exists(fileFullName))
+            {
+                result = false;
+            }//end: 如果文件不存在的处理逻辑
+            else
+            {//如果文件存在，则继续判断文件是否已被其它程序使用
+             //逻辑：尝试执行打开文件的操作，如果文件已经被其它程序使用，则打开失败，抛出异常，根据此类异常可以判断文件是否已被其它程序使用。
+                System.IO.FileStream fileStream = null;
+                try
+                {
+                    fileStream = System.IO.File.Open(fileFullName, System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None);
+                    result = false;
+                }
+                catch (System.IO.IOException ioEx)
+                {
+                    result = true;
+                }
+                catch (System.Exception ex)
+                {
+                    result = true;
+                }
+                finally
+                {
+                    if (fileStream != null)
+                    {
+                        fileStream.Close();
+                    }
+                }
+            }//end: 如果文件存在的处理逻辑
+             //返回指示文件是否已被其它程序使用的值
+            return result;
+        }
+        #endregion
+
+        #region 视频转换
+        public static void FormatVideo(string ffmpegPath, string sourcePath, string filePath)
+        {
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = ffmpegPath;
+                p.StartInfo.UseShellExecute = false;
+                string srcFileName = filePath;
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+                string extension = System.IO.Path.GetExtension(filePath);
+                string newFileName = fileName + "_vcr" + extension;
+                srcFileName = filePath;
+                string destFileName = sourcePath + "\\" + newFileName;
+                if (!File.Exists(destFileName))
+                {
+                    File.Create(destFileName);
+                }
+                p.StartInfo.Arguments = "-i " + srcFileName + " -y  -vcodec h264 -b 500000 " + destFileName;    //执行参数
+                p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程
+                p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;//把外部程序错误输出写到StandardError流中
+                p.ErrorDataReceived += new DataReceivedEventHandler(p_ErrorDataReceived);
+                p.OutputDataReceived += new DataReceivedEventHandler(p_OutputDataReceived);
+                p.StartInfo.UseShellExecute = false;
+                p.Start();
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                p.BeginErrorReadLine();//开始异步读取
+                p.WaitForExit();//阻塞等待进程结束
+                p.Close();//关闭进程
+                p.Dispose();//释放资源
+               //直到视频格式转换完毕，释放转换进程才能执行删除转换前的文件和上传转换后的文件
+                File.Delete(srcFileName);
+                uploadVideoToTomcat(destFileName);
+            }
+            catch (Exception e) {
+
+            }
+           
+         
+        } 
+        
+
+        private static void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+
+            Console.WriteLine(e.Data);
+
+        }
+
+        private static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+
+            Console.WriteLine(e.Data);
+
+        }
+        #endregion
+
+        #region 时间戳转日期
+        public static string ConvertTimeStamp(string time)
+        {
             string returntime = time;
             try
             {
@@ -133,12 +240,28 @@ namespace YYOPInspectionClient
                 DateTime dt = startTime.AddMilliseconds(jsTimeStamp);
                 returntime = dt.ToString("yyyy-MM-dd HH:mm:ss");
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine("日期转化失败!");
             }
             return returntime;
-        }
+        } 
+        #endregion
 
-
+        #region 获取系统版本
+        public static string GetVersion()
+        {
+            string str = "";
+            try
+            {
+                str = Assembly.GetEntryAssembly().GetName().Version.ToString() + "版本";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("系统繁忙!");
+            }
+            return str;
+        } 
+        #endregion
     }
 }

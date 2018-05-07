@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -25,6 +26,8 @@ namespace YYOPInspectionClient
         private delegate void SetTextCallback(string message);
         private delegate void UpdateTextBoxDelegate(ThreadingForm threadingProcessForm, string message);
         public static YYKeyenceReaderConsole myselfForm=null;
+        private static string [] strArr = null;
+        private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
         public YYKeyenceReaderConsole()
         {
             InitializeComponent();
@@ -575,8 +578,10 @@ namespace YYOPInspectionClient
                             recvBytes[recvSize] = 0;
                             if (threadingProcessForm != null)
                             {
-                                 if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
-                                    UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes).TrimEnd());
+                                if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR")) {
+                                        UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes).TrimEnd());
+                                }
+                                   
                             }
                             SetText(DateTime.Now.ToString()+"    "+Encoding.UTF8.GetString(recvBytes));
                         }
@@ -594,14 +599,39 @@ namespace YYOPInspectionClient
 
         private static void UpdateTextBox(ThreadingForm form, string message)
         {
+            strArr = Regex.Split(message, "\\s+");
+            if (strArr.Length > 3)
+            {
+                argCoupingNo = strArr[3];
+                argHeatNo = strArr[1];
+                argBatchNo = strArr[2];
+            }
+            else if (strArr.Length > 2)
+            {
+                argHeatNo = strArr[1];
+                argBatchNo = strArr[2];
+            }
+            else if (strArr.Length > 1) {
+                argHeatNo = strArr[1];
+            }
             if (form.txtCoupingNo.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                form.txtCoupingNo.Invoke(md, new object[] { form, message });
+                if(argCoupingNo!=null)
+                   form.txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                if(argHeatNo!=null)
+                   form.txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                if(argBatchNo!=null)
+                   form.txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
             }
             else
             {
-                form.txtCoupingNo.Text = message;
+                if(argCoupingNo!=null)
+                  form.txtCoupingNo.Text =argCoupingNo;
+                if (argHeatNo != null)
+                    form.txtHeatNo.Text = argHeatNo;
+                if (argBatchNo != null)
+                    form.txtBatchNo.Text = argBatchNo;
             }
         }
        

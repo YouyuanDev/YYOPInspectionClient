@@ -778,7 +778,7 @@ namespace YYOPInspectionClient
                     return 2;
                 }
                 string coupingDir = Application.StartupPath + "\\draft\\" + timestamp + "\\";
-                string sVideoFileName = coupingDir + GetTimeStamp() + "_vcr.mp4";
+                string sVideoFileName = coupingDir + timestamp + ".mp4";
                 if (m_bRecord == false)
                 {
                     if (!File.Exists(coupingDir))

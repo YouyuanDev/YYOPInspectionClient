@@ -30,8 +30,10 @@ namespace YYOPInspectionClient
         AutoSize auto = new AutoSize();
         //时间戳(视频和form表单保存的目录名)
         private string timestamp = null;
-
+        private int countTime = 0;
         private static ThreadingForm myForm = null;
+        public System.Timers.Timer timer=null;
+        public delegate void EventHandle(object sender, EventArgs e);
         public static ThreadingForm getMyForm()
         {
             return myForm;
@@ -49,6 +51,7 @@ namespace YYOPInspectionClient
             this.indexWindow = indexWindow;
             this.mainWindow = mainWindow;
             timestamp = CommonUtil.getMesuringRecord();
+            this.lblReaderStatus.Text = "读码器未启动...";
             this.lblVideoStatus.Text = "录像未启动...";
             myForm = this;
             //this.Font = new Font("宋体", 12, FontStyle.Bold);
@@ -57,6 +60,21 @@ namespace YYOPInspectionClient
             flag = true;
             //2------------初始化检验记录表单
             InitThreadForm();
+            //3------------定时器
+            //System.Timers.Timer t = new System.Timers.Timer();
+           
+            
+        }
+        #endregion
+
+        #region 结束录制视频
+        public void EndVideoRecord()
+        {
+            MainWindow.stopRecordVideo();
+            //保存timestamp到fileuploadrecord中
+            RestoreSetting();
+            this.button2.Text = "开始录制视频";
+            this.lblVideoStatus.Text = "录像完成...";
         } 
         #endregion
 
@@ -416,7 +434,9 @@ namespace YYOPInspectionClient
             else
             {
                 RestoreSetting();
-                this.Close();
+                //清空表单测量值
+                ClearForm();
+                this.Hide();
             }
         }
         #endregion
@@ -426,6 +446,7 @@ namespace YYOPInspectionClient
         {
             String param = "";
             try {
+                string videoNo = HttpUtility.UrlEncode(txtCoupingNo.Text.Trim() + "_" + timestamp + "_vcr.mp4", Encoding.UTF8);
                 sb.Remove(0, sb.Length);
                 sb.Append("{");
                 sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
@@ -437,7 +458,7 @@ namespace YYOPInspectionClient
                 sb.Append("\"operator_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8) + "\",");
                 sb.Append("\"production_crew\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8) + "\",");
                 sb.Append("\"production_shift\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) + "\",");
-                sb.Append("\"video_no\"" + ":" + "\"" + "" + "\",");
+                sb.Append("\"video_no\"" + ":" + "\"" +videoNo + "\",");
                 //sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
                 foreach (TextBox tb in flpTabOneTxtList)
                 {
@@ -646,7 +667,7 @@ namespace YYOPInspectionClient
         #region 录制视频事件
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.button2.Text == "开始录像")
+            if (this.button2.Text == "开始录制视频")
             {
                 if (timestamp == null || timestamp.Length <= 0)
                 {
@@ -659,7 +680,21 @@ namespace YYOPInspectionClient
                     case 0:
                         this.lblVideoStatus.Text = "录像中...";
                         RealTimePreview();
-                        this.button2.Text = "结束录像";
+                        if (timer != null)
+                        {
+                            countTime = 0;
+                            timer.Start();
+                        }
+                        else
+                        {
+                            timer = new System.Timers.Timer();
+                            timer.Enabled = true;
+                            timer.AutoReset = true;
+                            timer.Interval = 1000;
+                            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
+                            timer.Start();
+                        }
+                        this.button2.Text = "结束录制";
                         break;
                     case 1:
                         this.lblVideoStatus.Text = "录像机未连接...";
@@ -678,12 +713,37 @@ namespace YYOPInspectionClient
                         break;
                 }
             }
-            else if (this.button2.Text == "结束录像")
+            else if (this.button2.Text == "结束录制")
             {
                 MainWindow.stopRecordVideo();
+                timer.Stop();
+                //保存timestamp到fileuploadrecord中
                 RestoreSetting();
-                this.button2.Text = "开始录像";
+                this.button2.Text = "开始录制视频";
                 this.lblVideoStatus.Text = "录像完成...";
+            }
+        }
+        #endregion
+
+        #region 计时器
+        private void CountTimer(object source, System.Timers.ElapsedEventArgs e)
+        {
+            Invoke(new EventHandle(TimerAction), source, e);
+        }
+       
+
+        public void TimerAction(Object source, EventArgs e)
+        {
+            countTime++;
+            if ((15 * 60) >=countTime)
+            {
+                this.lblTimer.Text = "还剩:" + ((15 * 60 - countTime) / 60) + "分" + ((15 * 60 - countTime) % 60) + "秒";
+            }
+            else
+            {
+                this.lblTimer.Text = "";
+                timer.Stop();
+                this.EndVideoRecord();
             }
         }
         #endregion
@@ -706,11 +766,12 @@ namespace YYOPInspectionClient
                 mainWindow.Width = 150;
                 mainWindow.Height = 150;
                 int x = Screen.PrimaryScreen.WorkingArea.Width - mainWindow.RealPlayWnd.Width - 10;
-                int y = Screen.PrimaryScreen.WorkingArea.Height / 2 - mainWindow.RealPlayWnd.Height;
+                int y = mainWindow.RealPlayWnd.Height/2;
                 mainWindow.Location = new Point(x, y);
                 mainWindow.FormBorderStyle = FormBorderStyle.None;
                 mainWindow.Show();
-                mainWindow.TopMost = true;
+                mainWindow.MdiParent = this;
+                //mainWindow.TopMost = true;
             }
         }
         #endregion
@@ -821,6 +882,39 @@ namespace YYOPInspectionClient
             if (lbl != null)
                 englishKeyboard.Text = lbl.Text;
         }
+        #endregion
+
+        #region 清理表单
+        private void ClearForm()
+        {
+            ClearText(flpTabTwoContent);
+            this.txtCoupingNo.Text = "";
+            this.txtHeatNo.Text = "";
+            this.txtBatchNo.Text = "";
+        }
+        #endregion
+
+        #region 清除文本框
+        public void ClearText(Control parContainer)
+        {
+            for (int index = 0; index < parContainer.Controls.Count; index++)
+            {
+                // 如果是容器类控件，递归调用自己
+                if (parContainer.Controls[index].HasChildren)
+                {
+                    ClearText(parContainer.Controls[index]);
+                }
+                else
+                {
+                    switch (parContainer.Controls[index].GetType().Name)
+                    {
+                        case "TextBox":
+                            ((TextBox)parContainer.Controls[index]).Text = "";
+                            break;
+                    }
+                }
+            }
+        } 
         #endregion
     }
 }
