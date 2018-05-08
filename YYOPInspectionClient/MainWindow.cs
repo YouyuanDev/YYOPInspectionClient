@@ -777,8 +777,9 @@ namespace YYOPInspectionClient
                     DebugInfo("录像失败,请先开启预览[表单发过来请求]!");
                     return 2;
                 }
-                string coupingDir = Application.StartupPath + "\\draft\\" + timestamp + "\\";
-                string sVideoFileName = coupingDir + timestamp + ".mp4";
+                string coupingDir = Application.StartupPath + "\\draft\\";
+                //MessageBox.Show(coupingDir);
+                string sVideoFileName = coupingDir+timestamp + ".mp4";
                 if (m_bRecord == false)
                 {
                     if (!File.Exists(coupingDir))

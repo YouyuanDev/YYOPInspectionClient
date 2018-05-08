@@ -29,6 +29,7 @@ namespace YYOPInspectionClient
         // YYKeyenceReaderConsole codeReaderWindow;
         AutoSize auto = new AutoSize();
         //时间戳(视频和form表单保存的目录名)
+        private string videosArr = "";
         private string timestamp = null;
         private int countTime = 0;
         private static ThreadingForm myForm = null;
@@ -75,6 +76,13 @@ namespace YYOPInspectionClient
             RestoreSetting();
             this.button2.Text = "开始录制视频";
             this.lblVideoStatus.Text = "录像完成...";
+            string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
+            string destPath = Application.StartupPath + "\\done\\" + timestamp + ".mp4";
+            if (CommonUtil.MoveFile(sourceFilePath, destPath))
+            {
+                CommonUtil.DeleteFile(sourceFilePath);
+            }
+            this.lblTimer.Text = "";
         } 
         #endregion
 
@@ -181,6 +189,7 @@ namespace YYOPInspectionClient
                 }
                 response.Close();
                 string jsons = content;
+               
                 if (jsons != null)
                 {
                     JObject jobject = JObject.Parse(jsons);
@@ -189,13 +198,15 @@ namespace YYOPInspectionClient
                     {
                         this.flpTabOneContent.Controls.Clear();
                         this.flpTabTwoContent.Controls.Clear();
-                        Console.WriteLine("初始化表单失败......");
+                        Console.WriteLine("初始化表单失败..........");
                     }
                     else
                     {
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
                         string contractInfo = jo["contractInfo"].ToString();
                         string measureInfo = jo["measureInfo"].ToString();
+                        //MessageBox.Show(contractInfo);
+                        //MessageBox.Show(measureInfo);
                         FillFormTitle(contractInfo);//填充表单合同信息
                         JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
                         this.flpTabOneContent.Controls.Clear();
@@ -292,14 +303,14 @@ namespace YYOPInspectionClient
                 string measure_tool2 = obj["measure_tool2"].ToString();
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
                 {
-                    Panel pnl0 = new Panel() { Width = 300, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(30, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                    Panel pnl0 = new Panel() { Width = 305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label {Text=obj["measure_tool1"].ToString()+":",Location=new Point(10,40),Width=90,TextAlign=ContentAlignment.MiddleRight };
+                        Label lbl0_1 = new Label {Text=obj["measure_tool1"].ToString()+":",Location=new Point(30,40),Width=90,TextAlign=ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_1);
-                        TextBox tb0 = new TextBox { Tag="English",Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 40) };
+                        TextBox tb0 = new TextBox { Tag="English",Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(120, 40) };
                         pnl0.Controls.Add(tb0);
                         tb0.Enter += new EventHandler(txt_Enter);
                         tb0.MouseDown+=new MouseEventHandler(txt_MouseDown);
@@ -307,9 +318,9 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90),Width = 90, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(30, 90),Width = 90, TextAlign = ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_2);
-                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 90) };
+                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(120, 90) };
                         pnl0.Controls.Add(tb1);
                         tb1.Enter += new EventHandler(txt_Enter);
                         tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -318,8 +329,8 @@ namespace YYOPInspectionClient
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
                 //初始化测量值表单
-                Panel panel1 = new Panel { Width = 300, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(),Name= obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(20, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                Panel panel1 = new Panel { Width = 305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(),Name= obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                 panel1.Controls.Add(lbl1_0);
                 string item_min_value = obj["item_min_value"].ToString();
                 string item_max_value = obj["item_max_value"].ToString();
@@ -329,34 +340,34 @@ namespace YYOPInspectionClient
                 {
                     float item_max_val = Convert.ToSingle(item_max_value);
                     float item_min_val = Convert.ToSingle(item_min_value);
-                    if (item_min_val > 0 || item_max_val > 0)
+                    if (item_min_val>=0&&item_max_val >0)
                     {
-                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(18, 50) };
+                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(20, 50),Width = 120};
                         panel1.Controls.Add(lbl1_1);
                         //添加频率
-                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(120, 50) };
+                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(140, 50),Width=180 };
                         panel1.Controls.Add(lbl1_3);
                     }
                     else
                     {
-                        Label lbl1_2 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+                        Label lbl1_2 = new Label {Width = 200, Text = "频率:" + item_frequency, Location = new Point(50, 50),TextAlign = ContentAlignment.MiddleCenter };
                         panel1.Controls.Add(lbl1_2);
                     }
                 }
                 else
                 {
                     //添加频率
-                    Label lbl1_4 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+                    Label lbl1_4 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(80, 50), TextAlign = ContentAlignment.MiddleCenter };
                     panel1.Controls.Add(lbl1_4);
                 }
 
                 //判断是否有A端B端
                 if(Convert.ToInt32(obj["both_ends"].ToString())==1)
                 {
-                    Label lbl1_5 = new Label {Text="A:",Location=new Point(20,80),Width=20, TextAlign = ContentAlignment.MiddleRight };
-                    TextBox tb3 = new TextBox { Tag="Number",Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
-                    Label lbl1_6 = new Label { Text="B:", Location = new Point(20,120), Width = 20,TextAlign=ContentAlignment.MiddleRight };
-                    TextBox tb4 = new TextBox { Tag = "Number",Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(60, 120) };
+                    Label lbl1_5 = new Label {Text="A:",Location=new Point(60,80),Width=20, TextAlign = ContentAlignment.MiddleRight };
+                    TextBox tb3 = new TextBox { Tag="Number",Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(100, 80) };
+                    Label lbl1_6 = new Label { Text="B:", Location = new Point(60,120), Width = 20,TextAlign=ContentAlignment.MiddleRight };
+                    TextBox tb4 = new TextBox { Tag = "Number",Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(100, 120) };
                     panel1.Controls.Add(lbl1_5);
                     panel1.Controls.Add(lbl1_6);
                     panel1.Controls.Add(tb3);
@@ -370,11 +381,10 @@ namespace YYOPInspectionClient
                 }
                 else
                 {
-                    TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
+                    TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(90, 80) };
                     panel1.Controls.Add(tb5);
                     tb5.Enter += new EventHandler(txt_Enter);
                     tb5.MouseDown += new MouseEventHandler(txt_MouseDown);
-
                     tb5.Leave += new EventHandler(txt_Leave);
                 }
                 this.flpTabTwoContent.Controls.Add(panel1);
@@ -446,7 +456,7 @@ namespace YYOPInspectionClient
         {
             String param = "";
             try {
-                string videoNo = HttpUtility.UrlEncode(txtCoupingNo.Text.Trim() + "_" + timestamp + "_vcr.mp4", Encoding.UTF8);
+                string videoNo = videosArr;
                 sb.Remove(0, sb.Length);
                 sb.Append("{");
                 sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
@@ -469,7 +479,7 @@ namespace YYOPInspectionClient
                     sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
                 }
                 string formData = sb.ToString();
-                MessageBox.Show(formData);
+                //MessageBox.Show(formData);
                 formData = formData.Substring(0, formData.LastIndexOf(",")) + "}";
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
@@ -511,6 +521,8 @@ namespace YYOPInspectionClient
                     else
                     {
                         MessageBox.Show("提交失败,表单暂时保存在本地!");
+                        string coupingDir = Application.StartupPath + "\\unsubmit";
+                        CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
                     }
                 }
             } catch (Exception e) {
@@ -518,16 +530,7 @@ namespace YYOPInspectionClient
                 CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
             finally{
-                //向可提交的视频文件中追加可提交文件夹名
-                //string path = Application.StartupPath + "\\fileuploadrecord.txt";
-                //FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write);
-                //StreamWriter sw = new StreamWriter(fs, Encoding.Default);
-                //if (timestamp != null && timestamp.Length > 0)
-                //{
-                //    sw.WriteLine(timestamp);
-                //}
-                //sw.Close();
-                //fs.Close();
+                ClearForm();
                 indexWindow.getThreadingProcessData();
             }
             
@@ -679,6 +682,7 @@ namespace YYOPInspectionClient
                 {
                     case 0:
                         this.lblVideoStatus.Text = "录像中...";
+                        videosArr += timestamp + "_vcr.mp4;";
                         RealTimePreview();
                         if (timer != null)
                         {
@@ -702,7 +706,7 @@ namespace YYOPInspectionClient
                         break;
                     case 2:
                         this.lblVideoStatus.Text = "录像机未启动...";
-                        MessageBox.Show("录像失败,请先开启录像机预览!");
+                        MessageBox.Show("录像失败,请先启动录像机!");
                         break;
                     case 3:
                         this.lblVideoStatus.Text = "录像失败...";
@@ -721,6 +725,14 @@ namespace YYOPInspectionClient
                 RestoreSetting();
                 this.button2.Text = "开始录制视频";
                 this.lblVideoStatus.Text = "录像完成...";
+                //将视频移到done文件夹下
+                string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
+                string destPath = Application.StartupPath + "\\done\\"+ timestamp + ".mp4";
+                if (CommonUtil.MoveFile(sourceFilePath, destPath))
+                {
+                    CommonUtil.DeleteFile(sourceFilePath);
+                }
+                this.lblTimer.Text = "";
             }
         }
         #endregion
@@ -758,20 +770,20 @@ namespace YYOPInspectionClient
                 mainWindow.groupBox3.Hide(); mainWindow.groupBox4.Hide();
                 int width = mainWindow.Width;
                 int height = mainWindow.Height;
-                mainWindow.RealPlayWnd.Left = 0;
-                mainWindow.RealPlayWnd.Top = 0;
-                mainWindow.RealPlayWnd.Width = width;
-                mainWindow.RealPlayWnd.Height = height;
-                mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
                 mainWindow.Width = 150;
                 mainWindow.Height = 150;
-                int x = Screen.PrimaryScreen.WorkingArea.Width - mainWindow.RealPlayWnd.Width - 10;
-                int y = mainWindow.RealPlayWnd.Height/2;
+                mainWindow.RealPlayWnd.Width = width;
+                mainWindow.RealPlayWnd.Height = height;
+                int x = Screen.PrimaryScreen.WorkingArea.Width-150;
+                int y =75;
                 mainWindow.Location = new Point(x, y);
                 mainWindow.FormBorderStyle = FormBorderStyle.None;
+                mainWindow.MaximumSize =new Size(150,150);
+                mainWindow.RealPlayWnd.Left= 0;
+                mainWindow.RealPlayWnd.Top = 0;
+                mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
                 mainWindow.Show();
-                mainWindow.MdiParent = this;
-                //mainWindow.TopMost = true;
+                mainWindow.TopMost = true;
             }
         }
         #endregion
@@ -891,6 +903,7 @@ namespace YYOPInspectionClient
             this.txtCoupingNo.Text = "";
             this.txtHeatNo.Text = "";
             this.txtBatchNo.Text = "";
+            videosArr = "";
         }
         #endregion
 
@@ -910,6 +923,7 @@ namespace YYOPInspectionClient
                     {
                         case "TextBox":
                             ((TextBox)parContainer.Controls[index]).Text = "";
+                            ((TextBox)parContainer.Controls[index]).BackColor = Color.White;
                             break;
                     }
                 }

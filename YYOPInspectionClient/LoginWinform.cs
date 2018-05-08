@@ -18,16 +18,11 @@ namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
-        Thread threadUpdate = null;
         AutoSize auto = new AutoSize();
         public LoginWinform()
         {
             InitializeComponent();
             this.Text="宝钢视频监造系统("+CommonUtil.GetVersion()+")";
-            //检查更新
-            //threadUpdate = new Thread(UpdateClient);
-            //threadUpdate.Start();
-            //UpdateClient();
         }
         private void UpdateClient() {
             try

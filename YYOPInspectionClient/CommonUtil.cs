@@ -93,7 +93,13 @@ namespace YYOPInspectionClient
                 binaryReader.Close();
             }
             if (flag) {
-                File.Delete(filePath);
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch (Exception ex) {
+                    Console.WriteLine("删除视频失败!");
+                }
             }
             return flag;
         }
@@ -170,10 +176,11 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 视频转换
-        public static void FormatVideo(string ffmpegPath, string sourcePath, string filePath)
+        public static void FormatAndUploadVideo(string ffmpegPath, string sourcePath, string filePath)
         {
             try
             {
+                Console.WriteLine("----------------开始转化视频--------------");
                 Process p = new Process();
                 p.StartInfo.FileName = ffmpegPath;
                 p.StartInfo.UseShellExecute = false;
@@ -185,9 +192,12 @@ namespace YYOPInspectionClient
                 string destFileName = sourcePath + "\\" + newFileName;
                 if (!File.Exists(destFileName))
                 {
-                    File.Create(destFileName);
+                    var file0=File.Create(destFileName);
+                    file0.Close();
                 }
-                p.StartInfo.Arguments = "-i " + srcFileName + " -y  -vcodec h264 -b 500000 " + destFileName;    //执行参数
+                Console.WriteLine(srcFileName + ":" + destFileName);
+                //p.StartInfo.Arguments = "-c:v libx264 -strict -2 -s 1280x720 -b 1000k";
+                p.StartInfo.Arguments = "-i " + srcFileName + " -y  -vcodec h264 -b 500000 -acodec aac " + destFileName;    //执行参数
                 p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程
                 p.StartInfo.CreateNoWindow = true;  //不显示dos程序窗口
                 p.StartInfo.RedirectStandardInput = true;
@@ -202,12 +212,13 @@ namespace YYOPInspectionClient
                 p.WaitForExit();//阻塞等待进程结束
                 p.Close();//关闭进程
                 p.Dispose();//释放资源
-               //直到视频格式转换完毕，释放转换进程才能执行删除转换前的文件和上传转换后的文件
+                Console.WriteLine("----------------转化视频完成--------------");
+                //直到视频格式转换完毕，释放转换进程才能执行删除转换前的文件和上传转换后的文件
                 File.Delete(srcFileName);
                 uploadVideoToTomcat(destFileName);
             }
             catch (Exception e) {
-
+                Console.Write("格式化出错....................");
             }
            
          
@@ -218,14 +229,13 @@ namespace YYOPInspectionClient
         {
 
             Console.WriteLine(e.Data);
-
+            Console.WriteLine("....格式化出错....");
         }
 
         private static void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-
             Console.WriteLine(e.Data);
-
+            Console.WriteLine(".......格式化输出.......");
         }
         #endregion
 
@@ -261,6 +271,42 @@ namespace YYOPInspectionClient
                 Console.WriteLine("系统繁忙!");
             }
             return str;
+        }
+        #endregion
+
+        #region 移动文件到指定路径
+        public static bool MoveFile(string sourceDir, string destDir)
+        {
+            bool flag = true;
+            try
+            {
+                File.Copy(sourceDir, destDir);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("文件被占用");
+                flag=false;
+            }
+            return flag;
+        }
+        #endregion
+
+        #region 删除指定文件
+        public static bool DeleteFile(string filePath)
+        {
+            bool flag = true;
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                flag = false;
+            }
+            return flag;
         } 
         #endregion
     }

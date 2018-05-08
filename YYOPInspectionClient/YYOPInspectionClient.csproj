@@ -102,12 +102,6 @@
     <Compile Include="ComboxItem.cs" />
     <Compile Include="CommonUtil.cs" />
     <Compile Include="ContractInfo.cs" />
-    <Compile Include="DataShowForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DataShowForm.Designer.cs">
-      <DependentUpon>DataShowForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AlphabetKeyboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,13 +114,6 @@
     <Compile Include="DetailForm.Designer.cs">
       <DependentUpon>DetailForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FTPSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FTPSetting.Designer.cs">
-      <DependentUpon>FTPSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FtpUtil.cs" />
     <Compile Include="IndexWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,12 +161,6 @@
       <DependentUpon>ThreadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ThreadInspectionRecord.cs" />
-    <Compile Include="ThreadingProcessForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThreadingProcessForm.Designer.cs">
-      <DependentUpon>ThreadingProcessForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UnSubmitForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,14 +177,8 @@
     <EmbeddedResource Include="AlphabetKeyboardForm.resx">
       <DependentUpon>AlphabetKeyboardForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataShowForm.resx">
-      <DependentUpon>DataShowForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DetailForm.resx">
       <DependentUpon>DetailForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FTPSetting.resx">
-      <DependentUpon>FTPSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IndexWindow.resx">
       <DependentUpon>IndexWindow.cs</DependentUpon>
@@ -235,9 +210,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ThreadingForm.resx">
       <DependentUpon>ThreadingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThreadingProcessForm.resx">
-      <DependentUpon>ThreadingProcessForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UnSubmitForm.resx">
       <DependentUpon>UnSubmitForm.cs</DependentUpon>

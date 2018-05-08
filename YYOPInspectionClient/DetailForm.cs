@@ -26,6 +26,7 @@ namespace YYOPInspectionClient
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         AutoSize auto = new YYOPInspectionClient.AutoSize();
+        public IndexWindow indexWindow = null;
         public DetailForm(string operator_no,string inspection_no,string thread_inspection_record_code)
         {
             InitializeComponent();
@@ -128,8 +129,9 @@ namespace YYOPInspectionClient
         #region 填充表单合同信息
         private void FillFormTitle(string contractInfo)
         {
-
+            //MessageBox.Show(contractInfo);
             JObject contractObj = (JObject)JsonConvert.DeserializeObject(contractInfo);
+           
             if (!string.IsNullOrWhiteSpace(contractObj["machining_contract_no"].ToString()))
                 this.txtMachiningContractNo.Text = contractObj["machining_contract_no"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["threading_type"].ToString()))
@@ -180,7 +182,7 @@ namespace YYOPInspectionClient
                 this.txtBatchNo.Text = contractObj["pipe_lot_no"].ToString();
         }
         #endregion
-
+         
         #region 初始化测量项
         private void InitMeasureTools(JArray measureArr)
         {
@@ -193,14 +195,14 @@ namespace YYOPInspectionClient
                 string measure_tool2 = obj["measure_tool2"].ToString();
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
                 {
-                    Panel pnl0 = new Panel() { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(30, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                    Panel pnl0 = new Panel() { Width =275, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40), Width = 90, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(30, 40), Width = 90, TextAlign = ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_1);
-                        TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 40) };
+                        TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(120, 40) };
                         pnl0.Controls.Add(tb0);
                         tb0.Enter += new EventHandler(txt_Enter);
                         tb0.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -208,9 +210,9 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), Width = 90, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(30, 90), Width = 90, TextAlign = ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_2);
-                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 90) };
+                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(120, 90) };
                         pnl0.Controls.Add(tb1);
                         tb1.Enter += new EventHandler(txt_Enter);
                         tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -219,8 +221,8 @@ namespace YYOPInspectionClient
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
                 //初始化测量值表单
-                Panel panel1 = new Panel { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(20, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                Panel panel1 = new Panel { Width = 275, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                 panel1.Controls.Add(lbl1_0);
                 string item_min_value = obj["item_min_value"].ToString();
                 string item_max_value = obj["item_max_value"].ToString();
@@ -229,35 +231,35 @@ namespace YYOPInspectionClient
                 if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value))
                 {
                     float item_max_val = Convert.ToSingle(item_max_value);
-                    float item_min_val = Convert.ToInt32(item_min_value);
-                    if (item_min_val > 0 || item_max_val > 0)
+                    float item_min_val = Convert.ToSingle(item_min_value);
+                    if (item_min_val >= 0 && item_max_val > 0)
                     {
-                        Label lbl1_1 = new Label { Tag = item_min_val + "-" + item_max_val, Name = obj["measure_item_code"].ToString() + "_lbl", Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(18, 50) };
+                        Label lbl1_1 = new Label { Tag = item_min_val + "-" + item_max_val, Name = obj["measure_item_code"].ToString() + "_lbl", Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(20, 50), Width = 120 };
                         panel1.Controls.Add(lbl1_1);
                         //添加频率
-                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(120, 50) };
+                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(140, 50), Width = 180 };
                         panel1.Controls.Add(lbl1_3);
                     }
                     else
                     {
-                        Label lbl1_2 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+                        Label lbl1_2 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(50, 50), TextAlign = ContentAlignment.MiddleCenter };
                         panel1.Controls.Add(lbl1_2);
                     }
                 }
                 else
                 {
                     //添加频率
-                    Label lbl1_4 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+                    Label lbl1_4 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(80, 50), TextAlign = ContentAlignment.MiddleCenter };
                     panel1.Controls.Add(lbl1_4);
                 }
 
                 //判断是否有A端B端
-                if (true)
+                if (Convert.ToInt32(obj["both_ends"].ToString()) == 1)
                 {
-                    Label lbl1_5 = new Label { Text = "A:", Location = new Point(20, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                    TextBox tb3 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
-                    Label lbl1_6 = new Label { Text = "B:", Location = new Point(20, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                    TextBox tb4 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(60, 120) };
+                    Label lbl1_5 = new Label { Text = "A:", Location = new Point(60, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
+                    TextBox tb3 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(100, 80) };
+                    Label lbl1_6 = new Label { Text = "B:", Location = new Point(60, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
+                    TextBox tb4 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(100, 120) };
                     panel1.Controls.Add(lbl1_5);
                     panel1.Controls.Add(lbl1_6);
                     panel1.Controls.Add(tb3);
@@ -271,11 +273,10 @@ namespace YYOPInspectionClient
                 }
                 else
                 {
-                    TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
+                    TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(90, 80) };
                     panel1.Controls.Add(tb5);
                     tb5.Enter += new EventHandler(txt_Enter);
                     tb5.MouseDown += new MouseEventHandler(txt_MouseDown);
-
                     tb5.Leave += new EventHandler(txt_Leave);
                 }
                 this.flpTabTwoContent.Controls.Add(panel1);
@@ -287,6 +288,112 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        //#region 初始化测量项
+        //private void InitMeasureTools(JArray measureArr)
+        //{
+        //    //int index = 1;
+        //    foreach (var item in measureArr)
+        //    {
+        //        JObject obj = (JObject)item;
+        //        //初始化测量工具编号表单
+        //        string measure_tool1 = obj["measure_tool1"].ToString();
+        //        string measure_tool2 = obj["measure_tool2"].ToString();
+        //        if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
+        //        {
+        //            Panel pnl0 = new Panel() { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+        //            Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(30, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+        //            pnl0.Controls.Add(lbl0_0);
+        //            if (!string.IsNullOrWhiteSpace(measure_tool1))
+        //            {
+        //                Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40), Width = 90, TextAlign = ContentAlignment.MiddleRight };
+        //                pnl0.Controls.Add(lbl0_1);
+        //                TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 40) };
+        //                pnl0.Controls.Add(tb0);
+        //                tb0.Enter += new EventHandler(txt_Enter);
+        //                tb0.MouseDown += new MouseEventHandler(txt_MouseDown);
+        //                tb0.Leave += new EventHandler(txt_Leave);
+        //            }
+        //            if (!string.IsNullOrWhiteSpace(measure_tool2))
+        //            {
+        //                Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), Width = 90, TextAlign = ContentAlignment.MiddleRight };
+        //                pnl0.Controls.Add(lbl0_2);
+        //                TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 90) };
+        //                pnl0.Controls.Add(tb1);
+        //                tb1.Enter += new EventHandler(txt_Enter);
+        //                tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
+        //                tb1.Leave += new EventHandler(txt_Leave);
+        //            }
+        //            this.flpTabOneContent.Controls.Add(pnl0);
+        //        }
+        //        //初始化测量值表单
+        //        Panel panel1 = new Panel { Width = 225, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+        //        Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(), Location = new Point(20, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+        //        panel1.Controls.Add(lbl1_0);
+        //        string item_min_value = obj["item_min_value"].ToString();
+        //        string item_max_value = obj["item_max_value"].ToString();
+        //        string item_frequency = Convert.ToDouble(obj["item_frequency"].ToString()).ToString("P");
+        //        ////判断该测量项是否有范围
+        //        if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value))
+        //        {
+        //            float item_max_val = Convert.ToSingle(item_max_value);
+        //            float item_min_val = Convert.ToInt32(item_min_value);
+        //            if (item_min_val > 0 || item_max_val > 0)
+        //            {
+        //                Label lbl1_1 = new Label { Tag = item_min_val + "-" + item_max_val, Name = obj["measure_item_code"].ToString() + "_lbl", Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(18, 50) };
+        //                panel1.Controls.Add(lbl1_1);
+        //                //添加频率
+        //                Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(120, 50) };
+        //                panel1.Controls.Add(lbl1_3);
+        //            }
+        //            else
+        //            {
+        //                Label lbl1_2 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+        //                panel1.Controls.Add(lbl1_2);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //添加频率
+        //            Label lbl1_4 = new Label { Text = "频率:" + item_frequency, Location = new Point(60, 50) };
+        //            panel1.Controls.Add(lbl1_4);
+        //        }
+
+        //        //判断是否有A端B端
+        //        if (true)
+        //        {
+        //            Label lbl1_5 = new Label { Text = "A:", Location = new Point(20, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
+        //            TextBox tb3 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
+        //            Label lbl1_6 = new Label { Text = "B:", Location = new Point(20, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
+        //            TextBox tb4 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(60, 120) };
+        //            panel1.Controls.Add(lbl1_5);
+        //            panel1.Controls.Add(lbl1_6);
+        //            panel1.Controls.Add(tb3);
+        //            panel1.Controls.Add(tb4);
+        //            tb3.Enter += new EventHandler(txt_Enter);
+        //            tb3.MouseDown += new MouseEventHandler(txt_MouseDown);
+        //            tb3.Leave += new EventHandler(txt_Leave);
+        //            tb4.Enter += new EventHandler(txt_Enter);
+        //            tb4.MouseDown += new MouseEventHandler(txt_MouseDown);
+        //            tb4.Leave += new EventHandler(txt_Leave);
+        //        }
+        //        else
+        //        {
+        //            TextBox tb5 = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(60, 80) };
+        //            panel1.Controls.Add(tb5);
+        //            tb5.Enter += new EventHandler(txt_Enter);
+        //            tb5.MouseDown += new MouseEventHandler(txt_MouseDown);
+
+        //            tb5.Leave += new EventHandler(txt_Leave);
+        //        }
+        //        this.flpTabTwoContent.Controls.Add(panel1);
+        //    }
+        //    flpTabOneTxtList.Clear();
+        //    flpTabTwoTxtList.Clear();
+        //    GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
+        //    GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
+        //}
+        //#endregion
+
         #region 初始化测量项数据
         private void InitMeasureToolNoAndValue(JArray measureDataArr)
         {
@@ -294,11 +401,14 @@ namespace YYOPInspectionClient
                 foreach (var item in measureDataArr)
                 {
                     JObject obj = (JObject)item;
-                     
-                    string itemcode = Convert.ToString(obj["itemcode"]);
-                    string toolcode1 = Convert.ToString(obj["toolcode1"]);
-                    string toolcode2 = Convert.ToString(obj["toolcode2"]);
-                    string itemvalue = Convert.ToString(obj["itemvalue"]);
+                    string itemcode = null;
+                    itemcode=obj["itemcode"] == null ?"" : Convert.ToString(obj["itemcode"]);
+                    string toolcode1 =null;
+                    toolcode1= obj["toolcode1"]==null?"": Convert.ToString(obj["toolcode1"]);
+                    string toolcode2 =null;
+                    toolcode2= obj["toolcode2"]==null?"" : Convert.ToString(obj["toolcode2"]);
+                    string itemvalue = "";
+                    itemvalue= obj["itemvalue"]==null?"" : Convert.ToString(obj["itemvalue"]);
                     foreach (TextBox oneItem in flpTabOneTxtList)
                     {
                         if (oneItem.Name.Contains(itemcode))
@@ -594,10 +704,12 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    MessageBox.Show(rowsJson);
+                    //MessageBox.Show(rowsJson);
                     if (rowsJson.Trim().Equals("success"))
                     {
                         MessageBox.Show("修改成功!");
+                        if(indexWindow!=null)
+                         indexWindow.getThreadingProcessData();
                     }
                     else
                     {
@@ -612,6 +724,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 窗体大小改变事件
         private void DetailForm_Load(object sender, EventArgs e)
         {
             auto.controllInitializeSize(this);
@@ -620,7 +733,8 @@ namespace YYOPInspectionClient
         private void DetailForm_SizeChanged(object sender, EventArgs e)
         {
             auto.controlAutoSize(this);
-        }
+        } 
+        #endregion
 
         #region 设置数字键盘Title
         private void SetNumberKeyboardText(string inputTxtName)

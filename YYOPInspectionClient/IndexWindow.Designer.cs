@@ -60,8 +60,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.读码器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fTP设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnExit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -109,7 +109,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1210, 496);
             this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // id
             // 
@@ -202,6 +201,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.btnExit);
             this.panel2.Controls.Add(this.cmbAcceptanceNo);
             this.panel2.Controls.Add(this.cmbThreadType);
             this.panel2.Controls.Add(this.cmbWt);
@@ -373,7 +373,6 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.读码器设置ToolStripMenuItem,
             this.录像设置ToolStripMenuItem,
-            this.fTP设置ToolStripMenuItem,
             this.服务器设置ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
@@ -397,16 +396,6 @@
             this.录像设置ToolStripMenuItem.Text = "录像设置";
             this.录像设置ToolStripMenuItem.Click += new System.EventHandler(this.录像设置ToolStripMenuItem_Click);
             // 
-            // fTP设置ToolStripMenuItem
-            // 
-            this.fTP设置ToolStripMenuItem.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold);
-            this.fTP设置ToolStripMenuItem.Name = "fTP设置ToolStripMenuItem";
-            this.fTP设置ToolStripMenuItem.Padding = new System.Windows.Forms.Padding(10, 20, 10, 20);
-            this.fTP设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
-            this.fTP设置ToolStripMenuItem.Text = "FTP设置";
-            this.fTP设置ToolStripMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
-            this.fTP设置ToolStripMenuItem.Click += new System.EventHandler(this.fTP设置ToolStripMenuItem_Click);
-            // 
             // 服务器设置ToolStripMenuItem
             // 
             this.服务器设置ToolStripMenuItem.Name = "服务器设置ToolStripMenuItem";
@@ -414,6 +403,16 @@
             this.服务器设置ToolStripMenuItem.Size = new System.Drawing.Size(198, 62);
             this.服务器设置ToolStripMenuItem.Text = "服务器设置";
             this.服务器设置ToolStripMenuItem.Click += new System.EventHandler(this.服务器设置ToolStripMenuItem_Click);
+            // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(831, 12);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 38);
+            this.btnExit.TabIndex = 14;
+            this.btnExit.Text = "退出";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // IndexWindow
             // 
@@ -453,7 +452,6 @@
         private System.Windows.Forms.ToolStripMenuItem 未提交ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 读码器设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fTP设置ToolStripMenuItem;
         private System.Windows.Forms.Button btnDetail;
         private System.Windows.Forms.ComboBox cmbAcceptanceNo;
         private System.Windows.Forms.ComboBox cmbThreadType;
@@ -472,5 +470,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
+        private System.Windows.Forms.Button btnExit;
     }
 }
