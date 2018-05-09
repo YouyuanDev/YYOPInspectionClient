@@ -8,19 +8,20 @@ namespace YYOPInspectionClient
     public class ThreadInspectionRecord
     {
         private string id;
-        private String thread_inspection_record_code;
-        private String couping_no;
-        private String contract_no;
-        private String production_line;
-        private String machine_no;
-        private String process_no;
-        private String operator_no;
-        private String production_crew;
-        private String production_shift;
-        private String video_no;
+        private string thread_inspection_record_code;
+        private string coupling_no;
+        private string contract_no;
+        private string production_line;
+        private string machine_no;
+        private string process_no;
+        private string operator_no;
+        private string production_crew;
+        private string production_shift;
+        private string video_no;
         private string inspection_time;
-        private String inspection_result;
-
+        private string inspection_result;
+        private string coupling_heat_no;
+        private string coupling_lot_no;
         public string Id
         {
             get
@@ -47,19 +48,7 @@ namespace YYOPInspectionClient
             }
         }
 
-        public string Couping_no
-        {
-            get
-            {
-                return couping_no;
-            }
-
-            set
-            {
-                couping_no = value;
-            }
-        }
-
+         
         public string Contract_no
         {
             get
@@ -187,6 +176,45 @@ namespace YYOPInspectionClient
             set
             {
                 inspection_result = value;
+            }
+        }
+
+        public string Coupling_lot_no
+        {
+            get
+            {
+                return coupling_lot_no;
+            }
+
+            set
+            {
+                coupling_lot_no = value;
+            }
+        }
+
+        public string Coupling_heat_no
+        {
+            get
+            {
+                return coupling_heat_no;
+            }
+
+            set
+            {
+                coupling_heat_no = value;
+            }
+        }
+
+        public string Coupling_no
+        {
+            get
+            {
+                return coupling_no;
+            }
+
+            set
+            {
+                coupling_no = value;
             }
         }
     }

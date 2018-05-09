@@ -30,19 +30,8 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_inspection_record_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.couping_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_crew = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_shift = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnExit = new System.Windows.Forms.Button();
             this.cmbAcceptanceNo = new System.Windows.Forms.ComboBox();
             this.cmbThreadType = new System.Windows.Forms.ComboBox();
             this.cmbWt = new System.Windows.Forms.ComboBox();
@@ -61,7 +50,21 @@
             this.读码器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.录像设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnExit = new System.Windows.Forms.Button();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.thread_inspection_record_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.process_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_crew = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_shift = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_lot_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -87,17 +90,20 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersHeight = 50;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.thread_inspection_record_code,
-            this.couping_no,
+            this.coupling_no,
             this.contract_no,
             this.production_line,
             this.machine_no,
+            this.process_no,
             this.operator_no,
             this.production_crew,
             this.production_shift,
+            this.coupling_heat_no,
+            this.coupling_lot_no,
             this.video_no,
             this.inspection_result,
             this.inspection_time});
@@ -105,94 +111,10 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.RowTemplate.Height = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1210, 496);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "流水号";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            // 
-            // thread_inspection_record_code
-            // 
-            this.thread_inspection_record_code.DataPropertyName = "thread_inspection_record_code";
-            this.thread_inspection_record_code.HeaderText = "接箍检验编号";
-            this.thread_inspection_record_code.Name = "thread_inspection_record_code";
-            this.thread_inspection_record_code.ReadOnly = true;
-            // 
-            // couping_no
-            // 
-            this.couping_no.DataPropertyName = "couping_no";
-            this.couping_no.HeaderText = "接箍编号";
-            this.couping_no.Name = "couping_no";
-            this.couping_no.ReadOnly = true;
-            // 
-            // contract_no
-            // 
-            this.contract_no.DataPropertyName = "contract_no";
-            this.contract_no.HeaderText = "合同号";
-            this.contract_no.Name = "contract_no";
-            this.contract_no.ReadOnly = true;
-            // 
-            // production_line
-            // 
-            this.production_line.DataPropertyName = "production_line";
-            this.production_line.HeaderText = "生产区域";
-            this.production_line.Name = "production_line";
-            this.production_line.ReadOnly = true;
-            // 
-            // machine_no
-            // 
-            this.machine_no.DataPropertyName = "machine_no";
-            this.machine_no.HeaderText = "机床号";
-            this.machine_no.Name = "machine_no";
-            this.machine_no.ReadOnly = true;
-            // 
-            // operator_no
-            // 
-            this.operator_no.DataPropertyName = "operator_no";
-            this.operator_no.HeaderText = "操作工工号";
-            this.operator_no.Name = "operator_no";
-            this.operator_no.ReadOnly = true;
-            // 
-            // production_crew
-            // 
-            this.production_crew.DataPropertyName = "production_crew";
-            this.production_crew.HeaderText = "班别";
-            this.production_crew.Name = "production_crew";
-            this.production_crew.ReadOnly = true;
-            // 
-            // production_shift
-            // 
-            this.production_shift.DataPropertyName = "production_shift";
-            this.production_shift.HeaderText = "班次";
-            this.production_shift.Name = "production_shift";
-            this.production_shift.ReadOnly = true;
-            // 
-            // video_no
-            // 
-            this.video_no.DataPropertyName = "video_no";
-            this.video_no.HeaderText = "视频编号";
-            this.video_no.Name = "video_no";
-            this.video_no.ReadOnly = true;
-            // 
-            // inspection_result
-            // 
-            this.inspection_result.DataPropertyName = "inspection_result";
-            this.inspection_result.HeaderText = "检验结果";
-            this.inspection_result.Name = "inspection_result";
-            this.inspection_result.ReadOnly = true;
-            // 
-            // inspection_time
-            // 
-            this.inspection_time.DataPropertyName = "inspection_time";
-            this.inspection_time.HeaderText = "检验时间";
-            this.inspection_time.Name = "inspection_time";
-            this.inspection_time.ReadOnly = true;
             // 
             // panel2
             // 
@@ -218,6 +140,16 @@
             this.panel2.Size = new System.Drawing.Size(1212, 64);
             this.panel2.TabIndex = 0;
             // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(831, 12);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 38);
+            this.btnExit.TabIndex = 14;
+            this.btnExit.Text = "退出";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // cmbAcceptanceNo
             // 
             this.cmbAcceptanceNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -226,7 +158,7 @@
             this.cmbAcceptanceNo.ItemHeight = 24;
             this.cmbAcceptanceNo.Location = new System.Drawing.Point(507, 23);
             this.cmbAcceptanceNo.Name = "cmbAcceptanceNo";
-            this.cmbAcceptanceNo.Size = new System.Drawing.Size(104, 32);
+            this.cmbAcceptanceNo.Size = new System.Drawing.Size(80, 32);
             this.cmbAcceptanceNo.TabIndex = 13;
             // 
             // cmbThreadType
@@ -237,7 +169,7 @@
             this.cmbThreadType.ItemHeight = 24;
             this.cmbThreadType.Location = new System.Drawing.Point(342, 22);
             this.cmbThreadType.Name = "cmbThreadType";
-            this.cmbThreadType.Size = new System.Drawing.Size(79, 32);
+            this.cmbThreadType.Size = new System.Drawing.Size(80, 32);
             this.cmbThreadType.TabIndex = 12;
             // 
             // cmbWt
@@ -248,7 +180,7 @@
             this.cmbWt.ItemHeight = 24;
             this.cmbWt.Location = new System.Drawing.Point(176, 22);
             this.cmbWt.Name = "cmbWt";
-            this.cmbWt.Size = new System.Drawing.Size(79, 32);
+            this.cmbWt.Size = new System.Drawing.Size(80, 32);
             this.cmbWt.TabIndex = 11;
             // 
             // cmbOd
@@ -259,7 +191,7 @@
             this.cmbOd.ItemHeight = 24;
             this.cmbOd.Location = new System.Drawing.Point(51, 23);
             this.cmbOd.Name = "cmbOd";
-            this.cmbOd.Size = new System.Drawing.Size(79, 32);
+            this.cmbOd.Size = new System.Drawing.Size(80, 32);
             this.cmbOd.TabIndex = 10;
             // 
             // btnDetail
@@ -404,15 +336,113 @@
             this.服务器设置ToolStripMenuItem.Text = "服务器设置";
             this.服务器设置ToolStripMenuItem.Click += new System.EventHandler(this.服务器设置ToolStripMenuItem_Click);
             // 
-            // btnExit
+            // id
             // 
-            this.btnExit.Location = new System.Drawing.Point(831, 12);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 38);
-            this.btnExit.TabIndex = 14;
-            this.btnExit.Text = "退出";
-            this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "流水号";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            // 
+            // thread_inspection_record_code
+            // 
+            this.thread_inspection_record_code.DataPropertyName = "thread_inspection_record_code";
+            this.thread_inspection_record_code.HeaderText = "接箍检验编号";
+            this.thread_inspection_record_code.Name = "thread_inspection_record_code";
+            this.thread_inspection_record_code.ReadOnly = true;
+            // 
+            // coupling_no
+            // 
+            this.coupling_no.DataPropertyName = "coupling_no";
+            this.coupling_no.HeaderText = "接箍编号";
+            this.coupling_no.Name = "coupling_no";
+            this.coupling_no.ReadOnly = true;
+            // 
+            // contract_no
+            // 
+            this.contract_no.DataPropertyName = "contract_no";
+            this.contract_no.HeaderText = "合同号";
+            this.contract_no.Name = "contract_no";
+            this.contract_no.ReadOnly = true;
+            // 
+            // production_line
+            // 
+            this.production_line.DataPropertyName = "production_line";
+            this.production_line.HeaderText = "生产区域";
+            this.production_line.Name = "production_line";
+            this.production_line.ReadOnly = true;
+            // 
+            // machine_no
+            // 
+            this.machine_no.DataPropertyName = "machine_no";
+            this.machine_no.HeaderText = "机床号";
+            this.machine_no.Name = "machine_no";
+            this.machine_no.ReadOnly = true;
+            // 
+            // process_no
+            // 
+            this.process_no.DataPropertyName = "process_no";
+            this.process_no.HeaderText = "工位编号";
+            this.process_no.Name = "process_no";
+            this.process_no.ReadOnly = true;
+            this.process_no.Visible = false;
+            // 
+            // operator_no
+            // 
+            this.operator_no.DataPropertyName = "operator_no";
+            this.operator_no.HeaderText = "操作工工号";
+            this.operator_no.Name = "operator_no";
+            this.operator_no.ReadOnly = true;
+            // 
+            // production_crew
+            // 
+            this.production_crew.DataPropertyName = "production_crew";
+            this.production_crew.HeaderText = "班别";
+            this.production_crew.Name = "production_crew";
+            this.production_crew.ReadOnly = true;
+            // 
+            // production_shift
+            // 
+            this.production_shift.DataPropertyName = "production_shift";
+            this.production_shift.HeaderText = "班次";
+            this.production_shift.Name = "production_shift";
+            this.production_shift.ReadOnly = true;
+            // 
+            // coupling_heat_no
+            // 
+            this.coupling_heat_no.DataPropertyName = "coupling_heat_no";
+            this.coupling_heat_no.HeaderText = "接箍炉号";
+            this.coupling_heat_no.Name = "coupling_heat_no";
+            this.coupling_heat_no.ReadOnly = true;
+            // 
+            // coupling_lot_no
+            // 
+            this.coupling_lot_no.DataPropertyName = "coupling_lot_no";
+            this.coupling_lot_no.HeaderText = "接箍批号";
+            this.coupling_lot_no.Name = "coupling_lot_no";
+            this.coupling_lot_no.ReadOnly = true;
+            // 
+            // video_no
+            // 
+            this.video_no.DataPropertyName = "video_no";
+            this.video_no.HeaderText = "视频编号";
+            this.video_no.Name = "video_no";
+            this.video_no.ReadOnly = true;
+            // 
+            // inspection_result
+            // 
+            this.inspection_result.DataPropertyName = "inspection_result";
+            this.inspection_result.HeaderText = "检验结果";
+            this.inspection_result.Name = "inspection_result";
+            this.inspection_result.ReadOnly = true;
+            this.inspection_result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // inspection_time
+            // 
+            this.inspection_time.DataPropertyName = "inspection_time";
+            this.inspection_time.HeaderText = "检验时间";
+            this.inspection_time.Name = "inspection_time";
+            this.inspection_time.ReadOnly = true;
+            this.inspection_time.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // IndexWindow
             // 
@@ -458,18 +488,21 @@
         private System.Windows.Forms.ComboBox cmbWt;
         private System.Windows.Forms.ComboBox cmbOd;
         private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
+        private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn thread_inspection_record_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn couping_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn production_line;
         private System.Windows.Forms.DataGridViewTextBoxColumn machine_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn process_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn operator_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn production_crew;
         private System.Windows.Forms.DataGridViewTextBoxColumn production_shift;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_heat_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_lot_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
-        private System.Windows.Forms.Button btnExit;
     }
 }

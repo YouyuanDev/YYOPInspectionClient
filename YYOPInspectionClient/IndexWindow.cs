@@ -34,6 +34,7 @@ namespace YYOPInspectionClient
             this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
             try
             {
+                this.Text ="现在登录的是:"+Person.pname+",工号:"+Person.employee_no;
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
@@ -51,16 +52,8 @@ namespace YYOPInspectionClient
 
             try
             {
-                string od = this.cmbOd.Text;
-                string wt = this.cmbWt.Text;
-                string thread_type = this.cmbThreadType.Text;
-                string acceptance_no = this.cmbAcceptanceNo.Text;
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
-                sb.Append("\"od\"" + ":" + "\"" + od + "\",");
-                sb.Append("\"wt\"" + ":" + "\"" + wt + "\",");
-                sb.Append("\"thread_type\"" + ":" + "\"" + thread_type + "\",");
-                sb.Append("\"acceptance_no\"" + ":" + "\"" + acceptance_no + "\"");
                 sb.Append("}");
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
@@ -251,6 +244,7 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
+                    //Console.WriteLine(rowsJson);
                     if (!rowsJson.Trim().Equals("{}"))
                     {
                         List<ThreadInspectionRecord> list = JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
@@ -295,6 +289,7 @@ namespace YYOPInspectionClient
                 threadFrom = new ThreadingForm(this, mainWindow);
                 threadFrom.Show();
             }
+            threadFrom.threadForm = threadFrom;
             //form.Show();
         }
         #endregion
@@ -373,19 +368,59 @@ namespace YYOPInspectionClient
             try
             {
                 int index = this.dataGridView1.CurrentRow.Index;
-                string inspection_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
-                string operator_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["operator_no"].Value);
-                string thread_inspection_record_code = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
-                DetailForm form = new DetailForm(operator_no, inspection_no, thread_inspection_record_code);
+                //string inspection_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
+
+                string operator_no = "",thread_inspection_record_code = "",coupling_heat_no="", coupling_lot_no="", production_line="", machine_no="", coupling_no="",
+                    production_crew="", production_shift="", contract_no="", inspection_result="";
+                object obj0 = this.dataGridView1.Rows[index].Cells["operator_no"].Value;
+                object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
+                object obj2 = this.dataGridView1.Rows[index].Cells["coupling_heat_no"].Value;
+                object obj3 = this.dataGridView1.Rows[index].Cells["coupling_lot_no"].Value;
+                object obj4 = this.dataGridView1.Rows[index].Cells["production_line"].Value;
+                object obj5 = this.dataGridView1.Rows[index].Cells["machine_no"].Value;
+                object obj6 = this.dataGridView1.Rows[index].Cells["coupling_no"].Value;
+                object obj7 = this.dataGridView1.Rows[index].Cells["production_crew"].Value;
+                object obj8 = this.dataGridView1.Rows[index].Cells["production_shift"].Value;
+                object obj9 = this.dataGridView1.Rows[index].Cells["contract_no"].Value; 
+                object obj10= this.dataGridView1.Rows[index].Cells["inspection_result"].Value;
+                if (obj0!=null)
+                    operator_no = Convert.ToString(obj0);
+                 if(obj1!=null)
+                    thread_inspection_record_code = Convert.ToString(obj1);
+                if (obj2 != null)
+                    coupling_heat_no = Convert.ToString(obj2);
+                if (obj3 != null)
+                    coupling_lot_no = Convert.ToString(obj3);
+                if (obj4 != null)
+                    production_line = Convert.ToString(obj4);
+                if (obj5 != null)
+                    machine_no = Convert.ToString(obj5);
+                if (obj6 != null)
+                    coupling_no = Convert.ToString(obj6);
+                if (obj7 != null)
+                    production_crew = Convert.ToString(obj7);
+                if (obj8 != null)
+                    production_shift = Convert.ToString(obj8);
+                if (obj9 != null)
+                    contract_no = Convert.ToString(obj9);
+                if (obj10!= null)
+                    inspection_result = Convert.ToString(obj10);
+                DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
                 form.indexWindow = this;
-                form.txtProductionArea.Text = Convert.ToString(this.dataGridView1.Rows[index].Cells["production_line"].Value);
-                form.txtMachineNo.Text = Convert.ToString(this.dataGridView1.Rows[index].Cells["machine_no"].Value);
+                form.txtProductionArea.Text =production_line;
+                form.txtMachineNo.Text = machine_no;
                 form.txtOperatorNo.Text = operator_no;
-                form.txtCoupingNo.Text = Convert.ToString(this.dataGridView1.Rows[index].Cells["couping_no"].Value);
-                form.cmbProductionCrew.SelectedIndex = form.cmbProductionCrew.Items.IndexOf(this.dataGridView1.Rows[index].Cells["production_crew"].Value);
-                form.cmbProductionShift.SelectedIndex = form.cmbProductionShift.Items.IndexOf(this.dataGridView1.Rows[index].Cells["production_shift"].Value);
-                form.cmbContractNo.SelectedValue = Convert.ToString(this.dataGridView1.Rows[index].Cells["contract_no"].Value);
+                form.txtCoupingNo.Text = coupling_heat_no;
+                form.txtBatchNo.Text = coupling_lot_no;
+                form.txtCoupingNo.Text = coupling_no;
+                form.cmbProductionCrew.SelectedIndex = form.cmbProductionCrew.Items.IndexOf(production_crew);
+                form.cmbProductionShift.SelectedIndex = form.cmbProductionShift.Items.IndexOf(production_shift);
+                form.txtHeatNo.Text = coupling_heat_no;
+                form.txtBatchNo.Text = coupling_lot_no;
+                form.cmbInspectionResutlt.SelectedIndex = form.cmbInspectionResutlt.Items.IndexOf(inspection_result);
+                form.cmbContractNo.SelectedValue =contract_no;
                 form.Show();
+                form.detailForm = form;
             }
             catch (Exception ex)
             {

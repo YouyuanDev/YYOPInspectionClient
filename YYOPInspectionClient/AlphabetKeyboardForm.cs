@@ -15,6 +15,7 @@ namespace YYOPInspectionClient
         public  TextBox inputTxt;
         public  List<TextBox> flpTabOneTxtList;
         public Control containerControl = null;
+        public int type = 1;//标识是登录页面还是表单，0代表登录页面，1代表表单
         public AlphabetKeyboardForm()
         {
             InitializeComponent();
@@ -105,16 +106,25 @@ namespace YYOPInspectionClient
 
         private void button_enter_Click(object sender, EventArgs e)
         {
-            //输入
-            if (inputTxt != null){
+            if (type == 0)
+            {
                 inputTxt.Text = Textbox_display.Text.Trim();
                 this.Textbox_display.Text = "";
-                int index = flpTabOneTxtList.IndexOf(inputTxt);
-                if(index<flpTabOneTxtList.Count-1)
-                    index++;
-                TextBox tb = flpTabOneTxtList[index];
-                tb.Focus();
             }
+            else {
+                //输入
+                if (inputTxt != null)
+                {
+                    inputTxt.Text = Textbox_display.Text.Trim();
+                    this.Textbox_display.Text = "";
+                    int index = flpTabOneTxtList.IndexOf(inputTxt);
+                    if (index < flpTabOneTxtList.Count - 1)
+                        index++;
+                    TextBox tb = flpTabOneTxtList[index];
+                    tb.Focus();
+                }
+            }
+           
         }
 
         private void button_backspace_Click(object sender, EventArgs e)

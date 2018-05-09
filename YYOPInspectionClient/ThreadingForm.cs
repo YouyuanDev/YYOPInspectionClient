@@ -32,12 +32,14 @@ namespace YYOPInspectionClient
         private string videosArr = "";
         private string timestamp = null;
         private int countTime = 0;
+        public ThreadingForm threadForm = null;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer=null;
         public delegate void EventHandle(object sender, EventArgs e);
         public static ThreadingForm getMyForm()
         {
             return myForm;
+            
         }
 
         #region 窗体构造函数
@@ -63,8 +65,8 @@ namespace YYOPInspectionClient
             InitThreadForm();
             //3------------定时器
             //System.Timers.Timer t = new System.Timers.Timer();
+            this.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
            
-            
         }
         #endregion
 
@@ -303,14 +305,14 @@ namespace YYOPInspectionClient
                 string measure_tool2 = obj["measure_tool2"].ToString();
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
                 {
-                    Panel pnl0 = new Panel() { Width = 305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
-                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                    Panel pnl0 = new Panel() { Width = 308, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10),AutoSize=true, TextAlign = ContentAlignment.MiddleCenter };
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label {Text=obj["measure_tool1"].ToString()+":",Location=new Point(30,40),Width=90,TextAlign=ContentAlignment.MiddleRight };
+                        Label lbl0_1 = new Label {Text=obj["measure_tool1"].ToString()+":",Location=new Point(10,40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign =ContentAlignment.MiddleRight ,BorderStyle=BorderStyle.FixedSingle};
                         pnl0.Controls.Add(lbl0_1);
-                        TextBox tb0 = new TextBox { Tag="English",Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(120, 40) };
+                        TextBox tb0 = new TextBox { Tag="English",Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
                         pnl0.Controls.Add(tb0);
                         tb0.Enter += new EventHandler(txt_Enter);
                         tb0.MouseDown+=new MouseEventHandler(txt_MouseDown);
@@ -318,9 +320,9 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(30, 90),Width = 90, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90),AutoSize=true, MaximumSize=new Size(150,0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
                         pnl0.Controls.Add(lbl0_2);
-                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(120, 90) };
+                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
                         pnl0.Controls.Add(tb1);
                         tb1.Enter += new EventHandler(txt_Enter);
                         tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -329,7 +331,7 @@ namespace YYOPInspectionClient
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
                 //初始化测量值表单
-                Panel panel1 = new Panel { Width = 305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                Panel panel1 = new Panel { Width = 306, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                 Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(),Name= obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                 panel1.Controls.Add(lbl1_0);
                 string item_min_value = obj["item_min_value"].ToString();
@@ -342,22 +344,22 @@ namespace YYOPInspectionClient
                     float item_min_val = Convert.ToSingle(item_min_value);
                     if (item_min_val>=0&&item_max_val >0)
                     {
-                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(20, 50),Width = 120};
+                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(10, 50),AutoSize=true};
                         panel1.Controls.Add(lbl1_1);
                         //添加频率
-                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(140, 50),Width=180 };
+                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(150, 50), AutoSize = true };
                         panel1.Controls.Add(lbl1_3);
                     }
                     else
                     {
-                        Label lbl1_2 = new Label {Width = 200, Text = "频率:" + item_frequency, Location = new Point(50, 50),TextAlign = ContentAlignment.MiddleCenter };
+                        Label lbl1_2 = new Label {Width = 200, Text = "频率:" + item_frequency, Location = new Point(60, 50), AutoSize = true,TextAlign = ContentAlignment.MiddleCenter };
                         panel1.Controls.Add(lbl1_2);
                     }
                 }
                 else
                 {
                     //添加频率
-                    Label lbl1_4 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(80, 50), TextAlign = ContentAlignment.MiddleCenter };
+                    Label lbl1_4 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(90, 50), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter };
                     panel1.Controls.Add(lbl1_4);
                 }
 
@@ -457,10 +459,11 @@ namespace YYOPInspectionClient
             String param = "";
             try {
                 string videoNo = videosArr;
+                //MessageBox.Show(videoNo);
                 sb.Remove(0, sb.Length);
                 sb.Append("{");
                 sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
-                sb.Append("\"couping_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"coupling_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
                 sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.SelectedValue.ToString(), Encoding.UTF8) + "\",");
                 sb.Append("\"production_line\"" + ":" + "\"" + HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) + "\",");
                 sb.Append("\"machine_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) + "\",");
@@ -469,14 +472,17 @@ namespace YYOPInspectionClient
                 sb.Append("\"production_crew\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8) + "\",");
                 sb.Append("\"production_shift\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) + "\",");
                 sb.Append("\"video_no\"" + ":" + "\"" +videoNo + "\",");
-                //sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
+                sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbInspectionResult.Text, Encoding.UTF8) + "\",");
+                sb.Append("\"coupling_heat_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8) + "\",");
+                sb.Append("\"coupling_lot_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.txtBatchNo.Text, Encoding.UTF8) + "\",");
+
                 foreach (TextBox tb in flpTabOneTxtList)
                 {
-                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
+                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + HttpUtility.UrlEncode(tb.Text.Trim(), Encoding.UTF8) + "\",");
                 }
                 foreach (TextBox tb in flpTabTwoTxtList)
                 {
-                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + tb.Text.Trim() + "\",");
+                    sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + HttpUtility.UrlEncode(tb.Text.Trim(),Encoding.UTF8) + "\",");
                 }
                 string formData = sb.ToString();
                 //MessageBox.Show(formData);
@@ -817,14 +823,16 @@ namespace YYOPInspectionClient
         #region 窗体Load事件
         private void ThreadingForm_Load(object sender, EventArgs e)
         {
-            auto.controllInitializeSize(this);
+            //if(threadForm!=null)
+            //  auto.controllInitializeSize(threadForm);
         }
         #endregion
 
         #region 窗体大小改变事件
         private void ThreadingForm_SizeChanged(object sender, EventArgs e)
         {
-            auto.controlAutoSize(this);
+            //if(threadForm!=null)
+            //  auto.controlAutoSize(threadForm);
         }
         #endregion
 
@@ -927,6 +935,24 @@ namespace YYOPInspectionClient
                             break;
                     }
                 }
+            }
+        }
+        #endregion
+
+        #region 关闭事件
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            //关闭之前判断是否关闭读码器和结束录像
+            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            {
+                MessageBox.Show("录像机或读码器尚未关闭！");
+            }
+            else
+            {
+                RestoreSetting();
+                //清空表单测量值
+                ClearForm();
+                this.Hide();
             }
         } 
         #endregion

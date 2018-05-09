@@ -15,6 +15,7 @@ namespace YYOPInspectionClient
         public TextBox inputTxt;
         public List<TextBox> flpTabTwoTxtList;
         public Control containerControl=null;
+        public int type = 1;//标识是登录页面还是表单，0代表登录页面，1代表表单
         public NumberKeyboardForm()
         {
             InitializeComponent();
@@ -35,7 +36,10 @@ namespace YYOPInspectionClient
             {//追加小数点
                 if (!this.Textbox_display.Text.Contains("."))
                 {
-                    this.Textbox_display.Text += num;
+                    if (!string.IsNullOrWhiteSpace(this.Textbox_display.Text))
+                        this.Textbox_display.Text += num;
+                    else
+                        this.Textbox_display.Text="0"+num;
                 }
             }
             else
@@ -67,112 +71,126 @@ namespace YYOPInspectionClient
 
         private void button_enter_Click(object sender, EventArgs e)
         {
-            //回车,清楚末尾无用的.
-            if(this.Textbox_display.Text.Contains(".")&& this.Textbox_display.Text.LastIndexOf('.')== this.Textbox_display.Text.Length - 1)
-            {
-                this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
-            }
-            //
-            if (inputTxt != null) {
-                inputTxt.Text = this.Textbox_display.Text.Trim();
-                this.Textbox_display.Text = "";
-                string inputTxtName = inputTxt.Name;
-                try
-                {
-                    if (!string.IsNullOrWhiteSpace(inputTxtName))
-                    {
-                        //获取和该控件相同名称的Label
-                        if (inputTxtName.Contains("_A_Value"))
-                        {
-                           inputTxtName=inputTxtName.Replace("_A_Value", "");
-                        }
-                        if (inputTxtName.Contains("_B_Value"))
-                        {
-                            inputTxtName=inputTxtName.Replace("_B_Value", "");
-                        }
-                       
-                        if (containerControl != null)
-                        {
-                            Label lbl =(Label)GetControlInstance(containerControl,inputTxtName+"_lbl");
-                            if (lbl != null) {
-                                float val1 = 0f, val2 = 0;
-                                string lblTag = Convert.ToString(lbl.Tag);
-                                if (!string.IsNullOrWhiteSpace(lblTag))
-                                {
-                                    string[] valArr = lblTag.Split(new char[] { '-' });
-                                    if (valArr.Length > 0)
-                                    {
-                                        val1 = Convert.ToSingle(valArr[0]);
-                                        if (valArr.Length > 1)
-                                        {
-                                            val2 = Convert.ToSingle(valArr[1]);
-                                        }
-                                    }
-                                    if (val1 > 0)
-                                    {
-                                        float inputVal = Convert.ToSingle(inputTxt.Text);
-                                        if (inputVal < val1)
-                                        {
-                                            inputTxt.BackColor = Color.LightCoral;
-                                        }
-                                    }
-                                    if (val2 > 0)
-                                    {
-                                        float inputVal = Convert.ToSingle(inputTxt.Text);
-                                        if (inputVal > val2)
-                                        {
-                                            inputTxt.BackColor = Color.LightCoral;
-                                        }
-                                    }
-                                }
 
+            if (type == 0)
+            {
+                inputTxt.Text = Textbox_display.Text.Trim();
+                this.Textbox_display.Text = "";
+            }
+            else {
+                //回车,清楚末尾无用的.
+                if (this.Textbox_display.Text.Contains(".") && this.Textbox_display.Text.LastIndexOf('.') == this.Textbox_display.Text.Length - 1)
+                {
+                    this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
+                }
+                //
+                if (inputTxt != null)
+                {
+                    inputTxt.Text = this.Textbox_display.Text.Trim();
+                    this.Textbox_display.Text = "";
+                    string inputTxtName = inputTxt.Name;
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(inputTxtName))
+                        {
+                            //获取和该控件相同名称的Label
+                            if (inputTxtName.Contains("_A_Value"))
+                            {
+                                inputTxtName = inputTxtName.Replace("_A_Value", "");
                             }
+                            if (inputTxtName.Contains("_B_Value"))
+                            {
+                                inputTxtName = inputTxtName.Replace("_B_Value", "");
+                            }
+
+                            if (containerControl != null)
+                            {
+                                Label lbl = (Label)GetControlInstance(containerControl, inputTxtName + "_lbl");
+                                if (lbl != null)
+                                {
+                                    float val1 = 0f, val2 = 0;
+                                    string lblTag = Convert.ToString(lbl.Tag);
+                                    if (!string.IsNullOrWhiteSpace(lblTag))
+                                    {
+                                        string[] valArr = lblTag.Split(new char[] { '-' });
+                                        if (valArr.Length > 0)
+                                        {
+                                            val1 = Convert.ToSingle(valArr[0]);
+                                            if (valArr.Length > 1)
+                                            {
+                                                val2 = Convert.ToSingle(valArr[1]);
+                                            }
+                                        }
+                                        if (val1 > 0)
+                                        {
+                                            float inputVal = Convert.ToSingle(inputTxt.Text);
+                                            if (inputVal < val1)
+                                            {
+                                                inputTxt.BackColor = Color.LightCoral;
+                                            }
+                                        }
+                                        if (val2 > 0)
+                                        {
+                                            float inputVal = Convert.ToSingle(inputTxt.Text);
+                                            if (inputVal > val2)
+                                            {
+                                                inputTxt.BackColor = Color.LightCoral;
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("没有初始化");
+                            }
+
+                            //if (obj != null) {
+                            //    Label nowLbl = (Label)obj;
+                            //    string lblTag =Convert.ToString(nowLbl.Tag);
+                            //    float val1 = 0f, val2 = 0 ;
+                            //    if (!string.IsNullOrWhiteSpace(lblTag)) {
+                            //        string[] valArr = lblTag.Split(new char[] { '-'});
+                            //        if (valArr.Length > 0) {
+                            //            val1 =Convert.ToSingle(valArr[0]);
+                            //            if (valArr.Length > 1) {
+                            //                val2= Convert.ToSingle(valArr[1]);
+                            //            }
+                            //        }
+                            //    }
+                            //    if (val1 > 0) {
+                            //        float inputVal = Convert.ToSingle(inputTxt.Text);
+                            //        if (inputVal < val1){
+                            //            inputTxt.BackColor = Color.LightCoral;
+                            //        }
+                            //    }
+                            //    if (val2 > 0) {
+                            //        float inputVal = Convert.ToSingle(inputTxt.Text);
+                            //        if (inputVal>val2)
+                            //        {
+                            //            inputTxt.BackColor = Color.LightCoral;
+                            //        }
+                            //    }
+                            //}
                         }
-                        else {
-                            MessageBox.Show("没有初始化");
-                        }
-                       
-                        //if (obj != null) {
-                        //    Label nowLbl = (Label)obj;
-                        //    string lblTag =Convert.ToString(nowLbl.Tag);
-                        //    float val1 = 0f, val2 = 0 ;
-                        //    if (!string.IsNullOrWhiteSpace(lblTag)) {
-                        //        string[] valArr = lblTag.Split(new char[] { '-'});
-                        //        if (valArr.Length > 0) {
-                        //            val1 =Convert.ToSingle(valArr[0]);
-                        //            if (valArr.Length > 1) {
-                        //                val2= Convert.ToSingle(valArr[1]);
-                        //            }
-                        //        }
-                        //    }
-                        //    if (val1 > 0) {
-                        //        float inputVal = Convert.ToSingle(inputTxt.Text);
-                        //        if (inputVal < val1){
-                        //            inputTxt.BackColor = Color.LightCoral;
-                        //        }
-                        //    }
-                        //    if (val2 > 0) {
-                        //        float inputVal = Convert.ToSingle(inputTxt.Text);
-                        //        if (inputVal>val2)
-                        //        {
-                        //            inputTxt.BackColor = Color.LightCoral;
-                        //        }
-                        //    }
-                        //}
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("判断大小的时候错误.......");
                     }
 
-                }
-                catch (Exception ex) {
-                    Console.WriteLine("判断大小的时候错误.......");
-                }
-                
 
-                int index = flpTabTwoTxtList.IndexOf(inputTxt);
-                if (index < flpTabTwoTxtList.Count - 1)
-                    index++;
-                TextBox tb = flpTabTwoTxtList[index];
-                tb.Focus();
+                    int index = flpTabTwoTxtList.IndexOf(inputTxt);
+                    if (index < flpTabTwoTxtList.Count - 1)
+                        index++;
+                    TextBox tb = flpTabTwoTxtList[index];
+                    tb.Focus();
+                }
             }
+
+            
         }
 
         private void button_backspace_Click(object sender, EventArgs e)
