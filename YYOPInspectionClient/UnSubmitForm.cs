@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,6 +20,15 @@ namespace YYOPInspectionClient
         private string content = "";
         private int totalForm = 0;
         private Dictionary<string,string> videoPathList=new Dictionary<string,string>();
+        //---------------------拖动无窗体的控件(开始)
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+        [DllImport("user32.dll")]
+        public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        public const int WM_SYSCOMMAND = 0x0112;
+        public const int SC_MOVE = 0xF010;
+        public const int HTCAPTION = 0x0002;
+        //---------------------拖动无窗体的控件(结束)
         public UnSubmitForm()
         {
             InitializeComponent();
@@ -219,10 +229,49 @@ namespace YYOPInspectionClient
             return videoPathList;
         }
 
+
+
+        #endregion
+
+
+        #region 窗体关闭事件
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        } 
+        #endregion
+
+        #region 窗体绘制
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, panel1.ClientRectangle,
+           Color.DimGray, 3, ButtonBorderStyle.Solid, //左边
+           Color.DimGray, 3, ButtonBorderStyle.Solid, //上边
+          Color.DimGray, 3, ButtonBorderStyle.Solid, //右边
+          Color.DimGray, 0, ButtonBorderStyle.Solid);//底边
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, panel2.ClientRectangle,
+           Color.DimGray, 3, ButtonBorderStyle.Solid, //左边
+           Color.DimGray, 0, ButtonBorderStyle.Solid, //上边
+           Color.DimGray, 3, ButtonBorderStyle.Solid, //右边
+             Color.DimGray, 3, ButtonBorderStyle.Solid);//底边
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+        }
+
+        private void panel2_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+        }
+
         #endregion
 
         //private static void UploadVideo()

@@ -18,48 +18,21 @@ namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
-        AutoSize auto = new AutoSize();
         private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         public LoginWinform()
         {
             InitializeComponent();
-            this.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")";
-            //Size size = Screen.PrimaryScreen.WorkingArea.Size;
-            //int Left = (size.Width - this.Width) / 2;
-            //int Top = (size.Height - this.Height) / 2;
-            //MessageBox.Show(Left+":"+Top);
-             
-            this.StartPosition = FormStartPosition.CenterScreen;
-            englishKeyboard.type = 0;
-            numberKeyboard.type = 0;
-            //textBox1.Enter += new EventHandler(txt_Enter);
-            textBox1.MouseDown += new MouseEventHandler(txt_MouseDown);
-           // textBox2.Enter += new EventHandler(txt_Enter);
-            textBox2.MouseDown += new MouseEventHandler(txt_MouseDown);
-        }
-        private void UpdateClient() {
-            try
-            {
-                MessageBox.Show(Assembly.GetEntryAssembly().GetName().Version.ToString() + "版本");
-                //MessageBox.Show(Assembly.GetEntryAssembly().GetName().Version.ToString() + "hhhh");
-                string url = CommonUtil.getServerIpAndPort() + "upload/clientapp/ClientAPPAutoUpdater.xml";
-                AutoUpdater.Start(url);
-                AutoUpdater.Mandatory = true;
-                AutoUpdater.RunUpdateAsAdmin = false;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-               // threadUpdate.Abort();
-            }
+            this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")";
+            txtLoginName.MouseDown += new MouseEventHandler(txt_MouseDown);
+            txtLoginPwd.MouseDown += new MouseEventHandler(txt_MouseDown);
         }
 
         #region 用户点击登录事件
         private void button1_Click(object sender, EventArgs e)
         {
-            string employee_no = this.textBox1.Text.Trim();
-            string upwd = this.textBox2.Text.Trim();
+            string employee_no = this.txtLoginName.Text.Trim();
+            string upwd = this.txtLoginPwd.Text.Trim();
             var httpStatusCode = 200;
             try
             {
@@ -110,8 +83,6 @@ namespace YYOPInspectionClient
                             Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
                             new IndexWindow().Show();
                             this.Hide();
-                            englishKeyboard.type = 1;
-                            numberKeyboard.type = 1;
                             englishKeyboard.Dispose();
                             numberKeyboard.Dispose();
                         }
@@ -151,27 +122,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 输入框获取焦点事件
-        private void txt_Enter(object sender, EventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (tb.Tag.Equals("English"))
-            {
-                englishKeyboard.inputTxt = tb;
-                englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                englishKeyboard.Show();
-                //SetAlphaKeyboardText(tb.Name);
-            }
-            else
-            {
-                numberKeyboard.inputTxt = tb;
-                numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                numberKeyboard.Show();
-                //SetNumberKeyboardText(tb.Name);
-            }
-        }
-        #endregion
-
+        
         #region 鼠标点击输入框事件
         private void txt_MouseDown(object sender, EventArgs e)
         {
@@ -198,12 +149,17 @@ namespace YYOPInspectionClient
 
         private void LoginWinform_Load(object sender, EventArgs e)
         {
-            auto.controllInitializeSize(this);
+           // auto.controllInitializeSize(this);
         }
 
         private void LoginWinform_SizeChanged(object sender, EventArgs e)
         {
-            auto.controlAutoSize(this);
+            //auto.controlAutoSize(this);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

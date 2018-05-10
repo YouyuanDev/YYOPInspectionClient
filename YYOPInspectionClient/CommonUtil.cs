@@ -76,8 +76,7 @@ namespace YYOPInspectionClient
                     if (returnValue.Trim().Equals("success"))
                     {
                         flag = true;
-                        //删除文件
-                        Console.WriteLine("上传完成--------------------------------------");
+                        
                     }
                     response.Close();
                     readStream.Close();
@@ -92,15 +91,7 @@ namespace YYOPInspectionClient
                 fileStream.Close();
                 binaryReader.Close();
             }
-            if (flag) {
-                try
-                {
-                    File.Delete(filePath);
-                }
-                catch (Exception ex) {
-                    Console.WriteLine("删除视频失败!");
-                }
-            }
+           
             return flag;
         }
         #endregion
@@ -212,10 +203,19 @@ namespace YYOPInspectionClient
                 p.WaitForExit();//阻塞等待进程结束
                 p.Close();//关闭进程
                 p.Dispose();//释放资源
-                Console.WriteLine("----------------转化视频完成--------------");
+              //  Console.WriteLine("----------------转化视频完成--------------");
                 //直到视频格式转换完毕，释放转换进程才能执行删除转换前的文件和上传转换后的文件
                 File.Delete(srcFileName);
-                uploadVideoToTomcat(destFileName);
+                if (uploadVideoToTomcat(destFileName)) {
+                        try
+                        {
+                            File.Delete(filePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("删除视频失败!");
+                        }
+                }
             }
             catch (Exception e) {
                 Console.Write("格式化出错....................");

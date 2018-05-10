@@ -26,15 +26,21 @@ namespace YYOPInspectionClient
         public IndexWindow()
         {
             InitializeComponent();
-            this.Font = new Font("宋体", 12, FontStyle.Bold);
-            AutoSize autoSize = new AutoSize();
-            autoSize.controllInitializeSize(this);
             getSearchParam();
             getThreadingProcessData();
-            this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
             try
             {
-                this.Text ="现在登录的是:"+Person.pname+",工号:"+Person.employee_no;
+                this.lblIndexFormTitle.Text ="现在登录的是:"+Person.pname+",工号:"+Person.employee_no;
+                //---------------设置datagridView字体(开始)
+                this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Font = new Font("宋体",18,FontStyle.Bold);
+                foreach (DataGridViewColumn col in this.dataGridView1.Columns)
+                {
+                    col.HeaderCell.Style = style;
+                }
+                this.dataGridView1.EnableHeadersVisualStyles = false;
+                //---------------设置datagridView字体(结束)
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
@@ -87,54 +93,62 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
+                    Console.WriteLine(rowsJson);
                     List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
-                    List<ComboxItem> odList = new List<ComboxItem>();
-                    List<ComboxItem> wtList = new List<ComboxItem>();
-                    List<ComboxItem> threadTypeList = new List<ComboxItem>();
-                    List<ComboxItem> acceptanceNoList = new List<ComboxItem>();
-                    odList.Add(new ComboxItem() { Id = "", Text = "" });
-                    wtList.Add(new ComboxItem() { Id = "", Text = "" });
-                    threadTypeList.Add(new ComboxItem() { Id = "", Text = "" });
-                    acceptanceNoList.Add(new ComboxItem() { Id = "", Text = "" });
+                    List<string> odListStr = new List<string>();
+                    List<string> wtListStr = new List<string>();
+                    List<string> threadTypeListStr = new List<string>();
+                    List<string> acceptanceNoListStr = new List<string>();
+                    odListStr.Add("");
+                    wtListStr.Add("");
+                    threadTypeListStr.Add("");
+                    acceptanceNoListStr.Add("");
+
                     foreach (ContractInfo item in list)
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Od))
-                            odList.Add(new ComboxItem() { Id = item.Od, Text = item.Od });
-                        if (!string.IsNullOrWhiteSpace(item.Wt))
-                            wtList.Add(new ComboxItem() { Id = item.Wt, Text = item.Wt });
-                        if (!string.IsNullOrWhiteSpace(item.Threading_type))
-                            threadTypeList.Add(new ComboxItem() { Id = item.Threading_type, Text = item.Threading_type });
-                        if (!string.IsNullOrWhiteSpace(item.Thread_acceptance_criteria_no))
-                            acceptanceNoList.Add(new ComboxItem() { Id = item.Thread_acceptance_criteria_no, Text = item.Thread_acceptance_criteria_no });
+                        if (!string.IsNullOrWhiteSpace(item.Od)) {
+                            if (!odListStr.Contains(item.Od)) {
+                                odListStr.Add(item.Od);
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.Wt)) {
+                            if (!wtListStr.Contains(item.Wt))
+                            {
+                                wtListStr.Add(item.Wt);
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.Threading_type)) {
+                            if (!threadTypeListStr.Contains(item.Threading_type))
+                            {
+                                threadTypeListStr.Add(item.Threading_type);
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.Thread_acceptance_criteria_no)) {
+                            if (!acceptanceNoListStr.Contains(item.Thread_acceptance_criteria_no))
+                            {
+                                acceptanceNoListStr.Add(item.Thread_acceptance_criteria_no);
+                            }
+                        }
                     }
-                    if (odList.Count > 0)
+                    foreach (string item in odListStr) {
+                        this.cmbOd.Items.Add(item);
+                    }
+                    this.cmbOd.SelectedIndex = 0;
+                    foreach (string item in wtListStr)
                     {
-                        this.cmbOd.DataSource = odList;
-                        this.cmbOd.ValueMember = "id";
-                        this.cmbOd.DisplayMember = "text";
-                        this.cmbOd.SelectedIndex = 0;
+                        this.cmbWt.Items.Add(item);
                     }
-                    if (wtList.Count > 0)
+                    this.cmbWt.SelectedIndex = 0;
+                    foreach (string item in threadTypeListStr)
                     {
-                        this.cmbWt.DataSource = wtList;
-                        this.cmbWt.ValueMember = "id";
-                        this.cmbWt.DisplayMember = "text";
-                        this.cmbWt.SelectedIndex = 0;
+                        this.cmbThreadType.Items.Add(item);
                     }
-                    if (threadTypeList.Count > 0)
+                    this.cmbThreadType.SelectedIndex = 0;
+                    foreach (string item in acceptanceNoListStr)
                     {
-                        this.cmbThreadType.DataSource = threadTypeList;
-                        this.cmbThreadType.ValueMember = "id";
-                        this.cmbThreadType.DisplayMember = "text";
-                        this.cmbThreadType.SelectedIndex = 0;
+                        this.cmbAcceptanceNo.Items.Add(item);
                     }
-                    if (acceptanceNoList.Count > 0)
-                    {
-                        this.cmbAcceptanceNo.DataSource = acceptanceNoList;
-                        this.cmbAcceptanceNo.ValueMember = "id";
-                        this.cmbAcceptanceNo.DisplayMember = "text";
-                        this.cmbAcceptanceNo.SelectedIndex = 0;
-                    }
+                    this.cmbAcceptanceNo.SelectedIndex = 0;
                 }
             }
             catch (Exception e)
@@ -172,8 +186,16 @@ namespace YYOPInspectionClient
                                 if (!CommonUtil.JudgeFileIsUsing(file.FullName))
                                 {
                                     //视频格式转换，上传
-                                    if (!file.Name.Contains("vcr")) {
+                                    if (!file.Name.Contains("vcr"))
+                                    {
                                         CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
+                                    }
+                                    else {
+                                        //直接上传
+                                        if (CommonUtil.uploadVideoToTomcat(file.FullName)) {
+                                            File.Delete(file.FullName);
+                                        }
+                                       
                                     }
                                     Thread.Sleep(5000);
                                 }
@@ -201,10 +223,10 @@ namespace YYOPInspectionClient
         {
             try
             {
-                string od = this.cmbOd.SelectedValue.ToString();
-                string wt = this.cmbWt.SelectedValue.ToString();
-                string thread_type = this.cmbThreadType.SelectedValue.ToString();
-                string acceptance_no = this.cmbAcceptanceNo.SelectedValue.ToString();
+                string od = this.cmbOd.Text.Trim();
+                string wt = this.cmbWt.Text.Trim();
+                string thread_type = this.cmbThreadType.Text.Trim();
+                string acceptance_no = this.cmbAcceptanceNo.Text.Trim();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
                 sb.Append("\"od\"" + ":" + "\"" + od + "\",");
@@ -434,6 +456,52 @@ namespace YYOPInspectionClient
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+        #endregion
+
+        #region 下拉框绘制
+        private void cmbOd_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbOd.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbWt_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbWt.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbThreadType_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbThreadType.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbAcceptanceNo_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbAcceptanceNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
         } 
         #endregion
     }

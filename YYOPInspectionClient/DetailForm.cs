@@ -24,30 +24,47 @@ namespace YYOPInspectionClient
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
-        AutoSize auto = new YYOPInspectionClient.AutoSize();
+        //AutoSize auto = new YYOPInspectionClient.AutoSize();
         public IndexWindow indexWindow = null;
         public DetailForm detailForm = null;
-        public DetailForm(string operator_no,string thread_inspection_record_code)
+
+        #region 构造函数
+        public DetailForm(string operator_no, string thread_inspection_record_code)
         {
             InitializeComponent();
-            englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
-            numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
-            numberKeyboard.containerControl = this.flpTabTwoContent;
-            this.operator_no = operator_no;
-            this.thread_inspection_record_code = thread_inspection_record_code;
             try
             {
-                InitContractList();
-                if (!string.IsNullOrWhiteSpace(thread_inspection_record_code) && !string.IsNullOrWhiteSpace(operator_no))
+                if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    GetThreadFormInitData(thread_inspection_record_code);
+                    this.lblDetailFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
+                    englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
+                    numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
+                    numberKeyboard.containerControl = this.flpTabTwoContent;
+                    this.operator_no = operator_no;
+                    this.thread_inspection_record_code = thread_inspection_record_code;
+                    InitContractList();
+                    if (!string.IsNullOrWhiteSpace(thread_inspection_record_code) && !string.IsNullOrWhiteSpace(operator_no))
+                    {
+                        GetThreadFormInitData(thread_inspection_record_code);
+                    }
+                    txtProductionArea.MouseDown += new MouseEventHandler(txt_MouseDown);
+                    txtMachineNo.MouseDown += new MouseEventHandler(txt_MouseDown);
                 }
+                else
+                {
+                    MessageBox.Show("您已掉线,请重新登录!");
+                    this.Dispose();
+                    Application.Exit();
+                }
+
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 MessageBox.Show("系统繁忙!");
                 this.Close();
             }
-        }
+        } 
+        #endregion
 
         #region 根据合同编号获取检验记录
         public void GetThreadFormInitData(string thread_inspection_record_code)
@@ -195,14 +212,14 @@ namespace YYOPInspectionClient
                 string measure_tool2 = obj["measure_tool2"].ToString();
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
                 {
-                    Panel pnl0 = new Panel() { Width =305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Panel pnl0 = new Panel() { Width = 312, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                     Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                     pnl0.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40),AutoSize=true, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40),AutoSize=true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_1);
-                        TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(140, 40) };
+                        TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(150, 40) };
                         pnl0.Controls.Add(tb0);
                         tb0.Enter += new EventHandler(txt_Enter);
                         tb0.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -210,9 +227,9 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), AutoSize = true, TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnl0.Controls.Add(lbl0_2);
-                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(140, 90) };
+                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(150, 90) };
                         pnl0.Controls.Add(tb1);
                         tb1.Enter += new EventHandler(txt_Enter);
                         tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -221,7 +238,7 @@ namespace YYOPInspectionClient
                     this.flpTabOneContent.Controls.Add(pnl0);
                 }
                 //初始化测量值表单
-                Panel panel1 = new Panel { Width = 305, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                Panel panel1 = new Panel { Width = 312, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                 Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
                 panel1.Controls.Add(lbl1_0);
                 string item_min_value = obj["item_min_value"].ToString();
@@ -237,7 +254,7 @@ namespace YYOPInspectionClient
                         Label lbl1_1 = new Label { Tag = item_min_val + "-" + item_max_val, Name = obj["measure_item_code"].ToString() + "_lbl", Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(10, 50),AutoSize=true };
                         panel1.Controls.Add(lbl1_1);
                         //添加频率
-                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(140, 50), AutoSize=true };
+                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(160, 50), AutoSize=true };
                         panel1.Controls.Add(lbl1_3);
                     }
                     else
@@ -477,7 +494,15 @@ namespace YYOPInspectionClient
             {
                 if (!string.IsNullOrWhiteSpace(operator_no)&& !string.IsNullOrWhiteSpace(thread_inspection_record_code))
                 {
-                    ThreadFormSubmit();
+                    if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
+                    {
+                        ThreadFormSubmit();
+                    }
+                    else
+                    {
+                        MessageBox.Show("您已掉线，请重新登录!");
+                        Application.Exit();
+                    }
                 }
                 else {
                     MessageBox.Show("系统繁忙,请稍后修改!");
@@ -548,7 +573,7 @@ namespace YYOPInspectionClient
         #region 窗体关闭事件
         private void btnFormClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Dispose();
         }
         #endregion
 
@@ -689,6 +714,53 @@ namespace YYOPInspectionClient
         {
             this.Close();
         }
+
+        #endregion
+
+        #region 下拉框绘制
+        private void cmbContractNo_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbContractNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbProductionCrew_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbProductionCrew.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbProductionShift_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbInspectionResutlt_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbInspectionResutlt.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        } 
         #endregion
 
         #region 根据控件名找到该控件
