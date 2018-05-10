@@ -297,10 +297,10 @@ namespace YYOPInspectionClient
                 this.txtSealPatternNo.Text = contractObj["seal_sample_graph_no"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["thread_sample_graph_no"].ToString()))
                 this.txtThreadDrawingNo.Text = contractObj["thread_sample_graph_no"].ToString();
-            if (!string.IsNullOrWhiteSpace(contractObj["pipe_heat_no"].ToString()))
-                this.txtHeatNo.Text = contractObj["pipe_heat_no"].ToString();
-            if (!string.IsNullOrWhiteSpace(contractObj["pipe_lot_no"].ToString()))
-                this.txtBatchNo.Text = contractObj["pipe_lot_no"].ToString();
+            //if (!string.IsNullOrWhiteSpace(contractObj["pipe_heat_no"].ToString()))
+            //    this.txtHeatNo.Text = contractObj["pipe_heat_no"].ToString();
+            //if (!string.IsNullOrWhiteSpace(contractObj["pipe_lot_no"].ToString()))
+            //    this.txtBatchNo.Text = contractObj["pipe_lot_no"].ToString();
             if (!string.IsNullOrWhiteSpace(Person.employee_no))
                 this.txtOperatorNo.Text = Person.employee_no;
             if (!string.IsNullOrWhiteSpace(Person.pname))

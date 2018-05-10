@@ -48,9 +48,11 @@ namespace YYOPInspectionClient
             try
             {
                 //读取本地目录config.txt文件，读出所有读码器IP地址
-                string str = File.ReadAllText(@"config.txt");
+                string configPath = Application.StartupPath + "\\config.txt";
+                string str = File.ReadAllText(configPath);
                 str = str.Replace("\n", "");
                 string[] strIPArray = str.Split('\r');
+               // MessageBox.Show(str);
                 //this.SetText(strIPArray[1]);
                 //两种方式初始化构造
                 //byte[] ip1 = { 192, 168, 0, 101 };

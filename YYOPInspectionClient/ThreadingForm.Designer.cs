@@ -762,36 +762,35 @@
             this.lblThreadType.AutoSize = true;
             this.lblThreadType.Location = new System.Drawing.Point(360, 16);
             this.lblThreadType.Name = "lblThreadType";
-            this.lblThreadType.Size = new System.Drawing.Size(94, 24);
+            this.lblThreadType.Size = new System.Drawing.Size(22, 24);
             this.lblThreadType.TabIndex = 3;
-            this.lblThreadType.Text = "label75";
+            this.lblThreadType.Text = " ";
             // 
             // lblSteelGrade
             // 
             this.lblSteelGrade.AutoSize = true;
             this.lblSteelGrade.Location = new System.Drawing.Point(234, 16);
             this.lblSteelGrade.Name = "lblSteelGrade";
-            this.lblSteelGrade.Size = new System.Drawing.Size(94, 24);
+            this.lblSteelGrade.Size = new System.Drawing.Size(22, 24);
             this.lblSteelGrade.TabIndex = 2;
-            this.lblSteelGrade.Text = "label74";
+            this.lblSteelGrade.Text = " ";
             // 
             // lblWt
             // 
             this.lblWt.AutoSize = true;
             this.lblWt.Location = new System.Drawing.Point(116, 16);
             this.lblWt.Name = "lblWt";
-            this.lblWt.Size = new System.Drawing.Size(94, 24);
+            this.lblWt.Size = new System.Drawing.Size(22, 24);
             this.lblWt.TabIndex = 1;
-            this.lblWt.Text = "label73";
+            this.lblWt.Text = " ";
             // 
             // lblOd
             // 
             this.lblOd.AutoSize = true;
             this.lblOd.Location = new System.Drawing.Point(9, 16);
             this.lblOd.Name = "lblOd";
-            this.lblOd.Size = new System.Drawing.Size(94, 24);
+            this.lblOd.Size = new System.Drawing.Size(0, 24);
             this.lblOd.TabIndex = 0;
-            this.lblOd.Text = "label72";
             // 
             // panel1
             // 
