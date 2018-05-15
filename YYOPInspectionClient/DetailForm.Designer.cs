@@ -718,6 +718,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.DetailForm_Load);
             this.SizeChanged += new System.EventHandler(this.DetailForm_SizeChanged);
+            this.VisibleChanged += new System.EventHandler(this.DetailForm_VisibleChanged);
             this.tabPage2.ResumeLayout(false);
             this.pnlTabTwoTitle.ResumeLayout(false);
             this.pnlTabTwoTitle.PerformLayout();

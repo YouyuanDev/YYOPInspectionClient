@@ -20,8 +20,8 @@ namespace YYOPInspectionClient
         private static Thread thread = null;
         private YYKeyenceReaderConsole readerCodeWindow = null;
         private MainWindow videoWindow = null;
-        private ThreadingForm threadFrom = null;
-
+        public ThreadingForm threadFrom = null;
+        public  LoginWinform loginWinform=null;
         #region 构造函数
         public IndexWindow()
         {
@@ -30,7 +30,6 @@ namespace YYOPInspectionClient
             getThreadingProcessData();
             try
             {
-                this.lblIndexFormTitle.Text ="现在登录的是:"+Person.pname+",工号:"+Person.employee_no;
                 //---------------设置datagridView字体(开始)
                 this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -93,7 +92,6 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    Console.WriteLine(rowsJson);
                     List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
                     List<string> odListStr = new List<string>();
                     List<string> wtListStr = new List<string>();
@@ -455,7 +453,16 @@ namespace YYOPInspectionClient
         #region 退出程序
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            //Application.Exit();
+            if (loginWinform != null)
+            {
+                this.Hide();
+                loginWinform.Show();
+            }
+            else {
+                MessagePrompt.Show("登出失败,请重启系统!");
+                Application.Exit();
+            }
         }
         #endregion
 
@@ -502,6 +509,14 @@ namespace YYOPInspectionClient
             e.DrawBackground();
             e.Graphics.DrawString(cmbAcceptanceNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
             e.DrawFocusRectangle();
+        }
+        #endregion
+
+        #region  窗体Visible改变事件
+        private void IndexWindow_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Person.pname))
+                this.lblIndexFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
         } 
         #endregion
     }

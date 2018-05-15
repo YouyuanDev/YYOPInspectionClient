@@ -35,11 +35,12 @@ namespace YYOPInspectionClient
         public ThreadingForm threadForm = null;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer=null;
+        int videoResult = 1;
+        private string  lblPromptName;
         public delegate void EventHandle(object sender, EventArgs e);
         public static ThreadingForm getMyForm()
         {
             return myForm;
-            
         }
 
         #region 窗体构造函数
@@ -50,7 +51,7 @@ namespace YYOPInspectionClient
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    this.lblFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
+               
                     englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
                     englishKeyboard.containerControl = this.flpTabOneContent;
                     numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
@@ -77,7 +78,7 @@ namespace YYOPInspectionClient
                     txtBatchNo.MouseDown += new MouseEventHandler(txt_MouseDown);
                 }
                 else {
-                    MessageBox.Show("您已掉线,请重新登录!");
+                    MessagePrompt.Show("您已掉线,请重新登录!");
                     this.Dispose();
                     Application.Exit();
                 }
@@ -117,7 +118,6 @@ namespace YYOPInspectionClient
                 String param = "";
                 byte[] data = encoding.GetBytes(param);
                 string url = CommonUtil.getServerIpAndPort()+"Contract/getAllDropDownContractNoOfWinform.action";
-                Console.WriteLine(url);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
@@ -222,8 +222,6 @@ namespace YYOPInspectionClient
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
                         string contractInfo = jo["contractInfo"].ToString();
                         string measureInfo = jo["measureInfo"].ToString();
-                        //MessageBox.Show(contractInfo);
-                        //MessageBox.Show(measureInfo);
                         FillFormTitle(contractInfo);//填充表单合同信息
                         JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
                         this.flpTabOneContent.Controls.Clear();
@@ -248,6 +246,15 @@ namespace YYOPInspectionClient
                // ClearCntrValue(this.pnlTabOneFooter);
                 string contract_no = this.cmbContractNo.Text.Trim();
                 GetThreadFormInitData(contract_no);
+                try
+                {
+                    this.lblCountSubmit.Text ="1";
+                    ShowFrequency();
+                }
+                catch (Exception ex) {
+                    Console.WriteLine("查询必填项时失败!");
+                }
+                
             }
         }
         #endregion
@@ -348,33 +355,32 @@ namespace YYOPInspectionClient
                 //初始化测量值表单
                 Panel panel1 = new Panel { Width = 312, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                 Label lbl1_0 = new Label { Text = obj["measure_item_name"].ToString(),Name= obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), Width = 180, TextAlign = ContentAlignment.MiddleCenter };
+                Label lbl1_0_1 = new Label {Text ="*必填",Name = obj["measure_item_code"].ToString() + "_lbl_Prompt", Location = new Point(220, 10), Width =100, TextAlign = ContentAlignment.MiddleCenter,ForeColor=Color.Red };
                 panel1.Controls.Add(lbl1_0);
-                string item_min_value = obj["item_min_value"].ToString();
-                string item_max_value = obj["item_max_value"].ToString();
-                string item_frequency = Convert.ToDouble(obj["item_frequency"].ToString()).ToString("P");
+                panel1.Controls.Add(lbl1_0_1);
+                string item_min_value = "", item_max_value = "", item_frequency = "";
+                if (obj["item_min_value"] != null) 
+                     item_min_value = obj["item_min_value"].ToString();
+                if (obj["item_max_value"] != null) 
+                     item_max_value = obj["item_max_value"].ToString();
+                if (obj["item_frequency"]!=null) 
+                     item_frequency = obj["item_frequency"].ToString();
                 ////判断该测量项是否有范围
-                if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value))
+                if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value)&&!string.IsNullOrWhiteSpace(item_frequency))
                 {
                     float item_max_val = Convert.ToSingle(item_max_value);
                     float item_min_val = Convert.ToSingle(item_min_value);
-                    if (item_min_val>=0&&item_max_val >0)
-                    {
-                        Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(10, 50),AutoSize=true};
-                        panel1.Controls.Add(lbl1_1);
-                        //添加频率
-                        Label lbl1_3 = new Label { Text = "频率:" + item_frequency, Location = new Point(160, 50), AutoSize = true };
-                        panel1.Controls.Add(lbl1_3);
-                    }
-                    else
-                    {
-                        Label lbl1_2 = new Label {Width = 200, Text = "频率:" + item_frequency, Location = new Point(60, 50), AutoSize = true,TextAlign = ContentAlignment.MiddleCenter };
-                        panel1.Controls.Add(lbl1_2);
-                    }
+                    item_frequency = Convert.ToDouble(item_frequency).ToString("P");
+                    Label lbl1_1 = new Label {Tag=item_min_val+"-"+item_max_val, Name = obj["measure_item_code"].ToString()+"_lbl",Text = "范围:{" + item_min_value + "-" + item_max_value + "}", Location = new Point(10, 50),AutoSize=true};
+                    panel1.Controls.Add(lbl1_1);
+                    //添加频率
+                    Label lbl1_3 = new Label { Tag=Convert.ToSingle(obj["item_frequency"].ToString()),Name= obj["measure_item_code"].ToString() + "#frequency", Text = "频率:" + item_frequency, Location = new Point(160, 50), AutoSize = true };
+                    panel1.Controls.Add(lbl1_3);
                 }
                 else
                 {
                     //添加频率
-                    Label lbl1_4 = new Label { Width = 200, Text = "频率:" + item_frequency, Location = new Point(90, 50), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter };
+                    Label lbl1_4 = new Label { Tag = Convert.ToSingle(obj["item_frequency"].ToString()),Name= obj["measure_item_code"].ToString() + "#frequency", Width = 200, Text = "频率:" + item_frequency, Location = new Point(90, 50), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter };
                     panel1.Controls.Add(lbl1_4);
                 }
 
@@ -439,9 +445,9 @@ namespace YYOPInspectionClient
         #region 表单提交事件
         private void btnFormSubmit_Click(object sender, EventArgs e)
         {
-            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            if (button2.Text.Trim().Contains("结束录制")|| button1.Text.Trim().Contains("结束扫码"))
             {
-                MessageBox.Show("录像机或读码器尚未关闭！");
+                MessagePrompt.Show("录像机或读码器尚未关闭！");
             }
             else
             {
@@ -450,10 +456,9 @@ namespace YYOPInspectionClient
                     ThreadFormSubmit();
                 }
                 else {
-                    MessageBox.Show("您已掉线，请重新登录!");
+                    MessagePrompt.Show("您已掉线，请重新登录!");
                     Application.Exit();
                 }
-                
             }
         }
         #endregion
@@ -464,7 +469,7 @@ namespace YYOPInspectionClient
             //关闭之前判断是否关闭读码器和结束录像
             if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
             {
-                MessageBox.Show("录像机或读码器尚未关闭！");
+                MessagePrompt.Show("录像机或读码器尚未关闭！");
             }
             else
             {
@@ -482,12 +487,11 @@ namespace YYOPInspectionClient
             String param = "";
             try {
                 string videoNo = videosArr;
-                //MessageBox.Show(videoNo);
                 sb.Remove(0, sb.Length);
                 sb.Append("{");
                 sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
                 sb.Append("\"coupling_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
-                sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.SelectedValue.ToString(), Encoding.UTF8) + "\",");
+                sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.Text, Encoding.UTF8) + "\",");
                 sb.Append("\"production_line\"" + ":" + "\"" + HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) + "\",");
                 sb.Append("\"machine_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) + "\",");
                 //sb.Append("\"process_no\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
@@ -508,13 +512,11 @@ namespace YYOPInspectionClient
                     sb.Append("\"" + tb.Name + "\"" + ":" + "\"" + HttpUtility.UrlEncode(tb.Text.Trim(),Encoding.UTF8) + "\",");
                 }
                 string formData = sb.ToString();
-                //MessageBox.Show(formData);
                 formData = formData.Substring(0, formData.LastIndexOf(",")) + "}";
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
                 JObject o = JObject.Parse(formData);
                 param = o.ToString();
-                //MessageBox.Show(param);
                 byte[] data = encoding.GetBytes(param);
                 string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -545,21 +547,23 @@ namespace YYOPInspectionClient
                     string rowsJson = jobject["rowsData"].ToString();
                     if (rowsJson.Trim().Equals("success"))
                     {
-                        MessageBox.Show("提交成功!");
+                        MessagePrompt.Show("提交成功!");
                     }
                     else
                     {
-                        MessageBox.Show("提交失败,表单暂时保存在本地!");
+                        MessagePrompt.Show("提交失败,表单暂时保存在本地!");
                         string coupingDir = Application.StartupPath + "\\unsubmit";
                         CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
                     }
                 }
             } catch (Exception e) {
-                MessageBox.Show("提交失败,表单暂时保存在本地!");
+                MessagePrompt.Show("提交失败,表单暂时保存在本地!！");
                 string coupingDir = Application.StartupPath + "\\unsubmit";
                 CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
             finally{
+                ChangeSubmitCount();
+                ShowFrequency();
                 ClearForm();
                 indexWindow.getThreadingProcessData();
             }
@@ -605,22 +609,35 @@ namespace YYOPInspectionClient
             try
             {
                 TextBox tb = (TextBox)sender;
-                if (tb.Tag != null) {
-                    if (tb.Tag.Equals("English"))
-                    {
-                        englishKeyboard.inputTxt = tb;
-                        englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        englishKeyboard.Show();
-                        SetAlphaKeyboardText(tb.Name);
+                if (tb.Tag != null)
+                {
+                    
+                        if (tb.Tag.ToString().Contains("English"))
+                        {
+                            englishKeyboard.inputTxt = tb;
+                            englishKeyboard.Textbox_display.Text = tb.Text.Trim();
+                            englishKeyboard.Show();
+                            SetAlphaKeyboardText(tb.Name);
+                        }
+                        else
+                        {
+                        if (IsHaveCoupingNoAndStartRecordVideo())
+                        {
+                            numberKeyboard.inputTxt = tb;
+                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                            numberKeyboard.Show();
+                            numberKeyboard.TopMost = true;
+                            SetNumberKeyboardText(tb.Name);
+                        }
+                        else
+                        {
+                            txtCoupingNo.Focus();
+                            MessagePrompt.Show("请检查接箍编号是否输入和视频录制是否启动!");
+                        }
                     }
-                    else
-                    {
-                        numberKeyboard.inputTxt = tb;
-                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        numberKeyboard.Show();
-                        SetNumberKeyboardText(tb.Name);
-                    }
+                    
                 }
+               
             }
             catch (Exception ex) {
                 Console.WriteLine("鼠标获取焦点时出错!");
@@ -636,7 +653,7 @@ namespace YYOPInspectionClient
             {
                 TextBox tb = (TextBox)sender;
                 if (tb.Tag != null) {
-                    if (tb.Tag.Equals("English"))
+                    if (tb.Tag.ToString().Contains("English"))
                     {
                         englishKeyboard.Hide();
                     }
@@ -659,8 +676,10 @@ namespace YYOPInspectionClient
             TextBox tb = (TextBox)sender;
             try
             {
-                if (tb.Tag != null) {
-                    if (tb.Tag.Equals("English"))
+                if (tb.Tag != null)
+                {
+
+                    if (tb.Tag.ToString().Contains("English"))
                     {
                         englishKeyboard.inputTxt = tb;
                         englishKeyboard.Textbox_display.Text = tb.Text.Trim();
@@ -670,15 +689,25 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                        numberKeyboard.inputTxt = tb;
-                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        numberKeyboard.Show();
-                        numberKeyboard.TopMost = true;
-                        SetNumberKeyboardText(tb.Name);
-                    }
+                        if (IsHaveCoupingNoAndStartRecordVideo())
+                        {
+                            numberKeyboard.inputTxt = tb;
+                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                            numberKeyboard.Show();
+                            numberKeyboard.TopMost = true;
+                            SetNumberKeyboardText(tb.Name);
+                        }
+                        else {
+                            txtCoupingNo.Focus();
+                            MessagePrompt.Show("请检查接箍编号是否输入和视频录制是否启动!");
+                        }
+                          
+                     }
                 }
+               
             }
             catch (Exception ex) {
+                 MessagePrompt.Show(ex.Message);
                 Console.WriteLine("鼠标点击时出错!");
             }
         }
@@ -712,12 +741,12 @@ namespace YYOPInspectionClient
                 else if (resLon == 1)
                 {
                     this.lblReaderStatus.Text = "读码器尚未连接...";
-                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                    MessagePrompt.Show("请检查读码器是否连接或已经断开连接!");
                 }
                 else
                 {
                     this.lblReaderStatus.Text = "读码器尚未连接...";
-                    MessageBox.Show("请检查读码器是否连接或已经断开连接!");
+                    MessagePrompt.Show("请检查读码器是否连接或已经断开连接!");
                 }
             }
         }
@@ -726,15 +755,15 @@ namespace YYOPInspectionClient
         #region 录制视频事件
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.button2.Text == "开始录制视频")
+            if (this.button2.Text.Contains("开始录制"))
             {
                 if (timestamp == null || timestamp.Length <= 0)
                 {
                     timestamp =CommonUtil.getMesuringRecord();
                 }
-                this.lblVideoStatus.Text = "开始录像...";
-                int result = MainWindow.RecordVideo(timestamp);
-                switch (result)
+                this.lblVideoStatus.Text = "开始录制...";
+                 videoResult = MainWindow.RecordVideo(timestamp);
+                switch (videoResult)
                 {
                     case 0:
                         this.lblVideoStatus.Text = "录像中...";
@@ -758,29 +787,30 @@ namespace YYOPInspectionClient
                         break;
                     case 1:
                         this.lblVideoStatus.Text = "录像机未连接...";
-                        MessageBox.Show("录像失败,请先登录录像机!");
+                        MessagePrompt.Show("录制失败,请先登录录像机!");
                         break;
                     case 2:
                         this.lblVideoStatus.Text = "录像机未启动...";
-                        MessageBox.Show("录像失败,请先启动录像机!");
+                        MessagePrompt.Show("录制失败,请先启动录像机!");
                         break;
                     case 3:
-                        this.lblVideoStatus.Text = "录像失败...";
-                        MessageBox.Show("录像失败,请检查配置!");
+                        this.lblVideoStatus.Text = "录制失败...";
+                        MessagePrompt.Show("录制失败,请检查配置!");
                         break;
                     case 4:
-                        MessageBox.Show("录像失败!");
+                        MessagePrompt.Show("录制失败!");
                         break;
                 }
             }
             else if (this.button2.Text == "结束录制")
             {
+                videoResult = 1;
                 MainWindow.stopRecordVideo();
                 timer.Stop();
                 //保存timestamp到fileuploadrecord中
                 RestoreSetting();
-                this.button2.Text = "开始录制视频";
-                this.lblVideoStatus.Text = "录像完成...";
+                this.button2.Text = "开始录制";
+                this.lblVideoStatus.Text = "录制完成...";
                 //将视频移到done文件夹下
                 string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
                 string destPath = Application.StartupPath + "\\done\\"+ timestamp + ".mp4";
@@ -923,17 +953,28 @@ namespace YYOPInspectionClient
         #region 设置数字键盘Title
         private void SetNumberKeyboardText(string inputTxtName)
         {
-            if (inputTxtName.Contains("_A_Value"))
+            try
             {
-                inputTxtName = inputTxtName.Replace("_A_Value", "");
+                if (inputTxtName.Contains("_A_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_A_Value", "");
+                }
+                if (inputTxtName.Contains("_B_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_B_Value", "");
+                }
+                Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
+                Label lbl0 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Prompt");
+                if (lbl != null) {
+                    if (lbl0.Visible == true)
+                        numberKeyboard.lblNumberTitle.Text = lbl.Text + "(必填)";
+                    else
+                        numberKeyboard.lblNumberTitle.Text = lbl.Text;
+                }
             }
-            if (inputTxtName.Contains("_B_Value"))
-            {
-                inputTxtName = inputTxtName.Replace("_B_Value", "");
+            catch (Exception ex) {
+                Console.WriteLine("设置输入法头部信息时出错,错误信息:"+ ex.Message);
             }
-            Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
-            if (lbl != null)
-                numberKeyboard.lblNumberTitle.Text = lbl.Text;
         }
         #endregion
 
@@ -941,13 +982,19 @@ namespace YYOPInspectionClient
         private void SetAlphaKeyboardText(string inputTxtName)
         {
             if (inputTxtName.Contains("_measure_tool1"))
-            {
                 inputTxtName = inputTxtName.Replace("_measure_tool1", "");
-            }
-            if (inputTxtName.Contains("_measure_tool2"))
-            {
+            else if (inputTxtName.Contains("_measure_tool2"))
                 inputTxtName = inputTxtName.Replace("_measure_tool2", "");
-            }
+            else if (inputTxtName.Contains("txtCoupingNo"))
+                englishKeyboard.lblEnglishTitle.Text = "接箍编号";
+            else if (inputTxtName.Contains("txtHeatNo"))
+                englishKeyboard.lblEnglishTitle.Text = "炉号";
+            else if (inputTxtName.Contains("txtBatchNo"))
+                englishKeyboard.lblEnglishTitle.Text = "批号";
+            else if (inputTxtName.Contains("txtMachineNo"))
+                englishKeyboard.lblEnglishTitle.Text = "机床号";
+            else if (inputTxtName.Contains("txtProductionArea"))
+                englishKeyboard.lblEnglishTitle.Text = "产线";
             Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
             if (lbl != null)
                 englishKeyboard.lblEnglishTitle.Text = lbl.Text;
@@ -995,7 +1042,7 @@ namespace YYOPInspectionClient
             //关闭之前判断是否关闭读码器和结束录像
             if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
             {
-                MessageBox.Show("录像机或读码器尚未关闭！");
+                MessagePrompt.Show("录像机或读码器尚未关闭！");
             }
             else
             {
@@ -1050,6 +1097,101 @@ namespace YYOPInspectionClient
             e.Graphics.DrawString(cmbInspectionResult.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
             e.DrawFocusRectangle();
         }
+        #endregion
+
+        #region 判断接箍编号是否存在和视频录像是否启动
+        private bool IsHaveCoupingNoAndStartRecordVideo()
+        {
+            bool flag = false;
+                if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && videoResult == 0)
+                {
+                    flag = true;
+                }
+            return flag;
+        }
+        #endregion
+
+        #region 窗体Visible改变事件
+        private void ThreadingForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Person.pname))
+            {
+                this.lblFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
+                this.txtOperatorNo.Text = Person.employee_no;
+                this.txtOperatorName.Text = Person.pname;
+            }
+        }
+        #endregion
+
+        #region 显示是否必填项
+        private void ShowFrequency()
+        {
+            string countStr = this.lblCountSubmit.Text;
+            int count = 0;
+            if (!string.IsNullOrWhiteSpace(countStr))
+            {
+                count = Convert.ToInt32(countStr);//提交的次数
+                GoThroughControlsOfLabel(flpTabTwoContent,count);
+            }
+        }
+        #endregion
+
+        #region 遍历测量项频率label
+        private void GoThroughControlsOfLabel(Control parContainer,int countSumbit)
+        {
+            try {
+                for (int index = 0; index < parContainer.Controls.Count; index++)
+                {
+                    // 如果是容器类控件，递归调用自己
+                    if (parContainer.Controls[index].HasChildren)
+                    {
+                        GoThroughControlsOfLabel(parContainer.Controls[index],countSumbit);
+                    }
+                    else
+                    {
+                        switch (parContainer.Controls[index].GetType().Name)
+                        {
+                            case "Label":
+                                Label lbl = (Label)parContainer.Controls[index];
+                                if (lbl.Name.Contains("#frequency"))
+                                {
+                                    if (lbl.Tag != null){
+                                        float frequency = Convert.ToSingle(lbl.Tag.ToString());
+                                        lblPromptName = lbl.Name.Split('#')[0];
+                                        Label lblPrompt = (Label)GetControlInstance(flpTabTwoContent, lblPromptName + "_lbl_Prompt");
+                                        if (lblPrompt != null)
+                                        {
+                                            if (Math.Abs((countSumbit - 1) * frequency - Convert.ToInt32((countSumbit - 1) * frequency)) < 0.000001)
+                                                lblPrompt.Visible = true;
+                                            else
+                                                lblPrompt.Visible = false;
+                                        }
+                                        else
+                                            Console.WriteLine("未找到Label！");
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.Message+"-------------------------");
+                Console.WriteLine("判断是否未必填项的时候出错!");
+            }
+        }
+        #endregion
+
+        #region 统计提交数加1
+        private void ChangeSubmitCount()
+        {
+            string countStr = this.lblCountSubmit.Text;
+            int temp = 0;
+            if (!string.IsNullOrWhiteSpace(countStr))
+            {
+                temp = Convert.ToInt32(countStr) + 1;
+                this.lblCountSubmit.Text = temp.ToString();
+            }
+        } 
         #endregion
     }
 }

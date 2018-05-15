@@ -91,6 +91,7 @@
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCountSubmit = new System.Windows.Forms.Label();
             this.lblFormTitle = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -795,12 +796,23 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.lblCountSubmit);
             this.panel1.Controls.Add(this.lblFormTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1307, 38);
             this.panel1.TabIndex = 1;
+            // 
+            // lblCountSubmit
+            // 
+            this.lblCountSubmit.AutoSize = true;
+            this.lblCountSubmit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblCountSubmit.Location = new System.Drawing.Point(610, 7);
+            this.lblCountSubmit.Name = "lblCountSubmit";
+            this.lblCountSubmit.Size = new System.Drawing.Size(22, 24);
+            this.lblCountSubmit.TabIndex = 1;
+            this.lblCountSubmit.Text = "1";
             // 
             // lblFormTitle
             // 
@@ -826,6 +838,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ThreadingForm_Load);
             this.SizeChanged += new System.EventHandler(this.ThreadingForm_SizeChanged);
+            this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -908,5 +921,6 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblFormTitle;
+        private System.Windows.Forms.Label lblCountSubmit;
     }
 }

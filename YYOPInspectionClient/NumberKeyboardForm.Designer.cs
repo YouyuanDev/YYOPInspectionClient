@@ -49,6 +49,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblNumberTitle = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnMinus = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -157,7 +158,7 @@
             this.button_backspace.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button_backspace.Location = new System.Drawing.Point(225, 456);
             this.button_backspace.Name = "button_backspace";
-            this.button_backspace.Size = new System.Drawing.Size(100, 100);
+            this.button_backspace.Size = new System.Drawing.Size(100, 98);
             this.button_backspace.TabIndex = 11;
             this.button_backspace.Text = "退格";
             this.button_backspace.UseVisualStyleBackColor = true;
@@ -188,9 +189,9 @@
             // button_enter
             // 
             this.button_enter.Font = new System.Drawing.Font("宋体", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_enter.Location = new System.Drawing.Point(337, 456);
+            this.button_enter.Location = new System.Drawing.Point(337, 350);
             this.button_enter.Name = "button_enter";
-            this.button_enter.Size = new System.Drawing.Size(100, 100);
+            this.button_enter.Size = new System.Drawing.Size(218, 204);
             this.button_enter.TabIndex = 15;
             this.button_enter.Text = "=";
             this.button_enter.UseVisualStyleBackColor = true;
@@ -199,7 +200,7 @@
             // button_close
             // 
             this.button_close.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_close.Location = new System.Drawing.Point(338, 55);
+            this.button_close.Location = new System.Drawing.Point(455, 55);
             this.button_close.Name = "button_close";
             this.button_close.Size = new System.Drawing.Size(100, 73);
             this.button_close.TabIndex = 14;
@@ -221,7 +222,7 @@
             // button_not_accept
             // 
             this.button_not_accept.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_not_accept.Location = new System.Drawing.Point(337, 350);
+            this.button_not_accept.Location = new System.Drawing.Point(455, 245);
             this.button_not_accept.Name = "button_not_accept";
             this.button_not_accept.Size = new System.Drawing.Size(100, 100);
             this.button_not_accept.TabIndex = 12;
@@ -235,7 +236,7 @@
             this.Textbox_display.Location = new System.Drawing.Point(5, 57);
             this.Textbox_display.Name = "Textbox_display";
             this.Textbox_display.ReadOnly = true;
-            this.Textbox_display.Size = new System.Drawing.Size(320, 71);
+            this.Textbox_display.Size = new System.Drawing.Size(432, 71);
             this.Textbox_display.TabIndex = 16;
             this.Textbox_display.Text = "0";
             this.Textbox_display.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -243,7 +244,7 @@
             // button_clear
             // 
             this.button_clear.Font = new System.Drawing.Font("宋体", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button_clear.Location = new System.Drawing.Point(337, 137);
+            this.button_clear.Location = new System.Drawing.Point(455, 138);
             this.button_clear.Name = "button_clear";
             this.button_clear.Size = new System.Drawing.Size(100, 100);
             this.button_clear.TabIndex = 17;
@@ -258,7 +259,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(444, 47);
+            this.panel1.Size = new System.Drawing.Size(583, 47);
             this.panel1.TabIndex = 18;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
@@ -275,6 +276,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnMinus);
             this.panel2.Controls.Add(this.button_clear);
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.num1);
@@ -297,16 +299,27 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(444, 566);
+            this.panel2.Size = new System.Drawing.Size(583, 566);
             this.panel2.TabIndex = 19;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
+            // 
+            // btnMinus
+            // 
+            this.btnMinus.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnMinus.Location = new System.Drawing.Point(337, 138);
+            this.btnMinus.Name = "btnMinus";
+            this.btnMinus.Size = new System.Drawing.Size(100, 100);
+            this.btnMinus.TabIndex = 19;
+            this.btnMinus.Text = "+/-";
+            this.btnMinus.UseVisualStyleBackColor = true;
+            this.btnMinus.Click += new System.EventHandler(this.btnMinus_Click);
             // 
             // NumberKeyboardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 566);
+            this.ClientSize = new System.Drawing.Size(583, 566);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -344,5 +357,6 @@
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Label lblNumberTitle;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnMinus;
     }
 }

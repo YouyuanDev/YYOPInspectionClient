@@ -36,7 +36,6 @@ namespace YYOPInspectionClient
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    this.lblDetailFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
                     englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
                     numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
                     numberKeyboard.containerControl = this.flpTabTwoContent;
@@ -52,7 +51,7 @@ namespace YYOPInspectionClient
                 }
                 else
                 {
-                    MessageBox.Show("您已掉线,请重新登录!");
+                    MessagePrompt.Show("您已掉线,请重新登录!");
                     this.Dispose();
                     Application.Exit();
                 }
@@ -60,7 +59,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessageBox.Show("系统繁忙!");
+                MessagePrompt.Show("系统繁忙!");
                 this.Close();
             }
         } 
@@ -121,7 +120,6 @@ namespace YYOPInspectionClient
                         string contractInfo = jo["contractInfo"].ToString();
                         string measureInfo = jo["measureInfo"].ToString();
                         string inspectionData= jo["inspectionData"].ToString();
-                        //MessageBox.Show(measureInfo);
                         
                         FillFormTitle(contractInfo);//填充表单合同信息
                         JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
@@ -148,7 +146,6 @@ namespace YYOPInspectionClient
         #region 填充表单合同信息
         private void FillFormTitle(string contractInfo)
         {
-            //MessageBox.Show(contractInfo);
             JObject contractObj = (JObject)JsonConvert.DeserializeObject(contractInfo);
            
             if (!string.IsNullOrWhiteSpace(contractObj["machining_contract_no"].ToString()))
@@ -407,20 +404,27 @@ namespace YYOPInspectionClient
         private void txt_Enter(object sender, EventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            if (tb.Tag.Equals("English"))
+            if (tb.Tag != null)
             {
-                englishKeyboard.inputTxt = tb;
-                englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                englishKeyboard.Show();
-                SetAlphaKeyboardText(tb.Text);
+                if (tb.Tag.ToString().Contains("English"))
+                {
+                    englishKeyboard.inputTxt = tb;
+                    englishKeyboard.Textbox_display.Text = tb.Text.Trim();
+                    englishKeyboard.Show();
+                    SetAlphaKeyboardText(tb.Name);
+                }
+                else
+                {
+                    numberKeyboard.inputTxt = tb;
+                    numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                    numberKeyboard.Show();
+                    SetNumberKeyboardText(tb.Name);
+                }
             }
-            else
-            {
-                numberKeyboard.inputTxt = tb;
-                numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                numberKeyboard.Show();
-                SetNumberKeyboardText(tb.Text);
+            else {
+                SetNumberKeyboardText(tb.Name);
             }
+           
         }
         #endregion
 
@@ -428,7 +432,7 @@ namespace YYOPInspectionClient
         private void txt_Leave(object sender, EventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            if (tb.Tag.Equals("English"))
+            if (tb.Tag.ToString().Contains("English"))
             {
                 englishKeyboard.Hide();
             }
@@ -443,13 +447,13 @@ namespace YYOPInspectionClient
         private void txt_MouseDown(object sender, EventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            if (tb.Tag.Equals("English"))
+            if (tb.Tag.ToString().Contains("English"))
             {
                 englishKeyboard.inputTxt = tb;
                 englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                 englishKeyboard.Show();
                 englishKeyboard.TopMost = true;
-                SetAlphaKeyboardText(tb.Text);
+                SetAlphaKeyboardText(tb.Name);
             }
             else
             {
@@ -457,7 +461,7 @@ namespace YYOPInspectionClient
                 numberKeyboard.Textbox_display.Text = tb.Text.Trim();
                 numberKeyboard.Show();
                 numberKeyboard.TopMost = true;
-                SetNumberKeyboardText(tb.Text);
+                SetNumberKeyboardText(tb.Name);
             }
         }
         #endregion
@@ -500,16 +504,16 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                        MessageBox.Show("您已掉线，请重新登录!");
+                        MessagePrompt.Show("您已掉线，请重新登录!");
                         Application.Exit();
                     }
                 }
                 else {
-                    MessageBox.Show("系统繁忙,请稍后修改!");
+                    MessagePrompt.Show("系统繁忙,请稍后修改!");
                 }
             }
             else {
-                MessageBox.Show("只能修改自己的表单数据!");
+                MessagePrompt.Show("只能修改自己的表单数据!");
             }
           
         }
@@ -615,7 +619,6 @@ namespace YYOPInspectionClient
                 String content = "";
                 JObject o = JObject.Parse(formData);
                 param = o.ToString();
-                //MessageBox.Show(param);
                 byte[] data = encoding.GetBytes(param);
                 string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -644,22 +647,21 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    //MessageBox.Show(rowsJson);
                     if (rowsJson.Trim().Equals("success"))
                     {
-                        MessageBox.Show("修改成功!");
+                        MessagePrompt.Show("修改成功!");
                         if(indexWindow!=null)
                          indexWindow.getThreadingProcessData();
                     }
                     else
                     {
-                        MessageBox.Show("修改失败!");
+                        MessagePrompt.Show("修改失败!");
                     }
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show("修改失败!");
+                MessagePrompt.Show("修改失败!");
             }
         }
         #endregion
@@ -690,31 +692,38 @@ namespace YYOPInspectionClient
             }
             Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
             if (lbl != null)
-                numberKeyboard.Text = lbl.Text;
+                numberKeyboard.lblNumberTitle.Text = lbl.Text;
         }
         #endregion
 
         #region 设置英文键盘Title
         private void SetAlphaKeyboardText(string inputTxtName)
         {
-            if (inputTxtName.Contains("_measure_tool1"))
+            Console.WriteLine(inputTxtName);
+            if (inputTxtName.Contains("_measure_tool1") || inputTxtName.Contains("_measure_tool2"))
             {
-                inputTxtName = inputTxtName.Replace("_measure_tool1", "");
+                if (inputTxtName.Contains("_measure_tool1"))
+                    inputTxtName = inputTxtName.Replace("_measure_tool1", "");
+                if (inputTxtName.Contains("_measure_tool2"))
+                    inputTxtName = inputTxtName.Replace("_measure_tool2", "");
+                Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
+                if (lbl != null)
+                    englishKeyboard.lblEnglishTitle.Text = lbl.Text;
             }
-            if (inputTxtName.Contains("_measure_tool2"))
-            {
-                inputTxtName = inputTxtName.Replace("_measure_tool2", "");
+            else if (inputTxtName.Contains("txtCoupingNo"))
+                englishKeyboard.lblEnglishTitle.Text = "接箍编号";
+            else if (inputTxtName.Contains("txtHeatNo"))
+                englishKeyboard.lblEnglishTitle.Text = "炉号";
+            else if (inputTxtName.Contains("txtBatchNo"))
+                englishKeyboard.lblEnglishTitle.Text = "批号";
+            else if (inputTxtName.Contains("txtMachineNo"))
+                englishKeyboard.lblEnglishTitle.Text = "机床号";
+            else if (inputTxtName.Contains("txtProductionArea"))
+                englishKeyboard.lblEnglishTitle.Text = "产线";
+            else {
+                englishKeyboard.lblEnglishTitle.Text = "";
             }
-            Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
-            if (lbl != null)
-                englishKeyboard.Text = lbl.Text;
         }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         #endregion
 
         #region 下拉框绘制
@@ -760,7 +769,9 @@ namespace YYOPInspectionClient
             e.DrawBackground();
             e.Graphics.DrawString(cmbInspectionResutlt.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
             e.DrawFocusRectangle();
-        } 
+        }
+
+       
         #endregion
 
         #region 根据控件名找到该控件
@@ -795,6 +806,24 @@ namespace YYOPInspectionClient
             }
             return null;//控件不存在
         }
+
+
+        #endregion
+
+        #region 窗体关闭事件
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #endregion
+
+        #region 窗体Visible改变事件
+        private void DetailForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Person.pname))
+                this.lblDetailFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
+        } 
         #endregion
     }
 }

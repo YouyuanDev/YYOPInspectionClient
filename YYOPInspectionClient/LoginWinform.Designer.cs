@@ -36,6 +36,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.lblLoginTitle = new System.Windows.Forms.Label();
+            this.btnLoginOut = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,6 +69,7 @@
             this.txtLoginName.TabIndex = 2;
             this.txtLoginName.Tag = "English";
             this.txtLoginName.Text = "1111";
+            this.txtLoginName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtLoginName_MouseDown);
             // 
             // txtLoginPwd
             // 
@@ -79,11 +81,12 @@
             this.txtLoginPwd.TabIndex = 3;
             this.txtLoginPwd.Tag = "English";
             this.txtLoginPwd.Text = "123456";
+            this.txtLoginPwd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtLoginPwd_MouseDown);
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(127, 188);
+            this.button1.Location = new System.Drawing.Point(69, 185);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 52);
             this.button1.TabIndex = 4;
@@ -124,11 +127,23 @@
             this.lblLoginTitle.TabIndex = 0;
             this.lblLoginTitle.Text = "登录";
             // 
+            // btnLoginOut
+            // 
+            this.btnLoginOut.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnLoginOut.Location = new System.Drawing.Point(203, 185);
+            this.btnLoginOut.Name = "btnLoginOut";
+            this.btnLoginOut.Size = new System.Drawing.Size(111, 52);
+            this.btnLoginOut.TabIndex = 6;
+            this.btnLoginOut.Text = "退出";
+            this.btnLoginOut.UseVisualStyleBackColor = true;
+            this.btnLoginOut.Click += new System.EventHandler(this.btnLoginOut_Click);
+            // 
             // LoginWinform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 261);
+            this.Controls.Add(this.btnLoginOut);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtLoginPwd);
@@ -158,5 +173,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblLoginTitle;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnLoginOut;
     }
 }

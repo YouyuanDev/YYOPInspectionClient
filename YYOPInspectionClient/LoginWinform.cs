@@ -18,14 +18,14 @@ namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
-        private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
-        private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
+        private AlphabetKeyboardForm englishKeyboard = null; 
+        private IndexWindow indexWindow = null;
         public LoginWinform()
         {
             InitializeComponent();
             this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")";
-            txtLoginName.MouseDown += new MouseEventHandler(txt_MouseDown);
-            txtLoginPwd.MouseDown += new MouseEventHandler(txt_MouseDown);
+            //txtLoginName.MouseDown += new MouseEventHandler(txt_MouseDown);
+            //txtLoginPwd.MouseDown += new MouseEventHandler(txt_MouseDown);
         }
 
         #region 用户点击登录事件
@@ -73,7 +73,7 @@ namespace YYOPInspectionClient
                 {
                     if (jsons.Trim().Equals("{}"))
                     {
-                        MessageBox.Show("用户名或密码错误!");
+                        MessagePrompt.Show("用户名或密码错误!");
                     }
                     else {
                         JObject jobject = JObject.Parse(jsons);
@@ -81,14 +81,22 @@ namespace YYOPInspectionClient
                         if (rowsJson != null)
                         {
                             Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
-                            new IndexWindow().Show();
+                            if (indexWindow==null)
+                            {
+                                indexWindow=new IndexWindow();
+                                indexWindow.Show();
+                            }
+                            else {
+                                indexWindow.Show(); 
+                            }
+                            indexWindow.loginWinform = this;
                             this.Hide();
-                            englishKeyboard.Dispose();
-                            numberKeyboard.Dispose();
+                            if (englishKeyboard != null) 
+                                englishKeyboard.Hide();
                         }
                         else
                         {
-                            MessageBox.Show("用户名或密码错误!");
+                            MessagePrompt.Show("用户名或密码错误!");
                         }
                     }
                 }
@@ -101,7 +109,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception ec)
             {
-                MessageBox.Show("服务器尚未开启......");
+                MessagePrompt.Show("服务器尚未开启......");
                 if (employee_no == "admin" && upwd == "admin")
                 {
                     IndexWindow index = new IndexWindow();
@@ -111,7 +119,7 @@ namespace YYOPInspectionClient
             }
             if (httpStatusCode != 200)
             {
-                MessageBox.Show("服务器未响应.....");
+                MessagePrompt.Show("服务器未响应........");
                 if (employee_no == "admin" && upwd == "admin")
                 {
                     IndexWindow index = new IndexWindow();
@@ -124,24 +132,21 @@ namespace YYOPInspectionClient
 
         
         #region 鼠标点击输入框事件
-        private void txt_MouseDown(object sender, EventArgs e)
+        private void txt_MouseDown(TextBox tb)
         {
-            TextBox tb = (TextBox)sender;
+            if (englishKeyboard == null)
+                englishKeyboard = new AlphabetKeyboardForm();
             if (tb.Tag.Equals("English"))
             {
                 englishKeyboard.inputTxt = tb;
                 englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                 englishKeyboard.Show();
                 englishKeyboard.TopMost = true;
+                if (tb.Name.Contains("txtLoginName"))
+                    englishKeyboard.lblEnglishTitle.Text = "用户名";
+                if(tb.Name.Contains("txtLoginPwd"))
+                    englishKeyboard.lblEnglishTitle.Text = "密码";
                 //SetAlphaKeyboardText(tb.Name);
-            }
-            else
-            {
-                numberKeyboard.inputTxt = tb;
-                numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                numberKeyboard.Show();
-                numberKeyboard.TopMost = true;
-                //SetNumberKeyboardText(tb.Name);
             }
         }
 
@@ -160,6 +165,21 @@ namespace YYOPInspectionClient
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnLoginOut_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void txtLoginName_MouseDown(object sender, MouseEventArgs e)
+        {
+            txt_MouseDown(this.txtLoginName);
+        }
+
+        private void txtLoginPwd_MouseDown(object sender, MouseEventArgs e)
+        {
+            txt_MouseDown(this.txtLoginPwd);
         }
     }
 }

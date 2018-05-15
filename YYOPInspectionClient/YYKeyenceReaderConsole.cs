@@ -73,7 +73,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString());
+                MessagePrompt.Show(e.Message.ToString());
             }
 
 
@@ -137,7 +137,7 @@ namespace YYOPInspectionClient
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
-                    MessageBox.Show(ex.Message);
+                    MessagePrompt.Show(ex.Message);
                     clientSocketInstance[i].commandSocket = null;
                     continue;
                 }
@@ -149,7 +149,7 @@ namespace YYOPInspectionClient
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
-                    MessageBox.Show(ex.Message);
+                    MessagePrompt.Show(ex.Message);
                     clientSocketInstance[i].commandSocket = null;
                     continue;
                 }
@@ -211,7 +211,7 @@ namespace YYOPInspectionClient
                     setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接失败.");
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerDataEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
-                    MessageBox.Show(ex.Message);
+                    MessagePrompt.Show(ex.Message);
                     clientSocketInstance[i].dataSocket = null;
                     continue;
                 }
@@ -332,7 +332,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show("接收服务端发送的消息出错:" + ex.ToString());
+                MessagePrompt.Show("接收服务端发送的消息出错:" + ex.ToString());
             }
 
 

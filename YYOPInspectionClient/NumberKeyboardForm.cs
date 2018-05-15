@@ -40,7 +40,7 @@ namespace YYOPInspectionClient
                 this.Textbox_display.Text = "0";
             }
 
-            if (this.Textbox_display.Text.Equals("0")&&!num.Equals("."))
+            if ((this.Textbox_display.Text.Equals("0")|| this.Textbox_display.Text.Equals("-0")) &&!num.Equals("."))
             {//覆盖0值
                 this.Textbox_display.Text = num;
             }
@@ -48,10 +48,16 @@ namespace YYOPInspectionClient
             {//追加小数点
                 if (!this.Textbox_display.Text.Contains("."))
                 {
-                    if (!string.IsNullOrWhiteSpace(this.Textbox_display.Text))
+                    if (!string.IsNullOrWhiteSpace(this.Textbox_display.Text) && !Textbox_display.Text.Equals("-"))
                         this.Textbox_display.Text += num;
-                    else
-                        this.Textbox_display.Text="0"+num;
+                    else {
+                        if(Textbox_display.Text.Contains("-"))
+                            this.Textbox_display.Text = "-0" + num;
+                        else
+                            this.Textbox_display.Text = "0" + num;
+                    }
+                        
+
                 }
             }
             else
@@ -97,6 +103,19 @@ namespace YYOPInspectionClient
                     this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
                 }
                 //
+                if (Textbox_display.Text.Contains(".")) {
+                    //sbyte"13.s"
+                    try { 
+                        float tempf = Convert.ToSingle(Textbox_display.Text);
+                        Textbox_display.Text = tempf.ToString();
+                     }
+                    catch
+                    {
+                        Textbox_display.Text = "0";
+                    }
+
+                }
+
                 if (inputTxt != null)
                 {
                     inputTxt.Text = this.Textbox_display.Text.Trim();
@@ -115,17 +134,16 @@ namespace YYOPInspectionClient
                             {
                                 inputTxtName = inputTxtName.Replace("_B_Value", "");
                             }
-
                             if (containerControl != null)
                             {
                                 Label lbl = (Label)GetControlInstance(containerControl, inputTxtName + "_lbl");
                                 if (lbl != null)
                                 {
-                                    float val1 = 0f, val2 = 0;
+                                    float val1 = -100000000f, val2 =100000000f;
                                     string lblTag = Convert.ToString(lbl.Tag);
                                     if (!string.IsNullOrWhiteSpace(lblTag))
                                     {
-                                        string[] valArr = lblTag.Split(new char[] { '-' });
+                                        string[] valArr = lblTag.Split('-');
                                         if (valArr.Length > 0)
                                         {
                                             val1 = Convert.ToSingle(valArr[0]);
@@ -134,29 +152,24 @@ namespace YYOPInspectionClient
                                                 val2 = Convert.ToSingle(valArr[1]);
                                             }
                                         }
-                                        if (val1 > 0)
+                                        float inputVal = Convert.ToSingle(inputTxt.Text);
+                                        Console.WriteLine("输入的值:" + inputVal);
+                                        if (inputVal <val1)
                                         {
-                                            float inputVal = Convert.ToSingle(inputTxt.Text);
-                                            if (inputVal < val1)
-                                            {
-                                                inputTxt.BackColor = Color.LightCoral;
-                                            }
+                                              inputTxt.BackColor = Color.LightCoral;
                                         }
-                                        if (val2 > 0)
-                                        {
-                                            float inputVal = Convert.ToSingle(inputTxt.Text);
-                                            if (inputVal > val2)
-                                            {
-                                                inputTxt.BackColor = Color.LightCoral;
-                                            }
-                                        }
+                                        if (inputVal > val2)
+                                         {
+                                            inputTxt.BackColor = Color.LightCoral;
+                                         }
+                                        
                                     }
 
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("没有初始化");
+                                MessagePrompt.Show("没有初始化");
                             }
 
                             //if (obj != null) {
@@ -308,7 +321,29 @@ namespace YYOPInspectionClient
         {
             ReleaseCapture();
             SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
-        } 
+        }
         #endregion
+
+        private void btnMinus_Click(object sender, EventArgs e)
+        {
+            if (this.Textbox_display.Text.Contains("合格"))
+            {
+                return;
+            }
+            if (Textbox_display.Text.Contains("-"))
+            {
+                Textbox_display.Text=Textbox_display.Text.Replace('-', ' ').Trim();
+            }
+            else {
+                Textbox_display.Text=Textbox_display.Text.Insert(0,"-");
+            }
+            //string s = Textbox_display.Text;
+            //int mouseIndex = this.Textbox_display.SelectionStart;
+            //s = s.Insert(mouseIndex, "-");
+            //Textbox_display.Text = s;
+            //Textbox_display.SelectionStart = mouseIndex + 1;
+            //Textbox_display.Focus();
+        }
+         
     }
 }

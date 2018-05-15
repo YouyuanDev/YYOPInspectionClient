@@ -134,27 +134,27 @@ namespace YYOPInspectionClient
                                     tempTotal++;
                                 }else
                                 {
-                                    MessageBox.Show("上传出现问题,总共上传"+totalForm+"个，成功"+tempTotal+"个!");
+                                    MessagePrompt.Show("上传出现问题,总共上传"+totalForm+"个，成功"+tempTotal+"个!");
                                     break;
                                 }
                             }
                             jsonContent = "";
                         }
-                        MessageBox.Show("上传完毕，" +tempTotal + "个成功" +(totalForm-tempTotal) + "个失败!");
+                        MessagePrompt.Show("上传完毕，" +tempTotal + "个成功" +(totalForm-tempTotal) + "个失败!");
                         getUnSummitFile();
                     }
                     else
                     {
-                        MessageBox.Show("请选中要上传的表单！");
+                        MessagePrompt.Show("请选中要上传的表单！");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("暂未有可提交的表单！");
+                    MessagePrompt.Show("暂未有可提交的表单！");
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show("系统出了点问题！错误原因:"+ex.Message+",请联系系统人员维护！");
+                MessagePrompt.Show("系统出了点问题！错误原因:"+ex.Message+",请联系系统人员维护！");
             }
            
         }

@@ -258,7 +258,7 @@
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 46);
             this.btnExit.TabIndex = 14;
-            this.btnExit.Text = "退出";
+            this.btnExit.Text = "登出";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -493,6 +493,7 @@
             this.Text = "主页";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexWindow_FormClosing);
+            this.VisibleChanged += new System.EventHandler(this.IndexWindow_VisibleChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -544,6 +545,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label lblIndexFormTitle;
+        public System.Windows.Forms.Label lblIndexFormTitle;
     }
 }

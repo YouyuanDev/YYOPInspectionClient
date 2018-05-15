@@ -917,14 +917,14 @@ namespace YYOPInspectionClient
         {
             if (m_lUserID < 0)
             {
-                MessageBox.Show("请检查是否登录录像机!");
+                MessagePrompt.Show("请检查是否登录录像机!");
                 //MessageBox.Show("Please login the device firstly!");
                 return;
             }
 
             if (m_bRecord)
             {
-                MessageBox.Show("预览前请先停止正在录制的录像机!");
+                MessagePrompt.Show("预览前请先停止正在录制的录像机!");
                 //MessageBox.Show("Please stop recording firstly!");
                 return;
             }
