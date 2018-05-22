@@ -46,9 +46,23 @@
             this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cmbPipeLotNo = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtOperatorno = new System.Windows.Forms.TextBox();
+            this.cmbContractNo = new System.Windows.Forms.ComboBox();
+            this.cmbProductionShift = new System.Windows.Forms.ComboBox();
+            this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
-            this.cmbAcceptanceNo = new System.Windows.Forms.ComboBox();
-            this.cmbThreadType = new System.Windows.Forms.ComboBox();
+            this.cmbPipeHeatNo = new System.Windows.Forms.ComboBox();
+            this.cmbThreadingType = new System.Windows.Forms.ComboBox();
             this.cmbWt = new System.Windows.Forms.ComboBox();
             this.cmbOd = new System.Windows.Forms.ComboBox();
             this.btnDetail = new System.Windows.Forms.Button();
@@ -84,7 +98,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 65);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1210, 498);
+            this.panel1.Size = new System.Drawing.Size(1210, 549);
             this.panel1.TabIndex = 4;
             // 
             // dataGridView1
@@ -110,13 +124,13 @@
             this.video_no,
             this.inspection_result,
             this.inspection_time});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 63);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 207);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1210, 435);
+            this.dataGridView1.Size = new System.Drawing.Size(1210, 342);
             this.dataGridView1.TabIndex = 1;
             // 
             // id
@@ -234,9 +248,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.dateTimePicker2);
+            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.label11);
+            this.panel2.Controls.Add(this.cmbPipeLotNo);
+            this.panel2.Controls.Add(this.label9);
+            this.panel2.Controls.Add(this.txtOperatorno);
+            this.panel2.Controls.Add(this.cmbContractNo);
+            this.panel2.Controls.Add(this.cmbProductionShift);
+            this.panel2.Controls.Add(this.cmbProductionCrew);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.btnExit);
-            this.panel2.Controls.Add(this.cmbAcceptanceNo);
-            this.panel2.Controls.Add(this.cmbThreadType);
+            this.panel2.Controls.Add(this.cmbPipeHeatNo);
+            this.panel2.Controls.Add(this.cmbThreadingType);
             this.panel2.Controls.Add(this.cmbWt);
             this.panel2.Controls.Add(this.cmbOd);
             this.panel2.Controls.Add(this.btnDetail);
@@ -248,8 +276,171 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1212, 69);
+            this.panel2.Size = new System.Drawing.Size(1212, 194);
             this.panel2.TabIndex = 0;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.CustomFormat = "yyyy-MM-dd";
+            this.dateTimePicker2.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(356, 144);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(144, 35);
+            this.dateTimePicker2.TabIndex = 31;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "yyyy-MM-dd";
+            this.dateTimePicker1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(99, 145);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(158, 35);
+            this.dateTimePicker1.TabIndex = 30;
+            this.dateTimePicker1.Value = new System.DateTime(2018, 5, 1, 0, 0, 0, 0);
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(263, 138);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(98, 54);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "结束时间";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label11.Location = new System.Drawing.Point(0, 138);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(105, 54);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "开始时间";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmbPipeLotNo
+            // 
+            this.cmbPipeLotNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbPipeLotNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPipeLotNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbPipeLotNo.FormattingEnabled = true;
+            this.cmbPipeLotNo.ItemHeight = 40;
+            this.cmbPipeLotNo.Location = new System.Drawing.Point(903, 77);
+            this.cmbPipeLotNo.Name = "cmbPipeLotNo";
+            this.cmbPipeLotNo.Size = new System.Drawing.Size(150, 46);
+            this.cmbPipeLotNo.TabIndex = 25;
+            this.cmbPipeLotNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbPipeLotNo_DrawItem);
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(815, 73);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(90, 54);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "批号";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtOperatorno
+            // 
+            this.txtOperatorno.Font = new System.Drawing.Font("宋体", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtOperatorno.Location = new System.Drawing.Point(51, 12);
+            this.txtOperatorno.Name = "txtOperatorno";
+            this.txtOperatorno.Size = new System.Drawing.Size(118, 47);
+            this.txtOperatorno.TabIndex = 23;
+            // 
+            // cmbContractNo
+            // 
+            this.cmbContractNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbContractNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbContractNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbContractNo.FormattingEnabled = true;
+            this.cmbContractNo.ItemHeight = 40;
+            this.cmbContractNo.Location = new System.Drawing.Point(658, 13);
+            this.cmbContractNo.Name = "cmbContractNo";
+            this.cmbContractNo.Size = new System.Drawing.Size(150, 46);
+            this.cmbContractNo.TabIndex = 22;
+            this.cmbContractNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbContractNo_DrawItem);
+            // 
+            // cmbProductionShift
+            // 
+            this.cmbProductionShift.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbProductionShift.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProductionShift.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbProductionShift.FormattingEnabled = true;
+            this.cmbProductionShift.ItemHeight = 40;
+            this.cmbProductionShift.Items.AddRange(new object[] {
+            "",
+            "白班",
+            "夜班"});
+            this.cmbProductionShift.Location = new System.Drawing.Point(449, 13);
+            this.cmbProductionShift.Name = "cmbProductionShift";
+            this.cmbProductionShift.Size = new System.Drawing.Size(118, 46);
+            this.cmbProductionShift.TabIndex = 21;
+            this.cmbProductionShift.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbProductionShift_DrawItem);
+            // 
+            // cmbProductionCrew
+            // 
+            this.cmbProductionCrew.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbProductionCrew.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProductionCrew.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbProductionCrew.FormattingEnabled = true;
+            this.cmbProductionCrew.ItemHeight = 40;
+            this.cmbProductionCrew.Items.AddRange(new object[] {
+            "",
+            "甲",
+            "乙",
+            "丙",
+            "丁"});
+            this.cmbProductionCrew.Location = new System.Drawing.Point(226, 13);
+            this.cmbProductionCrew.Name = "cmbProductionCrew";
+            this.cmbProductionCrew.Size = new System.Drawing.Size(118, 46);
+            this.cmbProductionCrew.TabIndex = 20;
+            this.cmbProductionCrew.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbProductionCrew_DrawItem);
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(570, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(90, 54);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "合同号";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(352, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 54);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "班次";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(175, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(55, 54);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "班别";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(0, 9);
+            this.label8.Margin = new System.Windows.Forms.Padding(0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 54);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "工号";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnExit
             // 
@@ -262,31 +453,31 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // cmbAcceptanceNo
+            // cmbPipeHeatNo
             // 
-            this.cmbAcceptanceNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbAcceptanceNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAcceptanceNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbAcceptanceNo.FormattingEnabled = true;
-            this.cmbAcceptanceNo.ItemHeight = 40;
-            this.cmbAcceptanceNo.Location = new System.Drawing.Point(658, 9);
-            this.cmbAcceptanceNo.Name = "cmbAcceptanceNo";
-            this.cmbAcceptanceNo.Size = new System.Drawing.Size(150, 46);
-            this.cmbAcceptanceNo.TabIndex = 13;
-            this.cmbAcceptanceNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbAcceptanceNo_DrawItem);
+            this.cmbPipeHeatNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbPipeHeatNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPipeHeatNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbPipeHeatNo.FormattingEnabled = true;
+            this.cmbPipeHeatNo.ItemHeight = 40;
+            this.cmbPipeHeatNo.Location = new System.Drawing.Point(658, 77);
+            this.cmbPipeHeatNo.Name = "cmbPipeHeatNo";
+            this.cmbPipeHeatNo.Size = new System.Drawing.Size(150, 46);
+            this.cmbPipeHeatNo.TabIndex = 13;
+            this.cmbPipeHeatNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbPipeHeatNo_DrawItem);
             // 
-            // cmbThreadType
+            // cmbThreadingType
             // 
-            this.cmbThreadType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbThreadType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbThreadType.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbThreadType.FormattingEnabled = true;
-            this.cmbThreadType.ItemHeight = 40;
-            this.cmbThreadType.Location = new System.Drawing.Point(449, 9);
-            this.cmbThreadType.Name = "cmbThreadType";
-            this.cmbThreadType.Size = new System.Drawing.Size(118, 46);
-            this.cmbThreadType.TabIndex = 12;
-            this.cmbThreadType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbThreadType_DrawItem);
+            this.cmbThreadingType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbThreadingType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbThreadingType.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbThreadingType.FormattingEnabled = true;
+            this.cmbThreadingType.ItemHeight = 40;
+            this.cmbThreadingType.Location = new System.Drawing.Point(449, 77);
+            this.cmbThreadingType.Name = "cmbThreadingType";
+            this.cmbThreadingType.Size = new System.Drawing.Size(118, 46);
+            this.cmbThreadingType.TabIndex = 12;
+            this.cmbThreadingType.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbThreadType_DrawItem);
             // 
             // cmbWt
             // 
@@ -295,7 +486,7 @@
             this.cmbWt.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbWt.FormattingEnabled = true;
             this.cmbWt.ItemHeight = 40;
-            this.cmbWt.Location = new System.Drawing.Point(226, 9);
+            this.cmbWt.Location = new System.Drawing.Point(226, 77);
             this.cmbWt.Name = "cmbWt";
             this.cmbWt.Size = new System.Drawing.Size(118, 46);
             this.cmbWt.TabIndex = 11;
@@ -308,7 +499,7 @@
             this.cmbOd.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbOd.FormattingEnabled = true;
             this.cmbOd.ItemHeight = 40;
-            this.cmbOd.Location = new System.Drawing.Point(51, 9);
+            this.cmbOd.Location = new System.Drawing.Point(51, 77);
             this.cmbOd.Name = "cmbOd";
             this.cmbOd.Size = new System.Drawing.Size(118, 46);
             this.cmbOd.TabIndex = 10;
@@ -339,17 +530,17 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(570, 5);
+            this.label4.Location = new System.Drawing.Point(570, 73);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(90, 54);
             this.label4.TabIndex = 3;
-            this.label4.Text = "标准编号";
+            this.label4.Text = "炉号";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(352, 5);
+            this.label3.Location = new System.Drawing.Point(352, 73);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 54);
             this.label3.TabIndex = 2;
@@ -359,7 +550,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(175, 5);
+            this.label2.Location = new System.Drawing.Point(175, 73);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 54);
             this.label2.TabIndex = 1;
@@ -369,7 +560,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(0, 5);
+            this.label1.Location = new System.Drawing.Point(0, 73);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 54);
@@ -485,7 +676,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1211, 572);
+            this.ClientSize = new System.Drawing.Size(1211, 623);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -498,6 +689,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -523,8 +715,8 @@
         private System.Windows.Forms.ToolStripMenuItem 读码器设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 录像设置ToolStripMenuItem;
         private System.Windows.Forms.Button btnDetail;
-        private System.Windows.Forms.ComboBox cmbAcceptanceNo;
-        private System.Windows.Forms.ComboBox cmbThreadType;
+        private System.Windows.Forms.ComboBox cmbPipeHeatNo;
+        private System.Windows.Forms.ComboBox cmbThreadingType;
         private System.Windows.Forms.ComboBox cmbWt;
         private System.Windows.Forms.ComboBox cmbOd;
         private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
@@ -546,5 +738,19 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
         private System.Windows.Forms.Panel panel3;
         public System.Windows.Forms.Label lblIndexFormTitle;
+        private System.Windows.Forms.TextBox txtOperatorno;
+        private System.Windows.Forms.ComboBox cmbContractNo;
+        private System.Windows.Forms.ComboBox cmbProductionShift;
+        private System.Windows.Forms.ComboBox cmbProductionCrew;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cmbPipeLotNo;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }

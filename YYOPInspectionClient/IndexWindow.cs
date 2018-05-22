@@ -93,65 +93,57 @@ namespace YYOPInspectionClient
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
                     List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
-                    List<string> odListStr = new List<string>();
-                    List<string> wtListStr = new List<string>();
-                    List<string> threadTypeListStr = new List<string>();
-                    List<string> acceptanceNoListStr = new List<string>();
-                    odListStr.Add("");
-                    wtListStr.Add("");
-                    threadTypeListStr.Add("");
-                    acceptanceNoListStr.Add("");
-
+                    this.cmbContractNo.Items.Add("");
+                    this.cmbOd.Items.Add("");
+                    this.cmbWt.Items.Add("");
+                    this.cmbThreadingType.Items.Add("");
+                    this.cmbPipeHeatNo.Items.Add("");
+                    this.cmbPipeLotNo.Items.Add("");
                     foreach (ContractInfo item in list)
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Od)) {
-                            if (!odListStr.Contains(item.Od)) {
-                                odListStr.Add(item.Od);
+                        if (!string.IsNullOrWhiteSpace(item.Contract_no))
+                        {
+                            if (!cmbContractNo.Items.Contains(item.Contract_no))
+                            {
+                                this.cmbContractNo.Items.Add(item.Contract_no);
                             }
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.Od)) {
+                            if (!this.cmbOd.Items.Contains(item.Od))
+                                this.cmbOd.Items.Add(item.Od);
                         }
                         if (!string.IsNullOrWhiteSpace(item.Wt)) {
-                            if (!wtListStr.Contains(item.Wt))
-                            {
-                                wtListStr.Add(item.Wt);
-                            }
+                            if (!this.cmbWt.Items.Contains(item.Wt))
+                                this.cmbWt.Items.Add(item.Wt);
                         }
                         if (!string.IsNullOrWhiteSpace(item.Threading_type)) {
-                            if (!threadTypeListStr.Contains(item.Threading_type))
-                            {
-                                threadTypeListStr.Add(item.Threading_type);
-                            }
+                            if (!this.cmbThreadingType.Items.Contains(item.Threading_type))
+                                this.cmbThreadingType.Items.Add(item.Threading_type);
                         }
-                        if (!string.IsNullOrWhiteSpace(item.Thread_acceptance_criteria_no)) {
-                            if (!acceptanceNoListStr.Contains(item.Thread_acceptance_criteria_no))
-                            {
-                                acceptanceNoListStr.Add(item.Thread_acceptance_criteria_no);
-                            }
+                        if (!string.IsNullOrWhiteSpace(item.Pipe_heat_no)) {
+                            if (!this.cmbPipeHeatNo.Items.Contains(item.Pipe_heat_no))
+                                this.cmbPipeHeatNo.Items.Add(item.Pipe_heat_no);
+                        }
+                        if (!string.IsNullOrWhiteSpace(item.Pipe_lot_no))
+                        {
+                            if (!this.cmbPipeLotNo.Items.Contains(item.Pipe_lot_no))
+                                this.cmbPipeLotNo.Items.Add(item.Pipe_lot_no);
                         }
                     }
-                    foreach (string item in odListStr) {
-                        this.cmbOd.Items.Add(item);
-                    }
+                    this.cmbProductionCrew.SelectedIndex = 0;
+                    this.cmbProductionShift.SelectedIndex = 0;
+                    this.cmbContractNo.SelectedIndex = 0;
                     this.cmbOd.SelectedIndex = 0;
-                    foreach (string item in wtListStr)
-                    {
-                        this.cmbWt.Items.Add(item);
-                    }
                     this.cmbWt.SelectedIndex = 0;
-                    foreach (string item in threadTypeListStr)
-                    {
-                        this.cmbThreadType.Items.Add(item);
-                    }
-                    this.cmbThreadType.SelectedIndex = 0;
-                    foreach (string item in acceptanceNoListStr)
-                    {
-                        this.cmbAcceptanceNo.Items.Add(item);
-                    }
-                    this.cmbAcceptanceNo.SelectedIndex = 0;
+                    this.cmbThreadingType.SelectedIndex = 0;
+                    this.cmbPipeHeatNo.SelectedIndex = 0;
+                    this.cmbPipeLotNo.SelectedIndex = 0;
+                    this.cmbPipeHeatNo.SelectedIndex = 0;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("获取查询条件时失败......");
+                Console.WriteLine("获取查询条件时出错,错误原因:"+e.Message);
             }
         }
         #endregion
@@ -221,16 +213,30 @@ namespace YYOPInspectionClient
         {
             try
             {
+                string operator_no = this.txtOperatorno.Text.Trim();
+                string production_crew = this.cmbProductionCrew.Text.Trim();
+                string production_shift = this.cmbProductionShift.Text.Trim();
+                string contract_no = this.cmbContractNo.Text.Trim();
+                string threading_type = this.cmbThreadingType.Text.Trim();
                 string od = this.cmbOd.Text.Trim();
                 string wt = this.cmbWt.Text.Trim();
-                string thread_type = this.cmbThreadType.Text.Trim();
-                string acceptance_no = this.cmbAcceptanceNo.Text.Trim();
+                string pipe_heat_no = this.cmbPipeHeatNo.Text.Trim();
+                string pipe_lot_no = this.cmbPipeLotNo.Text.Trim();
+                string beginTime = this.dateTimePicker1.Value.ToString("yyyy-MM-dd");
+                string endTime = this.dateTimePicker2.Value.ToString("yyyy-MM-dd");
                 StringBuilder sb = new StringBuilder();
                 sb.Append("{");
+                sb.Append("\"operator_no\"" + ":" + "\"" + operator_no + "\",");
+                sb.Append("\"production_crew\"" + ":" + "\"" + production_crew + "\",");
+                sb.Append("\"production_shift\"" + ":" + "\"" + production_shift + "\",");
+                sb.Append("\"contract_no\"" + ":" + "\"" + contract_no + "\",");
+                sb.Append("\"threading_type\"" + ":" + "\"" + threading_type + "\",");
                 sb.Append("\"od\"" + ":" + "\"" + od + "\",");
                 sb.Append("\"wt\"" + ":" + "\"" + wt + "\",");
-                sb.Append("\"thread_type\"" + ":" + "\"" + thread_type + "\",");
-                sb.Append("\"acceptance_no\"" + ":" + "\"" + acceptance_no + "\"");
+                sb.Append("\"pipe_heat_no\"" + ":" + "\"" + pipe_heat_no + "\",");
+                sb.Append("\"pipe_lot_no\"" + ":" + "\"" + pipe_lot_no + "\",");
+                sb.Append("\"beginTime\"" + ":" + "\"" + beginTime + "\",");
+                sb.Append("\"endTime\"" + ":" + "\"" + endTime + "\"");
                 sb.Append("}");
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
@@ -264,7 +270,7 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    //Console.WriteLine(rowsJson);
+                    MessageBox.Show(rowsJson);
                     if (!rowsJson.Trim().Equals("{}"))
                     {
                         List<ThreadInspectionRecord> list = JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
@@ -282,7 +288,8 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                Console.WriteLine("获取检验记录时失败......");
+                //throw e;
+                Console.WriteLine("获取检验记录时失败......" +e.Message);
             }
 
         }
@@ -496,18 +503,62 @@ namespace YYOPInspectionClient
                 return;
             }
             e.DrawBackground();
-            e.Graphics.DrawString(cmbThreadType.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.Graphics.DrawString(cmbThreadingType.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
             e.DrawFocusRectangle();
         }
 
-        private void cmbAcceptanceNo_DrawItem(object sender, DrawItemEventArgs e)
+        private void cmbPipeHeatNo_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
             {
                 return;
             }
             e.DrawBackground();
-            e.Graphics.DrawString(cmbAcceptanceNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.Graphics.DrawString(cmbPipeHeatNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbProductionCrew_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbProductionCrew.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbProductionShift_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbContractNo_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbContractNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
+        }
+
+        private void cmbPipeLotNo_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbPipeLotNo.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
             e.DrawFocusRectangle();
         }
         #endregion
@@ -517,7 +568,9 @@ namespace YYOPInspectionClient
         {
             if (!string.IsNullOrWhiteSpace(Person.pname))
                 this.lblIndexFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
-        } 
+        }
         #endregion
+
+       
     }
 }

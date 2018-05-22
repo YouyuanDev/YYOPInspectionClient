@@ -71,7 +71,7 @@
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(155, 32);
             this.txtPort.TabIndex = 3;
-            this.txtPort.Text = "8080";
+            this.txtPort.Text = "8081";
             // 
             // btnClose
             // 
