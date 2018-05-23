@@ -193,7 +193,7 @@
             this.button_enter.Name = "button_enter";
             this.button_enter.Size = new System.Drawing.Size(218, 204);
             this.button_enter.TabIndex = 15;
-            this.button_enter.Text = "=";
+            this.button_enter.Text = "Enter";
             this.button_enter.UseVisualStyleBackColor = true;
             this.button_enter.Click += new System.EventHandler(this.button_enter_Click);
             // 

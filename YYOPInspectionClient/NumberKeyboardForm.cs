@@ -89,12 +89,10 @@ namespace YYOPInspectionClient
 
         private void button_enter_Click(object sender, EventArgs e)
         {
-
             if (type == 0)
             {
                 inputTxt.Text = Textbox_display.Text.Trim();
                 this.Textbox_display.Text = "";
-                
             }
             else {
                 //回车,清楚末尾无用的.
@@ -123,96 +121,160 @@ namespace YYOPInspectionClient
                     string inputTxtName = inputTxt.Name;
                     try
                     {
-                        if (!string.IsNullOrWhiteSpace(inputTxtName))
-                        {
-                            //获取和该控件相同名称的Label
-                            if (inputTxtName.Contains("_A_Value"))
-                            {
+                        if (!string.IsNullOrWhiteSpace(inputTxtName)) {
+                            if(inputTxtName.Contains("_A_Value"))
                                 inputTxtName = inputTxtName.Replace("_A_Value", "");
-                            }
-                            if (inputTxtName.Contains("_B_Value"))
-                            {
+                            else if (inputTxtName.Contains("_B_Value"))
                                 inputTxtName = inputTxtName.Replace("_B_Value", "");
-                            }
-                            if (containerControl != null)
-                            {
-                                Label lbl = (Label)GetControlInstance(containerControl, inputTxtName + "_lbl");
-                                if (lbl != null)
-                                {
-                                    float val1 = -100000000f, val2 =100000000f;
-                                    string lblTag = Convert.ToString(lbl.Tag);
-                                    if (!string.IsNullOrWhiteSpace(lblTag))
+                            else if (inputTxtName.Contains("_MaxA_Value"))
+                                inputTxtName = inputTxtName.Replace("_MaxA_Value", "");
+                            else if (inputTxtName.Contains("_MaxB_Value"))
+                                inputTxtName = inputTxtName.Replace("_MaxB_Value", "");
+                            else if (inputTxtName.Contains("_MinA_Value"))
+                                inputTxtName = inputTxtName.Replace("_MinA_Value", "");
+                            else if (inputTxtName.Contains("_MinB_Value"))
+                                inputTxtName = inputTxtName.Replace("_MinB_Value", "");
+                            //找到该测量项的值范围、和椭圆度最大值
+                            float maxVal = 0, minVal = 0, txtVal = 0,maxOvality=0,sdVal=0;
+                            Label lblRangeFrequencyOvality = (Label)GetControlInstance(containerControl, inputTxtName + "_RangeFrequencyOvality_lbl");
+                            if (lblRangeFrequencyOvality != null) {
+                                if (lblRangeFrequencyOvality.Tag!=null){
+                                    if (!string.IsNullOrWhiteSpace(lblRangeFrequencyOvality.Tag.ToString())) {
+                                        string[] rangeFrequency = lblRangeFrequencyOvality.Tag.ToString().Split(',');
+                                        maxVal = Convert.ToSingle(rangeFrequency[0]);
+                                        minVal = Convert.ToSingle(rangeFrequency[1]);
+                                        txtVal = Convert.ToSingle(inputTxt.Text.Trim());
+                                        if(!string.IsNullOrWhiteSpace(rangeFrequency[3]))
+                                           maxOvality= Convert.ToSingle(rangeFrequency[3]);
+                                        if (!string.IsNullOrWhiteSpace(rangeFrequency[4]))
+                                            sdVal = Convert.ToSingle(rangeFrequency[4]);
+                                        if (maxVal - minVal>0.00001) {
+                                            if(txtVal<minVal||txtVal>maxVal)
+                                                inputTxt.BackColor = Color.LightCoral;
+                                            else
+                                                inputTxt.BackColor = Color.White;
+                                        }
+                                    }
+                                    //找到最大值、最小值，然后判断是否存在均值和椭圆度
+                                    TextBox txtMaxOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MaxA_Value");
+                                    TextBox txtMaxOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MaxB_Value");
+                                    TextBox txtMinOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinA_Value");
+                                    TextBox txtMinOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinB_Value");
+                                    if (txtMaxOfA != null && txtMinOfA != null)
                                     {
-                                        string[] valArr = lblTag.Split('-');
-                                        if (valArr.Length > 0)
-                                        {
-                                            val1 = Convert.ToSingle(valArr[0]);
-                                            if (valArr.Length > 1)
-                                            {
-                                                val2 = Convert.ToSingle(valArr[1]);
+                                        if (!string.IsNullOrWhiteSpace(txtMaxOfA.Text) && !string.IsNullOrWhiteSpace(txtMinOfA.Text)) {
+                                            float avg = ((Convert.ToSingle(txtMaxOfA.Text) + Convert.ToSingle(txtMinOfA.Text)) / 2);
+                                            Label lblAvgOfA = (Label)GetControlInstance(containerControl, inputTxtName + "_AvgA");
+                                            //判断均值是否符合要求
+                                            if (lblAvgOfA != null) {
+                                                if (avg < minVal || avg > maxVal)
+                                                    lblAvgOfA.ForeColor = Color.Red;
+                                                else
+                                                    lblAvgOfA.ForeColor = Color.Black;
+                                                lblAvgOfA.Text = Convert.ToString(Math.Round(avg,2)) ;
+                                            }
+                                            Label lblOvalityA = (Label)GetControlInstance(containerControl, inputTxtName + "_OvalityA");
+                                            //判断椭圆度是否满足要求
+                                            if (lblOvalityA != null) {
+                                                float ovality = (Convert.ToSingle(txtMaxOfA.Text) - Convert.ToSingle(txtMinOfA.Text)) / sdVal;
+                                                if (ovality > maxOvality || ovality < 0)
+                                                    lblOvalityA.ForeColor = Color.Red;
+                                                else
+                                                    lblOvalityA.ForeColor = Color.Black;
+                                                lblOvalityA.Text = Convert.ToString(Math.Round(ovality,2));
                                             }
                                         }
-                                        float inputVal = Convert.ToSingle(inputTxt.Text);
-                                        Console.WriteLine("输入的值:" + inputVal);
-                                        if (inputVal <val1)
+                                     }
+                                    if (txtMaxOfB != null && txtMinOfB != null)
+                                    {
+                                        if (!string.IsNullOrWhiteSpace(txtMaxOfB.Text) && !string.IsNullOrWhiteSpace(txtMinOfB.Text))
                                         {
-                                              inputTxt.BackColor = Color.LightCoral;
+                                            float avg = ((Convert.ToSingle(txtMaxOfB.Text) + Convert.ToSingle(txtMinOfB.Text)) / 2);
+                                            Label lblAvgOfB = (Label)GetControlInstance(containerControl, inputTxtName + "_AvgB");
+                                            if (lblAvgOfB != null)
+                                            {
+                                                if (avg < minVal || avg > maxVal)
+                                                    lblAvgOfB.ForeColor = Color.Red;
+                                                else
+                                                    lblAvgOfB.ForeColor = Color.Black;
+                                                lblAvgOfB.Text = Convert.ToString(Math.Round(avg,2));
+                                            }
+                                            Label lblOvalityB= (Label)GetControlInstance(containerControl, inputTxtName + "_OvalityB");
+                                            //判断椭圆度是否满足要求
+                                            if (lblOvalityB != null)
+                                            {
+                                                float ovality = (Convert.ToSingle(txtMaxOfB.Text) - Convert.ToSingle(txtMinOfB.Text)) / sdVal;
+                                                if (ovality > maxOvality||ovality<0)
+                                                    lblOvalityB.ForeColor = Color.Red;
+                                                else
+                                                    lblOvalityB.ForeColor = Color.Black;
+                                                lblOvalityB.Text = Convert.ToString(Math.Round(ovality,2));
+                                            }
                                         }
-                                        if (inputVal > val2)
-                                         {
-                                            inputTxt.BackColor = Color.LightCoral;
-                                         }
-                                        
                                     }
-
                                 }
                             }
-                            else
-                            {
-                                MessagePrompt.Show("没有初始化");
-                            }
 
-                            //if (obj != null) {
-                            //    Label nowLbl = (Label)obj;
-                            //    string lblTag =Convert.ToString(nowLbl.Tag);
-                            //    float val1 = 0f, val2 = 0 ;
-                            //    if (!string.IsNullOrWhiteSpace(lblTag)) {
-                            //        string[] valArr = lblTag.Split(new char[] { '-'});
-                            //        if (valArr.Length > 0) {
-                            //            val1 =Convert.ToSingle(valArr[0]);
-                            //            if (valArr.Length > 1) {
-                            //                val2= Convert.ToSingle(valArr[1]);
-                            //            }
-                            //        }
-                            //    }
-                            //    if (val1 > 0) {
-                            //        float inputVal = Convert.ToSingle(inputTxt.Text);
-                            //        if (inputVal < val1){
-                            //            inputTxt.BackColor = Color.LightCoral;
-                            //        }
-                            //    }
-                            //    if (val2 > 0) {
-                            //        float inputVal = Convert.ToSingle(inputTxt.Text);
-                            //        if (inputVal>val2)
-                            //        {
-                            //            inputTxt.BackColor = Color.LightCoral;
-                            //        }
-                            //    }
-                            //}
                         }
+                        //if (!string.IsNullOrWhiteSpace(inputTxtName))
+                        //{
+                        //    //获取和该控件相同名称的Label
+                        //    if (inputTxtName.Contains("_A_Value"))
+                        //    {
+                        //        inputTxtName = inputTxtName.Replace("_A_Value", "");
+                        //    }
+                        //    if (inputTxtName.Contains("_B_Value"))
+                        //    {
+                        //        inputTxtName = inputTxtName.Replace("_B_Value", "");
+                        //    }
+                        //    if (containerControl != null)
+                        //    {
+                        //        Label lbl = (Label)GetControlInstance(containerControl, inputTxtName + "_RangeFrequency_lbl");
+                        //        if (lbl != null)
+                        //        {
+                        //            float val1 = -100000000f, val2 =100000000f;
+                        //            string lblTag = Convert.ToString(lbl.Tag);
+                        //            if (!string.IsNullOrWhiteSpace(lblTag))
+                        //            {
+                        //                string[] valArr = lblTag.Split('-');
+                        //                if (valArr.Length > 0)
+                        //                {
+                        //                    val1 = Convert.ToSingle(valArr[0]);
+                        //                    if (valArr.Length > 1)
+                        //                    {
+                        //                        val2 = Convert.ToSingle(valArr[1]);
+                        //                    }
+                        //                }
+                        //                float inputVal = Convert.ToSingle(inputTxt.Text);
+                        //                Console.WriteLine("输入的值:" + inputVal);
+                        //                if (inputVal <val1)
+                        //                {
+                        //                      inputTxt.BackColor = Color.LightCoral;
+                        //                }
+                        //                if (inputVal > val2)
+                        //                 {
+                        //                    inputTxt.BackColor = Color.LightCoral;
+                        //                 }
 
+                        //            }
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        MessagePrompt.Show("没有初始化");
+                        //    }
+                        //}
+                        int index = flpTabTwoTxtList.IndexOf(inputTxt);
+                        if (index < flpTabTwoTxtList.Count - 1)
+                            index++;
+                        TextBox tb = flpTabTwoTxtList[index];
+                        if (tb != null)
+                            tb.Focus();
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine("判断大小的时候错误.......");
                     }
-
-
-                    int index = flpTabTwoTxtList.IndexOf(inputTxt);
-                    if (index < flpTabTwoTxtList.Count - 1)
-                        index++;
-                    TextBox tb = flpTabTwoTxtList[index];
-                    tb.Focus();
                 }
             }
 

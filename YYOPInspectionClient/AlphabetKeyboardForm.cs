@@ -28,7 +28,7 @@ namespace YYOPInspectionClient
         //---------------------拖动无窗体的控件(结束)
         public AlphabetKeyboardForm()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         private void letternum_Click(object sender, EventArgs e)
@@ -116,37 +116,37 @@ namespace YYOPInspectionClient
 
         private void button_enter_Click(object sender, EventArgs e)
         {
-            string [] filterArr = { "txtProductionArea", "txtLoginName", "txtLoginPwd", "txtCoupingNo",
+            try
+            {
+                string[] filterArr = { "txtProductionArea", "txtLoginName", "txtLoginPwd", "txtCoupingNo",
                 "txtHeatNo", "txtBatchNo", "txtMachineNo" };
-            if (inputTxt != null) {
-                if (filterArr.Contains(inputTxt.Name)) {
-                    inputTxt.Text = Textbox_display.Text.Trim();
-                    this.Textbox_display.Text = "";
-                    this.Hide();
-                }
-                else
+                if (inputTxt != null)
                 {
-                    //输入
-                    if (inputTxt != null)
+                    if (filterArr.Contains(inputTxt.Name))
                     {
                         inputTxt.Text = Textbox_display.Text.Trim();
                         this.Textbox_display.Text = "";
-                        int index = flpTabOneTxtList.IndexOf(inputTxt);
-                        if (index < flpTabOneTxtList.Count - 1)
-                            index++;
-                        TextBox tb = flpTabOneTxtList[index];
-                        tb.Focus();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        //输入
+                        if (inputTxt != null)
+                        {
+                            inputTxt.Text = Textbox_display.Text.Trim();
+                            this.Textbox_display.Text = "";
+                            int index = flpTabOneTxtList.IndexOf(inputTxt);
+                            if (index < flpTabOneTxtList.Count - 1)
+                                index++;
+                            TextBox tb = flpTabOneTxtList[index];
+                            tb.Focus();
+                        }
                     }
                 }
             }
-            //if (type == 0)
-            //{
-            //    inputTxt.Text = Textbox_display.Text.Trim();
-            //    this.Textbox_display.Text = "";
-            //    this.Hide();
-            //}
-           
-           
+            catch (Exception ex) {
+                Console.WriteLine("英文键盘触发Enter时报错,错误信息:"+ex.Message);
+            }
         }
 
         private void button_backspace_Click(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
 
 namespace YYOPInspectionClient
 {
@@ -15,8 +16,19 @@ namespace YYOPInspectionClient
         #region 获取服务地址(例如:http://100.100.0.1:8080/)
         public static string getServerIpAndPort()
         {
-            ServerSetting server = new ServerSetting();
-            return "http://" + server.txtIp.Text.Trim() + ":" + server.txtPort.Text.Trim() + "/";
+            string serverPath=Application.StartupPath + "\\server.txt";
+            StreamReader sr = new StreamReader(serverPath);
+            string ipPort ="";
+            if (File.Exists(serverPath))
+            {
+                
+                    ipPort = "http://"+sr.ReadToEnd().Trim()+"/";
+            }
+            if (string.IsNullOrWhiteSpace(ipPort)) {
+                ServerSetting server = new ServerSetting();
+                ipPort = "http://" + server.txtIp.Text.Trim() + ":" + server.txtPort.Text.Trim() + "/";
+            }
+            return ipPort;
         }
         #endregion
 

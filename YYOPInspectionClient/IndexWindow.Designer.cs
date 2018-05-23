@@ -98,7 +98,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 65);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1210, 549);
+            this.panel1.Size = new System.Drawing.Size(1371, 549);
             this.panel1.TabIndex = 4;
             // 
             // dataGridView1
@@ -124,13 +124,13 @@
             this.video_no,
             this.inspection_result,
             this.inspection_time});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 207);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 144);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1210, 342);
+            this.dataGridView1.Size = new System.Drawing.Size(1371, 405);
             this.dataGridView1.TabIndex = 1;
             // 
             // id
@@ -276,34 +276,34 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1212, 194);
+            this.panel2.Size = new System.Drawing.Size(1373, 142);
             this.panel2.TabIndex = 0;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.CustomFormat = "yyyy-MM-dd";
-            this.dateTimePicker2.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dateTimePicker2.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(356, 144);
+            this.dateTimePicker2.Location = new System.Drawing.Point(1175, 18);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(144, 35);
+            this.dateTimePicker2.Size = new System.Drawing.Size(171, 41);
             this.dateTimePicker2.TabIndex = 31;
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.CustomFormat = "yyyy-MM-dd";
-            this.dateTimePicker1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dateTimePicker1.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(99, 145);
+            this.dateTimePicker1.Location = new System.Drawing.Point(918, 19);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(158, 35);
+            this.dateTimePicker1.Size = new System.Drawing.Size(167, 41);
             this.dateTimePicker1.TabIndex = 30;
             this.dateTimePicker1.Value = new System.DateTime(2018, 5, 1, 0, 0, 0, 0);
             // 
             // label10
             // 
             this.label10.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(263, 138);
+            this.label10.Location = new System.Drawing.Point(1082, 12);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(98, 54);
             this.label10.TabIndex = 27;
@@ -313,7 +313,7 @@
             // label11
             // 
             this.label11.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(0, 138);
+            this.label11.Location = new System.Drawing.Point(819, 12);
             this.label11.Margin = new System.Windows.Forms.Padding(0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(105, 54);
@@ -445,7 +445,7 @@
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(1028, 9);
+            this.btnExit.Location = new System.Drawing.Point(1275, 76);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 46);
             this.btnExit.TabIndex = 14;
@@ -508,7 +508,7 @@
             // btnDetail
             // 
             this.btnDetail.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnDetail.Location = new System.Drawing.Point(921, 9);
+            this.btnDetail.Location = new System.Drawing.Point(1168, 76);
             this.btnDetail.Name = "btnDetail";
             this.btnDetail.Size = new System.Drawing.Size(90, 46);
             this.btnDetail.TabIndex = 9;
@@ -519,7 +519,7 @@
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearch.Location = new System.Drawing.Point(814, 9);
+            this.btnSearch.Location = new System.Drawing.Point(1061, 76);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(90, 46);
             this.btnSearch.TabIndex = 4;
@@ -658,7 +658,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1211, 62);
+            this.panel3.Size = new System.Drawing.Size(1372, 62);
             this.panel3.TabIndex = 6;
             // 
             // lblIndexFormTitle
@@ -676,7 +676,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1211, 623);
+            this.ClientSize = new System.Drawing.Size(1372, 623);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

@@ -71,8 +71,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
-            this.cmbInspectionResult = new System.Windows.Forms.ComboBox();
-            this.label18 = new System.Windows.Forms.Label();
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblVideoStatus = new System.Windows.Forms.Label();
             this.lblReaderStatus = new System.Windows.Forms.Label();
@@ -583,8 +581,6 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTabTwoTitle.Controls.Add(this.cmbInspectionResult);
-            this.pnlTabTwoTitle.Controls.Add(this.label18);
             this.pnlTabTwoTitle.Controls.Add(this.lblTimer);
             this.pnlTabTwoTitle.Controls.Add(this.lblVideoStatus);
             this.pnlTabTwoTitle.Controls.Add(this.lblReaderStatus);
@@ -607,31 +603,6 @@
             this.pnlTabTwoTitle.Name = "pnlTabTwoTitle";
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1281, 108);
             this.pnlTabTwoTitle.TabIndex = 0;
-            // 
-            // cmbInspectionResult
-            // 
-            this.cmbInspectionResult.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbInspectionResult.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbInspectionResult.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbInspectionResult.FormattingEnabled = true;
-            this.cmbInspectionResult.ItemHeight = 40;
-            this.cmbInspectionResult.Items.AddRange(new object[] {
-            "合格",
-            "不合格"});
-            this.cmbInspectionResult.Location = new System.Drawing.Point(735, 55);
-            this.cmbInspectionResult.Name = "cmbInspectionResult";
-            this.cmbInspectionResult.Size = new System.Drawing.Size(121, 46);
-            this.cmbInspectionResult.TabIndex = 18;
-            this.cmbInspectionResult.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbInspectionResult_DrawItem);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(625, 70);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(118, 24);
-            this.label18.TabIndex = 17;
-            this.label18.Text = "检验结果:";
             // 
             // lblTimer
             // 
@@ -666,7 +637,7 @@
             // 
             // btnFormClose
             // 
-            this.btnFormClose.Location = new System.Drawing.Point(996, 55);
+            this.btnFormClose.Location = new System.Drawing.Point(874, 54);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(115, 46);
             this.btnFormClose.TabIndex = 13;
@@ -676,7 +647,7 @@
             // 
             // btnFormSubmit
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(874, 55);
+            this.btnFormSubmit.Location = new System.Drawing.Point(736, 54);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(115, 47);
             this.btnFormSubmit.TabIndex = 12;
@@ -916,8 +887,6 @@
         public System.Windows.Forms.TextBox txtBatchNo;
         public System.Windows.Forms.TextBox txtHeatNo;
         public System.Windows.Forms.Label lblTimer;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.ComboBox cmbInspectionResult;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblFormTitle;
