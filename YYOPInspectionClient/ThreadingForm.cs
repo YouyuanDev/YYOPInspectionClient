@@ -19,9 +19,7 @@ namespace YYOPInspectionClient
     {
         //防止合同combobox自动执行选中事件
         private bool flag = false;
-        private StringBuilder sb = new StringBuilder();
-        private StringBuilder sbItemRecord = new StringBuilder();
-        private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
+        public static AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
@@ -42,10 +40,14 @@ namespace YYOPInspectionClient
         private string lblPromptName;
         private string isQualified = "合格";
         public delegate void EventHandle(object sender, EventArgs e);
+        public static bool isMeasuringToolTabSelected=true;//
+        public static string focusTextBoxName = null;
         public static ThreadingForm getMyForm()
         {
             return myForm;
         }
+
+       
 
         #region 窗体构造函数
         public ThreadingForm(IndexWindow indexWindow, MainWindow mainWindow)
@@ -630,109 +632,105 @@ namespace YYOPInspectionClient
             try
             {
                 string videoNo = videosArr;
-                sb.Remove(0, sb.Length);
-                sb.Append("{");
-                sb.Append("\"isAdd\"" + ":" + "\"" + "add" + "\",");
-                sb.Append("\"coupling_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) + "\",");
-                sb.Append("\"contract_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbContractNo.Text, Encoding.UTF8) + "\",");
-                sb.Append("\"production_line\"" + ":" + "\"" + HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) + "\",");
-                sb.Append("\"machine_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) + "\",");
-                //sb.Append("\"process_no\"" + ":" + "\"" + HttpUtility.UrlEncode(parContainer.Controls[index].Text.Trim(), Encoding.UTF8) + "\",");
-                sb.Append("\"operator_no\"" + ":" + "\"" + HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8) + "\",");
-                sb.Append("\"production_crew\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8) + "\",");
-                sb.Append("\"production_shift\"" + ":" + "\"" + HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) + "\",");
-                sb.Append("\"video_no\"" + ":" + "\"" + videoNo + "\",");
-                sb.Append("\"inspection_result\"" + ":" + "\"" + HttpUtility.UrlEncode(isQualified, Encoding.UTF8) + "\",");
-                sb.Append("\"coupling_heat_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8) + "\",");
-                sb.Append("\"coupling_lot_no\"" + ":" + "\"" + HttpUtility.UrlEncode(this.txtBatchNo.Text, Encoding.UTF8) + "\",");
+                flpTabOneTxtList.Clear(); flpTabTwoTxtList.Clear(); flpTabTwoLblList.Clear();
                 //一条item_record检验记录包括(检测项编码、最大值、最小值、均值、椭圆度、量具编号1、量具编号2、检测项值)
                 //检测项值、最大值、最小值、均值、椭圆度分为A、B
                 string itemvalue = "", reading_max = "",reading_min="",reading_avg="",reading_ovality="",toolcode1="",toolcode2="",measure_sample1="",measure_sample2="";
+               
                 //获取所有的flpTabOne容器中所有的TextBox控件
                 GoThroughControls(this.flpTabOneContent,flpTabOneTxtList,null);
                 //获取所有的flpTabTwo容器中所有的TextBox和Label控件
                 GoThroughControls(this.flpTabTwoContent,flpTabTwoTxtList,flpTabTwoLblList);
                 //遍历所有属于某个测量项的值
-                sbItemRecord.Append("[");
+                JArray jarray = new JArray();
                 foreach (string measure_item_code in measureItemCodeList)
                 {
                     //item为测量项编码
-                    foreach (TextBox tb in flpTabTwoTxtList) {
+                    foreach (TextBox tb in flpTabTwoTxtList)
+                    {
                         //1.获取检测项值
-                        if (tb.Name.Contains(measure_item_code+ "_A_Value"))
-                            itemvalue += tb.Text.Trim()+";";
+                        if (tb.Name.Contains(measure_item_code + "_A_Value"))
+                            itemvalue += tb.Text.Trim() + ",";
                         if (tb.Name.Contains(measure_item_code + "_B_Value"))
-                            itemvalue += tb.Text.Trim()+ ";";
+                            itemvalue += tb.Text.Trim() + ",";
                         //2.获取A、B最大值
                         if (tb.Name.Contains(measure_item_code + "_MaxA_Value"))
-                            reading_max += tb.Text.Trim()+";";
+                            reading_max += tb.Text.Trim() + ",";
                         if (tb.Name.Contains(measure_item_code + "_MaxB_Value"))
-                            reading_max += tb.Text.Trim()+";";
+                            reading_max += tb.Text.Trim() + ",";
                         //3.获取A、B最小值
                         if (tb.Name.Contains(measure_item_code + "_MinA_Value"))
-                            reading_min += tb.Text.Trim() + ";";
+                            reading_min += tb.Text.Trim() + ",";
                         if (tb.Name.Contains(measure_item_code + "_MinB_Value"))
-                            reading_min += tb.Text.Trim() + ";";
+                            reading_min += tb.Text.Trim() + ",";
                     }
-                    foreach (Label lbl in flpTabTwoLblList) {
+                    foreach (Label lbl in flpTabTwoLblList)
+                    {
                         //4.获取A、B均值
                         if (lbl.Name.Contains(measure_item_code + "_AvgA"))
-                            reading_avg += lbl.Text.Trim() + ";";
+                            reading_avg += lbl.Text.Trim() + ",";
                         if (lbl.Name.Contains(measure_item_code + "_AvgB"))
-                            reading_avg += lbl.Text.Trim() + ";";
+                            reading_avg += lbl.Text.Trim() + ",";
                         //4.获取A、B椭圆度
                         if (lbl.Name.Contains(measure_item_code + "_OvalityA"))
-                            reading_ovality += lbl.Text.Trim() + ";";
+                            reading_ovality += lbl.Text.Trim() + ",";
                         if (lbl.Name.Contains(measure_item_code + "_OvalityB"))
-                            reading_ovality += lbl.Text.Trim() + ";";
+                            reading_ovality += lbl.Text.Trim() + ",";
                     }
                     //5.获取量具编号
                     foreach (TextBox tb in flpTabOneTxtList) {
-                        if (tb.Name.Contains(measure_item_code + "_measure_tool1"))
+                        if (tb.Name.Contains(measure_item_code + "_measure_tool1")) {
                             toolcode1 = tb.Text.Trim();
-                        if (tb.Name.Contains(measure_item_code + "_measure_tool2"))
+                        }
+                        if (tb.Name.Contains(measure_item_code + "_measure_tool2")) {
                             toolcode2 = tb.Text.Trim();
+                        }
                     }
-                    if (itemvalue.Contains(";;"))
-                        itemvalue = itemvalue.Replace(";;","");
-                    if (reading_max.Contains(";;"))
-                        reading_max = reading_max.Replace(";;", "");
-                    if (reading_min.Contains(";;"))
-                        reading_min = reading_min.Replace(";;", "");
-                    if (reading_avg.Contains(";;"))
-                        reading_avg = reading_avg.Replace(";;", "");
-                    if (reading_ovality.Contains(";;"))
-                        reading_ovality = reading_ovality.Replace(";;", "");
-                    sbItemRecord.Append("{");
-                    sbItemRecord.Append("\"itemcode\"" + ":" + "\"" + measure_item_code + "\",");
-                    sbItemRecord.Append("\"itemvalue\"" + ":" + "\"" +itemvalue+ "\",");
-                    sbItemRecord.Append("\"reading_max\"" + ":" + "\"" + reading_max + "\",");
-                    sbItemRecord.Append("\"reading_min\"" + ":" + "\"" + reading_min + "\",");
-                    sbItemRecord.Append("\"reading_avg\"" + ":" + "\"" + reading_avg + "\",");
-                    sbItemRecord.Append("\"reading_ovality\"" + ":" + "\"" + reading_ovality + "\",");
-                    sbItemRecord.Append("\"toolcode1\"" + ":" + "\"" + toolcode1 + "\",");
-                    sbItemRecord.Append("\"toolcode2\"" + ":" + "\"" + toolcode2 + "\",");
-                    sbItemRecord.Append("\"measure_sample1\"" + ":" + "\"" + measure_sample1 + "\",");
-                    sbItemRecord.Append("\"measure_sample2\"" + ":" + "\"" + measure_sample2 + "\"");
-                    sbItemRecord.Append("}");
-                    sbItemRecord.Append(",");
+                    if (itemvalue.Contains(",,"))
+                        itemvalue = itemvalue.Replace(",,", "");
+                    if (reading_max.Contains(",,"))
+                        reading_max = reading_max.Replace(",,", "");
+                    if (reading_min.Contains(",,"))
+                        reading_min = reading_min.Replace(",,", "");
+                    if (reading_avg.Contains(",,"))
+                        reading_avg = reading_avg.Replace(",,", "");
+                    if (reading_ovality.Contains(",,"))
+                        reading_ovality = reading_ovality.Replace(",,", "");
+                    JObject jobject = new JObject{
+                        {"itemcode", measure_item_code },
+                        {"itemvalue",itemvalue}, {"reading_max",reading_max},
+                        {"reading_min",reading_min}, {"reading_avg",reading_avg},
+                        {"reading_ovality",reading_ovality}, {"toolcode1",toolcode1},
+                         {"toolcode2",toolcode2}, {"measure_sample1",measure_sample1},
+                         { "measure_sample2",measure_sample2}
+                    };
+                    jarray.Add(jobject);
+                    itemvalue = "";reading_max = "";reading_min = "";reading_avg = "";reading_ovality = "";
+                    toolcode1 = "";toolcode2 = "";measure_sample1 = "";measure_sample2 = "";
                 }
-                sbItemRecord = sbItemRecord.Remove(sbItemRecord.ToString().Length - 1, 1);
-                sbItemRecord.Append("]");
-                sb.Append("\"item_record\"" + ":" + "\"" +sbItemRecord.ToString()+ "\"");
-                sb.Append("}");
-                string formData = sb.ToString();
-                Console.WriteLine("---------------------------------------");
-                Console.WriteLine(formData);
-                Console.WriteLine("---------------------------------------");
-                MessageBox.Show(formData);
-                return;
+                Console.WriteLine(jarray.ToString());
+                JObject dataJson = new JObject {
+                    {"isAdd","add" }, {"coupling_no",HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) },
+                    {"contract_no", HttpUtility.UrlEncode(this.cmbContractNo.Text, Encoding.UTF8) },
+                    { "production_line", HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) },
+                    {"machine_no", HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) },
+                    { "operator_no", HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8)},
+                    {"production_crew",HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8)  },
+                    { "production_shift",HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) },
+                     {"video_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
+                    { "inspection_result",HttpUtility.UrlEncode(isQualified, Encoding.UTF8) },
+                     {"coupling_heat_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
+                    { "coupling_lot_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8) },
+                     { "item_record",jarray.ToString() },
+                };
+                MessageBox.Show(dataJson.ToString());
+                //param = dataJson.ToString().Replace("\r\n", string.Empty).Replace("\r", string.Empty);
+                MessageBox.Show(param);
+                //return;
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                JObject o = JObject.Parse(formData);
-                param = o.ToString();
-                byte[] data = encoding.GetBytes(param);
-                string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
+                byte[] data = encoding.GetBytes(dataJson.ToString());
+                string url = CommonUtil.getServerIpAndPort() +"ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
@@ -759,6 +757,7 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
+                    
                     if (rowsJson.Trim().Equals("success"))
                     {
                         MessagePrompt.Show("提交成功!");
@@ -773,7 +772,8 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessagePrompt.Show("提交失败,表单暂时保存在本地!！");
+                MessageBox.Show("提交出错,表单暂时保存在本地,错误信息:" + e.Message);
+                MessagePrompt.Show("提交出错,表单暂时保存在本地,错误信息:"+e.Message);
                 string coupingDir = Application.StartupPath + "\\unsubmit";
                 CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
@@ -837,6 +837,10 @@ namespace YYOPInspectionClient
                         englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                         englishKeyboard.Show();
                         SetAlphaKeyboardText(tb.Name);
+                        focusTextBoxName = tb.Name;
+                        //YYKeyenceReaderConsole.tbReader = tb;
+                        //YYKeyenceReaderConsole.isMeasureTool = true;
+                        Console.WriteLine(tb.Name+"获取焦点");
                     }
                     else
                     {
@@ -908,6 +912,9 @@ namespace YYOPInspectionClient
                         englishKeyboard.Show();
                         englishKeyboard.TopMost = true;
                         SetAlphaKeyboardText(tb.Name);
+                        //YYKeyenceReaderConsole.tbReader = tb;
+                        //YYKeyenceReaderConsole.isMeasureTool = true;
+                        Console.WriteLine(tb.Name + "开始点击");
                     }
                     else
                     {
@@ -1417,5 +1424,49 @@ namespace YYOPInspectionClient
             }
         }
         #endregion
+
+        #region 接箍编号、炉号、批号输入框焦点获取时
+        private void txtCoupingNo_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCoupingNo_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void txtHeatNo_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void txtHeatNo_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBatchNo_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBatchNo_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (this.tabControl1.SelectedIndex == 0)
+            {
+                isMeasuringToolTabSelected = true;
+            }
+            else {
+                isMeasuringToolTabSelected = false;
+            }
+        }
     }
 }

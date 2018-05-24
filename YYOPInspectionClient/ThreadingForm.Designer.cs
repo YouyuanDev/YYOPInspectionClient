@@ -115,6 +115,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1295, 767);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -683,6 +684,8 @@
             this.txtBatchNo.Size = new System.Drawing.Size(120, 29);
             this.txtBatchNo.TabIndex = 9;
             this.txtBatchNo.Tag = "English";
+            this.txtBatchNo.Enter += new System.EventHandler(this.txtBatchNo_Enter);
+            this.txtBatchNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBatchNo_MouseDown);
             // 
             // txtHeatNo
             // 
@@ -692,6 +695,8 @@
             this.txtHeatNo.Size = new System.Drawing.Size(120, 29);
             this.txtHeatNo.TabIndex = 8;
             this.txtHeatNo.Tag = "English";
+            this.txtHeatNo.Enter += new System.EventHandler(this.txtHeatNo_Enter);
+            this.txtHeatNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtHeatNo_MouseDown);
             // 
             // txtCoupingNo
             // 
@@ -701,6 +706,8 @@
             this.txtCoupingNo.Size = new System.Drawing.Size(120, 29);
             this.txtCoupingNo.TabIndex = 7;
             this.txtCoupingNo.Tag = "English";
+            this.txtCoupingNo.Enter += new System.EventHandler(this.txtCoupingNo_Enter);
+            this.txtCoupingNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtCoupingNo_MouseDown);
             // 
             // label78
             // 
@@ -806,7 +813,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ThreadingForm";
             this.Text = "表单";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ThreadingForm_Load);
             this.SizeChanged += new System.EventHandler(this.ThreadingForm_SizeChanged);
             this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);

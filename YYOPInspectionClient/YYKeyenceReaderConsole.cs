@@ -24,10 +24,11 @@ namespace YYOPInspectionClient
         //public static ThreadingProcessForm threadingProcessForm=null;
         public static ThreadingForm threadingProcessForm = null;
         private delegate void SetTextCallback(string message);
-        private delegate void UpdateTextBoxDelegate(ThreadingForm threadingProcessForm, string message);
+        private delegate void UpdateTextBoxDelegate(object threadingProcessForm, string message);
         public static YYKeyenceReaderConsole myselfForm=null;
         private static string [] strArr = null;
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
+        private static TextBox focusTextbox = null;
         public YYKeyenceReaderConsole()
         {
             InitializeComponent();
@@ -599,8 +600,32 @@ namespace YYOPInspectionClient
 
         }
 
-        private static void UpdateTextBox(ThreadingForm form, string message)
+        private static void UpdateTextBox(Object form, string message)
         {
+            //Console.WriteLine((form==null)+"-------------**********----------------");
+           // Console.WriteLine("-------isMeasuringToolTabSelected" + ThreadingForm.isMeasuringToolTabSelected);
+            if (ThreadingForm.isMeasuringToolTabSelected)
+            {
+               // Console.WriteLine("-------"+ ThreadingForm.getMyForm().Name);
+                //Control[] cts = ThreadingForm.getMyForm().Controls.Find(ThreadingForm.focusTextBoxName, false);
+                //if (cts.Length > 0)
+                //{
+                    //GoThroughControls(form, ThreadingForm.focusTextBoxName);
+                    //Console.WriteLine("-------tb" + focusTextbox.Name);
+                    //if (focusTextbox != null) {
+                        if (ThreadingForm.englishKeyboard.Textbox_display.InvokeRequired)
+                        {
+                            UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                            ThreadingForm.englishKeyboard.Textbox_display.Invoke(md,new object[] { (object)ThreadingForm.englishKeyboard, message });
+                       }
+                        else {
+                             ThreadingForm.englishKeyboard.Textbox_display.Text = message;
+                        }
+                    //}
+                
+                return;
+            }
+            
             strArr = Regex.Split(message, "\\s+");
             if (strArr.Length > 3)
             {
@@ -616,24 +641,24 @@ namespace YYOPInspectionClient
             else if (strArr.Length > 1) {
                 argHeatNo = strArr[1];
             }
-            if (form.txtCoupingNo.InvokeRequired)
+            if (((ThreadingForm)form).txtCoupingNo.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
                 if(argCoupingNo!=null)
-                   form.txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                    ((ThreadingForm)form).txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
                 if(argHeatNo!=null)
-                   form.txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                    ((ThreadingForm)form).txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
                 if(argBatchNo!=null)
-                   form.txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
+                    ((ThreadingForm)form).txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
             }
             else
             {
                 if(argCoupingNo!=null)
-                  form.txtCoupingNo.Text =argCoupingNo;
+                    ((ThreadingForm)form).txtCoupingNo.Text =argCoupingNo;
                 if (argHeatNo != null)
-                    form.txtHeatNo.Text = argHeatNo;
+                    ((ThreadingForm)form).txtHeatNo.Text = argHeatNo;
                 if (argBatchNo != null)
-                    form.txtBatchNo.Text = argBatchNo;
+                    ((ThreadingForm)form).txtBatchNo.Text = argBatchNo;
             }
         }
        
@@ -674,6 +699,27 @@ namespace YYOPInspectionClient
         private void YYKeyenceReaderConsole_Load(object sender, EventArgs e)
         {
             
+        }
+        private static void GoThroughControls(Control parContainer,string txtName)
+        {
+            for (int index = 0; index < parContainer.Controls.Count; index++)
+            {
+                // 如果是容器类控件，递归调用自己
+                if (parContainer.Controls[index].HasChildren)
+                {
+                    GoThroughControls(parContainer.Controls[index],txtName);
+                }
+                else
+                {
+                    switch (parContainer.Controls[index].GetType().Name)
+                    {
+                        case "TextBox":
+                            if (parContainer.Controls[index].Name.Contains(txtName))
+                                focusTextbox = (TextBox)parContainer.Controls[index];
+                            break;
+                    }
+                }
+            }
         }
     }
 }
