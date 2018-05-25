@@ -388,7 +388,7 @@ namespace YYOPInspectionClient
         } 
         #endregion
 
-        #region 详细信息
+        #region 检验记录修改事件
         private void btnDetail_Click(object sender, EventArgs e)
         {
             try
@@ -397,7 +397,7 @@ namespace YYOPInspectionClient
                 //string inspection_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
 
                 string operator_no = "",thread_inspection_record_code = "",coupling_heat_no="", coupling_lot_no="", production_line="", machine_no="", coupling_no="",
-                    production_crew="", production_shift="", contract_no="", inspection_result="";
+                    production_crew="", production_shift="", contract_no="", inspection_result="",videoNo="";
                 object obj0 = this.dataGridView1.Rows[index].Cells["operator_no"].Value;
                 object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
                 object obj2 = this.dataGridView1.Rows[index].Cells["coupling_heat_no"].Value;
@@ -409,6 +409,7 @@ namespace YYOPInspectionClient
                 object obj8 = this.dataGridView1.Rows[index].Cells["production_shift"].Value;
                 object obj9 = this.dataGridView1.Rows[index].Cells["contract_no"].Value; 
                 object obj10= this.dataGridView1.Rows[index].Cells["inspection_result"].Value;
+                object obj11 = this.dataGridView1.Rows[index].Cells["video_no"].Value;
                 if (obj0!=null)
                     operator_no = Convert.ToString(obj0);
                  if(obj1!=null)
@@ -431,6 +432,8 @@ namespace YYOPInspectionClient
                     contract_no = Convert.ToString(obj9);
                 if (obj10!= null)
                     inspection_result = Convert.ToString(obj10);
+                if (obj11 != null)
+                    videoNo = Convert.ToString(obj11);
                 DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
                 form.indexWindow = this;
                 form.txtProductionArea.Text =production_line;
@@ -443,8 +446,8 @@ namespace YYOPInspectionClient
                 form.cmbProductionShift.SelectedIndex = form.cmbProductionShift.Items.IndexOf(production_shift);
                 form.txtHeatNo.Text = coupling_heat_no;
                 form.txtBatchNo.Text = coupling_lot_no;
-                form.cmbInspectionResutlt.SelectedIndex = form.cmbInspectionResutlt.Items.IndexOf(inspection_result);
-                form.cmbContractNo.SelectedValue =contract_no;
+                form.tbContractNo.Text =contract_no;
+                form.videoNoArr = videoNo;
                 form.Show();
                 form.detailForm = form;
             }

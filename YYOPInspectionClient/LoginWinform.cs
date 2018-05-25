@@ -24,29 +24,28 @@ namespace YYOPInspectionClient
         {
             InitializeComponent();
             this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")";
-            //txtLoginName.MouseDown += new MouseEventHandler(txt_MouseDown);
-            //txtLoginPwd.MouseDown += new MouseEventHandler(txt_MouseDown);
         }
 
         #region 用户点击登录事件
         private void button1_Click(object sender, EventArgs e)
         {
+            string verification_code = CommonUtil.Encrypt();
             string employee_no = this.txtLoginName.Text.Trim();
             string upwd = this.txtLoginPwd.Text.Trim();
-            var httpStatusCode = 200;
             try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("{");
-                sb.Append("\"employee_no\"" + ":" + "\"" + employee_no + "\",");
-                sb.Append("\"ppassword\"" + ":" + "\"" + upwd + "\"");
-                sb.Append("}");
+                JObject json = new JObject{
+                    {"employee_no",employee_no },
+                    {"ppassword",upwd },
+                    {"verification_code",verification_code}
+                };
+
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                JObject o = JObject.Parse(sb.ToString());
-                String param = o.ToString();
-                byte[] data = encoding.GetBytes(param);
+                byte[] data = encoding.GetBytes(json.ToString());
+                Console.WriteLine(json.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "Login/userLoginOfWinform.action";
+                Console.WriteLine(url);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
@@ -71,61 +70,48 @@ namespace YYOPInspectionClient
                 string jsons = content;
                 if (jsons != null)
                 {
-                    if (jsons.Trim().Equals("{}"))
+                    if (jsons.Trim().Contains("{}"))
                     {
-                        MessagePrompt.Show("用户名或密码错误!");
+                       MessagePrompt.Show("登录异常!");
                     }
-                    else {
+                    else
+                    {
                         JObject jobject = JObject.Parse(jsons);
-                        string rowsJson = jobject["rowsData"].ToString();
-                        if (rowsJson != null)
+                        string loginFlag = jobject["success"].ToString().Trim();
+                        string msg= jobject["msg"].ToString().Trim();
+                        if (loginFlag.Contains("True"))
                         {
-                            Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
-                            if (indexWindow==null)
+                            string rowsJson = jobject["rowsData"].ToString();
+                            if (rowsJson != null)
                             {
-                                indexWindow=new IndexWindow();
-                                indexWindow.Show();
+                                Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
+                                if (indexWindow == null)
+                                {
+                                    indexWindow = new IndexWindow();
+                                    indexWindow.Show();
+                                }
+                                else
+                                    indexWindow.Show();
+                                indexWindow.loginWinform = this;
+                                this.Hide();
+                                if (englishKeyboard != null)
+                                    englishKeyboard.Close();
                             }
-                            else {
-                                indexWindow.Show(); 
+                            else
+                            {
+                                MessagePrompt.Show("系统繁忙，请稍后重试!");
                             }
-                            indexWindow.loginWinform = this;
-                            this.Hide();
-                            if (englishKeyboard != null) 
-                                englishKeyboard.Hide();
                         }
-                        else
-                        {
-                            MessagePrompt.Show("用户名或密码错误!");
+                        else {
+                            MessagePrompt.Show(msg);
                         }
                     }
                 }
-                httpStatusCode = Convert.ToInt32(response.StatusCode);
-            }
-            catch (WebException ex)
-            {
-                var rsp = ex.Response as HttpWebResponse;
-                httpStatusCode = Convert.ToInt32(rsp.StatusCode);
             }
             catch (Exception ec)
             {
                 MessagePrompt.Show("服务器尚未开启......");
-                if (employee_no == "admin" && upwd == "admin")
-                {
-                    IndexWindow index = new IndexWindow();
-                    index.Show();
-                    this.Close();
-                }
-            }
-            if (httpStatusCode != 200)
-            {
-                MessagePrompt.Show("服务器未响应........");
-                if (employee_no == "admin" && upwd == "admin")
-                {
-                    IndexWindow index = new IndexWindow();
-                    index.Show();
-                    this.Close();
-                }
+                Application.Exit();
             }
         }
         #endregion
@@ -136,7 +122,7 @@ namespace YYOPInspectionClient
         {
             if (englishKeyboard == null)
                 englishKeyboard = new AlphabetKeyboardForm();
-            if (tb.Tag.Equals("English"))
+            if (tb.Tag.ToString().Contains("English"))
             {
                 englishKeyboard.inputTxt = tb;
                 englishKeyboard.Textbox_display.Text = tb.Text.Trim();
@@ -146,7 +132,6 @@ namespace YYOPInspectionClient
                     englishKeyboard.lblEnglishTitle.Text = "用户名";
                 if(tb.Name.Contains("txtLoginPwd"))
                     englishKeyboard.lblEnglishTitle.Text = "密码";
-                //SetAlphaKeyboardText(tb.Name);
             }
         }
 

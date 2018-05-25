@@ -14,7 +14,7 @@ namespace YYOPInspectionClient
     public partial class AlphabetKeyboardForm : Form
     {
         public  TextBox inputTxt;
-        public  List<TextBox> flpTabOneTxtList;
+        public static List<TextBox> flpTabOneTxtList;
         public Control containerControl = null;
         //public int type = 1;//标识是登录页面还是表单，0代表登录页面，1代表表单
         //---------------------拖动无窗体的控件(开始)
@@ -135,17 +135,18 @@ namespace YYOPInspectionClient
                         {
                             inputTxt.Text = Textbox_display.Text.Trim();
                             this.Textbox_display.Text = "";
-                            int index = flpTabOneTxtList.IndexOf(inputTxt);
-                            if (index < flpTabOneTxtList.Count - 1)
-                                index++;
-                            TextBox tb = flpTabOneTxtList[index];
-                            tb.Focus();
                         }
                     }
                 }
+                int index = flpTabOneTxtList.IndexOf(inputTxt);
+                if (index < flpTabOneTxtList.Count - 1)
+                    index++;
+                TextBox tb =flpTabOneTxtList[index];
+                tb.Focus();
             }
-            catch (Exception ex) {
-                Console.WriteLine("英文键盘触发Enter时报错,错误信息:"+ex.Message);
+            catch (Exception ex)
+            {
+                Console.WriteLine("英文键盘触发Enter时报错,错误信息:" + ex.Message);
             }
         }
 

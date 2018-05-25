@@ -7,7 +7,9 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Security.Cryptography;
+using System.Net.NetworkInformation;
+using System.Management;
 namespace YYOPInspectionClient
 {
     public class CommonUtil
@@ -319,7 +321,83 @@ namespace YYOPInspectionClient
                 flag = false;
             }
             return flag;
+        }
+        #endregion
+
+        #region  加密解密
+
+        /// <summary>  
+        /// AES加密  
+        /// </summary>  
+        /// <param name="encryptStr">明文</param>  
+        /// <param name="key">密钥</param>  
+        /// <returns></returns>  
+        public static string Encrypt()
+        {
+            string str = GetFirstMacAddress();
+            string key = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+            for (int i = key.Length; i < 16; i++) {
+                key += "0";
+            }
+            if (string.IsNullOrEmpty(str)) return null;
+            Byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
+
+            System.Security.Cryptography.RijndaelManaged rm = new System.Security.Cryptography.RijndaelManaged
+            {
+                Key = Encoding.UTF8.GetBytes(key),
+                Mode = System.Security.Cryptography.CipherMode.ECB,
+                Padding = System.Security.Cryptography.PaddingMode.PKCS7
+            };
+
+            System.Security.Cryptography.ICryptoTransform cTransform = rm.CreateEncryptor();
+            Byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+            
+        }
+
+        // <summary>  
+        /// AES解密  
+        /// </summary>  
+        /// <param name="decryptStr">密文</param>  
+        /// <param name="key">密钥</param>  
+        /// <returns></returns>  
+        public static string Decrypt(string decryptStr, string key)
+
+        {
+            byte[] keyArray = UTF8Encoding.UTF8.GetBytes(key);
+            byte[] toEncryptArray = Convert.FromBase64String(decryptStr);
+            RijndaelManaged rDel = new RijndaelManaged();
+            rDel.Key = keyArray;
+            rDel.Mode = CipherMode.ECB;
+            rDel.Padding = PaddingMode.PKCS7;
+            ICryptoTransform cTransform = rDel.CreateDecryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            return UTF8Encoding.UTF8.GetString(resultArray);
+        }
+        #endregion
+
+        #region 获取Mac地址
+        /// <summary>
+        /// Finds the MAC address of the first operation NIC found.
+        /// </summary>
+        /// <returns>The MAC address.</returns>
+        public static string GetFirstMacAddress()
+        {
+            string macAddresses = string.Empty;
+
+            foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (nic.OperationalStatus == OperationalStatus.Up)
+                {
+                    macAddresses += nic.GetPhysicalAddress().ToString();
+                    break;
+                }
+            }
+
+            return macAddresses;
         } 
         #endregion
+
     }
 }

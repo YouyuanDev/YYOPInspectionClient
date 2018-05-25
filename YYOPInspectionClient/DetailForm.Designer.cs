@@ -31,8 +31,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
-            this.cmbInspectionResutlt = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.btnFormClose = new System.Windows.Forms.Button();
             this.btnFormSubmit = new System.Windows.Forms.Button();
             this.txtBatchNo = new System.Windows.Forms.TextBox();
@@ -48,7 +46,6 @@
             this.dtpInspectionTime = new System.Windows.Forms.DateTimePicker();
             this.cmbProductionShift = new System.Windows.Forms.ComboBox();
             this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
-            this.cmbContractNo = new System.Windows.Forms.ComboBox();
             this.txtOperatorNo = new System.Windows.Forms.TextBox();
             this.txtMachineNo = new System.Windows.Forms.TextBox();
             this.txtProductionArea = new System.Windows.Forms.TextBox();
@@ -85,6 +82,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblDetailFormTitle = new System.Windows.Forms.Label();
+            this.tbContractNo = new System.Windows.Forms.TextBox();
             this.tabPage2.SuspendLayout();
             this.pnlTabTwoTitle.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -123,8 +121,6 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTabTwoTitle.Controls.Add(this.cmbInspectionResutlt);
-            this.pnlTabTwoTitle.Controls.Add(this.label13);
             this.pnlTabTwoTitle.Controls.Add(this.btnFormClose);
             this.pnlTabTwoTitle.Controls.Add(this.btnFormSubmit);
             this.pnlTabTwoTitle.Controls.Add(this.txtBatchNo);
@@ -143,34 +139,9 @@
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1193, 104);
             this.pnlTabTwoTitle.TabIndex = 0;
             // 
-            // cmbInspectionResutlt
-            // 
-            this.cmbInspectionResutlt.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbInspectionResutlt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbInspectionResutlt.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbInspectionResutlt.FormattingEnabled = true;
-            this.cmbInspectionResutlt.ItemHeight = 40;
-            this.cmbInspectionResutlt.Items.AddRange(new object[] {
-            "合格",
-            "不合格"});
-            this.cmbInspectionResutlt.Location = new System.Drawing.Point(736, 52);
-            this.cmbInspectionResutlt.Name = "cmbInspectionResutlt";
-            this.cmbInspectionResutlt.Size = new System.Drawing.Size(121, 46);
-            this.cmbInspectionResutlt.TabIndex = 15;
-            this.cmbInspectionResutlt.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbInspectionResutlt_DrawItem);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(612, 63);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(118, 24);
-            this.label13.TabIndex = 14;
-            this.label13.Text = "检验结果:";
-            // 
             // btnFormClose
             // 
-            this.btnFormClose.Location = new System.Drawing.Point(1027, 50);
+            this.btnFormClose.Location = new System.Drawing.Point(789, 51);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(101, 39);
             this.btnFormClose.TabIndex = 13;
@@ -180,7 +151,7 @@
             // 
             // btnFormSubmit
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(911, 51);
+            this.btnFormSubmit.Location = new System.Drawing.Point(660, 52);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(95, 39);
             this.btnFormSubmit.TabIndex = 12;
@@ -321,18 +292,6 @@
             this.cmbProductionCrew.Size = new System.Drawing.Size(121, 46);
             this.cmbProductionCrew.TabIndex = 27;
             this.cmbProductionCrew.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbProductionCrew_DrawItem);
-            // 
-            // cmbContractNo
-            // 
-            this.cmbContractNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbContractNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbContractNo.FormattingEnabled = true;
-            this.cmbContractNo.ItemHeight = 40;
-            this.cmbContractNo.Location = new System.Drawing.Point(123, 9);
-            this.cmbContractNo.Name = "cmbContractNo";
-            this.cmbContractNo.Size = new System.Drawing.Size(141, 46);
-            this.cmbContractNo.TabIndex = 26;
-            this.cmbContractNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbContractNo_DrawItem);
             // 
             // txtOperatorNo
             // 
@@ -544,11 +503,11 @@
             // 
             // pnlTabOneTitle
             // 
+            this.pnlTabOneTitle.Controls.Add(this.tbContractNo);
             this.pnlTabOneTitle.Controls.Add(this.btnClose);
             this.pnlTabOneTitle.Controls.Add(this.dtpInspectionTime);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionShift);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionCrew);
-            this.pnlTabOneTitle.Controls.Add(this.cmbContractNo);
             this.pnlTabOneTitle.Controls.Add(this.txtOperatorNo);
             this.pnlTabOneTitle.Controls.Add(this.txtMachineNo);
             this.pnlTabOneTitle.Controls.Add(this.txtProductionArea);
@@ -705,6 +664,14 @@
             this.lblDetailFormTitle.TabIndex = 0;
             this.lblDetailFormTitle.Text = "label18";
             // 
+            // tbContractNo
+            // 
+            this.tbContractNo.Location = new System.Drawing.Point(122, 18);
+            this.tbContractNo.Name = "tbContractNo";
+            this.tbContractNo.ReadOnly = true;
+            this.tbContractNo.Size = new System.Drawing.Size(141, 35);
+            this.tbContractNo.TabIndex = 31;
+            // 
             // DetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -780,18 +747,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnFormClose;
         public System.Windows.Forms.TextBox txtCoupingNo;
-        public System.Windows.Forms.ComboBox cmbContractNo;
         public System.Windows.Forms.TextBox txtOperatorNo;
         public System.Windows.Forms.TextBox txtProductionArea;
         public System.Windows.Forms.TextBox txtMachineNo;
         public System.Windows.Forms.ComboBox cmbProductionCrew;
         public System.Windows.Forms.ComboBox cmbProductionShift;
-        private System.Windows.Forms.Label label13;
         public System.Windows.Forms.TextBox txtBatchNo;
         public System.Windows.Forms.TextBox txtHeatNo;
-        public System.Windows.Forms.ComboBox cmbInspectionResutlt;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblDetailFormTitle;
+        public System.Windows.Forms.TextBox tbContractNo;
     }
 }

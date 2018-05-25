@@ -21,8 +21,8 @@ namespace YYOPInspectionClient
         private bool flag = false;
         public static AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
-        private List<TextBox> flpTabOneTxtList = new List<TextBox>();
-        private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
+        public static List<TextBox> flpTabOneTxtList = new List<TextBox>();
+        public static List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         private List<Label> flpTabTwoLblList = new List<Label>();
         private List<string> measureItemCodeList = new List<string>();
         private IndexWindow indexWindow;
@@ -37,17 +37,16 @@ namespace YYOPInspectionClient
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer = null;
         int videoResult = 1;
-        private string lblPromptName;
-        private string isQualified = "合格";
+        public static bool isQualified =true;
         public delegate void EventHandle(object sender, EventArgs e);
         public static bool isMeasuringToolTabSelected=true;//
         public static string focusTextBoxName = null;
+        public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
+        public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         public static ThreadingForm getMyForm()
         {
             return myForm;
         }
-
-       
 
         #region 窗体构造函数
         public ThreadingForm(IndexWindow indexWindow, MainWindow mainWindow)
@@ -58,9 +57,9 @@ namespace YYOPInspectionClient
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
 
-                    englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
+                    //englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
                     englishKeyboard.containerControl = this.flpTabOneContent;
-                    numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
+                    //numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
                     numberKeyboard.containerControl = this.flpTabTwoContent;
 
                     this.indexWindow = indexWindow;
@@ -221,12 +220,11 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    Console.WriteLine(rowsJson);
                     if (rowsJson.Trim().Equals("fail"))
                     {
                         this.flpTabOneContent.Controls.Clear();
                         this.flpTabTwoContent.Controls.Clear();
-                        Console.WriteLine("初始化表单失败..........");
+                        MessagePrompt.Show("初始化表单时出错!");
                     }
                     else
                     {
@@ -245,7 +243,7 @@ namespace YYOPInspectionClient
             {
                 this.flpTabOneContent.Controls.Clear();
                 this.flpTabTwoContent.Controls.Clear();
-                Console.WriteLine("初始化表单失败......");
+                MessagePrompt.Show("初始化表单出错，错误信息:" + e.Message);
             }
         }
         #endregion
@@ -257,15 +255,21 @@ namespace YYOPInspectionClient
             if (flag)
             {
                 ClearCntrValue(this);
-                // ClearCntrValue(this.pnlTabOneFooter);
+                flpTabOneTxtList.Clear();
+                flpTabTwoTxtList.Clear();
+                flpTabTwoLblList.Clear();
+                controlTxtDir.Clear();
+                controlLblDir.Clear();
                 string contract_no = this.cmbContractNo.Text.Trim();
                 GetThreadFormInitData(contract_no);
                 try
                 {
                     this.lblCountSubmit.Text = "1";
-                    ShowFrequency();
+                    ChangeFrequency();
                     GoThroughControls(this.flpTabOneContent, flpTabOneTxtList, null);
                     GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList, flpTabTwoLblList);
+                    AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
+                    NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
                 }
                 catch (Exception ex)
                 {
@@ -275,7 +279,7 @@ namespace YYOPInspectionClient
             }
         }
         #endregion
-
+       
         #region 填充表单合同信息
         private void FillFormTitle(string contractInfo)
         {
@@ -355,21 +359,23 @@ namespace YYOPInspectionClient
                     {
                         Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
                         pnlMeasureTool.Controls.Add(lbl0_1);
-                        TextBox tb0 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
-                        pnlMeasureTool.Controls.Add(tb0);
-                        tb0.Enter += new EventHandler(txt_Enter);
-                        tb0.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tb0.Leave += new EventHandler(txt_Leave);
+                        TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
+                        pnlMeasureTool.Controls.Add(tbTool1);
+                        controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool1", tbTool1);
+                        tbTool1.Enter += new EventHandler(txt_Enter);
+                        tbTool1.MouseDown += new MouseEventHandler(txt_MouseDown);
+                        tbTool1.Leave += new EventHandler(txt_Leave);
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
                         Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
                         pnlMeasureTool.Controls.Add(lbl0_2);
-                        TextBox tb1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
-                        pnlMeasureTool.Controls.Add(tb1);
-                        tb1.Enter += new EventHandler(txt_Enter);
-                        tb1.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tb1.Leave += new EventHandler(txt_Leave);
+                        TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
+                        pnlMeasureTool.Controls.Add(tbTool2);
+                        controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool2", tbTool2);
+                        tbTool2.Enter += new EventHandler(txt_Enter);
+                        tbTool2.MouseDown += new MouseEventHandler(txt_MouseDown);
+                        tbTool2.Leave += new EventHandler(txt_Leave);
                     }
                     this.flpTabOneContent.Controls.Add(pnlMeasureTool);
                 }
@@ -396,7 +402,10 @@ namespace YYOPInspectionClient
                     if (obj["item_max_value"] != null)
                         item_max_value = obj["item_max_value"].ToString();
                     if (obj["item_frequency"] != null)
+                    {
                         item_frequency = obj["item_frequency"].ToString();
+                        lblRequired.Tag = item_frequency;
+                    }
                     if (obj["item_pos_deviation_value"] != null)
                         item_pos_deviation_value = obj["item_pos_deviation_value"].ToString();
                     if (obj["item_neg_deviation_value"] != null)
@@ -459,6 +468,8 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(lblB);
                             pnlMeasureValue.Controls.Add(tbA);
                             pnlMeasureValue.Controls.Add(tbB);
+                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_A_Value", tbA);
+                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_B_Value", tbB);
                             tbA.Enter += new EventHandler(txt_Enter);
                             tbA.MouseDown += new MouseEventHandler(txt_MouseDown);
                             tbA.Leave += new EventHandler(txt_Leave);
@@ -470,6 +481,7 @@ namespace YYOPInspectionClient
                         {
                             TextBox tbValue = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(90, 80) };
                             pnlMeasureValue.Controls.Add(tbValue);
+                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_A_Value", tbValue);
                             tbValue.Enter += new EventHandler(txt_Enter);
                             tbValue.MouseDown += new MouseEventHandler(txt_MouseDown);
                             tbValue.Leave += new EventHandler(txt_Leave);
@@ -490,10 +502,10 @@ namespace YYOPInspectionClient
                         TextBox tbMinB = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_MinB_Value", Location = new Point(170, 120) };
                         Label lblAvg = new Label { Text = "均值", Location = new Point(290, 50), AutoSize = true };
                         Label lblOvality = new Label { Text = "椭圆度", Location = new Point(370, 50), AutoSize = true };
-                        Label lblAvgA = new Label { Text = "", Location = new Point(290, 80), Name = obj["measure_item_code"].ToString() + "_AvgA" };
-                        Label lblAvgB = new Label { Text = "", Location = new Point(290, 120), Name = obj["measure_item_code"].ToString() + "_AvgB" };
-                        Label lblOvalityA = new Label { Text = "", Location = new Point(390, 80), Name = obj["measure_item_code"].ToString() + "_OvalityA" };
-                        Label lblOvalityB = new Label { Text = "", Location = new Point(390, 120), Name = obj["measure_item_code"].ToString() + "_OvalityB" };
+                        Label lblAvgA = new Label {Tag="lblVal", Text = "", Location = new Point(290, 80), Name = obj["measure_item_code"].ToString() + "_AvgA" };
+                        Label lblAvgB = new Label { Tag = "lblVal", Text = "", Location = new Point(290, 120), Name = obj["measure_item_code"].ToString() + "_AvgB" };
+                        Label lblOvalityA = new Label { Tag = "lblVal", Text = "", Location = new Point(390, 80), Name = obj["measure_item_code"].ToString() + "_OvalityA" };
+                        Label lblOvalityB = new Label { Tag = "lblVal", Text = "", Location = new Point(390, 120), Name = obj["measure_item_code"].ToString() + "_OvalityB" };
                         tbMaxA.Enter += new EventHandler(txt_Enter);
                         tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
                         tbMaxA.Leave += new EventHandler(txt_Leave);
@@ -512,10 +524,12 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(lblMax);
                             pnlMeasureValue.Controls.Add(lblMaxA);
                             pnlMeasureValue.Controls.Add(tbMaxA);
+                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MaxA_Value", tbMaxA);
                             if (both_ends.Contains("1"))
                             {
                                 pnlMeasureValue.Controls.Add(lblMaxB);
                                 pnlMeasureValue.Controls.Add(tbMaxB);
+                                controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MaxB_Value", tbMaxB);
                             }
                         }
                         //如果包含最小值
@@ -524,10 +538,12 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(lblMin);
                             pnlMeasureValue.Controls.Add(lblMinA);
                             pnlMeasureValue.Controls.Add(tbMinA);
+                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MinA_Value", tbMinA);
                             if (both_ends.Contains("1"))
                             {
                                 pnlMeasureValue.Controls.Add(lblMinB);
                                 pnlMeasureValue.Controls.Add(tbMinB);
+                                controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MinB_Value", tbMinB);
                             }
                         }
                         //如果包含均值
@@ -538,8 +554,12 @@ namespace YYOPInspectionClient
                             lblRequired.Location = new Point(380, 10);
                             pnlMeasureValue.Controls.Add(lblAvg);
                             pnlMeasureValue.Controls.Add(lblAvgA);
-                            if (both_ends.Contains("1"))
+                            controlLblDir.Add(obj["measure_item_code"].ToString() + "_AvgA", lblAvgA);
+                            if (both_ends.Contains("1")) {
                                 pnlMeasureValue.Controls.Add(lblAvgB);
+                                controlLblDir.Add(obj["measure_item_code"].ToString() + "_AvgB", lblAvgB);
+                            }
+                                
                         }
                         //如果包含椭圆度
                         if (readtyps.Contains("5"))
@@ -549,15 +569,19 @@ namespace YYOPInspectionClient
                             lblRequired.Location = new Point(380, 10);
                             pnlMeasureValue.Controls.Add(lblOvality);
                             pnlMeasureValue.Controls.Add(lblOvalityA);
-                            if (both_ends.Contains("1"))
+                            controlLblDir.Add(obj["measure_item_code"].ToString() + "_OvalityA", lblOvalityA);
+                            if (both_ends.Contains("1")) {
                                 pnlMeasureValue.Controls.Add(lblOvalityB);
+                                controlLblDir.Add(obj["measure_item_code"].ToString() + "_OvalityB", lblOvalityB);
+                            }
+                               
                         }
                     }
                     this.flpTabTwoContent.Controls.Add(pnlMeasureValue);
                 }
             }
-            flpTabOneTxtList.Clear();
-            flpTabTwoTxtList.Clear();
+            //flpTabOneTxtList.Clear();
+            //flpTabTwoTxtList.Clear();
            
         }
         #endregion
@@ -632,73 +656,56 @@ namespace YYOPInspectionClient
             try
             {
                 string videoNo = videosArr;
-                flpTabOneTxtList.Clear(); flpTabTwoTxtList.Clear(); flpTabTwoLblList.Clear();
                 //一条item_record检验记录包括(检测项编码、最大值、最小值、均值、椭圆度、量具编号1、量具编号2、检测项值)
                 //检测项值、最大值、最小值、均值、椭圆度分为A、B
                 string itemvalue = "", reading_max = "",reading_min="",reading_avg="",reading_ovality="",toolcode1="",toolcode2="",measure_sample1="",measure_sample2="";
                
                 //获取所有的flpTabOne容器中所有的TextBox控件
-                GoThroughControls(this.flpTabOneContent,flpTabOneTxtList,null);
+                //GoThroughControls(this.flpTabOneContent,flpTabOneTxtList,null);
                 //获取所有的flpTabTwo容器中所有的TextBox和Label控件
-                GoThroughControls(this.flpTabTwoContent,flpTabTwoTxtList,flpTabTwoLblList);
+                //GoThroughControls(this.flpTabTwoContent,flpTabTwoTxtList,flpTabTwoLblList);
                 //遍历所有属于某个测量项的值
                 JArray jarray = new JArray();
                 foreach (string measure_item_code in measureItemCodeList)
                 {
-                    //item为测量项编码
-                    foreach (TextBox tb in flpTabTwoTxtList)
-                    {
-                        //1.获取检测项值
-                        if (tb.Name.Contains(measure_item_code + "_A_Value"))
-                            itemvalue += tb.Text.Trim() + ",";
-                        if (tb.Name.Contains(measure_item_code + "_B_Value"))
-                            itemvalue += tb.Text.Trim() + ",";
-                        //2.获取A、B最大值
-                        if (tb.Name.Contains(measure_item_code + "_MaxA_Value"))
-                            reading_max += tb.Text.Trim() + ",";
-                        if (tb.Name.Contains(measure_item_code + "_MaxB_Value"))
-                            reading_max += tb.Text.Trim() + ",";
-                        //3.获取A、B最小值
-                        if (tb.Name.Contains(measure_item_code + "_MinA_Value"))
-                            reading_min += tb.Text.Trim() + ",";
-                        if (tb.Name.Contains(measure_item_code + "_MinB_Value"))
-                            reading_min += tb.Text.Trim() + ",";
-                    }
-                    foreach (Label lbl in flpTabTwoLblList)
-                    {
-                        //4.获取A、B均值
-                        if (lbl.Name.Contains(measure_item_code + "_AvgA"))
-                            reading_avg += lbl.Text.Trim() + ",";
-                        if (lbl.Name.Contains(measure_item_code + "_AvgB"))
-                            reading_avg += lbl.Text.Trim() + ",";
-                        //4.获取A、B椭圆度
-                        if (lbl.Name.Contains(measure_item_code + "_OvalityA"))
-                            reading_ovality += lbl.Text.Trim() + ",";
-                        if (lbl.Name.Contains(measure_item_code + "_OvalityB"))
-                            reading_ovality += lbl.Text.Trim() + ",";
-                    }
-                    //5.获取量具编号
-                    foreach (TextBox tb in flpTabOneTxtList) {
-                        if (tb.Name.Contains(measure_item_code + "_measure_tool1")) {
-                            toolcode1 = tb.Text.Trim();
-                        }
-                        if (tb.Name.Contains(measure_item_code + "_measure_tool2")) {
-                            toolcode2 = tb.Text.Trim();
-                        }
-                    }
-                    if (itemvalue.Contains(",,"))
-                        itemvalue = itemvalue.Replace(",,", "");
-                    if (reading_max.Contains(",,"))
-                        reading_max = reading_max.Replace(",,", "");
-                    if (reading_min.Contains(",,"))
-                        reading_min = reading_min.Replace(",,", "");
-                    if (reading_avg.Contains(",,"))
-                        reading_avg = reading_avg.Replace(",,", "");
-                    if (reading_ovality.Contains(",,"))
-                        reading_ovality = reading_ovality.Replace(",,", "");
+                    if(controlTxtDir.ContainsKey(measure_item_code + "_A_Value"))
+                        itemvalue += controlTxtDir[measure_item_code + "_A_Value"].Text.Trim() + ",";
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_B_Value"))
+                        itemvalue += controlTxtDir[measure_item_code + "_B_Value"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_MaxA_Value"))
+                        reading_max += controlTxtDir[measure_item_code + "_MaxA_Value"].Text.Trim() + ",";
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_MaxB_Value"))
+                        reading_max += controlTxtDir[measure_item_code + "_MaxB_Value"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_MinA_Value"))
+                        reading_min += controlTxtDir[measure_item_code + "_MinA_Value"].Text.Trim() + ",";
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_MinB_Value"))
+                        reading_min += controlTxtDir[measure_item_code + "_MinB_Value"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_measure_tool1"))
+                        toolcode1 += controlTxtDir[measure_item_code + "_measure_tool1"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_measure_tool2"))
+                        toolcode2 += controlTxtDir[measure_item_code + "_measure_tool2"].Text.Trim();
+                    if (controlLblDir.ContainsKey(measure_item_code + "_AvgA"))
+                        reading_avg += controlLblDir[measure_item_code + "_AvgA"].Text.Trim()+ ",";
+                    if (controlLblDir.ContainsKey(measure_item_code + "_AvgB"))
+                        reading_avg += controlLblDir[measure_item_code + "_AvgB"].Text.Trim();
+                    if (controlLblDir.ContainsKey(measure_item_code + "_OvalityA"))
+                        reading_ovality += controlLblDir[measure_item_code + "_OvalityA"].Text.Trim() + ",";
+                    if (controlLblDir.ContainsKey(measure_item_code + "_OvalityB"))
+                        reading_ovality += controlLblDir[measure_item_code + "_OvalityB"].Text.Trim();
+                     
+                    if (itemvalue.Equals(","))
+                        itemvalue = itemvalue.Replace(",", "");
+                    if (reading_max.Equals(","))
+                        reading_max = reading_max.Replace(",", "");
+                    if (reading_min.Equals(","))
+                        reading_min = reading_min.Replace(",", "");
+                    if (reading_avg.Equals(","))
+                        reading_avg = reading_avg.Replace(",", "");
+                    if (reading_ovality.Equals(","))
+                        reading_ovality = reading_ovality.Replace(",", "");
                     JObject jobject = new JObject{
                         {"itemcode", measure_item_code },
-                        {"itemvalue",itemvalue}, {"reading_max",reading_max},
+                        {"itemvalue",HttpUtility.UrlEncode(itemvalue,Encoding.UTF8)}, {"reading_max",reading_max},
                         {"reading_min",reading_min}, {"reading_avg",reading_avg},
                         {"reading_ovality",reading_ovality}, {"toolcode1",toolcode1},
                          {"toolcode2",toolcode2}, {"measure_sample1",measure_sample1},
@@ -708,7 +715,11 @@ namespace YYOPInspectionClient
                     itemvalue = "";reading_max = "";reading_min = "";reading_avg = "";reading_ovality = "";
                     toolcode1 = "";toolcode2 = "";measure_sample1 = "";measure_sample2 = "";
                 }
-                Console.WriteLine(jarray.ToString());
+                string inspectionResult = "";
+                if (isQualified)
+                    inspectionResult = "合格";
+                else
+                    inspectionResult = "不合格";
                 JObject dataJson = new JObject {
                     {"isAdd","add" }, {"coupling_no",HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) },
                     {"contract_no", HttpUtility.UrlEncode(this.cmbContractNo.Text, Encoding.UTF8) },
@@ -718,15 +729,11 @@ namespace YYOPInspectionClient
                     {"production_crew",HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8)  },
                     { "production_shift",HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) },
                      {"video_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
-                    { "inspection_result",HttpUtility.UrlEncode(isQualified, Encoding.UTF8) },
-                     {"coupling_heat_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
-                    { "coupling_lot_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8) },
+                    { "inspection_result",HttpUtility.UrlEncode(inspectionResult, Encoding.UTF8) },
+                     {"coupling_heat_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8)  },
+                    { "coupling_lot_no",HttpUtility.UrlEncode(this.txtBatchNo.Text, Encoding.UTF8) },
                      { "item_record",jarray.ToString() },
                 };
-                MessageBox.Show(dataJson.ToString());
-                //param = dataJson.ToString().Replace("\r\n", string.Empty).Replace("\r", string.Empty);
-                MessageBox.Show(param);
-                //return;
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
                 byte[] data = encoding.GetBytes(dataJson.ToString());
@@ -772,19 +779,23 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessageBox.Show("提交出错,表单暂时保存在本地,错误信息:" + e.Message);
                 MessagePrompt.Show("提交出错,表单暂时保存在本地,错误信息:"+e.Message);
                 string coupingDir = Application.StartupPath + "\\unsubmit";
                 CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
             finally
             {
-                ChangeSubmitCount();
-                ShowFrequency();
-                ClearForm();
-                indexWindow.getThreadingProcessData();
+                try
+                {
+                    ChangeSubmitCount();
+                    ChangeFrequency();
+                    ClearForm();
+                    indexWindow.getThreadingProcessData();
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("表单清理数据时出错,错误信息:"+ex.Message);
+                }
             }
-
         }
         #endregion
 
@@ -838,9 +849,6 @@ namespace YYOPInspectionClient
                         englishKeyboard.Show();
                         SetAlphaKeyboardText(tb.Name);
                         focusTextBoxName = tb.Name;
-                        //YYKeyenceReaderConsole.tbReader = tb;
-                        //YYKeyenceReaderConsole.isMeasureTool = true;
-                        Console.WriteLine(tb.Name+"获取焦点");
                     }
                     else
                     {
@@ -911,10 +919,8 @@ namespace YYOPInspectionClient
                         englishKeyboard.Textbox_display.Text = tb.Text.Trim();
                         englishKeyboard.Show();
                         englishKeyboard.TopMost = true;
+                        focusTextBoxName = tb.Name;
                         SetAlphaKeyboardText(tb.Name);
-                        //YYKeyenceReaderConsole.tbReader = tb;
-                        //YYKeyenceReaderConsole.isMeasureTool = true;
-                        Console.WriteLine(tb.Name + "开始点击");
                     }
                     else
                     {
@@ -938,7 +944,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception ex)
             {
-                MessagePrompt.Show(ex.Message);
+                //MessagePrompt.Show(ex.Message);
                 Console.WriteLine("鼠标点击时出错!");
             }
         }
@@ -1241,35 +1247,20 @@ namespace YYOPInspectionClient
         #region 清理表单
         private void ClearForm()
         {
-            ClearText(flpTabTwoContent);
+            foreach (TextBox tb in flpTabTwoTxtList) {
+                tb.Text ="";
+                tb.BackColor = Color.White;
+            }
+            foreach (Label lbl in flpTabTwoLblList) {
+                if (lbl.Tag != null) {
+                    if(lbl.Tag.ToString().Contains("lblVal"))
+                    lbl.Text = "";
+                }
+            }
             this.txtCoupingNo.Text = "";
             this.txtHeatNo.Text = "";
             this.txtBatchNo.Text = "";
             videosArr = "";
-        }
-        #endregion
-
-        #region 清除文本框
-        public void ClearText(Control parContainer)
-        {
-            for (int index = 0; index < parContainer.Controls.Count; index++)
-            {
-                // 如果是容器类控件，递归调用自己
-                if (parContainer.Controls[index].HasChildren)
-                {
-                    ClearText(parContainer.Controls[index]);
-                }
-                else
-                {
-                    switch (parContainer.Controls[index].GetType().Name)
-                    {
-                        case "TextBox":
-                            ((TextBox)parContainer.Controls[index]).Text = "";
-                            ((TextBox)parContainer.Controls[index]).BackColor = Color.White;
-                            break;
-                    }
-                }
-            }
         }
         #endregion
 
@@ -1351,63 +1342,38 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 显示是否必填项
-        private void ShowFrequency()
-        {
-            string countStr = this.lblCountSubmit.Text;
-            int count = 0;
-            if (!string.IsNullOrWhiteSpace(countStr))
-            {
-                count = Convert.ToInt32(countStr);//提交的次数
-                GoThroughControlsOfLabel(flpTabTwoContent, count);
-            }
-        }
-        #endregion
-
-        #region 遍历测量项频率label
-        private void GoThroughControlsOfLabel(Control parContainer, int countSumbit)
-        {
+        private void ChangeFrequency() {
             try
             {
-                for (int index = 0; index < parContainer.Controls.Count; index++)
+                string countStr = this.lblCountSubmit.Text;
+                int countSumbit = 0;
+                if (!string.IsNullOrWhiteSpace(countStr))
                 {
-                    // 如果是容器类控件，递归调用自己
-                    if (parContainer.Controls[index].HasChildren)
+                    countSumbit = Convert.ToInt32(countStr);//提交的次数
+                }
+                foreach (Label lbl in flpTabTwoLblList)
+                {
+                    if (lbl.Name.Contains("_lbl_Prompt"))
                     {
-                        GoThroughControlsOfLabel(parContainer.Controls[index], countSumbit);
-                    }
-                    else
-                    {
-                        switch (parContainer.Controls[index].GetType().Name)
+                        float frequency = 9;
+                        if (lbl.Tag != null)
                         {
-                            case "Label":
-                                Label lbl = (Label)parContainer.Controls[index];
-                                if (lbl.Name.Contains("#frequency"))
-                                {
-                                    if (lbl.Tag != null)
-                                    {
-                                        float frequency = Convert.ToSingle(lbl.Tag.ToString());
-                                        lblPromptName = lbl.Name.Split('#')[0];
-                                        Label lblPrompt = (Label)GetControlInstance(flpTabTwoContent, lblPromptName + "_lbl_Prompt");
-                                        if (lblPrompt != null)
-                                        {
-                                            if (Math.Abs((countSumbit - 1) * frequency - Convert.ToInt32((countSumbit - 1) * frequency)) < 0.000001)
-                                                lblPrompt.Visible = true;
-                                            else
-                                                lblPrompt.Visible = false;
-                                        }
-                                        else
-                                            Console.WriteLine("未找到Label！");
-                                    }
-                                }
-                                break;
+                            frequency = Convert.ToSingle(lbl.Tag.ToString());
                         }
+                        if (countSumbit < 4)
+                            lbl.Visible = true;
+                        else {
+                            if (Math.Abs((countSumbit - 1) * frequency - Convert.ToInt32((countSumbit - 1) * frequency)) < 0.000001)
+                                lbl.Visible = true;
+                            else
+                                lbl.Visible = false;
+                        }
+                       
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message + "-------------------------");
-                Console.WriteLine("判断是否未必填项的时候出错!");
+            catch (Exception ex) {
+                MessageBox.Show("判断是否是必选项是出错,错误信息:"+ex.Message);
             }
         }
         #endregion
@@ -1425,38 +1391,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 接箍编号、炉号、批号输入框焦点获取时
-        private void txtCoupingNo_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCoupingNo_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void txtHeatNo_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void txtHeatNo_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtBatchNo_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtBatchNo_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-        #endregion
-
+        #region tabControl切换事件
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -1464,9 +1399,11 @@ namespace YYOPInspectionClient
             {
                 isMeasuringToolTabSelected = true;
             }
-            else {
+            else
+            {
                 isMeasuringToolTabSelected = false;
             }
-        }
+        } 
+        #endregion
     }
 }

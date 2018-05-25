@@ -15,7 +15,7 @@ namespace YYOPInspectionClient
 {
     internal partial class YYKeyenceReaderConsole : Form
     {
-        private const int READER_COUNT =30;      // number of readers to connect  基恩士读码器个数
+        private const int READER_COUNT = 30;      // number of readers to connect  基恩士读码器个数
         private const int RECV_DATA_MAX = 10240;   //数据量buff最大值
         private const int ACCURACY = 50; //接受读码器数据的最小精度 100毫秒 0为不等待
         public static ClientSocket[] clientSocketInstance;  //基恩士读码器clientSocket数组
@@ -25,15 +25,15 @@ namespace YYOPInspectionClient
         public static ThreadingForm threadingProcessForm = null;
         private delegate void SetTextCallback(string message);
         private delegate void UpdateTextBoxDelegate(object threadingProcessForm, string message);
-        public static YYKeyenceReaderConsole myselfForm=null;
-        private static string [] strArr = null;
+        public static YYKeyenceReaderConsole myselfForm = null;
+        private static string[] strArr = null;
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
         private static TextBox focusTextbox = null;
         public YYKeyenceReaderConsole()
         {
             InitializeComponent();
-            if(myselfForm==null)
-               myselfForm = this;
+            if (myselfForm == null)
+                myselfForm = this;
             this.Font = new Font("宋体", 10, FontStyle.Bold);
             clientSocketInstance = new ClientSocket[READER_COUNT];
             //this.threadingProcessForm = threadingProcessForm;
@@ -53,7 +53,7 @@ namespace YYOPInspectionClient
                 string str = File.ReadAllText(configPath);
                 str = str.Replace("\n", "");
                 string[] strIPArray = str.Split('\r');
-               // MessageBox.Show(str);
+                // MessageBox.Show(str);
                 //this.SetText(strIPArray[1]);
                 //两种方式初始化构造
                 //byte[] ip1 = { 192, 168, 0, 101 };
@@ -126,7 +126,7 @@ namespace YYOPInspectionClient
 
                     clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接成功.");
-                   
+
                     //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connected.\r\n";
                     //textBox_LogConsole.Update();
                 }
@@ -267,15 +267,15 @@ namespace YYOPInspectionClient
         }
 
 
-        private   void setLogText(string str)
+        private void setLogText(string str)
         {
             //textBox_LogConsole.Text += str+"\r\n";
             textBox_LogConsole.AppendText(str);
             textBox_LogConsole.AppendText("\r\n");
             textBox_LogConsole.Update();
-           // ThreadingProcessForm.getMyForm().textBox17.Text=str;
+            // ThreadingProcessForm.getMyForm().textBox17.Text=str;
         }
-        
+
         public void Receive()
         {
             try
@@ -292,7 +292,7 @@ namespace YYOPInspectionClient
                         {
                             try
                             {
-                               recvSize = clientSocketInstance[i].dataSocket.Receive(recvBytes);
+                                recvSize = clientSocketInstance[i].dataSocket.Receive(recvBytes);
                             }
                             catch (SocketException)
                             {
@@ -499,7 +499,7 @@ namespace YYOPInspectionClient
         }
 
         //表单页面调用的方法
-        public static  int codeReaderLon()
+        public static int codeReaderLon()
         {
             int flag = 0;
             try
@@ -527,7 +527,8 @@ namespace YYOPInspectionClient
             return flag;
         }
 
-        public static void codeReaderOff() {
+        public static void codeReaderOff()
+        {
             string loff = "LOFF\r"; // CR is terminator
             Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
             for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
@@ -581,12 +582,13 @@ namespace YYOPInspectionClient
                             recvBytes[recvSize] = 0;
                             if (threadingProcessForm != null)
                             {
-                                if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR")) {
-                                        UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes).TrimEnd());
+                                if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
+                                {
+                                    UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes).TrimEnd());
                                 }
-                                   
+
                             }
-                            SetText(DateTime.Now.ToString()+"    "+Encoding.UTF8.GetString(recvBytes));
+                            SetText(DateTime.Now.ToString() + "    " + Encoding.UTF8.GetString(recvBytes));
                         }
                     }
                     if (ACCURACY > 0)
@@ -597,35 +599,26 @@ namespace YYOPInspectionClient
             {
                 MessageBox.Show("接收服务端发送的消息出错:" + ex.ToString());
             }
-
         }
 
         private static void UpdateTextBox(Object form, string message)
         {
-            //Console.WriteLine((form==null)+"-------------**********----------------");
-           // Console.WriteLine("-------isMeasuringToolTabSelected" + ThreadingForm.isMeasuringToolTabSelected);
             if (ThreadingForm.isMeasuringToolTabSelected)
             {
-               // Console.WriteLine("-------"+ ThreadingForm.getMyForm().Name);
-                //Control[] cts = ThreadingForm.getMyForm().Controls.Find(ThreadingForm.focusTextBoxName, false);
-                //if (cts.Length > 0)
-                //{
-                    //GoThroughControls(form, ThreadingForm.focusTextBoxName);
-                    //Console.WriteLine("-------tb" + focusTextbox.Name);
-                    //if (focusTextbox != null) {
-                        if (ThreadingForm.englishKeyboard.Textbox_display.InvokeRequired)
-                        {
-                            UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                            ThreadingForm.englishKeyboard.Textbox_display.Invoke(md,new object[] { (object)ThreadingForm.englishKeyboard, message });
-                       }
-                        else {
-                             ThreadingForm.englishKeyboard.Textbox_display.Text = message;
-                        }
-                    //}
-                
+                if (ThreadingForm.englishKeyboard.Textbox_display.InvokeRequired)
+                {
+                    UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                    ThreadingForm.englishKeyboard.Textbox_display.Invoke(md, new object[] { (object)ThreadingForm.englishKeyboard, message });
+                }
+                else
+                {
+                    ThreadingForm.englishKeyboard.Textbox_display.Text = message;
+                }
+                //}
+
                 return;
             }
-            
+
             strArr = Regex.Split(message, "\\s+");
             if (strArr.Length > 3)
             {
@@ -638,31 +631,32 @@ namespace YYOPInspectionClient
                 argHeatNo = strArr[1];
                 argBatchNo = strArr[2];
             }
-            else if (strArr.Length > 1) {
+            else if (strArr.Length > 1)
+            {
                 argHeatNo = strArr[1];
             }
             if (((ThreadingForm)form).txtCoupingNo.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                if(argCoupingNo!=null)
+                if (argCoupingNo != null)
                     ((ThreadingForm)form).txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
-                if(argHeatNo!=null)
+                if (argHeatNo != null)
                     ((ThreadingForm)form).txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
-                if(argBatchNo!=null)
+                if (argBatchNo != null)
                     ((ThreadingForm)form).txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
             }
             else
             {
-                if(argCoupingNo!=null)
-                    ((ThreadingForm)form).txtCoupingNo.Text =argCoupingNo;
+                if (argCoupingNo != null)
+                    ((ThreadingForm)form).txtCoupingNo.Text = argCoupingNo;
                 if (argHeatNo != null)
                     ((ThreadingForm)form).txtHeatNo.Text = argHeatNo;
                 if (argBatchNo != null)
                     ((ThreadingForm)form).txtBatchNo.Text = argBatchNo;
             }
         }
-       
-        private  void SetText(string text)
+
+        private void SetText(string text)
         {
             if (this.textbox_DataConsole.InvokeRequired)
             {
@@ -677,7 +671,8 @@ namespace YYOPInspectionClient
             }
         }
 
-        private static void SetTextTwo(string text) {
+        private static void SetTextTwo(string text)
+        {
             if (myselfForm.textbox_DataConsole.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetTextTwo);
@@ -698,28 +693,30 @@ namespace YYOPInspectionClient
 
         private void YYKeyenceReaderConsole_Load(object sender, EventArgs e)
         {
-            
+
         }
-        private static void GoThroughControls(Control parContainer,string txtName)
-        {
-            for (int index = 0; index < parContainer.Controls.Count; index++)
-            {
-                // 如果是容器类控件，递归调用自己
-                if (parContainer.Controls[index].HasChildren)
-                {
-                    GoThroughControls(parContainer.Controls[index],txtName);
-                }
-                else
-                {
-                    switch (parContainer.Controls[index].GetType().Name)
-                    {
-                        case "TextBox":
-                            if (parContainer.Controls[index].Name.Contains(txtName))
-                                focusTextbox = (TextBox)parContainer.Controls[index];
-                            break;
-                    }
-                }
-            }
-        }
+        //#region 根据控件名字找到控件
+        //private static void GoThroughControls(Control parContainer, string txtName)
+        //{
+        //    for (int index = 0; index < parContainer.Controls.Count; index++)
+        //    {
+        //        // 如果是容器类控件，递归调用自己
+        //        if (parContainer.Controls[index].HasChildren)
+        //        {
+        //            GoThroughControls(parContainer.Controls[index], txtName);
+        //        }
+        //        else
+        //        {
+        //            switch (parContainer.Controls[index].GetType().Name)
+        //            {
+        //                case "TextBox":
+        //                    if (parContainer.Controls[index].Name.Contains(txtName))
+        //                        focusTextbox = (TextBox)parContainer.Controls[index];
+        //                    break;
+        //            }
+        //        }
+        //    }
+        //} 
+        //#endregion
     }
 }
