@@ -38,6 +38,8 @@ namespace YYOPInspectionClient
         private Int32 m_lPort = -1;
         private IntPtr m_ptrRealHandle;
         private int[] iIPDevID = new int[96];
+        private static int loopLogo= 0;
+        public static int recordStatus=0;//录像机状态,0代表未登录,1代表登录成功,2代表未启动,3代表已启动,4代表录像中，5代表其他
         //private int[] iChannelNum = new int[96];
         //private static int[] iChannelNum = new int[96];
         public static int[] iChannelNum = new int[96];
@@ -66,9 +68,7 @@ namespace YYOPInspectionClient
         {
             InitializeComponent();
             this.Font = new Font("宋体", 12, FontStyle.Bold);
-            if (mainWindowForm == null) {
-                mainWindowForm = this;
-            }
+           
             //初始化数据
             mainWindowX = this.Left;mainWindowY = this.Top;
             mainWindowWidth = this.Width;mainWindowHeight = this.Height;
@@ -95,6 +95,10 @@ namespace YYOPInspectionClient
                     iChannelNum[i] = -1;
                 }
             }
+            if (mainWindowForm == null)
+            {
+                mainWindowForm = this;
+            }
         }
         public static void DebugInfo(string str)
         {
@@ -116,15 +120,16 @@ namespace YYOPInspectionClient
             //}
         }
         //登录事件
-        private void btnLogin_Click(object sender, EventArgs e)
+        public void btnLogin_Click(object sender, EventArgs e)
         {
+            //recordLogin();
             if (m_lUserID < 0)
             {
                 string DVRIPAddress = textBoxIP.Text; //设备IP地址或者域名 Device IP
                 Int16 DVRPortNumber = Int16.Parse(textBoxPort.Text);//设备服务端口号 Device Port
                 string DVRUserName = textBoxUserName.Text;//设备登录用户名 User name to login
                 string DVRPassword = textBoxPassword.Text;//设备登录密码 Password to login
-               
+
                 if (checkBoxHiDDNS.Checked)
                 {
                     byte[] HiDDNSName = System.Text.Encoding.Default.GetBytes(textBoxIP.Text);
@@ -150,7 +155,7 @@ namespace YYOPInspectionClient
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
                     //str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
-                    str = "登录录像机失败,请检查录像机网络,错误代码:"+iLastErr;
+                    str = "登录录像机失败,请检查录像机网络,错误代码:" + iLastErr;
                     DebugInfo(str);
                     return;
                 }
@@ -194,7 +199,7 @@ namespace YYOPInspectionClient
                 if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "退出登录失败,错误代码:"+iLastErr;
+                    str = "退出登录失败,错误代码:" + iLastErr;
                     //str = "NET_DVR_Logout failed, error code= " + iLastErr;
                     DebugInfo(str);
                     return;
@@ -549,80 +554,206 @@ namespace YYOPInspectionClient
             return;
         }
 
-        //#region 录像登录函数
-        //public int recordLogin()
-        //{
-        //    int result = 0;
-        //    try
-        //    {
-        //        if (m_lUserID < 0)
-        //        {
-        //            string DVRIPAddress = textBoxIP.Text; //设备IP地址或者域名 Device IP
-        //            Int16 DVRPortNumber = Int16.Parse(textBoxPort.Text);//设备服务端口号 Device Port
-        //            string DVRUserName = textBoxUserName.Text;//设备登录用户名 User name to login
-        //            string DVRPassword = textBoxPassword.Text;//设备登录密码 Password to login
-        //                                                      //MessageBox.Show(DVRIPAddress + ":" + DVRPortNumber + ":" + DVRUserName + ":" + DVRPassword);
-        //            if (checkBoxHiDDNS.Checked)
-        //            {
-        //                byte[] HiDDNSName = System.Text.Encoding.Default.GetBytes(textBoxIP.Text);
-        //                byte[] GetIPAddress = new byte[16];
-        //                uint dwPort = 0;
-        //                if (!CHCNetSDK.NET_DVR_GetDVRIPByResolveSvr_EX("www.hik-online.com", (ushort)80, HiDDNSName, (ushort)HiDDNSName.Length, null, 0, GetIPAddress, ref dwPort))
-        //                {
-        //                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-        //                    str = "NET_DVR_GetDVRIPByResolveSvr_EX failed, error code= " + iLastErr; //域名解析失败，输出错误号 Failed to login and output the error code
-        //                    DebugInfo(str);
-        //                    result = 2;
-        //                    return result;
-        //                }
-        //                else
-        //                {
-        //                    DVRIPAddress = System.Text.Encoding.UTF8.GetString(GetIPAddress).TrimEnd('\0');
-        //                    DVRPortNumber = (Int16)dwPort;
-        //                }
-        //            }
+        #region 录像登录函数
+        public static void recordLogin()
+        {
+            if (m_lUserID < 0)
+            {
+                string DVRIPAddress = mainWindowForm.textBoxIP.Text; //设备IP地址或者域名 Device IP
+                Int16 DVRPortNumber = Int16.Parse(mainWindowForm.textBoxPort.Text);//设备服务端口号 Device Port
+                string DVRUserName = mainWindowForm.textBoxUserName.Text;//设备登录用户名 User name to login
+                string DVRPassword = mainWindowForm.textBoxPassword.Text;//设备登录密码 Password to login
 
-        //            //登录设备 Login the device
-        //            m_lUserID = CHCNetSDK.NET_DVR_Login_V30(DVRIPAddress, DVRPortNumber, DVRUserName, DVRPassword, ref DeviceInfo);
-        //            if (m_lUserID < 0)
-        //            {
-        //                //iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-        //                //str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
-        //                //DebugInfo(str);
-        //                result = 1;
-        //            }
-        //            else
-        //            {
-        //                //登录成功
-        //                //DebugInfo("NET_DVR_Login_V30 succ!");
-        //                // btnLogin.Text = "Logout";
+                if (mainWindowForm.checkBoxHiDDNS.Checked)
+                {
+                    byte[] HiDDNSName = System.Text.Encoding.Default.GetBytes(mainWindowForm.textBoxIP.Text);
+                    byte[] GetIPAddress = new byte[16];
+                    uint dwPort = 0;
+                    if (!CHCNetSDK.NET_DVR_GetDVRIPByResolveSvr_EX("www.hik-online.com", (ushort)80, HiDDNSName, (ushort)HiDDNSName.Length, null, 0, GetIPAddress, ref dwPort))
+                    {
+                        iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                        str = "NET_DVR_GetDVRIPByResolveSvr_EX failed, error code= " + iLastErr; //域名解析失败，输出错误号 Failed to login and output the error code
+                        DebugInfo(str);
+                        return;
+                    }
+                    else
+                    {
+                        DVRIPAddress = System.Text.Encoding.UTF8.GetString(GetIPAddress).TrimEnd('\0');
+                        DVRPortNumber = (Int16)dwPort;
+                    }
+                }
 
-        //                dwAChanTotalNum = (uint)DeviceInfo.byChanNum;
-        //                dwDChanTotalNum = (uint)DeviceInfo.byIPChanNum + 256 * (uint)DeviceInfo.byHighDChanNum;
-        //                if (dwDChanTotalNum > 0)
-        //                {
-        //                    InfoIPChannel();
-        //                }
-        //                else
-        //                {
-        //                    for (i = 0; i < dwAChanTotalNum; i++)
-        //                    {
-        //                        ListAnalogChannel(i + 1, 1);
-        //                        iChannelNum[i] = i + (int)DeviceInfo.byStartChan;
-        //                    }
+                //登录设备 Login the device
+                m_lUserID = CHCNetSDK.NET_DVR_Login_V30(DVRIPAddress, DVRPortNumber, DVRUserName, DVRPassword, ref mainWindowForm.DeviceInfo);
+                if (m_lUserID < 0)
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    //str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
+                    str = "登录录像机失败,请检查录像机网络,错误代码:" + iLastErr;
+                    MessageBox.Show(str);
+                    DebugInfo(str);
+                    return;
+                }
+                else
+                {
+                    //登录成功
+                    //DebugInfo("NET_DVR_Login_V30 succ!");
+                    DebugInfo("登录成功,连接上录像机!");
+                    recordStatus =1;
+                   
+                    //btnLogin.Text = "Logout";
+                    mainWindowForm.btnLogin.Text = "退出";
+                     MessageBox.Show("登录成功, 连接上录像机!");
+                    mainWindowForm.dwAChanTotalNum = (uint)mainWindowForm.DeviceInfo.byChanNum;
+                    mainWindowForm.dwDChanTotalNum = (uint)mainWindowForm.DeviceInfo.byIPChanNum + 256 * (uint)mainWindowForm.DeviceInfo.byHighDChanNum;
+                    if (mainWindowForm.dwDChanTotalNum > 0)
+                    {
+                        mainWindowForm.InfoIPChannel();
+                    }
+                    else
+                    {
+                        for (loopLogo = 0; loopLogo < mainWindowForm.dwAChanTotalNum; loopLogo++)
+                        {
+                            mainWindowForm.ListAnalogChannel(loopLogo + 1, 1);
+                            iChannelNum[loopLogo] = loopLogo + (int)mainWindowForm.DeviceInfo.byStartChan;
+                        }
 
-        //                    comboBoxView.SelectedItem = 1;
-        //                    // MessageBox.Show("This device has no IP channel!");
-        //                }
-        //            }
+                        mainWindowForm.comboBoxView.SelectedItem = 1;
+                        // MessageBox.Show("This device has no IP channel!");
+                    }
+                }
 
-        //        }
-        //    } catch (Exception e) {
-        //        result = 2;
-        //    }
-        //    return result;
-        //}
-        //#endregion
+            }
+            else
+            {
+                //注销登录 Logout the device
+                if (m_lRealHandle >= 0)
+                {
+                    //DebugInfo("Please stop live view firstly"); //登出前先停止预览 Stop live view before logout
+                    DebugInfo("请先停止预览，然后再退出登录!");
+                    return;
+                }
+
+                if (!CHCNetSDK.NET_DVR_Logout(m_lUserID))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "退出登录失败,错误代码:" + iLastErr;
+                    //str = "NET_DVR_Logout failed, error code= " + iLastErr;
+                    DebugInfo(str);
+                    return;
+                }
+                // DebugInfo("NET_DVR_Logout succ!");
+                DebugInfo("退出成功!");
+                recordStatus = 0;
+                mainWindowForm.listViewIPChannel.Items.Clear();//清空通道列表 Clean up the channel list
+                m_lUserID = -1;
+                // btnLogin.Text = "Login";
+                mainWindowForm.btnLogin.Text = "登录";
+            }
+            return;
+        }
+        #endregion
+
+        #region 录像预览函数
+        public static void recordPreview()
+        {
+            if (m_lUserID < 0)
+            {
+                MessagePrompt.Show("请检查是否登录录像机!");
+                return;
+            }
+            if (m_bRecord)
+            {
+                MessagePrompt.Show("预览前请先停止正在录制的录像机!");
+                return;
+            }
+
+            if (m_lRealHandle < 0)
+            {
+                CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
+                lpPreviewInfo.hPlayWnd = mainWindowForm.RealPlayWnd.Handle;//预览窗口 live view window
+                lpPreviewInfo.lChannel = iChannelNum[(int)iSelIndex];//预览的设备通道 the device channel number
+                lpPreviewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+                lpPreviewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
+                lpPreviewInfo.bBlocked = true; //0- 非阻塞取流，1- 阻塞取流
+                lpPreviewInfo.dwDisplayBufNum = 15; //播放库显示缓冲区最大帧数
+
+                IntPtr pUser = IntPtr.Zero;//用户数据 user data 
+
+                if (mainWindowForm.comboBoxView.SelectedIndex == 0)
+                {
+                    //打开预览 Start live view 
+                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
+                }
+                else
+                {
+                    lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
+                    mainWindowForm.m_ptrRealHandle = mainWindowForm.RealPlayWnd.Handle;
+                    mainWindowForm.RealData = new CHCNetSDK.REALDATACALLBACK(mainWindowForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
+                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, mainWindowForm.RealData, pUser);
+                }
+
+                if (m_lRealHandle < 0)
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "预览失败,错误代码:" + iLastErr;
+                    //str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
+                    DebugInfo(str);
+                    return;
+                }
+                else
+                {
+                    //预览成功
+                    DebugInfo("预览成功!");
+                    recordStatus = 3;
+                    //DebugInfo("NET_DVR_RealPlay_V40 succ!");
+                    mainWindowForm.btnPreview.Text = "关闭录像机";
+                }
+            }
+            else
+            {
+                //停止预览 Stop live view 
+                if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
+                {
+                    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+                    str = "停止预览失败,错误代码:" + iLastErr;
+                    //str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
+                    DebugInfo(str);
+                    return;
+                }
+
+                if ((mainWindowForm.comboBoxView.SelectedIndex == 1) && (mainWindowForm.m_lPort >= 0))
+                {
+                    if (!PlayCtrl.PlayM4_Stop(mainWindowForm.m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        str = "PlayM4_Stop failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    if (!PlayCtrl.PlayM4_CloseStream(mainWindowForm.m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        str = "PlayM4_CloseStream failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    if (!PlayCtrl.PlayM4_FreePort(mainWindowForm.m_lPort))
+                    {
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        str = "PlayM4_FreePort failed, error code= " + iLastErr;
+                        DebugInfo(str);
+                    }
+                    mainWindowForm.m_lPort = -1;
+                }
+                DebugInfo("停止预览成功!");
+                recordStatus = 2;
+                //DebugInfo("NET_DVR_StopRealPlay succ!");
+                m_lRealHandle = -1;
+                mainWindowForm.btnPreview.Text = "启动录像机";
+                mainWindowForm.RealPlayWnd.Invalidate();//刷新窗口 refresh the window
+            }
+            return;
+        } 
+        #endregion
 
         //#region 退出登陆
         //public void recordLoginOut()
@@ -762,20 +893,17 @@ namespace YYOPInspectionClient
         //#endregion
 
         #region 录制视频函数
-        public static int RecordVideo(string timestamp)
+        public static void RecordVideo(string timestamp)
         {
-            int flag = 0;
             try
             {
                 if (m_lUserID < 0)
                 {
                     DebugInfo("录像失败,请先登录[表单发过来请求]!");
-                    return 1;
                 }
                 if (m_lRealHandle < 0)
                 {
                     DebugInfo("录像失败,请先开启预览[表单发过来请求]!");
-                    return 2;
                 }
                 string coupingDir = Application.StartupPath + "\\draft\\";
                 //MessageBox.Show(coupingDir);
@@ -797,22 +925,20 @@ namespace YYOPInspectionClient
                         iLastErr = CHCNetSDK.NET_DVR_GetLastError();
                         //str = "NET_DVR_SaveRealData failed, error code= " + iLastErr;
                         DebugInfo("录像失败[表单发过来请求],错误代码:" + iLastErr);
-                        return 3;
                     }
                     else
                     {
                         DebugInfo("录像成功[表单发过来请求]!");
                         //btnRecord.Text = "Stop";
                         m_bRecord = true;
+                        recordStatus = 4;
                     }
                 }
             }
             catch (Exception e)
             {
-                flag = 4;
+                DebugInfo("录像失败,错误代码:" + iLastErr);
             }
-            return flag;
-
         }
         #endregion
 
@@ -829,6 +955,7 @@ namespace YYOPInspectionClient
             else
             {
                 m_bRecord = false;
+                recordStatus = 3;
             }
         } 
         #endregion
@@ -913,8 +1040,9 @@ namespace YYOPInspectionClient
             InfoIPChannel();
         }
         //预览事件
-        private void btnPreview_Click_1(object sender, EventArgs e)
+        public void btnPreview_Click_1(object sender, EventArgs e)
         {
+            //recordPreview();
             if (m_lUserID < 0)
             {
                 MessagePrompt.Show("请检查是否登录录像机!");
@@ -957,7 +1085,7 @@ namespace YYOPInspectionClient
                 if (m_lRealHandle < 0)
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "预览失败,错误代码:"+iLastErr;
+                    str = "预览失败,错误代码:" + iLastErr;
                     //str = "NET_DVR_RealPlay_V40 failed, error code= " + iLastErr; //预览失败，输出错误号 failed to start live view, and output the error code.
                     DebugInfo(str);
                     return;
@@ -966,6 +1094,7 @@ namespace YYOPInspectionClient
                 {
                     //预览成功
                     DebugInfo("预览成功!");
+                    recordStatus = 3;
                     //DebugInfo("NET_DVR_RealPlay_V40 succ!");
                     btnPreview.Text = "关闭录像机";
                 }
@@ -976,7 +1105,7 @@ namespace YYOPInspectionClient
                 if (!CHCNetSDK.NET_DVR_StopRealPlay(m_lRealHandle))
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
-                    str = "停止预览失败,错误代码:"+iLastErr;
+                    str = "停止预览失败,错误代码:" + iLastErr;
                     //str = "NET_DVR_StopRealPlay failed, error code= " + iLastErr;
                     DebugInfo(str);
                     return;

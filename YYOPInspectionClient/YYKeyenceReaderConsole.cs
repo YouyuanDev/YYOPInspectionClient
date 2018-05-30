@@ -29,6 +29,7 @@ namespace YYOPInspectionClient
         private static string[] strArr = null;
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
         private static TextBox focusTextbox = null;
+        public static int readerStatus=0;//读码器的状态,0代表未登录,1代表读取中,2代表异常
         public YYKeyenceReaderConsole()
         {
             InitializeComponent();
@@ -92,8 +93,9 @@ namespace YYOPInspectionClient
 
         }
 
-        private void connect_Click(object sender, EventArgs e)
+        public void connect_Click(object sender, EventArgs e)
         {
+            //codeReaderConnect();
             //this.connect.Text = "Connect...";
             //this.connect.Update();
             //连接所有读码器socket
@@ -267,13 +269,11 @@ namespace YYOPInspectionClient
         }
 
 
-        private void setLogText(string str)
+        private static void setLogText(string str)
         {
-            //textBox_LogConsole.Text += str+"\r\n";
-            textBox_LogConsole.AppendText(str);
-            textBox_LogConsole.AppendText("\r\n");
-            textBox_LogConsole.Update();
-            // ThreadingProcessForm.getMyForm().textBox17.Text=str;
+            myselfForm.textBox_LogConsole.AppendText(str);
+            myselfForm.textBox_LogConsole.AppendText("\r\n");
+            myselfForm.textBox_LogConsole.Update();
         }
 
         public void Receive()
@@ -499,9 +499,77 @@ namespace YYOPInspectionClient
         }
 
         //表单页面调用的方法
-        public static int codeReaderLon()
+        public static void codeReaderConnect() {
+
+            for (int i = 0; i < READER_COUNT; i++)
+            {
+                try
+                {
+                    if (clientSocketInstance[i] == null)
+                        break;
+                    clientSocketInstance[i].readerCommandEndPoint.Port = Convert.ToInt32(myselfForm.CommandPortInput.Text);
+                    clientSocketInstance[i].readerDataEndPoint.Port = Convert.ToInt32(myselfForm.DataPortInput.Text);
+                    if (clientSocketInstance[i].commandSocket != null)
+                    {
+                        clientSocketInstance[i].commandSocket.Close();
+                    }
+                    clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接中,请等待...");
+                    clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接成功.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
+                    clientSocketInstance[i].commandSocket = null;
+                    readerStatus = 2;
+                    continue;
+                }
+                catch (SocketException ex)
+                {
+                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
+                    clientSocketInstance[i].commandSocket = null;
+                    readerStatus = 2;
+                    continue;
+                }
+                try
+                {
+                    if (clientSocketInstance[i].dataSocket != null)
+                    {
+                        clientSocketInstance[i].dataSocket.Close();
+                    }
+                    if (clientSocketInstance[i].readerCommandEndPoint.Port == clientSocketInstance[i].readerDataEndPoint.Port)
+                    {
+                        clientSocketInstance[i].dataSocket = clientSocketInstance[i].commandSocket;
+                    }
+                    else
+                    {
+                        clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接中,请等待...");
+                        clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
+                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接成功.");
+                        if (!myselfForm.listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
+                        {
+                            myselfForm.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
+                            myselfForm.listBox_Reader.Update();
+                        }
+                    }
+                    clientSocketInstance[i].dataSocket.ReceiveTimeout = 100;
+                    readerStatus = 1;
+                }
+                catch (SocketException ex)
+                {
+                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接失败.");
+                    clientSocketInstance[i].dataSocket = null;
+                    readerStatus = 2;
+                    continue;
+                }
+
+            }
+        }
+
+        public static void codeReaderLon()
         {
-            int flag = 0;
             try
             {
                 string lon = "LON\r";   // CR is terminator
@@ -511,20 +579,19 @@ namespace YYOPInspectionClient
                     if (clientSocketInstance[i].commandSocket != null)
                     {
                         clientSocketInstance[i].commandSocket.Send(command);
+                        readerStatus = 1;
                     }
                     else
                     {
-                        flag = 1;
                         SetTextTwo("读码器已经断开连接，请重新连接扫码!");
-                        //MessageBox.Show("读码器已经断开连接，请重新连接扫码！");
+                        readerStatus = 0;
                     }
                 }
             }
             catch (Exception ex)
             {
-                flag = 2;
+                readerStatus = 2;
             }
-            return flag;
         }
 
         public static void codeReaderOff()
@@ -537,6 +604,7 @@ namespace YYOPInspectionClient
                 {
                     clientSocketInstance[i].commandSocket.Send(command);
                     SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LOFF sent.");
+                    readerStatus = 0;
                 }
                 else
                 {

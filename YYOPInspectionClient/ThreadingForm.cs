@@ -26,7 +26,7 @@ namespace YYOPInspectionClient
         private List<Label> flpTabTwoLblList = new List<Label>();
         private List<string> measureItemCodeList = new List<string>();
         private IndexWindow indexWindow;
-        private MainWindow mainWindow;
+        //private MainWindow mainWindow;
         // YYKeyenceReaderConsole codeReaderWindow;
         AutoSize auto = new AutoSize();
         //时间戳(视频和form表单保存的目录名)
@@ -36,7 +36,7 @@ namespace YYOPInspectionClient
         public ThreadingForm threadForm = null;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer = null;
-        int videoResult = 1;
+       // int videoResult = 1;
         public static bool isQualified =true;
         public delegate void EventHandle(object sender, EventArgs e);
         public static bool isMeasuringToolTabSelected=true;//
@@ -49,7 +49,7 @@ namespace YYOPInspectionClient
         }
 
         #region 窗体构造函数
-        public ThreadingForm(IndexWindow indexWindow, MainWindow mainWindow)
+        public ThreadingForm(IndexWindow indexWindow)
         {
             InitializeComponent();
             try
@@ -63,7 +63,6 @@ namespace YYOPInspectionClient
                     numberKeyboard.containerControl = this.flpTabTwoContent;
 
                     this.indexWindow = indexWindow;
-                    this.mainWindow = mainWindow;
                     timestamp = CommonUtil.getMesuringRecord();
                     this.lblReaderStatus.Text = "读码器未启动...";
                     this.lblVideoStatus.Text = "录像未启动...";
@@ -357,7 +356,7 @@ namespace YYOPInspectionClient
                     pnlMeasureTool.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
+                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString(), Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnlMeasureTool.Controls.Add(lbl0_1);
                         TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
                         pnlMeasureTool.Controls.Add(tbTool1);
@@ -368,7 +367,7 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString(), Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnlMeasureTool.Controls.Add(lbl0_2);
                         TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
                         pnlMeasureTool.Controls.Add(tbTool2);
@@ -635,7 +634,7 @@ namespace YYOPInspectionClient
         private void btnFormClose_Click(object sender, EventArgs e)
         {
             //关闭之前判断是否关闭读码器和结束录像
-            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            if (button2.Text.Trim().Contains("结束录制")|| button1.Text.Trim().Contains("结束扫码"))
             {
                 MessagePrompt.Show("录像机或读码器尚未关闭！");
             }
@@ -965,26 +964,8 @@ namespace YYOPInspectionClient
             }
             else if (btnName == "开始扫码")
             {
-                //先判断是否连接上读码器，如果没有连接上则提示
-                int resLon = YYKeyenceReaderConsole.codeReaderLon();
-                //读码器已经连接上
-                if (resLon == 0)
-                {
-                    //然后开启循环读取数据
-                    this.lblReaderStatus.Text = "读取中...";
-                    YYKeyenceReaderConsole.threadingProcessForm = this;
-                    this.button1.Text = "结束扫码";
-                }
-                else if (resLon == 1)
-                {
-                    this.lblReaderStatus.Text = "读码器尚未连接...";
-                    MessagePrompt.Show("请检查读码器是否连接或已经断开连接!");
-                }
-                else
-                {
-                    this.lblReaderStatus.Text = "读码器尚未连接...";
-                    MessagePrompt.Show("请检查读码器是否连接或已经断开连接!");
-                }
+                YYKeyenceReaderConsole.codeReaderLon();
+                this.button1.Text= "结束扫码";
             }
         }
         #endregion
@@ -998,14 +979,14 @@ namespace YYOPInspectionClient
                 {
                     timestamp = CommonUtil.getMesuringRecord();
                 }
-                this.lblVideoStatus.Text = "开始录制...";
-                videoResult = MainWindow.RecordVideo(timestamp);
-                switch (videoResult)
+                switch (MainWindow.recordStatus)
                 {
-                    case 0:
+                    case 3:
+                        RealTimePreview();
+                        MainWindow.RecordVideo(timestamp);
+                        this.lblVideoStatus.Text = "开始录制...";
                         this.lblVideoStatus.Text = "录像中...";
                         videosArr += timestamp + "_vcr.mp4;";
-                        RealTimePreview();
                         if (timer != null)
                         {
                             countTime = 0;
@@ -1022,27 +1003,16 @@ namespace YYOPInspectionClient
                         }
                         this.button2.Text = "结束录制";
                         break;
-                    case 1:
-                        this.lblVideoStatus.Text = "录像机未连接...";
-                        MessagePrompt.Show("录制失败,请先登录录像机!");
-                        break;
-                    case 2:
-                        this.lblVideoStatus.Text = "录像机未启动...";
-                        MessagePrompt.Show("录制失败,请先启动录像机!");
-                        break;
-                    case 3:
-                        this.lblVideoStatus.Text = "录制失败...";
-                        MessagePrompt.Show("录制失败,请检查配置!");
-                        break;
-                    case 4:
-                        MessagePrompt.Show("录制失败!");
+                    default :
+                        this.lblVideoStatus.Text = "检查录像机是否启动...";
+                        MessagePrompt.Show("录制失败,请检查录像机是否正常运行!");
                         break;
                 }
             }
             else if (this.button2.Text == "结束录制")
             {
-                videoResult = 1;
                 MainWindow.stopRecordVideo();
+               // MainWindow.recordStatus = 3;
                 timer.Stop();
                 //保存timestamp到fileuploadrecord中
                 RestoreSetting();
@@ -1105,8 +1075,8 @@ namespace YYOPInspectionClient
                 mainWindow.RealPlayWnd.Left = 0;
                 mainWindow.RealPlayWnd.Top = 0;
                 mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
-                mainWindow.Show();
-                mainWindow.TopMost = true;
+                MainWindow.mainWindowForm.Show();
+                MainWindow.mainWindowForm.TopMost = true;
             }
         }
         #endregion
@@ -1401,8 +1371,16 @@ namespace YYOPInspectionClient
             }
             else
             {
-                isMeasuringToolTabSelected = false;
+                if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
+                {
+                    this.tabControl1.SelectedIndex= 0;
+                    MessagePrompt.Show("请选择合同号!");
+                }
+                else {
+                    isMeasuringToolTabSelected = false;
+                }
             }
+           
         } 
         #endregion
     }

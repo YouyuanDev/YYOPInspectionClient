@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
     {
         private static Thread thread = null;
         private YYKeyenceReaderConsole readerCodeWindow = null;
-        private MainWindow videoWindow = null;
+       // private MainWindow videoWindow = null;
         public ThreadingForm threadFrom = null;
         public  LoginWinform loginWinform=null;
         #region 构造函数
@@ -304,18 +304,30 @@ namespace YYOPInspectionClient
         #region 菜单栏新建表单事件
         private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            //ThreadingProcessForm form = new ThreadingProcessForm(this, mainWindow);
-            if (threadFrom != null)
+            try
             {
+                // MainWindow mainWindow = new MainWindow();
+                if (threadFrom == null)
+                    threadFrom = new ThreadingForm(this);
                 threadFrom.Show();
+                threadFrom.threadForm = threadFrom;
+                if (readerCodeWindow== null) {
+                    readerCodeWindow = new YYKeyenceReaderConsole();
+                }
+                //登录读码器
+                if (YYKeyenceReaderConsole.readerStatus== 0) {
+                    readerCodeWindow.connect_Click(null,null);
+                }
+                if (MainWindow.mainWindowForm == null) {
+                    MainWindow videoWindow = new MainWindow();
+                    videoWindow.btnLogin_Click(null, null);
+                    videoWindow.btnPreview_Click_1(null, null);
+                }
             }
-            else
-            {
-                threadFrom = new ThreadingForm(this, mainWindow);
-                threadFrom.Show();
+            catch (Exception ex) {
+                MessagePrompt.Show("系统提示,提示信息:"+ex.Message);
             }
-            threadFrom.threadForm = threadFrom;
+            
             //form.Show();
         }
         #endregion
@@ -343,11 +355,12 @@ namespace YYOPInspectionClient
         #region 菜单栏录像设置事件
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (videoWindow == null)
+            if (MainWindow.mainWindowForm == null)
             {
-                videoWindow = new MainWindow();
+                MainWindow videoWindow = new MainWindow();
+                videoWindow.Show();
             }
-            videoWindow.Show();
+            MainWindow.mainWindowForm.Show();
         }
         #endregion
 
@@ -397,7 +410,7 @@ namespace YYOPInspectionClient
                 //string inspection_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
 
                 string operator_no = "",thread_inspection_record_code = "",coupling_heat_no="", coupling_lot_no="", production_line="", machine_no="", coupling_no="",
-                    production_crew="", production_shift="", contract_no="", inspection_result="",videoNo="";
+                    production_crew="", production_shift="", contract_no="", inspection_result="",videoNo="",inspection_time="";
                 object obj0 = this.dataGridView1.Rows[index].Cells["operator_no"].Value;
                 object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
                 object obj2 = this.dataGridView1.Rows[index].Cells["coupling_heat_no"].Value;
@@ -410,6 +423,8 @@ namespace YYOPInspectionClient
                 object obj9 = this.dataGridView1.Rows[index].Cells["contract_no"].Value; 
                 object obj10= this.dataGridView1.Rows[index].Cells["inspection_result"].Value;
                 object obj11 = this.dataGridView1.Rows[index].Cells["video_no"].Value;
+                object obj12 = this.dataGridView1.Rows[index].Cells["inspection_time"].Value;
+
                 if (obj0!=null)
                     operator_no = Convert.ToString(obj0);
                  if(obj1!=null)
@@ -434,7 +449,9 @@ namespace YYOPInspectionClient
                     inspection_result = Convert.ToString(obj10);
                 if (obj11 != null)
                     videoNo = Convert.ToString(obj11);
-                DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
+                if (obj12 != null)
+                    inspection_time = Convert.ToString(obj12);
+                DetailForm form = new DetailForm(operator_no, thread_inspection_record_code, inspection_time);
                 form.indexWindow = this;
                 form.txtProductionArea.Text =production_line;
                 form.txtMachineNo.Text = machine_no;

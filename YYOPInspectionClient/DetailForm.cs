@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
     public partial class DetailForm : Form
     {
         //public string inspection_no;
-        public string operator_no,thread_inspection_record_code;
+        public string operator_no, thread_inspection_record_code, inspection_time;
         private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
@@ -33,19 +33,17 @@ namespace YYOPInspectionClient
         public static bool isQualified = true;
         public static string focusTextBoxName = null;
         #region 构造函数
-        public DetailForm(string operator_no, string thread_inspection_record_code)
+        public DetailForm(string operator_no, string thread_inspection_record_code, string inspection_time)
         {
             InitializeComponent();
             try
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    //englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
-                   // numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
                     numberKeyboard.containerControl = this.flpTabTwoContent;
                     this.operator_no = operator_no;
                     this.thread_inspection_record_code = thread_inspection_record_code;
-                    //InitContractList();
+                    this.inspection_time = inspection_time;
                     if (!string.IsNullOrWhiteSpace(thread_inspection_record_code) && !string.IsNullOrWhiteSpace(operator_no))
                     {
                         GetThreadFormInitData(thread_inspection_record_code);
@@ -66,7 +64,7 @@ namespace YYOPInspectionClient
                 MessagePrompt.Show("系统繁忙!");
                 this.Close();
             }
-        } 
+        }
         #endregion
 
         #region 根据合同编号获取检验记录
@@ -121,23 +119,24 @@ namespace YYOPInspectionClient
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
                         string contractInfo = jo["contractInfo"].ToString();
                         string measureInfo = jo["measureInfo"].ToString();
-                        string inspectionData= jo["inspectionData"].ToString();
-                        
+                        string inspectionData = jo["inspectionData"].ToString();
+
                         FillFormTitle(contractInfo);//填充表单合同信息
                         JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
                         JArray measureDataArr = (JArray)JsonConvert.DeserializeObject(inspectionData);
-                       
+
                         this.flpTabOneContent.Controls.Clear();
                         this.flpTabTwoContent.Controls.Clear();
                         //初始化测量项
                         InitMeasureTools(measureArr);
                         //初始化测量项和测量值
                         InitMeasureToolNoAndValue(measureDataArr);
-                        GoThroughControls(this.flpTabOneContent,flpTabOneTxtList);
+                        GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
                         GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
                         AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
                         NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
-                        foreach (TextBox tb in flpTabTwoTxtList) {
+                        foreach (TextBox tb in flpTabTwoTxtList)
+                        {
                             JudgeValIsRight(tb);
                         }
                     }
@@ -147,8 +146,8 @@ namespace YYOPInspectionClient
             {
                 this.flpTabOneContent.Controls.Clear();
                 this.flpTabTwoContent.Controls.Clear();
-                MessagePrompt.Show("初始化表单出错,错误信息:"+e.Message);
-               // Console.WriteLine("初始化表单失败......");
+                MessagePrompt.Show("初始化表单出错,错误信息:" + e.Message);
+                // Console.WriteLine("初始化表单失败......");
             }
         }
         #endregion
@@ -157,7 +156,7 @@ namespace YYOPInspectionClient
         private void FillFormTitle(string contractInfo)
         {
             JObject contractObj = (JObject)JsonConvert.DeserializeObject(contractInfo);
-           
+
             if (!string.IsNullOrWhiteSpace(contractObj["machining_contract_no"].ToString()))
                 this.txtMachiningContractNo.Text = contractObj["machining_contract_no"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["threading_type"].ToString()))
@@ -202,8 +201,8 @@ namespace YYOPInspectionClient
                 this.txtSealPatternNo.Text = contractObj["seal_sample_graph_no"].ToString();
             if (!string.IsNullOrWhiteSpace(contractObj["thread_sample_graph_no"].ToString()))
                 this.txtThreadDrawingNo.Text = contractObj["thread_sample_graph_no"].ToString();
-           // this.txtHeatNo.Text = coupling_heat_no;
-           // this.txtBatchNo.Text = coupling_lot_no;
+            // this.txtHeatNo.Text = coupling_heat_no;
+            // this.txtBatchNo.Text = coupling_lot_no;
         }
         #endregion
 
@@ -225,7 +224,7 @@ namespace YYOPInspectionClient
                     pnlMeasureTool.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString() + ":", Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
+                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString(), Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnlMeasureTool.Controls.Add(lbl0_1);
                         TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
                         pnlMeasureTool.Controls.Add(tbTool1);
@@ -236,7 +235,7 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString() + ":", Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight, BorderStyle = BorderStyle.FixedSingle };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString(), Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
                         pnlMeasureTool.Controls.Add(lbl0_2);
                         TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
                         pnlMeasureTool.Controls.Add(tbTool2);
@@ -456,36 +455,41 @@ namespace YYOPInspectionClient
         #region 初始化测量项数据
         private void InitMeasureToolNoAndValue(JArray measureDataArr)
         {
-            try {
+            try
+            {
                 foreach (var item in measureDataArr)
                 {
                     JObject obj = (JObject)item;
                     string itemcode = null;
-                    itemcode=(obj["itemcode"] == null)?"" : Convert.ToString(obj["itemcode"]);
+                    itemcode = (obj["itemcode"] == null) ? "" : Convert.ToString(obj["itemcode"]);
                     //填充测量工具编号
-                    if (controlTxtDir.ContainsKey(itemcode + "_measure_tool1")) {
-                        if(obj["toolcode1"] != null)
-                          controlTxtDir[itemcode + "_measure_tool1"].Text = Convert.ToString(obj["toolcode1"]);
+                    if (controlTxtDir.ContainsKey(itemcode + "_measure_tool1"))
+                    {
+                        if (obj["toolcode1"] != null)
+                            controlTxtDir[itemcode + "_measure_tool1"].Text = Convert.ToString(obj["toolcode1"]);
                     }
-                    if (controlTxtDir.ContainsKey(itemcode + "_measure_tool2")) {
+                    if (controlTxtDir.ContainsKey(itemcode + "_measure_tool2"))
+                    {
 
                         if (obj["toolcode2"] != null)
                             controlTxtDir[itemcode + "_measure_tool2"].Text = Convert.ToString(obj["toolcode2"]);
                     }
                     //填充检测项数据
-                    string[] valueArr = { },readingMaxArr= { },  readingMinArr= { },readingAvgArr= { },readingOvalityArr= { };
-                    string valA = "", valB = "",readingMaxA="",readingMaxB="",readingMinA="",readingMinB="",readingAvgA="",readingAvgB="",readingOvalityA="", readingOvalityB="";
+                    string[] valueArr = { }, readingMaxArr = { }, readingMinArr = { }, readingAvgArr = { }, readingOvalityArr = { };
+                    string valA = "", valB = "", readingMaxA = "", readingMaxB = "", readingMinA = "", readingMinB = "", readingAvgA = "", readingAvgB = "", readingOvalityA = "", readingOvalityB = "";
                     if (obj["itemvalue"] != null)
                     {
                         valueArr = Convert.ToString(obj["itemvalue"]).Split(',');
-                        for (int i = 0; i < valueArr.Length; i++) {
+                        for (int i = 0; i < valueArr.Length; i++)
+                        {
                             if (i == 0)
-                                    valA = valueArr[i];
-                            else if(i==1)
-                                    valB = valueArr[i];
+                                valA = valueArr[i];
+                            else if (i == 1)
+                                valB = valueArr[i];
                         }
                     }
-                    if (obj["reading_max"] != null) {
+                    if (obj["reading_max"] != null)
+                    {
                         readingMaxArr = Convert.ToString(obj["reading_max"]).Split(',');
                         for (int i = 0; i < readingMaxArr.Length; i++)
                         {
@@ -529,7 +533,7 @@ namespace YYOPInspectionClient
                         }
                     }
                     if (controlTxtDir.ContainsKey(itemcode + "_A_Value"))
-                        controlTxtDir[itemcode + "_A_Value"].Text =valA;
+                        controlTxtDir[itemcode + "_A_Value"].Text = valA;
                     if (controlTxtDir.ContainsKey(itemcode + "_B_Value"))
                         controlTxtDir[itemcode + "_B_Value"].Text = valB;
                     if (controlTxtDir.ContainsKey(itemcode + "_MaxA_Value"))
@@ -550,8 +554,9 @@ namespace YYOPInspectionClient
                         controlLblDir[itemcode + "_OvalityB"].Text = readingOvalityB;
                 }
             }
-            catch (Exception ex) {
-                MessagePrompt.Show("初始化测量数据时出错,错误信息:"+ex.Message);
+            catch (Exception ex)
+            {
+                MessagePrompt.Show("初始化测量数据时出错,错误信息:" + ex.Message);
             }
         }
         #endregion
@@ -575,11 +580,11 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                            numberKeyboard.inputTxt = tb;
-                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                            numberKeyboard.Show();
-                            numberKeyboard.TopMost = true;
-                            SetNumberKeyboardText(tb.Name);
+                        numberKeyboard.inputTxt = tb;
+                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                        numberKeyboard.Show();
+                        numberKeyboard.TopMost = true;
+                        SetNumberKeyboardText(tb.Name);
                     }
 
                 }
@@ -628,11 +633,11 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                            numberKeyboard.inputTxt = tb;
-                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                            numberKeyboard.Show();
-                            numberKeyboard.TopMost = true;
-                            SetNumberKeyboardText(tb.Name);
+                        numberKeyboard.inputTxt = tb;
+                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
+                        numberKeyboard.Show();
+                        numberKeyboard.TopMost = true;
+                        SetNumberKeyboardText(tb.Name);
                     }
                 }
 
@@ -673,13 +678,25 @@ namespace YYOPInspectionClient
         #region 提交修改事件
         private void btnFormSubmit_Click(object sender, EventArgs e)
         {
-            if (operator_no.Equals(Person.employee_no))
+            try
             {
-                if (!string.IsNullOrWhiteSpace(operator_no)&& !string.IsNullOrWhiteSpace(thread_inspection_record_code))
+                if (!string.IsNullOrWhiteSpace(operator_no) && !string.IsNullOrWhiteSpace(thread_inspection_record_code))
                 {
                     if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                     {
-                        ThreadFormSubmit();
+                        if (!string.IsNullOrWhiteSpace(inspection_time))
+                        {
+                            DateTime dt = DateTime.Parse(inspection_time);
+                            if (Convert.ToSingle((DateTime.Now - dt).TotalHours.ToString()) > 12)
+                                MessagePrompt.Show("已超过12小时的记录不能修改!");
+                            else
+                            {
+                                if (operator_no.Equals(Person.employee_no))
+                                    ThreadFormSubmit();
+                                else
+                                    MessagePrompt.Show("只能修改自己的表单数据!");
+                            }
+                        }
                     }
                     else
                     {
@@ -687,14 +704,14 @@ namespace YYOPInspectionClient
                         Application.Exit();
                     }
                 }
-                else {
+                else
+                {
                     MessagePrompt.Show("系统繁忙,请稍后修改!");
                 }
             }
-            else {
-                MessagePrompt.Show("只能修改自己的表单数据!");
+            catch (Exception ex) {
+                MessagePrompt.Show("系统出错，错误信息:"+ex.Message);
             }
-          
         }
         #endregion
 
@@ -904,7 +921,7 @@ namespace YYOPInspectionClient
         {
             //if(detailForm!=null)
             //  auto.controlAutoSize(detailForm);
-        } 
+        }
         #endregion
 
         #region 设置数字键盘Title
@@ -948,7 +965,8 @@ namespace YYOPInspectionClient
                 englishKeyboard.lblEnglishTitle.Text = "机床号";
             else if (inputTxtName.Contains("txtProductionArea"))
                 englishKeyboard.lblEnglishTitle.Text = "产线";
-            else {
+            else
+            {
                 englishKeyboard.lblEnglishTitle.Text = "";
             }
         }
@@ -1030,7 +1048,6 @@ namespace YYOPInspectionClient
                 this.lblDetailFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
         }
         #endregion
-
 
         #region 判断是否标红
         private void JudgeValIsRight(TextBox inputTxt)
@@ -1168,7 +1185,7 @@ namespace YYOPInspectionClient
             {
                 Console.WriteLine("英文键盘回车时出错,错误信息:" + ex.Message);
             }
-        } 
+        }
         #endregion
 
     }

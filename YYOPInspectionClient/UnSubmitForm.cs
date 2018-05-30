@@ -39,7 +39,7 @@ namespace YYOPInspectionClient
         private void getUnSummitFile()
         {
             dataGridView1.Rows.Clear();
-            string path = Application.StartupPath + "\\draft\\";
+            string path = Application.StartupPath + "\\unsubmit\\";
             if (Directory.Exists(path))
             {
                 DirectoryInfo folder = new DirectoryInfo(path);
@@ -99,7 +99,7 @@ namespace YYOPInspectionClient
                         }
                     }
                     totalForm = listForm.Count;
-                    string path = Application.StartupPath + "\\draft\\";
+                    string path = Application.StartupPath + "\\unsubmit\\";
                     //获取选中表单的路径集合
                     DirectoryInfo folder = new DirectoryInfo(path);
                     string dirName = "";
@@ -274,33 +274,5 @@ namespace YYOPInspectionClient
 
         #endregion
 
-        //private static void UploadVideo()
-        //{
-        //    string path = Application.StartupPath + "\\draft";
-        //    if (Directory.Exists(path))
-        //    {
-        //        DirectoryInfo folder = new DirectoryInfo(path);
-        //        foreach (DirectoryInfo folderMp4 in folder.GetDirectories()) {
-        //            foreach (FileInfo file in folderMp4.GetFiles("*.mp4"))
-        //            {
-        //                //获取文件路径
-        //                MessageBox.Show(file.FullName);
-        //                if (File.Exists(file.FullName)) {
-        //                    FileInfo info = new FileInfo(file.FullName);
-        //                    if (FtpUtil.UploadFile(folderMp4,info))
-        //                    {
-        //                        //File.Delete(info.FullName);
-        //                        //string fatherDir = Directory.GetParent(info.FullName).FullName;
-        //                        ////然后判断父目录中还有文件没，如果有父目录就不删除
-        //                        //if ((folderMp4.GetFiles().Length + folderMp4.GetDirectories().Length) == 0)
-        //                        //{
-        //                        //    Directory.Delete(fatherDir);
-        //                        //}
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
