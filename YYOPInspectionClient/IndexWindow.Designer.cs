@@ -682,6 +682,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "IndexWindow";
             this.Text = "主页";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexWindow_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.IndexWindow_VisibleChanged);
             this.panel1.ResumeLayout(false);

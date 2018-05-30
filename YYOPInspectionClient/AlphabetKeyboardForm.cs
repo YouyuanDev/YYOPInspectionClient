@@ -25,10 +25,21 @@ namespace YYOPInspectionClient
         public const int WM_SYSCOMMAND = 0x0112;
         public const int SC_MOVE = 0xF010;
         public const int HTCAPTION = 0x0002;
+        private static AlphabetKeyboardForm myForm=null;
         //---------------------拖动无窗体的控件(结束)
-        public AlphabetKeyboardForm()
+        public static AlphabetKeyboardForm getForm()
         {
-            InitializeComponent();           
+            if (myForm == null)
+            {
+                new AlphabetKeyboardForm();
+            }
+
+            return myForm;
+        }
+        private AlphabetKeyboardForm()
+        {
+            InitializeComponent();
+            myForm = this;         
         }
 
         private void letternum_Click(object sender, EventArgs e)

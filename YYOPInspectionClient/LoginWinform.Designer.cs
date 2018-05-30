@@ -44,7 +44,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(82, 62);
+            this.label1.Location = new System.Drawing.Point(108, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 22);
             this.label1.TabIndex = 0;
@@ -54,7 +54,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(82, 124);
+            this.label2.Location = new System.Drawing.Point(108, 124);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(98, 22);
             this.label2.TabIndex = 1;
@@ -63,7 +63,7 @@
             // txtLoginName
             // 
             this.txtLoginName.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtLoginName.Location = new System.Drawing.Point(185, 59);
+            this.txtLoginName.Location = new System.Drawing.Point(211, 59);
             this.txtLoginName.Name = "txtLoginName";
             this.txtLoginName.Size = new System.Drawing.Size(100, 32);
             this.txtLoginName.TabIndex = 2;
@@ -74,7 +74,7 @@
             // txtLoginPwd
             // 
             this.txtLoginPwd.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtLoginPwd.Location = new System.Drawing.Point(184, 121);
+            this.txtLoginPwd.Location = new System.Drawing.Point(210, 121);
             this.txtLoginPwd.Name = "txtLoginPwd";
             this.txtLoginPwd.PasswordChar = '*';
             this.txtLoginPwd.Size = new System.Drawing.Size(100, 32);
@@ -86,7 +86,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(69, 185);
+            this.button1.Location = new System.Drawing.Point(95, 185);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 52);
             this.button1.TabIndex = 4;
@@ -102,14 +102,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(374, 39);
+            this.panel1.Size = new System.Drawing.Size(410, 39);
             this.panel1.TabIndex = 5;
             // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.button2.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(331, 0);
+            this.button2.Location = new System.Drawing.Point(367, 0);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(43, 39);
             this.button2.TabIndex = 1;
@@ -130,7 +130,7 @@
             // btnLoginOut
             // 
             this.btnLoginOut.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLoginOut.Location = new System.Drawing.Point(203, 185);
+            this.btnLoginOut.Location = new System.Drawing.Point(229, 185);
             this.btnLoginOut.Name = "btnLoginOut";
             this.btnLoginOut.Size = new System.Drawing.Size(111, 52);
             this.btnLoginOut.TabIndex = 6;
@@ -142,7 +142,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 261);
+            this.ClientSize = new System.Drawing.Size(410, 261);
             this.Controls.Add(this.btnLoginOut);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);

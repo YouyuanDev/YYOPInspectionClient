@@ -20,8 +20,8 @@ namespace YYOPInspectionClient
     {
         //public string inspection_no;
         public string operator_no, thread_inspection_record_code, inspection_time;
-        private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
-        private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
+        //private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
+        //private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         public string videoNoArr = "";
@@ -40,7 +40,7 @@ namespace YYOPInspectionClient
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    numberKeyboard.containerControl = this.flpTabTwoContent;
+                    NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
                     this.operator_no = operator_no;
                     this.thread_inspection_record_code = thread_inspection_record_code;
                     this.inspection_time = inspection_time;
@@ -572,18 +572,18 @@ namespace YYOPInspectionClient
 
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        englishKeyboard.inputTxt = tb;
-                        englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        englishKeyboard.Show();
+                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        AlphabetKeyboardForm.getForm().Show();
                         SetAlphaKeyboardText(tb.Name);
                         focusTextBoxName = tb.Name;
                     }
                     else
                     {
-                        numberKeyboard.inputTxt = tb;
-                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        numberKeyboard.Show();
-                        numberKeyboard.TopMost = true;
+                        NumberKeyboardForm.getForm().inputTxt = tb;
+                        NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        NumberKeyboardForm.getForm().Show();
+                        NumberKeyboardForm.getForm().TopMost = true;
                         SetNumberKeyboardText(tb.Name);
                     }
 
@@ -604,11 +604,11 @@ namespace YYOPInspectionClient
             TextBox tb = (TextBox)sender;
             if (tb.Tag.ToString().Contains("English"))
             {
-                englishKeyboard.Hide();
+                AlphabetKeyboardForm.getForm().Hide();
             }
             else
             {
-                numberKeyboard.Hide();
+                NumberKeyboardForm.getForm().Hide();
             }
         }
         #endregion
@@ -624,19 +624,19 @@ namespace YYOPInspectionClient
 
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        englishKeyboard.inputTxt = tb;
-                        englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        englishKeyboard.Show();
-                        englishKeyboard.TopMost = true;
+                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        AlphabetKeyboardForm.getForm().Show();
+                        AlphabetKeyboardForm.getForm().TopMost = true;
                         focusTextBoxName = tb.Name;
                         SetAlphaKeyboardText(tb.Name);
                     }
                     else
                     {
-                        numberKeyboard.inputTxt = tb;
-                        numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        numberKeyboard.Show();
-                        numberKeyboard.TopMost = true;
+                        NumberKeyboardForm.getForm().inputTxt = tb;
+                        NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        NumberKeyboardForm.getForm().Show();
+                        NumberKeyboardForm.getForm().TopMost = true;
                         SetNumberKeyboardText(tb.Name);
                     }
                 }
@@ -937,14 +937,14 @@ namespace YYOPInspectionClient
             }
             Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
             if (lbl != null)
-                numberKeyboard.lblNumberTitle.Text = lbl.Text;
+                NumberKeyboardForm.getForm().lblNumberTitle.Text = lbl.Text;
         }
         #endregion
 
         #region 设置英文键盘Title
         private void SetAlphaKeyboardText(string inputTxtName)
         {
-            Console.WriteLine(inputTxtName);
+            //Console.WriteLine(inputTxtName);
             if (inputTxtName.Contains("_measure_tool1") || inputTxtName.Contains("_measure_tool2"))
             {
                 if (inputTxtName.Contains("_measure_tool1"))
@@ -953,21 +953,21 @@ namespace YYOPInspectionClient
                     inputTxtName = inputTxtName.Replace("_measure_tool2", "");
                 Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
                 if (lbl != null)
-                    englishKeyboard.lblEnglishTitle.Text = lbl.Text;
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = lbl.Text;
             }
             else if (inputTxtName.Contains("txtCoupingNo"))
-                englishKeyboard.lblEnglishTitle.Text = "接箍编号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "接箍编号";
             else if (inputTxtName.Contains("txtHeatNo"))
-                englishKeyboard.lblEnglishTitle.Text = "炉号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "炉号";
             else if (inputTxtName.Contains("txtBatchNo"))
-                englishKeyboard.lblEnglishTitle.Text = "批号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "批号";
             else if (inputTxtName.Contains("txtMachineNo"))
-                englishKeyboard.lblEnglishTitle.Text = "机床号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "机床号";
             else if (inputTxtName.Contains("txtProductionArea"))
-                englishKeyboard.lblEnglishTitle.Text = "产线";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "产线";
             else
             {
-                englishKeyboard.lblEnglishTitle.Text = "";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "";
             }
         }
         #endregion

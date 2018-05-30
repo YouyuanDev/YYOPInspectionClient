@@ -90,7 +90,6 @@ namespace YYOPInspectionClient
                     if (returnValue.Trim().Equals("success"))
                     {
                         flag = true;
-                        
                     }
                     response.Close();
                     readStream.Close();
@@ -185,7 +184,7 @@ namespace YYOPInspectionClient
         {
             try
             {
-                Console.WriteLine("----------------开始转化视频--------------");
+                //Console.WriteLine("----------------开始转化视频--------------");
                 Process p = new Process();
                 p.StartInfo.FileName = ffmpegPath;
                 p.StartInfo.UseShellExecute = false;
@@ -200,7 +199,7 @@ namespace YYOPInspectionClient
                     var file0=File.Create(destFileName);
                     file0.Close();
                 }
-                Console.WriteLine(srcFileName + ":" + destFileName);
+                //Console.WriteLine(srcFileName + ":" + destFileName);
                 //p.StartInfo.Arguments = "-c:v libx264 -strict -2 -s 1280x720 -b 1000k";
                 p.StartInfo.Arguments = "-i " + srcFileName + " -y  -vcodec h264 -b 500000 -acodec aac " + destFileName;    //执行参数
                 p.StartInfo.UseShellExecute = false;  ////不使用系统外壳程序启动进程

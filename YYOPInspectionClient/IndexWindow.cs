@@ -18,12 +18,24 @@ namespace YYOPInspectionClient
     public partial class IndexWindow : Form
     {
         private static Thread thread = null;
-        private YYKeyenceReaderConsole readerCodeWindow = null;
-       // private MainWindow videoWindow = null;
-        public ThreadingForm threadFrom = null;
-        public  LoginWinform loginWinform=null;
+        //private YYKeyenceReaderConsole readerCodeWindow = null;
+        //private MainWindow videoWindow = null;
+        //public ThreadingForm threadFrom = null;
+        //public  LoginWinform loginWinform=null;
+        private static IndexWindow myForm=null;
+        public static IndexWindow getForm()
+        {
+            if (myForm == null)
+            {
+                new IndexWindow();
+            }
+
+            return myForm;
+        }
+
+
         #region 构造函数
-        public IndexWindow()
+        private IndexWindow()
         {
             InitializeComponent();
             getSearchParam();
@@ -39,10 +51,12 @@ namespace YYOPInspectionClient
                     col.HeaderCell.Style = style;
                 }
                 this.dataGridView1.EnableHeadersVisualStyles = false;
+                myForm = this;
                 //---------------设置datagridView字体(结束)
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
+                
             }
             catch (Exception e)
             {
@@ -306,23 +320,22 @@ namespace YYOPInspectionClient
         {
             try
             {
-                // MainWindow mainWindow = new MainWindow();
-                if (threadFrom == null)
-                    threadFrom = new ThreadingForm(this);
-                threadFrom.Show();
-                threadFrom.threadForm = threadFrom;
-                if (readerCodeWindow== null) {
-                    readerCodeWindow = new YYKeyenceReaderConsole();
+                try
+                {
+                    ThreadingForm.getMyForm().Show();
                 }
+                catch (Exception ec) {
+                    MessagePrompt.Show("提示信息:" + ec.Message);
+                }
+
+                //MessageBox.Show((ThreadingForm.getMyForm()==null).ToString());
+                //ThreadingForm.getMyForm().Show();
                 //登录读码器
-                if (YYKeyenceReaderConsole.readerStatus== 0) {
-                    readerCodeWindow.connect_Click(null,null);
-                }
-                if (MainWindow.mainWindowForm == null) {
-                    MainWindow videoWindow = new MainWindow();
-                    videoWindow.btnLogin_Click(null, null);
-                    videoWindow.btnPreview_Click_1(null, null);
-                }
+                // if (YYKeyenceReaderConsole.readerStatus== 0) {
+                //YYKeyenceReaderConsole.getForm().connect_Click(null, null);
+                //// }
+                //MainWindow.getForm().btnLogin_Click(null, null);
+                //MainWindow.getForm().btnPreview_Click_1(null, null);
             }
             catch (Exception ex) {
                 MessagePrompt.Show("系统提示,提示信息:"+ex.Message);
@@ -343,24 +356,14 @@ namespace YYOPInspectionClient
         #region 菜单栏读码器设置事件
         private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (readerCodeWindow == null)
-            {
-                readerCodeWindow = new YYKeyenceReaderConsole();
-            }
-            readerCodeWindow.Show();
-
+            YYKeyenceReaderConsole.getForm().Visible=true;
         }
         #endregion
 
         #region 菜单栏录像设置事件
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MainWindow.mainWindowForm == null)
-            {
-                MainWindow videoWindow = new MainWindow();
-                videoWindow.Show();
-            }
-            MainWindow.mainWindowForm.Show();
+            MainWindow.getForm().Show();
         }
         #endregion
 
@@ -376,7 +379,7 @@ namespace YYOPInspectionClient
                 ts = now - start;
                 if (ts.TotalSeconds > 1)
                 {
-                    if (YYKeyenceReaderConsole.myselfForm != null)
+                    if (YYKeyenceReaderConsole.getForm() != null)
                     {
                         YYKeyenceReaderConsole.codeReaderOff();
                     }
@@ -387,7 +390,7 @@ namespace YYOPInspectionClient
                     now = DateTime.Now;
                 }
             }
-            if (MainWindow.mainWindowForm != null)
+            if (MainWindow.getForm() != null)
             {
                 MainWindow.stopRecordVideo();
             }
@@ -480,15 +483,8 @@ namespace YYOPInspectionClient
         private void btnExit_Click(object sender, EventArgs e)
         {
             //Application.Exit();
-            if (loginWinform != null)
-            {
-                this.Hide();
-                loginWinform.Show();
-            }
-            else {
-                MessagePrompt.Show("登出失败,请重启系统!");
-                Application.Exit();
-            }
+            this.Hide();
+            LoginWinform.getForm().Show();
         }
         #endregion
 

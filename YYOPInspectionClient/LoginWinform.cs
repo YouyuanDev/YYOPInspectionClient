@@ -18,12 +18,22 @@ namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
-        private AlphabetKeyboardForm englishKeyboard = null; 
-        private IndexWindow indexWindow = null;
-        public LoginWinform()
+        //private AlphabetKeyboardForm englishKeyboard = null;
+        private static LoginWinform myForm = null;
+        public static LoginWinform getForm()
+        {
+            if (myForm == null)
+            {
+                new LoginWinform();
+            }
+
+            return myForm;
+        }
+        private LoginWinform()
         {
             InitializeComponent();
-            this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")";
+            this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")"+CommonUtil.GetFirstMacAddress();
+            myForm = this;
         }
 
         #region 用户点击登录事件
@@ -43,9 +53,7 @@ namespace YYOPInspectionClient
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
                 byte[] data = encoding.GetBytes(json.ToString());
-                Console.WriteLine(json.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "Login/userLoginOfWinform.action";
-                Console.WriteLine(url);
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
@@ -72,41 +80,40 @@ namespace YYOPInspectionClient
                 {
                     if (jsons.Trim().Contains("{}"))
                     {
-                       MessagePrompt.Show("登录异常!");
+                        MessagePrompt.Show("登录异常!");
                     }
                     else
                     {
                         JObject jobject = JObject.Parse(jsons);
                         string loginFlag = jobject["success"].ToString().Trim();
-                        string msg= jobject["msg"].ToString().Trim();
+                        string msg = jobject["msg"].ToString().Trim();
                         if (loginFlag.Contains("True"))
                         {
                             string rowsJson = jobject["rowsData"].ToString();
                             if (rowsJson != null)
                             {
                                 Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
-                                if (indexWindow == null)
-                                {
-                                    indexWindow = new IndexWindow();
-                                    indexWindow.Show();
-                                }
-                                else
-                                    indexWindow.Show();
-                                indexWindow.loginWinform = this;
+                                
+                                IndexWindow.getForm().Show();
+                                
+                                //indexWindow.loginWinform = this;
                                 this.Hide();
-                                if (englishKeyboard != null)
-                                    englishKeyboard.Close();
+                                AlphabetKeyboardForm.getForm().Close();
                             }
                             else
                             {
                                 MessagePrompt.Show("系统繁忙，请稍后重试!");
                             }
                         }
-                        else {
+                        else
+                        {
                             MessagePrompt.Show(msg);
                         }
                     }
                 }
+            }
+            catch (WebException ex) {
+                MessagePrompt.Show("网络错误，错误信息:"+ex.Message);
             }
             catch (Exception ec)
             {
@@ -120,18 +127,18 @@ namespace YYOPInspectionClient
         #region 鼠标点击输入框事件
         private void txt_MouseDown(TextBox tb)
         {
-            if (englishKeyboard == null)
-                englishKeyboard = new AlphabetKeyboardForm();
+             
+                
             if (tb.Tag.ToString().Contains("English"))
             {
-                englishKeyboard.inputTxt = tb;
-                englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                englishKeyboard.Show();
-                englishKeyboard.TopMost = true;
+                AlphabetKeyboardForm.getForm().inputTxt = tb;
+                AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                AlphabetKeyboardForm.getForm().Show();
+                AlphabetKeyboardForm.getForm().TopMost = true;
                 if (tb.Name.Contains("txtLoginName"))
-                    englishKeyboard.lblEnglishTitle.Text = "用户名";
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "用户名";
                 if(tb.Name.Contains("txtLoginPwd"))
-                    englishKeyboard.lblEnglishTitle.Text = "密码";
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "密码";
             }
         }
 

@@ -19,22 +19,31 @@ namespace YYOPInspectionClient
         private const int RECV_DATA_MAX = 10240;   //数据量buff最大值
         private const int ACCURACY = 50; //接受读码器数据的最小精度 100毫秒 0为不等待
         public static ClientSocket[] clientSocketInstance;  //基恩士读码器clientSocket数组
-        private Thread threadReceive;  //接受各读码器server端数据的线程
+        private Thread threadReceive = null;  //接受各读码器server端数据的线程
         //delegate void SetTextCallback(string text);   //用于子线程修改textbox
         //public static ThreadingProcessForm threadingProcessForm=null;
-        public static ThreadingForm threadingProcessForm = null;
+        //public static ThreadingForm threadingProcessForm = null;
         private delegate void SetTextCallback(string message);
         private delegate void UpdateTextBoxDelegate(object threadingProcessForm, string message);
-        public static YYKeyenceReaderConsole myselfForm = null;
+        private static YYKeyenceReaderConsole myselfForm = null;
         private static string[] strArr = null;
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
-        private static TextBox focusTextbox = null;
+        //private static TextBox focusTextbox = null;
         public static int readerStatus=0;//读码器的状态,0代表未登录,1代表读取中,2代表异常
-        public YYKeyenceReaderConsole()
+
+        public static YYKeyenceReaderConsole getForm()
+        {
+            if (myselfForm == null)
+            {
+                new YYKeyenceReaderConsole();
+            }
+
+            return myselfForm;
+        }
+
+        private YYKeyenceReaderConsole()
         {
             InitializeComponent();
-            if (myselfForm == null)
-                myselfForm = this;
             this.Font = new Font("宋体", 10, FontStyle.Bold);
             clientSocketInstance = new ClientSocket[READER_COUNT];
             //this.threadingProcessForm = threadingProcessForm;
@@ -70,8 +79,13 @@ namespace YYOPInspectionClient
                     }
                 }
 
-
-
+                //
+                // Second reader to connect.
+                //
+                //byte[] ip2 = { 192, 168, 0, 102 };
+                // clientSocketInstance[readerIndex++] = new ClientSocket(ip2, CommandPort, DataPort);  // 9003 for command, 9004 for data
+                myselfForm = this;
+               
             }
             catch (Exception e)
             {
@@ -79,17 +93,6 @@ namespace YYOPInspectionClient
             }
 
 
-            //
-            // Second reader to connect.
-            //
-            //byte[] ip2 = { 192, 168, 0, 102 };
-            // clientSocketInstance[readerIndex++] = new ClientSocket(ip2, CommandPort, DataPort);  // 9003 for command, 9004 for data
-
-            //设置读码器数据读线程
-            threadReceive = new Thread(new ThreadStart(codeReaderReceive));
-            //设置为后台线程
-            threadReceive.IsBackground = true;
-            threadReceive.Start();
 
         }
 
@@ -140,7 +143,7 @@ namespace YYOPInspectionClient
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
-                    MessagePrompt.Show(ex.Message);
+                    MessagePrompt.Show("超出范围异常" + ex.Message);
                     clientSocketInstance[i].commandSocket = null;
                     continue;
                 }
@@ -152,7 +155,7 @@ namespace YYOPInspectionClient
                     setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
                     //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
                     //textBox_LogConsole.Update();
-                    MessagePrompt.Show(ex.Message);
+                    MessagePrompt.Show("Socket通信异常"+ex.Message);
                     clientSocketInstance[i].commandSocket = null;
                     continue;
                 }
@@ -648,11 +651,11 @@ namespace YYOPInspectionClient
                         else
                         {
                             recvBytes[recvSize] = 0;
-                            if (threadingProcessForm != null)
+                            if (ThreadingForm.getMyForm()!= null)
                             {
                                 if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
                                 {
-                                    UpdateTextBox(threadingProcessForm, Encoding.UTF8.GetString(recvBytes).TrimEnd());
+                                    UpdateTextBox(ThreadingForm.getMyForm(), Encoding.UTF8.GetString(recvBytes).TrimEnd());
                                 }
 
                             }
@@ -673,17 +676,16 @@ namespace YYOPInspectionClient
         {
             if (ThreadingForm.isMeasuringToolTabSelected)
             {
-                if (ThreadingForm.englishKeyboard.Textbox_display.InvokeRequired)
+                if (AlphabetKeyboardForm.getForm().Textbox_display.InvokeRequired)
                 {
                     UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                    ThreadingForm.englishKeyboard.Textbox_display.Invoke(md, new object[] { (object)ThreadingForm.englishKeyboard, message });
+                    AlphabetKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)AlphabetKeyboardForm.getForm(), message });
                 }
                 else
                 {
-                    ThreadingForm.englishKeyboard.Textbox_display.Text = message;
+                    AlphabetKeyboardForm.getForm().Textbox_display.Text = message;
                 }
                 //}
-
                 return;
             }
 
@@ -741,6 +743,7 @@ namespace YYOPInspectionClient
 
         private static void SetTextTwo(string text)
         {
+            //Console.WriteLine((myselfForm==null).ToString());
             if (myselfForm.textbox_DataConsole.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetTextTwo);
@@ -756,12 +759,16 @@ namespace YYOPInspectionClient
 
         private void btnHide_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Visible = false;
         }
 
         private void YYKeyenceReaderConsole_Load(object sender, EventArgs e)
         {
-
+            //设置读码器数据读线程
+            threadReceive = new Thread(new ThreadStart(codeReaderReceive));
+            //设置为后台线程
+            threadReceive.IsBackground = true;
+            threadReceive.Start();
         }
         //#region 根据控件名字找到控件
         //private static void GoThroughControls(Control parContainer, string txtName)

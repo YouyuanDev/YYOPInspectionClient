@@ -42,15 +42,11 @@ namespace YYOPInspectionClient
             string path = Application.StartupPath + "\\unsubmit\\";
             if (Directory.Exists(path))
             {
-                DirectoryInfo folder = new DirectoryInfo(path);
-                foreach (DirectoryInfo dirInfo in folder.GetDirectories())
-                {
-                    foreach (FileInfo file in dirInfo.GetFiles("*.txt"))
+                DirectoryInfo dir = new DirectoryInfo(path);
+                    foreach (FileInfo file in dir.GetFiles("*.txt"))
                     {
                         dataGridView1.Rows.Add(false, file.Name);//显示 
                     }
-
-                }
             }
         }
         #endregion
@@ -84,8 +80,7 @@ namespace YYOPInspectionClient
         {
             try
             {
-                List<string> listForm = new List<string>();
-                List<string> listPath = new List<string>();
+                Dictionary<string,string>listFormDir= new Dictionary<string, string>();
                 DataGridViewCheckBoxCell cell = null;
                 if (this.dataGridView1.Rows.Count > 0)
                 {
@@ -95,51 +90,45 @@ namespace YYOPInspectionClient
                         bool flag = Convert.ToBoolean(cell.Value);
                         if (flag)
                         {
-                            listForm.Add(this.dataGridView1.Rows[i].Cells["filename"].Value.ToString());
+                            listFormDir.Add(this.dataGridView1.Rows[i].Cells["filename"].Value.ToString(),"");
                         }
                     }
-                    totalForm = listForm.Count;
+                    totalForm = listFormDir.Count();
                     string path = Application.StartupPath + "\\unsubmit\\";
                     //获取选中表单的路径集合
                     DirectoryInfo folder = new DirectoryInfo(path);
                     string dirName = "";
-                    foreach (DirectoryInfo dirInfo in folder.GetDirectories())
-                    {
-                          dirName = dirInfo.Name;
-                          foreach (FileInfo file in dirInfo.GetFiles("*.txt"))
+                     foreach (FileInfo file in folder.GetFiles("*.txt"))
                           {
-                               if (listForm.Contains(file.Name)) {
-                                    listPath.Add(path + dirName+"\\" + file.Name);//显示 
+                               if (listFormDir.ContainsKey(file.Name)) {
+                                 listFormDir[file.Name] = path + dirName + "\\" + file.Name;
                                }
                           }
 
-                     }
                     //如果有选中的数
-                    if (listForm.Count > 0&&listPath.Count>0)
+                    if (listFormDir.Count > 0)
                     {
                         int tempTotal = 0;
                         string jsonContent = "";
                         //遍历listPath找到未提交文件，然后读出json数据
-                        for (int i = 0; i < listPath.Count; i++) {
-                            jsonContent = File.ReadAllText(listPath[i], Encoding.UTF8).Trim();
-                            if (jsonContent != null && jsonContent.Length > 0) {
-                                if (uploadUnSubmitForm(jsonContent)) {
-                                    //如果上传成功删除文件
-                                    File.Delete(listPath[i]);
-                                    string fatherDir = Directory.GetParent(listPath[i]).FullName;
-                                    //然后判断父目录中还有文件没，如果有父目录就不删除
-                                    if (!Directory.EnumerateDirectories(fatherDir, "*.*", SearchOption.AllDirectories).Any()) {
-                                        Directory.Delete(fatherDir);
-                                    }
-                                    tempTotal++;
-                                }else
+                        foreach(string item in listFormDir.Values) {
+                            jsonContent = File.ReadAllText(item, Encoding.UTF8).Trim();
+                            if (jsonContent != null && jsonContent.Length > 0)
+                            {
+                                if (uploadUnSubmitForm(jsonContent))
                                 {
-                                    MessagePrompt.Show("上传出现问题,总共上传"+totalForm+"个，成功"+tempTotal+"个!");
+                                    //如果上传成功删除文件
+                                    File.Delete(item);
+                                    tempTotal++;
+                                }
+                                else
+                                {
+                                    MessagePrompt.Show("上传出现问题,总共上传" + totalForm + "个，成功" + tempTotal + "个!");
                                     break;
                                 }
+                                jsonContent = "";
                             }
-                            jsonContent = "";
-                        }
+                         }
                         MessagePrompt.Show("上传完毕，" +tempTotal + "个成功" +(totalForm-tempTotal) + "个失败!");
                         getUnSummitFile();
                     }

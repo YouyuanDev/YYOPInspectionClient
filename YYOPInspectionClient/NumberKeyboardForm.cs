@@ -28,9 +28,21 @@ namespace YYOPInspectionClient
         public const int SC_MOVE = 0xF010;
         public const int HTCAPTION = 0x0002;
         //---------------------拖动无窗体的控件(结束)
+        private static NumberKeyboardForm myForm = null;
+        //---------------------拖动无窗体的控件(结束)
+        public static NumberKeyboardForm getForm()
+        {
+            if (myForm == null)
+            {
+                new NumberKeyboardForm();
+            }
+
+            return myForm;
+        }
         public NumberKeyboardForm()
         {
             InitializeComponent();
+            myForm = this;
         }
 
         private void addNum(string num)

@@ -51,7 +51,7 @@ namespace YYOPInspectionClient
         public CHCNetSDK.NET_DVR_IPCHANINFO_V40 m_struChanInfoV40;
         private PlayCtrl.DECCBFUN m_fDisplayFun = null;
         public delegate void MyDebugInfo(string str);
-        public static MainWindow mainWindowForm = null;
+        public static MainWindow myForm = null;
         private delegate void SetLogCallback(string message);
 
         //新增，保存窗体的大小和初始位置  保存录像显示窗口的大小和初始位置
@@ -64,11 +64,18 @@ namespace YYOPInspectionClient
         public static int realTimeWidth = 0;
         public static int realTimeHeigh = 0;
 
-        public MainWindow()
+        public static MainWindow getForm()
+        {
+            if (myForm == null)
+            {
+                new MainWindow();
+            }
+            return myForm;
+        }
+        private MainWindow()
         {
             InitializeComponent();
             this.Font = new Font("宋体", 12, FontStyle.Bold);
-           
             //初始化数据
             mainWindowX = this.Left;mainWindowY = this.Top;
             mainWindowWidth = this.Width;mainWindowHeight = this.Height;
@@ -95,28 +102,25 @@ namespace YYOPInspectionClient
                     iChannelNum[i] = -1;
                 }
             }
-            if (mainWindowForm == null)
-            {
-                mainWindowForm = this;
-            }
+            myForm = this;
         }
         public static void DebugInfo(string str)
         {
             str = str + "\r\n";
-            if (mainWindowForm.TextBoxInfo.InvokeRequired)
+            if (myForm.TextBoxInfo.InvokeRequired)
             {
                 SetLogCallback d = new SetLogCallback(DebugInfo);
-                mainWindowForm.TextBoxInfo.Invoke(d, new object[] { str });
+                myForm.TextBoxInfo.Invoke(d, new object[] { str });
             }
             else
             {
-                mainWindowForm.TextBoxInfo.AppendText(str);
+                myForm.TextBoxInfo.AppendText(str);
                  
             }
             //if (str.Length > 0)
             //{
             //    str += "\n";
-            //    mainWindowForm.TextBoxInfo.AppendText(str);
+            //    myForm.TextBoxInfo.AppendText(str);
             //}
         }
         //登录事件
@@ -559,14 +563,14 @@ namespace YYOPInspectionClient
         {
             if (m_lUserID < 0)
             {
-                string DVRIPAddress = mainWindowForm.textBoxIP.Text; //设备IP地址或者域名 Device IP
-                Int16 DVRPortNumber = Int16.Parse(mainWindowForm.textBoxPort.Text);//设备服务端口号 Device Port
-                string DVRUserName = mainWindowForm.textBoxUserName.Text;//设备登录用户名 User name to login
-                string DVRPassword = mainWindowForm.textBoxPassword.Text;//设备登录密码 Password to login
+                string DVRIPAddress = myForm.textBoxIP.Text; //设备IP地址或者域名 Device IP
+                Int16 DVRPortNumber = Int16.Parse(myForm.textBoxPort.Text);//设备服务端口号 Device Port
+                string DVRUserName = myForm.textBoxUserName.Text;//设备登录用户名 User name to login
+                string DVRPassword = myForm.textBoxPassword.Text;//设备登录密码 Password to login
 
-                if (mainWindowForm.checkBoxHiDDNS.Checked)
+                if (myForm.checkBoxHiDDNS.Checked)
                 {
-                    byte[] HiDDNSName = System.Text.Encoding.Default.GetBytes(mainWindowForm.textBoxIP.Text);
+                    byte[] HiDDNSName = System.Text.Encoding.Default.GetBytes(myForm.textBoxIP.Text);
                     byte[] GetIPAddress = new byte[16];
                     uint dwPort = 0;
                     if (!CHCNetSDK.NET_DVR_GetDVRIPByResolveSvr_EX("www.hik-online.com", (ushort)80, HiDDNSName, (ushort)HiDDNSName.Length, null, 0, GetIPAddress, ref dwPort))
@@ -584,7 +588,7 @@ namespace YYOPInspectionClient
                 }
 
                 //登录设备 Login the device
-                m_lUserID = CHCNetSDK.NET_DVR_Login_V30(DVRIPAddress, DVRPortNumber, DVRUserName, DVRPassword, ref mainWindowForm.DeviceInfo);
+                m_lUserID = CHCNetSDK.NET_DVR_Login_V30(DVRIPAddress, DVRPortNumber, DVRUserName, DVRPassword, ref myForm.DeviceInfo);
                 if (m_lUserID < 0)
                 {
                     iLastErr = CHCNetSDK.NET_DVR_GetLastError();
@@ -600,25 +604,25 @@ namespace YYOPInspectionClient
                     //DebugInfo("NET_DVR_Login_V30 succ!");
                     DebugInfo("登录成功,连接上录像机!");
                     recordStatus =1;
-                   
+
                     //btnLogin.Text = "Logout";
-                    mainWindowForm.btnLogin.Text = "退出";
+                    myForm.btnLogin.Text = "退出";
                      MessageBox.Show("登录成功, 连接上录像机!");
-                    mainWindowForm.dwAChanTotalNum = (uint)mainWindowForm.DeviceInfo.byChanNum;
-                    mainWindowForm.dwDChanTotalNum = (uint)mainWindowForm.DeviceInfo.byIPChanNum + 256 * (uint)mainWindowForm.DeviceInfo.byHighDChanNum;
-                    if (mainWindowForm.dwDChanTotalNum > 0)
+                    myForm.dwAChanTotalNum = (uint)myForm.DeviceInfo.byChanNum;
+                    myForm.dwDChanTotalNum = (uint)myForm.DeviceInfo.byIPChanNum + 256 * (uint)myForm.DeviceInfo.byHighDChanNum;
+                    if (myForm.dwDChanTotalNum > 0)
                     {
-                        mainWindowForm.InfoIPChannel();
+                        myForm.InfoIPChannel();
                     }
                     else
                     {
-                        for (loopLogo = 0; loopLogo < mainWindowForm.dwAChanTotalNum; loopLogo++)
+                        for (loopLogo = 0; loopLogo < myForm.dwAChanTotalNum; loopLogo++)
                         {
-                            mainWindowForm.ListAnalogChannel(loopLogo + 1, 1);
-                            iChannelNum[loopLogo] = loopLogo + (int)mainWindowForm.DeviceInfo.byStartChan;
+                            myForm.ListAnalogChannel(loopLogo + 1, 1);
+                            iChannelNum[loopLogo] = loopLogo + (int)myForm.DeviceInfo.byStartChan;
                         }
 
-                        mainWindowForm.comboBoxView.SelectedItem = 1;
+                        myForm.comboBoxView.SelectedItem = 1;
                         // MessageBox.Show("This device has no IP channel!");
                     }
                 }
@@ -645,10 +649,10 @@ namespace YYOPInspectionClient
                 // DebugInfo("NET_DVR_Logout succ!");
                 DebugInfo("退出成功!");
                 recordStatus = 0;
-                mainWindowForm.listViewIPChannel.Items.Clear();//清空通道列表 Clean up the channel list
+                myForm.listViewIPChannel.Items.Clear();//清空通道列表 Clean up the channel list
                 m_lUserID = -1;
                 // btnLogin.Text = "Login";
-                mainWindowForm.btnLogin.Text = "登录";
+                myForm.btnLogin.Text = "登录";
             }
             return;
         }
@@ -659,19 +663,19 @@ namespace YYOPInspectionClient
         {
             if (m_lUserID < 0)
             {
-                MessagePrompt.Show("请检查是否登录录像机!");
+                //MessagePrompt.Show("请检查是否登录录像机!");
                 return;
             }
             if (m_bRecord)
             {
-                MessagePrompt.Show("预览前请先停止正在录制的录像机!");
+                //MessagePrompt.Show("预览前请先停止正在录制的录像机!");
                 return;
             }
 
             if (m_lRealHandle < 0)
             {
                 CHCNetSDK.NET_DVR_PREVIEWINFO lpPreviewInfo = new CHCNetSDK.NET_DVR_PREVIEWINFO();
-                lpPreviewInfo.hPlayWnd = mainWindowForm.RealPlayWnd.Handle;//预览窗口 live view window
+                lpPreviewInfo.hPlayWnd = myForm.RealPlayWnd.Handle;//预览窗口 live view window
                 lpPreviewInfo.lChannel = iChannelNum[(int)iSelIndex];//预览的设备通道 the device channel number
                 lpPreviewInfo.dwStreamType = 0;//码流类型：0-主码流，1-子码流，2-码流3，3-码流4，以此类推
                 lpPreviewInfo.dwLinkMode = 0;//连接方式：0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP 
@@ -680,7 +684,7 @@ namespace YYOPInspectionClient
 
                 IntPtr pUser = IntPtr.Zero;//用户数据 user data 
 
-                if (mainWindowForm.comboBoxView.SelectedIndex == 0)
+                if (myForm.comboBoxView.SelectedIndex == 0)
                 {
                     //打开预览 Start live view 
                     m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
@@ -688,9 +692,9 @@ namespace YYOPInspectionClient
                 else
                 {
                     lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
-                    mainWindowForm.m_ptrRealHandle = mainWindowForm.RealPlayWnd.Handle;
-                    mainWindowForm.RealData = new CHCNetSDK.REALDATACALLBACK(mainWindowForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
-                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, mainWindowForm.RealData, pUser);
+                    myForm.m_ptrRealHandle = myForm.RealPlayWnd.Handle;
+                    myForm.RealData = new CHCNetSDK.REALDATACALLBACK(myForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
+                    m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, myForm.RealData, pUser);
                 }
 
                 if (m_lRealHandle < 0)
@@ -707,7 +711,7 @@ namespace YYOPInspectionClient
                     DebugInfo("预览成功!");
                     recordStatus = 3;
                     //DebugInfo("NET_DVR_RealPlay_V40 succ!");
-                    mainWindowForm.btnPreview.Text = "关闭录像机";
+                    myForm.btnPreview.Text = "关闭录像机";
                 }
             }
             else
@@ -722,34 +726,34 @@ namespace YYOPInspectionClient
                     return;
                 }
 
-                if ((mainWindowForm.comboBoxView.SelectedIndex == 1) && (mainWindowForm.m_lPort >= 0))
+                if ((myForm.comboBoxView.SelectedIndex == 1) && (myForm.m_lPort >= 0))
                 {
-                    if (!PlayCtrl.PlayM4_Stop(mainWindowForm.m_lPort))
+                    if (!PlayCtrl.PlayM4_Stop(myForm.m_lPort))
                     {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(myForm.m_lPort);
                         str = "PlayM4_Stop failed, error code= " + iLastErr;
                         DebugInfo(str);
                     }
-                    if (!PlayCtrl.PlayM4_CloseStream(mainWindowForm.m_lPort))
+                    if (!PlayCtrl.PlayM4_CloseStream(myForm.m_lPort))
                     {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(myForm.m_lPort);
                         str = "PlayM4_CloseStream failed, error code= " + iLastErr;
                         DebugInfo(str);
                     }
-                    if (!PlayCtrl.PlayM4_FreePort(mainWindowForm.m_lPort))
+                    if (!PlayCtrl.PlayM4_FreePort(myForm.m_lPort))
                     {
-                        iLastErr = PlayCtrl.PlayM4_GetLastError(mainWindowForm.m_lPort);
+                        iLastErr = PlayCtrl.PlayM4_GetLastError(myForm.m_lPort);
                         str = "PlayM4_FreePort failed, error code= " + iLastErr;
                         DebugInfo(str);
                     }
-                    mainWindowForm.m_lPort = -1;
+                    myForm.m_lPort = -1;
                 }
                 DebugInfo("停止预览成功!");
                 recordStatus = 2;
                 //DebugInfo("NET_DVR_StopRealPlay succ!");
                 m_lRealHandle = -1;
-                mainWindowForm.btnPreview.Text = "启动录像机";
-                mainWindowForm.RealPlayWnd.Invalidate();//刷新窗口 refresh the window
+                myForm.btnPreview.Text = "启动录像机";
+                myForm.RealPlayWnd.Invalidate();//刷新窗口 refresh the window
             }
             return;
         } 
@@ -1156,7 +1160,7 @@ namespace YYOPInspectionClient
             //    lpPreviewInfo.bBlocked = true; //0- 非阻塞取流，1- 阻塞取流
             //    lpPreviewInfo.dwDisplayBufNum = 15; //播放库显示缓冲区最大帧数
             //    IntPtr pUser = IntPtr.Zero;//用户数据 user data 
-            //    if (mainWindowForm.comboBoxView.SelectedIndex == 0)
+            //    if (myForm.comboBoxView.SelectedIndex == 0)
             //    {
             //        //打开预览 Start live view 
             //        m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, null/*RealData*/, pUser);
@@ -1164,9 +1168,9 @@ namespace YYOPInspectionClient
             //    else
             //    {
             //        lpPreviewInfo.hPlayWnd = IntPtr.Zero;//预览窗口 live view window
-            //        mainWindowForm.m_ptrRealHandle = mainWindowForm.RealPlayWnd.Handle;
-            //        mainWindowForm.RealData = new CHCNetSDK.REALDATACALLBACK(mainWindowForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
-            //        m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, mainWindowForm.RealData, pUser);
+            //        myForm.m_ptrRealHandle = myForm.RealPlayWnd.Handle;
+            //        myForm.RealData = new CHCNetSDK.REALDATACALLBACK(myForm.RealDataCallBack);//预览实时流回调函数 real-time stream callback function 
+            //        m_lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_lUserID, ref lpPreviewInfo, myForm.RealData, pUser);
             //    }
 
             //    if (m_lRealHandle < 0)
@@ -1182,7 +1186,7 @@ namespace YYOPInspectionClient
             //        //预览成功
             //        DebugInfo("预览成功!");
             //        //DebugInfo("NET_DVR_RealPlay_V40 succ!");
-            //        mainWindowForm.btnPreview.Text = "关闭录像机";
+            //        myForm.btnPreview.Text = "关闭录像机";
             //    }
             //}
         }

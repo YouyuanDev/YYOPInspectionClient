@@ -19,13 +19,13 @@ namespace YYOPInspectionClient
     {
         //防止合同combobox自动执行选中事件
         private bool flag = false;
-        public static AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
-        private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
+        //public static AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
+        //private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         public static List<TextBox> flpTabOneTxtList = new List<TextBox>();
         public static List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         private List<Label> flpTabTwoLblList = new List<Label>();
         private List<string> measureItemCodeList = new List<string>();
-        private IndexWindow indexWindow;
+        //private IndexWindow indexWindow;
         //private MainWindow mainWindow;
         // YYKeyenceReaderConsole codeReaderWindow;
         AutoSize auto = new AutoSize();
@@ -33,7 +33,7 @@ namespace YYOPInspectionClient
         private string videosArr = "";
         private string timestamp = null;
         private int countTime = 0;
-        public ThreadingForm threadForm = null;
+        //public ThreadingForm threadForm = null;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer = null;
        // int videoResult = 1;
@@ -45,28 +45,31 @@ namespace YYOPInspectionClient
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         public static ThreadingForm getMyForm()
         {
-            return myForm;
+            if (myForm == null)
+            {
+               new ThreadingForm();
+            }
+               return myForm;
         }
 
         #region 窗体构造函数
-        public ThreadingForm(IndexWindow indexWindow)
+        public ThreadingForm()
         {
+           
             InitializeComponent();
             try
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-
                     //englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
-                    englishKeyboard.containerControl = this.flpTabOneContent;
+                    AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
                     //numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
-                    numberKeyboard.containerControl = this.flpTabTwoContent;
+                    NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
 
-                    this.indexWindow = indexWindow;
+                    //this.indexWindow = indexWindow;
                     timestamp = CommonUtil.getMesuringRecord();
                     this.lblReaderStatus.Text = "读码器未启动...";
                     this.lblVideoStatus.Text = "录像未启动...";
-                    myForm = this;
                     //this.Font = new Font("宋体", 12, FontStyle.Bold);
                     //1------------初始化合同Combobox
                     InitContractList();
@@ -80,6 +83,7 @@ namespace YYOPInspectionClient
                     txtCoupingNo.MouseDown += new MouseEventHandler(txt_MouseDown);
                     txtHeatNo.MouseDown += new MouseEventHandler(txt_MouseDown);
                     txtBatchNo.MouseDown += new MouseEventHandler(txt_MouseDown);
+                    myForm = this;
                 }
                 else
                 {
@@ -167,10 +171,9 @@ namespace YYOPInspectionClient
         #region 初始化检验记录表单
         public void InitThreadForm()
         {
-            if (this.cmbContractNo.Text.Trim().Length != 0)
+            if (!string.IsNullOrWhiteSpace( this.cmbContractNo.Text))
             {
-                string contract_no = this.cmbContractNo.SelectedValue.ToString();
-                GetThreadFormInitData(contract_no);
+                GetThreadFormInitData(this.cmbContractNo.Text);
             }
         }
         #endregion
@@ -726,7 +729,7 @@ namespace YYOPInspectionClient
                     {"machine_no", HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) },
                     { "operator_no", HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8)},
                     {"production_crew",HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8)  },
-                    { "production_shift",HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) },
+                    { "production_shift",HttpUtility.UrlEncode("", Encoding.UTF8) },
                      {"video_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
                     { "inspection_result",HttpUtility.UrlEncode(inspectionResult, Encoding.UTF8) },
                      {"coupling_heat_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8)  },
@@ -789,7 +792,7 @@ namespace YYOPInspectionClient
                     ChangeSubmitCount();
                     ChangeFrequency();
                     ClearForm();
-                    indexWindow.getThreadingProcessData();
+                    IndexWindow.getForm().getThreadingProcessData();
                 }
                 catch (Exception ex) {
                     MessageBox.Show("表单清理数据时出错,错误信息:"+ex.Message);
@@ -843,9 +846,9 @@ namespace YYOPInspectionClient
 
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        englishKeyboard.inputTxt = tb;
-                        englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        englishKeyboard.Show();
+                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        AlphabetKeyboardForm.getForm().Show();
                         SetAlphaKeyboardText(tb.Name);
                         focusTextBoxName = tb.Name;
                     }
@@ -853,10 +856,10 @@ namespace YYOPInspectionClient
                     {
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
-                            numberKeyboard.inputTxt = tb;
-                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                            numberKeyboard.Show();
-                            numberKeyboard.TopMost = true;
+                            NumberKeyboardForm.getForm().inputTxt = tb;
+                            NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                            NumberKeyboardForm.getForm().Show();
+                            NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -887,11 +890,11 @@ namespace YYOPInspectionClient
                 {
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        englishKeyboard.Hide();
+                        AlphabetKeyboardForm.getForm().Hide();
                     }
                     else
                     {
-                        numberKeyboard.Hide();
+                        NumberKeyboardForm.getForm().Hide();
                     }
                 }
             }
@@ -914,10 +917,10 @@ namespace YYOPInspectionClient
 
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        englishKeyboard.inputTxt = tb;
-                        englishKeyboard.Textbox_display.Text = tb.Text.Trim();
-                        englishKeyboard.Show();
-                        englishKeyboard.TopMost = true;
+                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        AlphabetKeyboardForm.getForm().Show();
+                        AlphabetKeyboardForm.getForm().TopMost = true;
                         focusTextBoxName = tb.Name;
                         SetAlphaKeyboardText(tb.Name);
                     }
@@ -925,10 +928,10 @@ namespace YYOPInspectionClient
                     {
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
-                            numberKeyboard.inputTxt = tb;
-                            numberKeyboard.Textbox_display.Text = tb.Text.Trim();
-                            numberKeyboard.Show();
-                            numberKeyboard.TopMost = true;
+                            NumberKeyboardForm.getForm().inputTxt = tb;
+                            NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                            NumberKeyboardForm.getForm().Show();
+                            NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -954,15 +957,13 @@ namespace YYOPInspectionClient
         private void button1_Click(object sender, EventArgs e)
         {
             string btnName = this.button1.Text;
-            if (btnName == "结束扫码")
+            if (btnName.Contains("结束扫码"))
             {
-                //YYKeyenceReaderConsole
-                this.lblReaderStatus.Text = "读码器连接成功...";
                 YYKeyenceReaderConsole.codeReaderOff();
                 this.button1.Text = "开始扫码";
                 this.lblReaderStatus.Text = "读码完成...";
             }
-            else if (btnName == "开始扫码")
+            else if (btnName.Contains("开始扫码"))
             {
                 YYKeyenceReaderConsole.codeReaderLon();
                 this.button1.Text= "结束扫码";
@@ -1056,27 +1057,26 @@ namespace YYOPInspectionClient
         #region 小窗口显示实时录制视频内容
         public void RealTimePreview()
         {
-            MainWindow mainWindow = MainWindow.mainWindowForm;
-            if (mainWindow != null)
+            if (MainWindow.getForm() != null)
             {
-                mainWindow.groupBox1.Hide(); mainWindow.groupBox2.Hide();
-                mainWindow.groupBox3.Hide(); mainWindow.groupBox4.Hide();
-                int width = mainWindow.Width;
-                int height = mainWindow.Height;
-                mainWindow.Width = 150;
-                mainWindow.Height = 150;
-                mainWindow.RealPlayWnd.Width = width;
-                mainWindow.RealPlayWnd.Height = height;
+                MainWindow.getForm().groupBox1.Hide(); MainWindow.getForm().groupBox2.Hide();
+                MainWindow.getForm().groupBox3.Hide(); MainWindow.getForm().groupBox4.Hide();
+                int width = MainWindow.getForm().Width;
+                int height = MainWindow.getForm().Height;
+                MainWindow.getForm().Width = 150;
+                MainWindow.getForm().Height = 150;
+                MainWindow.getForm().RealPlayWnd.Width = width;
+                MainWindow.getForm().RealPlayWnd.Height = height;
                 int x = Screen.PrimaryScreen.WorkingArea.Width - 150;
                 int y = 55;
-                mainWindow.Location = new Point(x, y);
+                MainWindow.getForm().Location = new Point(x, y);
                 //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
-                mainWindow.MaximumSize = new Size(150, 150);
-                mainWindow.RealPlayWnd.Left = 0;
-                mainWindow.RealPlayWnd.Top = 0;
-                mainWindow.RealPlayWnd.Dock = DockStyle.Fill;
-                MainWindow.mainWindowForm.Show();
-                MainWindow.mainWindowForm.TopMost = true;
+                MainWindow.getForm().MaximumSize = new Size(150, 150);
+                MainWindow.getForm().RealPlayWnd.Left = 0;
+                MainWindow.getForm().RealPlayWnd.Top = 0;
+                MainWindow.getForm().RealPlayWnd.Dock = DockStyle.Fill;
+                MainWindow.getForm().Show();
+                MainWindow.getForm().TopMost = true;
             }
         }
         #endregion
@@ -1084,25 +1084,25 @@ namespace YYOPInspectionClient
         #region 重置录像机设置
         public void RestoreSetting()
         {
-            MainWindow mainWindow = MainWindow.mainWindowForm;
-            if (mainWindow != null)
+            //MainWindow mainWindow = MainWindow.mainWindowForm;
+            if (MainWindow.getForm() != null)
             {
-                mainWindow.Left = MainWindow.mainWindowX;
-                mainWindow.Top = MainWindow.mainWindowY;
-                mainWindow.Width = MainWindow.mainWindowWidth;
-                mainWindow.Height = MainWindow.mainWindowHeight;
-                mainWindow.RealPlayWnd.Left = MainWindow.realTimeX;
-                mainWindow.RealPlayWnd.Top = MainWindow.realTimeY;
-                mainWindow.RealPlayWnd.Width = MainWindow.realTimeWidth;
-                mainWindow.RealPlayWnd.Height = MainWindow.realTimeHeigh;
-                mainWindow.RealPlayWnd.Dock = DockStyle.None;
-                mainWindow.groupBox1.Show();
-                mainWindow.groupBox2.Show();
-                mainWindow.groupBox3.Show();
-                mainWindow.groupBox4.Show();
-                mainWindow.TopMost = false;
-                mainWindow.FormBorderStyle = FormBorderStyle.Sizable;
-                mainWindow.Hide();
+                MainWindow.getForm().Left = MainWindow.mainWindowX;
+                MainWindow.getForm().Top = MainWindow.mainWindowY;
+                MainWindow.getForm().Width = MainWindow.mainWindowWidth;
+                MainWindow.getForm().Height = MainWindow.mainWindowHeight;
+                MainWindow.getForm().RealPlayWnd.Left = MainWindow.realTimeX;
+                MainWindow.getForm().RealPlayWnd.Top = MainWindow.realTimeY;
+                MainWindow.getForm().RealPlayWnd.Width = MainWindow.realTimeWidth;
+                MainWindow.getForm().RealPlayWnd.Height = MainWindow.realTimeHeigh;
+                MainWindow.getForm().RealPlayWnd.Dock = DockStyle.None;
+                MainWindow.getForm().groupBox1.Show();
+                MainWindow.getForm().groupBox2.Show();
+                MainWindow.getForm().groupBox3.Show();
+                MainWindow.getForm().groupBox4.Show();
+                MainWindow.getForm().TopMost = false;
+                MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
+                MainWindow.getForm().Hide();
             }
         }
         #endregion
@@ -1110,8 +1110,7 @@ namespace YYOPInspectionClient
         #region 窗体Load事件
         private void ThreadingForm_Load(object sender, EventArgs e)
         {
-            //if(threadForm!=null)
-            //  auto.controllInitializeSize(threadForm);
+            
         }
         #endregion
 
@@ -1179,9 +1178,9 @@ namespace YYOPInspectionClient
                 if (lbl != null)
                 {
                     if (lbl0.Visible == true)
-                        numberKeyboard.lblNumberTitle.Text = lbl.Text + "(必填)";
+                        NumberKeyboardForm.getForm().lblNumberTitle.Text = lbl.Text + "(必填)";
                     else
-                        numberKeyboard.lblNumberTitle.Text = lbl.Text;
+                        NumberKeyboardForm.getForm().lblNumberTitle.Text = lbl.Text;
                 }
             }
             catch (Exception ex)
@@ -1199,18 +1198,18 @@ namespace YYOPInspectionClient
             else if (inputTxtName.Contains("_measure_tool2"))
                 inputTxtName = inputTxtName.Replace("_measure_tool2", "");
             else if (inputTxtName.Contains("txtCoupingNo"))
-                englishKeyboard.lblEnglishTitle.Text = "接箍编号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "接箍编号";
             else if (inputTxtName.Contains("txtHeatNo"))
-                englishKeyboard.lblEnglishTitle.Text = "炉号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "炉号";
             else if (inputTxtName.Contains("txtBatchNo"))
-                englishKeyboard.lblEnglishTitle.Text = "批号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "批号";
             else if (inputTxtName.Contains("txtMachineNo"))
-                englishKeyboard.lblEnglishTitle.Text = "机床号";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "机床号";
             else if (inputTxtName.Contains("txtProductionArea"))
-                englishKeyboard.lblEnglishTitle.Text = "产线";
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "产线";
             Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
             if (lbl != null)
-                englishKeyboard.lblEnglishTitle.Text = lbl.Text;
+                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = lbl.Text;
         }
         #endregion
 
@@ -1277,13 +1276,13 @@ namespace YYOPInspectionClient
 
         private void cmbProductionShift_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index < 0)
-            {
-                return;
-            }
-            e.DrawBackground();
-            e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
-            e.DrawFocusRectangle();
+            //if (e.Index < 0)
+            //{
+            //    return;
+            //}
+            //e.DrawBackground();
+            //e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            //e.DrawFocusRectangle();
         }
         #endregion
 
@@ -1381,7 +1380,12 @@ namespace YYOPInspectionClient
                 }
             }
            
-        } 
+        }
         #endregion
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
