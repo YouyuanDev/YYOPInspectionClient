@@ -19,24 +19,16 @@ namespace YYOPInspectionClient
     {
         //防止合同combobox自动执行选中事件
         private bool flag = false;
-        //public static AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
-        //private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         public static List<TextBox> flpTabOneTxtList = new List<TextBox>();
         public static List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         private List<Label> flpTabTwoLblList = new List<Label>();
         private List<string> measureItemCodeList = new List<string>();
-        //private IndexWindow indexWindow;
-        //private MainWindow mainWindow;
-        // YYKeyenceReaderConsole codeReaderWindow;
-        AutoSize auto = new AutoSize();
         //时间戳(视频和form表单保存的目录名)
         private string videosArr = "";
         private string timestamp = null;
         private int countTime = 0;
-        //public ThreadingForm threadForm = null;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer = null;
-       // int videoResult = 1;
         public static bool isQualified =true;
         public delegate void EventHandle(object sender, EventArgs e);
         public static bool isMeasuringToolTabSelected=true;//
@@ -49,7 +41,7 @@ namespace YYOPInspectionClient
             {
                new ThreadingForm();
             }
-               return myForm;
+            return myForm;
         }
 
         #region 窗体构造函数
@@ -57,19 +49,32 @@ namespace YYOPInspectionClient
         {
            
             InitializeComponent();
+            //Control.CheckForIllegalCrossThreadCalls = false;
             try
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    //englishKeyboard.flpTabOneTxtList = flpTabOneTxtList;
                     AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
-                    //numberKeyboard.flpTabTwoTxtList = flpTabTwoTxtList;
                     NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
-
-                    //this.indexWindow = indexWindow;
                     timestamp = CommonUtil.getMesuringRecord();
-                    this.lblReaderStatus.Text = "读码器未启动...";
-                    this.lblVideoStatus.Text = "录像未启动...";
+                    if(YYKeyenceReaderConsole.readerStatus==-1)
+                      this.lblReaderStatus.Text = "读码器未连接...";
+                    else if(YYKeyenceReaderConsole.readerStatus ==1)
+                        this.lblReaderStatus.Text = "读码器已启动...";
+                    else if (YYKeyenceReaderConsole.readerStatus ==2)
+                        this.lblReaderStatus.Text = "读码器异常...";
+                    if(MainWindow.recordStatus==0)
+                       this.lblVideoStatus.Text = "录像未登录...";
+                    else if (MainWindow.recordStatus == 1)
+                        this.lblVideoStatus.Text = "录像已登录...";
+                    else if (MainWindow.recordStatus == 2)
+                        this.lblVideoStatus.Text = "录像未启动...";
+                    else if (MainWindow.recordStatus == 3)
+                        this.lblVideoStatus.Text = "录像已启动...";
+                    else if (MainWindow.recordStatus == 4)
+                        this.lblVideoStatus.Text = "录像中...";
+                    else
+                        this.lblVideoStatus.Text = "录像异常...";
                     //this.Font = new Font("宋体", 12, FontStyle.Bold);
                     //1------------初始化合同Combobox
                     InitContractList();
@@ -91,11 +96,14 @@ namespace YYOPInspectionClient
                     this.Dispose();
                     Application.Exit();
                 }
+              
             }
             catch (Exception e)
             {
                 Console.WriteLine("新建表单时出错!");
             }
+           
+           
         }
         #endregion
 
@@ -614,22 +622,23 @@ namespace YYOPInspectionClient
         #region 表单提交事件
         private void btnFormSubmit_Click(object sender, EventArgs e)
         {
-            if (button2.Text.Trim().Contains("结束录制") || button1.Text.Trim().Contains("结束扫码"))
+            //if (button2.Text.Trim().Contains("结束录制") || button1.Text.Trim().Contains("结束扫码"))
+            //{
+            //    MessagePrompt.Show("录像机或读码器尚未关闭！");
+            //}
+            if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
             {
-                MessagePrompt.Show("录像机或读码器尚未关闭！");
+                //关闭录像
+                if(!button2.Text.Contains("开始录制"))
+                   button2_Click(null, null);
+                ThreadFormSubmit();
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
-                {
-                    ThreadFormSubmit();
-                }
-                else
-                {
-                    MessagePrompt.Show("您已掉线，请重新登录!");
-                    Application.Exit();
-                }
+                MessagePrompt.Show("您已掉线，请重新登录!");
+                Application.Exit();
             }
+
         }
         #endregion
 
@@ -637,15 +646,15 @@ namespace YYOPInspectionClient
         private void btnFormClose_Click(object sender, EventArgs e)
         {
             //关闭之前判断是否关闭读码器和结束录像
-            if (button2.Text.Trim().Contains("结束录制")|| button1.Text.Trim().Contains("结束扫码"))
+            if (button2.Text.Trim().Contains("结束录制"))
             {
-                MessagePrompt.Show("录像机或读码器尚未关闭！");
+                MessagePrompt.Show("录像机尚未关闭！");
             }
             else
             {
                 RestoreSetting();
                 //清空表单测量值
-                ClearForm();
+                //ClearForm();
                 this.Hide();
             }
         }
@@ -738,6 +747,7 @@ namespace YYOPInspectionClient
                 };
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
+                param = dataJson.ToString();
                 byte[] data = encoding.GetBytes(dataJson.ToString());
                 string url = CommonUtil.getServerIpAndPort() +"ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -783,7 +793,7 @@ namespace YYOPInspectionClient
             {
                 MessagePrompt.Show("提交出错,表单暂时保存在本地,错误信息:"+e.Message);
                 string coupingDir = Application.StartupPath + "\\unsubmit";
-                CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
+                CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8),param, coupingDir);
             }
             finally
             {
@@ -874,7 +884,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception ex)
             {
-                Console.WriteLine("鼠标获取焦点时出错!");
+                Console.WriteLine("鼠标获取焦点时出错,错误信息:"+ex.Message);
             }
 
         }
@@ -926,6 +936,7 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
+                       // MessageBox.Show(IsHaveCoupingNoAndStartRecordVideo().ToString());
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
@@ -956,17 +967,41 @@ namespace YYOPInspectionClient
         #region 扫码事件
         private void button1_Click(object sender, EventArgs e)
         {
+
             string btnName = this.button1.Text;
             if (btnName.Contains("结束扫码"))
             {
-                YYKeyenceReaderConsole.codeReaderOff();
-                this.button1.Text = "开始扫码";
-                this.lblReaderStatus.Text = "读码完成...";
+                try
+                {
+                    YYKeyenceReaderConsole.codeReaderOff();
+                    this.button1.Text = "开始扫码";
+                    this.lblReaderStatus.Text = "读码完成...";
+                }
+                catch (Exception ex)
+                {
+                    MessagePrompt.Show("关闭读码器出错,错误信息:" + ex.Message);
+                }
+
             }
             else if (btnName.Contains("开始扫码"))
             {
-                YYKeyenceReaderConsole.codeReaderLon();
-                this.button1.Text= "结束扫码";
+                try
+                {
+                    if (YYKeyenceReaderConsole.readerStatus == 1)
+                    {
+                        YYKeyenceReaderConsole.codeReaderLon();
+                        this.lblReaderStatus.Text = "读码中...";
+                        this.button1.Text = "结束扫码";
+                    }
+                    else {
+                        MessagePrompt.Show("请检查读码器的状态!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessagePrompt.Show("开启读码器出错,错误信息:" + ex.Message);
+                }
+
             }
         }
         #endregion
@@ -976,44 +1011,47 @@ namespace YYOPInspectionClient
         {
             if (this.button2.Text.Contains("开始录制"))
             {
-                if (timestamp == null || timestamp.Length <= 0)
+                timestamp = CommonUtil.getMesuringRecord();
+                try
                 {
-                    timestamp = CommonUtil.getMesuringRecord();
+                    RealTimePreview();
+                    MainWindow.RecordVideo(timestamp);
+                    this.lblVideoStatus.Text = "开始录制...";
+                    this.lblVideoStatus.Text = "录像中...";
+                    videosArr += timestamp + "_vcr.mp4;";
+                    if (timer != null)
+                    {
+                        countTime = 0;
+                        timer.Start();
+                    }
+                    else
+                    {
+                        timer = new System.Timers.Timer();
+                        timer.Enabled = true;
+                        timer.AutoReset = true;
+                        timer.Interval = 1000;
+                        timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
+                        timer.Start();
+                    }
+                    this.button2.Text = "结束录制";
                 }
-                switch (MainWindow.recordStatus)
-                {
-                    case 3:
-                        RealTimePreview();
-                        MainWindow.RecordVideo(timestamp);
-                        this.lblVideoStatus.Text = "开始录制...";
-                        this.lblVideoStatus.Text = "录像中...";
-                        videosArr += timestamp + "_vcr.mp4;";
-                        if (timer != null)
-                        {
-                            countTime = 0;
-                            timer.Start();
-                        }
-                        else
-                        {
-                            timer = new System.Timers.Timer();
-                            timer.Enabled = true;
-                            timer.AutoReset = true;
-                            timer.Interval = 1000;
-                            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
-                            timer.Start();
-                        }
-                        this.button2.Text = "结束录制";
-                        break;
-                    default :
-                        this.lblVideoStatus.Text = "检查录像机是否启动...";
-                        MessagePrompt.Show("录制失败,请检查录像机是否正常运行!");
-                        break;
+                catch (Exception ex) {
+                    MessagePrompt.Show("录制出错，错误信息:"+ex.Message);
                 }
+                //switch (MainWindow.recordStatus)
+                //{
+                //    case 3:
+                       
+                //        break;
+                //    default :
+                //        this.lblVideoStatus.Text = "检查录像机是否启动...";
+                //        MessagePrompt.Show("录制失败,请检查录像机是否正常运行!");
+                //        break;
+                //}
             }
-            else if (this.button2.Text == "结束录制")
+            else if (this.button2.Text.Contains("结束录制"))
             {
                 MainWindow.stopRecordVideo();
-               // MainWindow.recordStatus = 3;
                 timer.Stop();
                 //保存timestamp到fileuploadrecord中
                 RestoreSetting();
@@ -1084,9 +1122,9 @@ namespace YYOPInspectionClient
         #region 重置录像机设置
         public void RestoreSetting()
         {
-            //MainWindow mainWindow = MainWindow.mainWindowForm;
-            if (MainWindow.getForm() != null)
-            {
+            
+                MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
+                MainWindow.getForm().MaximumSize = new Size(2000, 2000);
                 MainWindow.getForm().Left = MainWindow.mainWindowX;
                 MainWindow.getForm().Top = MainWindow.mainWindowY;
                 MainWindow.getForm().Width = MainWindow.mainWindowWidth;
@@ -1101,24 +1139,7 @@ namespace YYOPInspectionClient
                 MainWindow.getForm().groupBox3.Show();
                 MainWindow.getForm().groupBox4.Show();
                 MainWindow.getForm().TopMost = false;
-                MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
                 MainWindow.getForm().Hide();
-            }
-        }
-        #endregion
-
-        #region 窗体Load事件
-        private void ThreadingForm_Load(object sender, EventArgs e)
-        {
-            
-        }
-        #endregion
-
-        #region 窗体大小改变事件
-        private void ThreadingForm_SizeChanged(object sender, EventArgs e)
-        {
-            //if(threadForm!=null)
-            //  auto.controlAutoSize(threadForm);
         }
         #endregion
 
@@ -1237,9 +1258,9 @@ namespace YYOPInspectionClient
         private void btnClose_Click(object sender, EventArgs e)
         {
             //关闭之前判断是否关闭读码器和结束录像
-            if (button2.Text.Trim() == "结束录像" || button1.Text.Trim() == "结束扫码")
+            if (button2.Text.Trim() == "结束录像")
             {
-                MessagePrompt.Show("录像机或读码器尚未关闭！");
+                MessagePrompt.Show("录像机尚未关闭！");
             }
             else
             {
@@ -1276,25 +1297,25 @@ namespace YYOPInspectionClient
 
         private void cmbProductionShift_DrawItem(object sender, DrawItemEventArgs e)
         {
-            //if (e.Index < 0)
-            //{
-            //    return;
-            //}
-            //e.DrawBackground();
-            //e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
-            //e.DrawFocusRectangle();
+            if (e.Index < 0)
+            {
+                return;
+            }
+            e.DrawBackground();
+            e.Graphics.DrawString(cmbProductionShift.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds.X, e.Bounds.Y + 3);
+            e.DrawFocusRectangle();
         }
         #endregion
 
         #region 判断接箍编号是否存在和视频录像是否启动
         private bool IsHaveCoupingNoAndStartRecordVideo()
         {
-            //bool flag = false;
-            //if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && videoResult == 0)
-            //{
-            //    flag = true;
-            //}
-            return true;
+            bool flag = false;
+            if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text)&&button2.Text.Contains("结束录制"))
+            {
+                flag = true;
+            }
+            return flag;
         }
         #endregion
 
@@ -1372,10 +1393,20 @@ namespace YYOPInspectionClient
             {
                 if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
                 {
-                    this.tabControl1.SelectedIndex= 0;
+                    this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("请选择合同号!");
                 }
-                else {
+                else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text)) {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("请选择班别!");
+                }
+                else if (string.IsNullOrWhiteSpace(cmbProductionShift.Text))
+                {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("请选择班次!");
+                }
+                else
+                {
                     isMeasuringToolTabSelected = false;
                 }
             }
@@ -1383,9 +1414,5 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

@@ -18,7 +18,6 @@ namespace YYOPInspectionClient
 {
     public partial class LoginWinform : Form
     {
-        //private AlphabetKeyboardForm englishKeyboard = null;
         private static LoginWinform myForm = null;
         public static LoginWinform getForm()
         {
@@ -29,12 +28,14 @@ namespace YYOPInspectionClient
 
             return myForm;
         }
+        #region 构造函数
         private LoginWinform()
         {
             InitializeComponent();
-            this.lblLoginTitle.Text="接箍螺纹检验监造系统("+CommonUtil.GetVersion()+")"+CommonUtil.GetFirstMacAddress();
+            this.lblLoginTitle.Text = "接箍螺纹检验监造系统(" + CommonUtil.GetVersion() + ")" + CommonUtil.GetFirstMacAddress();
             myForm = this;
-        }
+        } 
+        #endregion
 
         #region 用户点击登录事件
         private void button1_Click(object sender, EventArgs e)
@@ -98,7 +99,7 @@ namespace YYOPInspectionClient
                                 
                                 //indexWindow.loginWinform = this;
                                 this.Hide();
-                                AlphabetKeyboardForm.getForm().Close();
+                                AlphabetKeyboardForm.getForm().Hide();
                             }
                             else
                             {
@@ -122,38 +123,32 @@ namespace YYOPInspectionClient
             }
         }
         #endregion
-
         
         #region 鼠标点击输入框事件
         private void txt_MouseDown(TextBox tb)
         {
-             
-                
-            if (tb.Tag.ToString().Contains("English"))
+            try
             {
-                AlphabetKeyboardForm.getForm().inputTxt = tb;
-                AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
-                AlphabetKeyboardForm.getForm().Show();
-                AlphabetKeyboardForm.getForm().TopMost = true;
-                if (tb.Name.Contains("txtLoginName"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "用户名";
-                if(tb.Name.Contains("txtLoginPwd"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "密码";
+                if (tb.Tag.ToString().Contains("English"))
+                {
+                    AlphabetKeyboardForm.getForm().inputTxt = tb;
+                    AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                    AlphabetKeyboardForm.getForm().Show();
+                    AlphabetKeyboardForm.getForm().TopMost = true;
+                    if (tb.Name.Contains("txtLoginName"))
+                        AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "用户名";
+                    if (tb.Name.Contains("txtLoginPwd"))
+                        AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "密码";
+                }
             }
+            catch (Exception e) {
+                MessagePrompt.Show("系统出错，错误信息:"+e.Message);
+            }   
         }
 
         #endregion
 
-        private void LoginWinform_Load(object sender, EventArgs e)
-        {
-           // auto.controllInitializeSize(this);
-        }
-
-        private void LoginWinform_SizeChanged(object sender, EventArgs e)
-        {
-            //auto.controlAutoSize(this);
-        }
-
+        #region 系统退出
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -163,7 +158,9 @@ namespace YYOPInspectionClient
         {
             Application.Exit();
         }
+        #endregion
 
+        #region 用户名密码输入框获取焦点事件
         private void txtLoginName_MouseDown(object sender, MouseEventArgs e)
         {
             txt_MouseDown(this.txtLoginName);
@@ -172,6 +169,7 @@ namespace YYOPInspectionClient
         private void txtLoginPwd_MouseDown(object sender, MouseEventArgs e)
         {
             txt_MouseDown(this.txtLoginPwd);
-        }
+        } 
+        #endregion
     }
 }

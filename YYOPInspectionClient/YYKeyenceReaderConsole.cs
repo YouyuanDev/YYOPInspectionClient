@@ -17,19 +17,15 @@ namespace YYOPInspectionClient
     {
         private const int READER_COUNT = 30;      // number of readers to connect  基恩士读码器个数
         private const int RECV_DATA_MAX = 10240;   //数据量buff最大值
-        private const int ACCURACY = 50; //接受读码器数据的最小精度 100毫秒 0为不等待
+        private const int ACCURACY = 200; //接受读码器数据的最小精度 100毫秒 0为不等待
         public static ClientSocket[] clientSocketInstance;  //基恩士读码器clientSocket数组
         private Thread threadReceive = null;  //接受各读码器server端数据的线程
-        //delegate void SetTextCallback(string text);   //用于子线程修改textbox
-        //public static ThreadingProcessForm threadingProcessForm=null;
-        //public static ThreadingForm threadingProcessForm = null;
         private delegate void SetTextCallback(string message);
         private delegate void UpdateTextBoxDelegate(object threadingProcessForm, string message);
         private static YYKeyenceReaderConsole myselfForm = null;
         private static string[] strArr = null;
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
-        //private static TextBox focusTextbox = null;
-        public static int readerStatus=0;//读码器的状态,0代表未登录,1代表读取中,2代表异常
+        public static int readerStatus=-1;//读码器的状态,0代表未连接,1代表读取中,2代表异常
 
         public static YYKeyenceReaderConsole getForm()
         {
@@ -37,16 +33,14 @@ namespace YYOPInspectionClient
             {
                 new YYKeyenceReaderConsole();
             }
-
             return myselfForm;
         }
-
+        #region 构造函数
         private YYKeyenceReaderConsole()
         {
             InitializeComponent();
             this.Font = new Font("宋体", 10, FontStyle.Bold);
             clientSocketInstance = new ClientSocket[READER_COUNT];
-            //this.threadingProcessForm = threadingProcessForm;
             int readerIndex = 0;
             int CommandPort = 9003; // 9003 for command
             int DataPort = 9004; // 9004 for data
@@ -84,150 +78,154 @@ namespace YYOPInspectionClient
                 //
                 //byte[] ip2 = { 192, 168, 0, 102 };
                 // clientSocketInstance[readerIndex++] = new ClientSocket(ip2, CommandPort, DataPort);  // 9003 for command, 9004 for data
-                myselfForm = this;
                
             }
             catch (Exception e)
             {
                 MessagePrompt.Show(e.Message.ToString());
             }
-
-
-
+            finally {
+                myselfForm = this;
+            }
+           
         }
+        #endregion
 
+        #region 读码器连接
         public void connect_Click(object sender, EventArgs e)
         {
-            //codeReaderConnect();
-            //this.connect.Text = "Connect...";
-            //this.connect.Update();
-            //连接所有读码器socket
-            for (int i = 0; i < READER_COUNT; i++)
-            {
-                //
-                // Connect to the command port.
-                //
-                try
-                {
-                    if (clientSocketInstance[i] == null)
-                        break;
-                    clientSocketInstance[i].readerCommandEndPoint.Port = Convert.ToInt32(CommandPortInput.Text);
-                    clientSocketInstance[i].readerDataEndPoint.Port = Convert.ToInt32(DataPortInput.Text);
-                    //
-                    // Close the socket if opened.
-                    //
-                    if (clientSocketInstance[i].commandSocket != null)
-                    {
-                        clientSocketInstance[i].commandSocket.Close();
-                    }
+            codeReaderConnect();
+            ////this.connect.Text = "Connect...";
+            ////this.connect.Update();
+            ////连接所有读码器socket
+            //for (int i = 0; i < READER_COUNT; i++)
+            //{
+            //    //
+            //    // Connect to the command port.
+            //    //
+            //    try
+            //    {
+            //        if (clientSocketInstance[i] == null)
+            //            break;
+            //        clientSocketInstance[i].readerCommandEndPoint.Port = Convert.ToInt32(CommandPortInput.Text);
+            //        clientSocketInstance[i].readerDataEndPoint.Port = Convert.ToInt32(DataPortInput.Text);
+            //        //
+            //        // Close the socket if opened.
+            //        //
+            //        if (clientSocketInstance[i].commandSocket != null)
+            //        {
+            //            clientSocketInstance[i].commandSocket.Close();
+            //        }
 
-                    //
-                    // Create a new socket.
-                    //
-                    clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接中,请等待...");
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connecting..\r\n";
-                    //textBox_LogConsole.Update();
+            //        //
+            //        // Create a new socket.
+            //        //
+            //        clientSocketInstance[i].commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接中,请等待...");
+            //        //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connecting..\r\n";
+            //        //textBox_LogConsole.Update();
 
-                    clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接成功.");
+            //        clientSocketInstance[i].commandSocket.Connect(clientSocketInstance[i].readerCommandEndPoint);
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接成功.");
 
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connected.\r\n";
-                    //textBox_LogConsole.Update();
-                }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                    //
-                    // Catch exceptions and show the message.
-                    //
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
-                    //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
-                    //textBox_LogConsole.Update();
-                    MessagePrompt.Show("超出范围异常" + ex.Message);
-                    clientSocketInstance[i].commandSocket = null;
-                    continue;
-                }
-                catch (SocketException ex)
-                {
-                    //
-                    // Catch exceptions and show the message.
-                    //
-                    setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
-                    //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
-                    //textBox_LogConsole.Update();
-                    MessagePrompt.Show("Socket通信异常"+ex.Message);
-                    clientSocketInstance[i].commandSocket = null;
-                    continue;
-                }
+            //        //textBox_LogConsole.Text += clientSocketInstance[i].readerCommandEndPoint.ToString() + " Connected.\r\n";
+            //        //textBox_LogConsole.Update();
+            //    }
+            //    catch (ArgumentOutOfRangeException ex)
+            //    {
+            //        //
+            //        // Catch exceptions and show the message.
+            //        //
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
+            //        //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
+            //        //textBox_LogConsole.Update();
+            //        MessagePrompt.Show("超出范围异常" + ex.Message);
+            //        clientSocketInstance[i].commandSocket = null;
+            //        continue;
+            //    }
+            //    catch (SocketException ex)
+            //    {
+            //        //
+            //        // Catch exceptions and show the message.
+            //        //
+            //        setLogText(clientSocketInstance[i].readerCommandEndPoint.ToString() + " 连接失败,请检查网络设备.");
+            //        //textBox_LogConsole.Text = clientSocketInstance[i].readerCommandEndPoint.ToString() + " Failed to connect.\r\n";
+            //        //textBox_LogConsole.Update();
+            //        MessagePrompt.Show("Socket通信异常" + ex.Message);
+            //        clientSocketInstance[i].commandSocket = null;
+            //        continue;
+            //    }
 
-                //
-                // Connect to the data port.
-                //
-                try
-                {
-                    //
-                    // Close the socket if opend.
-                    //
-                    if (clientSocketInstance[i].dataSocket != null)
-                    {
-                        clientSocketInstance[i].dataSocket.Close();
-                    }
+            //    //
+            //    // Connect to the data port.
+            //    //
+            //    try
+            //    {
+            //        //
+            //        // Close the socket if opend.
+            //        //
+            //        if (clientSocketInstance[i].dataSocket != null)
+            //        {
+            //            clientSocketInstance[i].dataSocket.Close();
+            //        }
 
-                    //
-                    // If the same port number is used for command port and data port, unify the sockets and skip a new connection. 
-                    //
-                    if (clientSocketInstance[i].readerCommandEndPoint.Port == clientSocketInstance[i].readerDataEndPoint.Port)
-                    {
-                        clientSocketInstance[i].dataSocket = clientSocketInstance[i].commandSocket;
-                    }
-                    else
-                    {
-                        //
-                        // Create a new socket.
-                        //
-                        clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接中,请等待...");
-                        //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connecting..\r\n";
-                        //textBox_LogConsole.Update();
+            //        //
+            //        // If the same port number is used for command port and data port, unify the sockets and skip a new connection. 
+            //        //
+            //        if (clientSocketInstance[i].readerCommandEndPoint.Port == clientSocketInstance[i].readerDataEndPoint.Port)
+            //        {
+            //            clientSocketInstance[i].dataSocket = clientSocketInstance[i].commandSocket;
+            //        }
+            //        else
+            //        {
+            //            //
+            //            // Create a new socket.
+            //            //
+            //            clientSocketInstance[i].dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //            setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接中,请等待...");
+            //            //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connecting..\r\n";
+            //            //textBox_LogConsole.Update();
 
-                        clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
-                        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接成功.");
-                        if (!listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
-                        {
-                            this.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
-                            this.listBox_Reader.Update();
-                        }
-                        //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connected.\r\n";
-                        //textBox_LogConsole.Update();
-                    }
-                    //
-                    // Set 100 milliseconds to receive timeout.
-                    //
-                    clientSocketInstance[i].dataSocket.ReceiveTimeout = 100;
+            //            clientSocketInstance[i].dataSocket.Connect(clientSocketInstance[i].readerDataEndPoint);
+            //            setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接成功.");
+            //            if (!listBox_Reader.Items.Contains(clientSocketInstance[i].readerCommandEndPoint.Address.ToString()))
+            //            {
+            //                this.listBox_Reader.Items.Add(clientSocketInstance[i].readerCommandEndPoint.Address.ToString());
+            //                this.listBox_Reader.Update();
+            //            }
+            //            //textBox_LogConsole.Text = clientSocketInstance[i].readerDataEndPoint.ToString() + " Connected.\r\n";
+            //            //textBox_LogConsole.Update();
+            //        }
+            //        //
+            //        // Set 100 milliseconds to receive timeout.
+            //        //
+            //        clientSocketInstance[i].dataSocket.ReceiveTimeout = 100;
 
 
 
-                }
+            //    }
 
-                catch (SocketException ex)
-                {
-                    //
-                    // Catch exceptions and show the message.
-                    //
-                    setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接失败.");
-                    //textBox_LogConsole.Text += clientSocketInstance[i].readerDataEndPoint.ToString() + " Failed to connect.\r\n";
-                    //textBox_LogConsole.Update();
-                    MessagePrompt.Show(ex.Message);
-                    clientSocketInstance[i].dataSocket = null;
-                    continue;
-                }
+            //    catch (SocketException ex)
+            //    {
+            //        //
+            //        // Catch exceptions and show the message.
+            //        //
+            //        setLogText(clientSocketInstance[i].readerDataEndPoint.ToString() + " 数据端口连接失败.");
+            //        //textBox_LogConsole.Text += clientSocketInstance[i].readerDataEndPoint.ToString() + " Failed to connect.\r\n";
+            //        //textBox_LogConsole.Update();
+            //        MessagePrompt.Show(ex.Message);
+            //        clientSocketInstance[i].dataSocket = null;
+            //        continue;
+            //    }
 
-            }
-            //this.connect.Text = "Connect All";
-            //this.connect.Update();
+            //}
+            ////this.connect.Text = "Connect All";
+            ////this.connect.Update();
 
         }
+        #endregion
 
+        #region 读码器断开连接
         private void disconnect_Click(object sender, EventArgs e)
         {
             //断开所有读码器连接
@@ -260,24 +258,30 @@ namespace YYOPInspectionClient
                 }
             }
         }
+        #endregion
 
+        #region 读码器开始读码
         private void lon_Click(object sender, EventArgs e)
         {
             codeReaderLon();
         }
+        #endregion
 
+        #region 读码器结束读码
         private void loff_Click(object sender, EventArgs e)
         {
             codeReaderOff();
         }
+        #endregion
 
-
+        #region 打印读码器内容
         private static void setLogText(string str)
         {
             myselfForm.textBox_LogConsole.AppendText(str);
             myselfForm.textBox_LogConsole.AppendText("\r\n");
             myselfForm.textBox_LogConsole.Update();
-        }
+        } 
+        #endregion
 
         public void Receive()
         {
@@ -571,6 +575,7 @@ namespace YYOPInspectionClient
             }
         }
 
+        #region 读码器读码事件
         public static void codeReaderLon()
         {
             try
@@ -594,34 +599,48 @@ namespace YYOPInspectionClient
             catch (Exception ex)
             {
                 readerStatus = 2;
+                MessageBox.Show("开启时出错："+ex.Message);
             }
         }
+        #endregion
 
+        #region 读码器结束读码事件
         public static void codeReaderOff()
         {
-            string loff = "LOFF\r"; // CR is terminator
-            Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
-            for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
+            try
             {
-                if (clientSocketInstance[i].commandSocket != null)
+                string loff = "LOFF\r"; // CR is terminator
+                Byte[] command = ASCIIEncoding.ASCII.GetBytes(loff);
+                for (int i = 0; i < READER_COUNT && clientSocketInstance[i] != null; i++)
                 {
-                    clientSocketInstance[i].commandSocket.Send(command);
-                    SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LOFF sent.");
-                    readerStatus = 0;
-                }
-                else
-                {
-                    SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected");
+                    if (clientSocketInstance[i].commandSocket != null)
+                    {
+                        clientSocketInstance[i].commandSocket.Send(command);
+                        SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " LOFF sent.");
+                        readerStatus = 1;
+                    }
+                    else
+                    {
+                        SetTextTwo(clientSocketInstance[i].readerCommandEndPoint.ToString() + " is disconnected");
+                    }
                 }
             }
+            catch (Exception ex) { }
         }
+        #endregion
 
+        #region 读码器接收数据事件
         public void codeReaderReceive()
         {
             try
             {
                 while (true)
                 {
+                    if (readerStatus != 1) {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                       
                     Byte[] recvBytes = new Byte[RECV_DATA_MAX];
                     int recvSize = 0;
                     //实际接收到的字节数
@@ -633,9 +652,9 @@ namespace YYOPInspectionClient
                             {
                                 recvSize = clientSocketInstance[i].dataSocket.Receive(recvBytes);
                             }
-                            catch (SocketException)
+                            catch (SocketException ex)
                             {
-                                recvSize = 0;
+                                recvSize = 0; 
                             }
                         }
                         else
@@ -651,14 +670,14 @@ namespace YYOPInspectionClient
                         else
                         {
                             recvBytes[recvSize] = 0;
-                            if (ThreadingForm.getMyForm()!= null)
+                            //if (ThreadingForm.getMyForm()!= null)
+                            //{
+                            if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
                             {
-                                if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
-                                {
-                                    UpdateTextBox(ThreadingForm.getMyForm(), Encoding.UTF8.GetString(recvBytes).TrimEnd());
-                                }
-
+                                UpdateTextBox(ThreadingForm.getMyForm(), Encoding.UTF8.GetString(recvBytes).TrimEnd());
                             }
+
+                            //}
                             SetText(DateTime.Now.ToString() + "    " + Encoding.UTF8.GetString(recvBytes));
                         }
                     }
@@ -671,7 +690,9 @@ namespace YYOPInspectionClient
                 MessageBox.Show("接收服务端发送的消息出错:" + ex.ToString());
             }
         }
+        #endregion
 
+        #region 更新TextBox内容
         private static void UpdateTextBox(Object form, string message)
         {
             if (ThreadingForm.isMeasuringToolTabSelected)
@@ -688,7 +709,6 @@ namespace YYOPInspectionClient
                 //}
                 return;
             }
-
             strArr = Regex.Split(message, "\\s+");
             if (strArr.Length > 3)
             {
@@ -705,26 +725,27 @@ namespace YYOPInspectionClient
             {
                 argHeatNo = strArr[1];
             }
-            if (((ThreadingForm)form).txtCoupingNo.InvokeRequired)
+            if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
             {
                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
                 if (argCoupingNo != null)
-                    ((ThreadingForm)form).txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                    ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
                 if (argHeatNo != null)
-                    ((ThreadingForm)form).txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                    ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
                 if (argBatchNo != null)
-                    ((ThreadingForm)form).txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
+                    ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
             }
             else
             {
                 if (argCoupingNo != null)
-                    ((ThreadingForm)form).txtCoupingNo.Text = argCoupingNo;
+                    ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo;
                 if (argHeatNo != null)
-                    ((ThreadingForm)form).txtHeatNo.Text = argHeatNo;
+                    ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo;
                 if (argBatchNo != null)
-                    ((ThreadingForm)form).txtBatchNo.Text = argBatchNo;
+                    ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo;
             }
-        }
+        } 
+        #endregion
 
         private void SetText(string text)
         {
@@ -757,41 +778,33 @@ namespace YYOPInspectionClient
             }
         }
 
+        private void YYKeyenceReaderConsole_Shown(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void YYKeyenceReaderConsole_Activated(object sender, EventArgs e)
+        {
+            
+        }
+
         private void btnHide_Click(object sender, EventArgs e)
         {
-            this.Visible = false;
+            this.Hide();
         }
 
         private void YYKeyenceReaderConsole_Load(object sender, EventArgs e)
         {
-            //设置读码器数据读线程
-            threadReceive = new Thread(new ThreadStart(codeReaderReceive));
-            //设置为后台线程
-            threadReceive.IsBackground = true;
-            threadReceive.Start();
+            try
+            {
+                threadReceive = new Thread(new ThreadStart(codeReaderReceive));
+                //设置为后台线程
+                threadReceive.IsBackground = true;
+                threadReceive.Start();
+            }
+            catch (Exception ex)
+            {
+            }
         }
-        //#region 根据控件名字找到控件
-        //private static void GoThroughControls(Control parContainer, string txtName)
-        //{
-        //    for (int index = 0; index < parContainer.Controls.Count; index++)
-        //    {
-        //        // 如果是容器类控件，递归调用自己
-        //        if (parContainer.Controls[index].HasChildren)
-        //        {
-        //            GoThroughControls(parContainer.Controls[index], txtName);
-        //        }
-        //        else
-        //        {
-        //            switch (parContainer.Controls[index].GetType().Name)
-        //            {
-        //                case "TextBox":
-        //                    if (parContainer.Controls[index].Name.Contains(txtName))
-        //                        focusTextbox = (TextBox)parContainer.Controls[index];
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //} 
-        //#endregion
     }
 }

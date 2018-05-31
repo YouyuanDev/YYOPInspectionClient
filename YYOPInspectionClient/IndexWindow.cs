@@ -33,7 +33,6 @@ namespace YYOPInspectionClient
             return myForm;
         }
 
-
         #region 构造函数
         private IndexWindow()
         {
@@ -45,7 +44,7 @@ namespace YYOPInspectionClient
                 //---------------设置datagridView字体(开始)
                 this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
-                style.Font = new Font("宋体",18,FontStyle.Bold);
+                style.Font = new Font("宋体", 18, FontStyle.Bold);
                 foreach (DataGridViewColumn col in this.dataGridView1.Columns)
                 {
                     col.HeaderCell.Style = style;
@@ -56,11 +55,23 @@ namespace YYOPInspectionClient
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
-                
+
             }
             catch (Exception e)
             {
-                thread.Abort();
+                //thread.Abort();
+            }
+            finally {
+                MainWindow.getForm();
+                if (MainWindow.recordStatus == 0)
+                        MainWindow.getForm().btnLogin_Click(null, null);
+                if (MainWindow.recordStatus == 1)
+                        MainWindow.getForm().btnPreview_Click_1(null, null);
+                AlphabetKeyboardForm.getForm();
+                YYKeyenceReaderConsole.getForm().Show();
+                YYKeyenceReaderConsole.getForm().Hide();
+                YYKeyenceReaderConsole.codeReaderConnect();
+                ThreadingForm.getMyForm();
             }
         } 
         #endregion
@@ -179,43 +190,50 @@ namespace YYOPInspectionClient
                 FileInfo[] files = null;
                 while (true)
                 {
-                    files = folder.GetFiles("*.mp4");
-                    if (files.Length > 0)
+                    Thread.Sleep(5000);
+                    try
                     {
-                        foreach (FileInfo file in files)
+                        files = folder.GetFiles("*.mp4");
+                        if (files.Length > 0)
                         {
-                            //如果文件大小大于0，则开始编码然后上传到服务器
-                            if (file.Length > 0)
+                            foreach (FileInfo file in files)
                             {
-                                if (!CommonUtil.JudgeFileIsUsing(file.FullName))
+                                //如果文件大小大于0，则开始编码然后上传到服务器
+                                if (file.Length > 0)
                                 {
-                                    //视频格式转换，上传
-                                    if (!file.Name.Contains("vcr"))
+                                    if (!CommonUtil.FileIsUsed(file.FullName))
                                     {
-                                        CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
-                                    }
-                                    else {
-                                        //直接上传
-                                        if (CommonUtil.uploadVideoToTomcat(file.FullName)) {
-                                            File.Delete(file.FullName);
+                                        //视频格式转换，上传
+                                        if (!file.Name.Contains("vcr"))
+                                        {
+                                            CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
                                         }
-                                       
+                                        else
+                                        {
+                                            //直接上传
+                                            if (CommonUtil.uploadVideoToTomcat(file.FullName))
+                                            {
+                                                File.Delete(file.FullName);
+                                            }
+                                        }
+                                      
                                     }
-                                    Thread.Sleep(5000);
+                                }
+                                else
+                                {
+                                    File.Delete(file.FullName);
                                 }
                             }
-                            else
-                            {
-                                File.Delete(file.FullName);
-                            }
-
                         }
                     }
+                    catch (Exception exx) {}
                 }
             }
             catch (Exception e)
             {
-                thread.Abort();
+                //Console.WriteLine("上传视频出错,错误信息:"+e.Message);
+                //thread.Abort();
+                //thread.Start();
             }
 
         }
@@ -227,36 +245,23 @@ namespace YYOPInspectionClient
         {
             try
             {
-                string operator_no = this.txtOperatorno.Text.Trim();
-                string production_crew = this.cmbProductionCrew.Text.Trim();
-                string production_shift = this.cmbProductionShift.Text.Trim();
-                string contract_no = this.cmbContractNo.Text.Trim();
-                string threading_type = this.cmbThreadingType.Text.Trim();
-                string od = this.cmbOd.Text.Trim();
-                string wt = this.cmbWt.Text.Trim();
-                string pipe_heat_no = this.cmbPipeHeatNo.Text.Trim();
-                string pipe_lot_no = this.cmbPipeLotNo.Text.Trim();
-                string beginTime = this.dateTimePicker1.Value.ToString("yyyy-MM-dd");
-                string endTime = this.dateTimePicker2.Value.ToString("yyyy-MM-dd");
-                StringBuilder sb = new StringBuilder();
-                sb.Append("{");
-                sb.Append("\"operator_no\"" + ":" + "\"" + operator_no + "\",");
-                sb.Append("\"production_crew\"" + ":" + "\"" + production_crew + "\",");
-                sb.Append("\"production_shift\"" + ":" + "\"" + production_shift + "\",");
-                sb.Append("\"contract_no\"" + ":" + "\"" + contract_no + "\",");
-                sb.Append("\"threading_type\"" + ":" + "\"" + threading_type + "\",");
-                sb.Append("\"od\"" + ":" + "\"" + od + "\",");
-                sb.Append("\"wt\"" + ":" + "\"" + wt + "\",");
-                sb.Append("\"pipe_heat_no\"" + ":" + "\"" + pipe_heat_no + "\",");
-                sb.Append("\"pipe_lot_no\"" + ":" + "\"" + pipe_lot_no + "\",");
-                sb.Append("\"beginTime\"" + ":" + "\"" + beginTime + "\",");
-                sb.Append("\"endTime\"" + ":" + "\"" + endTime + "\"");
-                sb.Append("}");
+                JObject jsonData = new JObject
+                {
+                    {"operator_no",this.txtOperatorno.Text.Trim() },
+                    { "production_crew",this.cmbProductionCrew.Text.Trim()},
+                    { "production_shift",this.cmbProductionShift.Text.Trim()},
+                    { "contract_no",this.cmbContractNo.Text.Trim()},
+                    { "threading_type",this.cmbThreadingType.Text.Trim()},
+                    { "od",this.cmbOd.Text.Trim()},
+                    { "wt",this.cmbWt.Text.Trim()},
+                    { "pipe_heat_no",this.cmbPipeHeatNo.Text.Trim()},
+                     { "pipe_lot_no",this.cmbPipeLotNo.Text.Trim()},
+                      { "beginTime",this.dateTimePicker1.Value.ToString("yyyy-MM-dd")},
+                      { "endTime",this.dateTimePicker2.Value.ToString("yyyy-MM-dd")}
+                };
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                JObject o = JObject.Parse(sb.ToString());
-                String param = o.ToString();
-                byte[] data = encoding.GetBytes(param);
+                byte[] data = encoding.GetBytes(jsonData.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/getThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
@@ -320,25 +325,11 @@ namespace YYOPInspectionClient
         {
             try
             {
-                try
-                {
-                    ThreadingForm.getMyForm().Show();
-                }
-                catch (Exception ec) {
-                    MessagePrompt.Show("提示信息:" + ec.Message);
-                }
-
-                //MessageBox.Show((ThreadingForm.getMyForm()==null).ToString());
-                //ThreadingForm.getMyForm().Show();
-                //登录读码器
-                // if (YYKeyenceReaderConsole.readerStatus== 0) {
-                //YYKeyenceReaderConsole.getForm().connect_Click(null, null);
-                //// }
-                //MainWindow.getForm().btnLogin_Click(null, null);
-                //MainWindow.getForm().btnPreview_Click_1(null, null);
+                ThreadingForm.getMyForm().Show();
             }
-            catch (Exception ex) {
-                MessagePrompt.Show("系统提示,提示信息:"+ex.Message);
+            catch (Exception ex)
+            {
+                MessagePrompt.Show("系统提示,提示信息:" + ex.Message);
             }
             
             //form.Show();
@@ -356,7 +347,7 @@ namespace YYOPInspectionClient
         #region 菜单栏读码器设置事件
         private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            YYKeyenceReaderConsole.getForm().Visible=true;
+            YYKeyenceReaderConsole.getForm().Show();
         }
         #endregion
 
@@ -479,10 +470,9 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 退出程序
+        #region 退出主页面返回到登录页面
         private void btnExit_Click(object sender, EventArgs e)
         {
-            //Application.Exit();
             this.Hide();
             LoginWinform.getForm().Show();
         }
@@ -586,6 +576,9 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-       
+        private void IndexWindow_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

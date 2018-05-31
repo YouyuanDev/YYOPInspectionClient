@@ -43,6 +43,7 @@
             this.pnlTabOneTitle = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.dtpInspectionTime = new System.Windows.Forms.DateTimePicker();
+            this.cmbProductionShift = new System.Windows.Forms.ComboBox();
             this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
             this.cmbContractNo = new System.Windows.Forms.ComboBox();
             this.txtOperatorName = new System.Windows.Forms.TextBox();
@@ -90,7 +91,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblCountSubmit = new System.Windows.Forms.Label();
             this.lblFormTitle = new System.Windows.Forms.Label();
-            this.cmbProductionShift = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
@@ -293,6 +293,22 @@
             this.dtpInspectionTime.Size = new System.Drawing.Size(138, 35);
             this.dtpInspectionTime.TabIndex = 29;
             this.dtpInspectionTime.ValueChanged += new System.EventHandler(this.dtpInspectionTime_ValueChanged);
+            // 
+            // cmbProductionShift
+            // 
+            this.cmbProductionShift.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbProductionShift.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProductionShift.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbProductionShift.FormattingEnabled = true;
+            this.cmbProductionShift.ItemHeight = 40;
+            this.cmbProductionShift.Items.AddRange(new object[] {
+            "白班",
+            "夜班"});
+            this.cmbProductionShift.Location = new System.Drawing.Point(667, 7);
+            this.cmbProductionShift.Name = "cmbProductionShift";
+            this.cmbProductionShift.Size = new System.Drawing.Size(121, 46);
+            this.cmbProductionShift.TabIndex = 28;
+            this.cmbProductionShift.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbProductionShift_DrawItem);
             // 
             // cmbProductionCrew
             // 
@@ -760,7 +776,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1307, 38);
             this.panel1.TabIndex = 1;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // lblCountSubmit
             // 
@@ -782,21 +797,6 @@
             this.lblFormTitle.TabIndex = 0;
             this.lblFormTitle.Text = "label19";
             // 
-            // cmbProductionShift
-            // 
-            this.cmbProductionShift.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbProductionShift.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProductionShift.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbProductionShift.FormattingEnabled = true;
-            this.cmbProductionShift.ItemHeight = 40;
-            this.cmbProductionShift.Items.AddRange(new object[] {
-            "白班",
-            "夜班"});
-            this.cmbProductionShift.Location = new System.Drawing.Point(667, 7);
-            this.cmbProductionShift.Name = "cmbProductionShift";
-            this.cmbProductionShift.Size = new System.Drawing.Size(121, 46);
-            this.cmbProductionShift.TabIndex = 28;
-            // 
             // ThreadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -809,8 +809,6 @@
             this.Name = "ThreadingForm";
             this.Text = "表单";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.ThreadingForm_Load);
-            this.SizeChanged += new System.EventHandler(this.ThreadingForm_SizeChanged);
             this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

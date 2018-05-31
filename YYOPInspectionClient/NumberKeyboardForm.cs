@@ -166,7 +166,8 @@ namespace YYOPInspectionClient
                                             sdVal = Convert.ToSingle(rangeFrequency[4]);
                                         if (maxVal - minVal > 0.00001)
                                         {
-                                            if (txtVal < minVal || txtVal > maxVal) {
+                                            if (txtVal < minVal || txtVal > maxVal)
+                                            {
                                                 inputTxt.BackColor = Color.LightCoral;
                                                 ThreadingForm.isQualified = false;
                                             }
@@ -188,7 +189,8 @@ namespace YYOPInspectionClient
                                             //判断均值是否符合要求
                                             if (lblAvgOfA != null)
                                             {
-                                                if (avg < minVal || avg > maxVal) {
+                                                if (avg < minVal || avg > maxVal)
+                                                {
                                                     lblAvgOfA.ForeColor = Color.Red;
                                                     ThreadingForm.isQualified = false;
                                                 }
@@ -201,7 +203,8 @@ namespace YYOPInspectionClient
                                             if (lblOvalityA != null)
                                             {
                                                 float ovality = (Convert.ToSingle(txtMaxOfA.Text) - Convert.ToSingle(txtMinOfA.Text)) / sdVal;
-                                                if (ovality > maxOvality || ovality < 0) {
+                                                if (ovality > maxOvality || ovality < 0)
+                                                {
                                                     lblOvalityA.ForeColor = Color.Red;
                                                     ThreadingForm.isQualified = false;
                                                 }
@@ -219,7 +222,8 @@ namespace YYOPInspectionClient
                                             Label lblAvgOfB = (Label)GetControlInstance(containerControl, inputTxtName + "_AvgB");
                                             if (lblAvgOfB != null)
                                             {
-                                                if (avg < minVal || avg > maxVal) {
+                                                if (avg < minVal || avg > maxVal)
+                                                {
                                                     lblAvgOfB.ForeColor = Color.Red;
                                                     ThreadingForm.isQualified = false;
                                                 }
@@ -232,7 +236,8 @@ namespace YYOPInspectionClient
                                             if (lblOvalityB != null)
                                             {
                                                 float ovality = (Convert.ToSingle(txtMaxOfB.Text) - Convert.ToSingle(txtMinOfB.Text)) / sdVal;
-                                                if (ovality > maxOvality || ovality < 0) {
+                                                if (ovality > maxOvality || ovality < 0)
+                                                {
                                                     lblOvalityB.ForeColor = Color.Red;
                                                     ThreadingForm.isQualified = false;
                                                 }
@@ -244,19 +249,20 @@ namespace YYOPInspectionClient
                                     }
                                 }
                             }
-
                         }
                         //跳转到下一个输入框
-                        int index = flpTabTwoTxtList.IndexOf(inputTxt);
-                        if (index < flpTabTwoTxtList.Count - 1)
-                            index++;
-                        TextBox tb =flpTabTwoTxtList[index];
-                        if (tb != null)
-                            tb.Focus();
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine("英文键盘回车时出错,错误信息:" + ex.Message);
+                    }
+                    finally {
+                        int index = flpTabTwoTxtList.IndexOf(inputTxt);
+                        if (index < flpTabTwoTxtList.Count - 1)
+                            index++;
+                        TextBox tb = flpTabTwoTxtList[index];
+                        if (tb != null)
+                            tb.Focus();
                     }
                 }
             }

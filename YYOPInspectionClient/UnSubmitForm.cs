@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
         private ASCIIEncoding encoding = new ASCIIEncoding();
         private string content = "";
         private int totalForm = 0;
-        private Dictionary<string,string> videoPathList=new Dictionary<string,string>();
+        private Dictionary<string, string> videoPathList = new Dictionary<string, string>();
         //---------------------拖动无窗体的控件(开始)
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -43,10 +43,10 @@ namespace YYOPInspectionClient
             if (Directory.Exists(path))
             {
                 DirectoryInfo dir = new DirectoryInfo(path);
-                    foreach (FileInfo file in dir.GetFiles("*.txt"))
-                    {
-                        dataGridView1.Rows.Add(false, file.Name);//显示 
-                    }
+                foreach (FileInfo file in dir.GetFiles("*.txt"))
+                {
+                    dataGridView1.Rows.Add(false, file.Name);//显示 
+                }
             }
         }
         #endregion
@@ -60,7 +60,8 @@ namespace YYOPInspectionClient
                 {
                     this.dataGridView1.Rows[i].Cells[0].Value = true;
                 }
-                if (this.dataGridView1.Rows.Count > 0) {
+                if (this.dataGridView1.Rows.Count > 0)
+                {
                     this.btnSelectAll.Text = "取消全选";
                 }
             }
@@ -80,7 +81,7 @@ namespace YYOPInspectionClient
         {
             try
             {
-                Dictionary<string,string>listFormDir= new Dictionary<string, string>();
+                Dictionary<string, string> listFormDir = new Dictionary<string, string>();
                 DataGridViewCheckBoxCell cell = null;
                 if (this.dataGridView1.Rows.Count > 0)
                 {
@@ -90,7 +91,7 @@ namespace YYOPInspectionClient
                         bool flag = Convert.ToBoolean(cell.Value);
                         if (flag)
                         {
-                            listFormDir.Add(this.dataGridView1.Rows[i].Cells["filename"].Value.ToString(),"");
+                            listFormDir.Add(this.dataGridView1.Rows[i].Cells["filename"].Value.ToString(), "");
                         }
                     }
                     totalForm = listFormDir.Count();
@@ -98,12 +99,13 @@ namespace YYOPInspectionClient
                     //获取选中表单的路径集合
                     DirectoryInfo folder = new DirectoryInfo(path);
                     string dirName = "";
-                     foreach (FileInfo file in folder.GetFiles("*.txt"))
-                          {
-                               if (listFormDir.ContainsKey(file.Name)) {
-                                 listFormDir[file.Name] = path + dirName + "\\" + file.Name;
-                               }
-                          }
+                    foreach (FileInfo file in folder.GetFiles("*.txt"))
+                    {
+                        if (listFormDir.ContainsKey(file.Name))
+                        {
+                            listFormDir[file.Name] = path + dirName + "\\" + file.Name;
+                        }
+                    }
 
                     //如果有选中的数
                     if (listFormDir.Count > 0)
@@ -111,7 +113,8 @@ namespace YYOPInspectionClient
                         int tempTotal = 0;
                         string jsonContent = "";
                         //遍历listPath找到未提交文件，然后读出json数据
-                        foreach(string item in listFormDir.Values) {
+                        foreach (string item in listFormDir.Values)
+                        {
                             jsonContent = File.ReadAllText(item, Encoding.UTF8).Trim();
                             if (jsonContent != null && jsonContent.Length > 0)
                             {
@@ -128,8 +131,8 @@ namespace YYOPInspectionClient
                                 }
                                 jsonContent = "";
                             }
-                         }
-                        MessagePrompt.Show("上传完毕，" +tempTotal + "个成功" +(totalForm-tempTotal) + "个失败!");
+                        }
+                        MessagePrompt.Show("上传完毕，" + tempTotal + "个成功" + (totalForm - tempTotal) + "个失败!");
                         getUnSummitFile();
                     }
                     else
@@ -142,10 +145,11 @@ namespace YYOPInspectionClient
                     MessagePrompt.Show("暂未有可提交的表单！");
                 }
             }
-            catch (Exception ex) {
-                MessagePrompt.Show("系统出了点问题！错误原因:"+ex.Message+",请联系系统人员维护！");
+            catch (Exception ex)
+            {
+                MessagePrompt.Show("系统出了点问题！错误原因:" + ex.Message + ",请联系系统人员维护！");
             }
-           
+
         }
         #endregion
 
@@ -155,43 +159,44 @@ namespace YYOPInspectionClient
             bool flag = false;
             try
             {
-                JObject o = JObject.Parse(json);
-                String param = o.ToString();
-                byte[] data = encoding.GetBytes(param);
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://192.168.0.200:8080/ThreadingOperation/saveThreadingProcessByWinform.action");
+                // JObject o = JObject.Parse(json);
+                //String param = o.ToString();
+                byte[] data = encoding.GetBytes(json);
+                string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
                 request.Method = "POST";
-                request.ContentType = "application/json;characterSet:UTF-8";
+                request.ContentType = "application/json;characterSet:utf-8";
                 request.ContentLength = data.Length;
-                Stream sm = request.GetRequestStream();
-                sm.Write(data, 0, data.Length);
-                sm.Close();
+                using (Stream sm = request.GetRequestStream())
+                {
+                    sm.Write(data, 0, data.Length);
+                }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[256];
-                int count = streamRead.Read(readBuff, 0, 256);
-
+                Char[] readBuff = new Char[1024];
+                int count = streamRead.Read(readBuff, 0, 1024);
                 while (count > 0)
                 {
                     String outputData = new String(readBuff, 0, count);
                     content += outputData;
-                    count = streamRead.Read(readBuff, 0, 256);
+                    count = streamRead.Read(readBuff, 0, 1024);
                 }
                 response.Close();
-                // MessageBox.Show("返回的内容：" + content);
                 string jsons = content;
-                JObject jobject = JObject.Parse(jsons);
-                // MessageBox.Show(jobject["resultMsg"].ToString());
-                bool result = Convert.ToBoolean(jobject["resultMsg"].ToString());
-                // MessageBox.Show(result.ToString());
-                if (result)
+                if (jsons != null)
                 {
-                    flag = true;
-                }
-                else
-                {
-                    flag = false;
+                    JObject jobject = JObject.Parse(jsons);
+                    string rowsJson = jobject["rowsData"].ToString();
+                    if (rowsJson.Trim().Equals("success"))
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
                 }
             }
             catch (Exception e)
@@ -203,14 +208,17 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 获取未上传的所有视频录像路径集合
-        private Dictionary<string,string> getVideoPathList(string path)
+        private Dictionary<string, string> getVideoPathList(string path)
         {
             //遍历draft下非formbackup目录下的所有视频文件
             DirectoryInfo root = new DirectoryInfo(path);
-            foreach(DirectoryInfo file in root.GetDirectories()) {
-                if (file.Name != "formbackup") {
-                    foreach (FileInfo fileInfo in file.GetFiles("*.mp4")) {
-                        videoPathList.Add(fileInfo.Name,fileInfo.FullName);
+            foreach (DirectoryInfo file in root.GetDirectories())
+            {
+                if (file.Name != "formbackup")
+                {
+                    foreach (FileInfo fileInfo in file.GetFiles("*.mp4"))
+                    {
+                        videoPathList.Add(fileInfo.Name, fileInfo.FullName);
                     }
                 }
                 getVideoPathList(file.FullName);
@@ -227,7 +235,7 @@ namespace YYOPInspectionClient
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-        } 
+        }
         #endregion
 
         #region 窗体绘制

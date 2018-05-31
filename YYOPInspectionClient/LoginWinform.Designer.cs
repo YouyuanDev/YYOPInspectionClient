@@ -154,8 +154,6 @@
             this.Name = "LoginWinform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";
-            this.Load += new System.EventHandler(this.LoginWinform_Load);
-            this.SizeChanged += new System.EventHandler(this.LoginWinform_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

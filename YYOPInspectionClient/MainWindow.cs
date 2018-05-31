@@ -86,7 +86,7 @@ namespace YYOPInspectionClient
             if (m_bInitSDK == false)
             {
                 DebugInfo("录像机初始化失败!");
-               // MessageBox.Show("NET_DVR_Init error!");
+                recordStatus = 5;
                 return;
             }
             else
@@ -161,6 +161,7 @@ namespace YYOPInspectionClient
                     //str = "NET_DVR_Login_V30 failed, error code= " + iLastErr; //登录失败，输出错误号 Failed to login and output the error code
                     str = "登录录像机失败,请检查录像机网络,错误代码:" + iLastErr;
                     DebugInfo(str);
+                    recordStatus = 5;
                     return;
                 }
                 else
@@ -170,6 +171,7 @@ namespace YYOPInspectionClient
                     DebugInfo("登录成功,连接上录像机!");
                     //btnLogin.Text = "Logout";
                     btnLogin.Text = "退出";
+                    recordStatus = 1;
                     dwAChanTotalNum = (uint)DeviceInfo.byChanNum;
                     dwDChanTotalNum = (uint)DeviceInfo.byIPChanNum + 256 * (uint)DeviceInfo.byHighDChanNum;
                     if (dwDChanTotalNum > 0)
@@ -210,6 +212,7 @@ namespace YYOPInspectionClient
                 }
                 // DebugInfo("NET_DVR_Logout succ!");
                 DebugInfo("退出成功!");
+                recordStatus = 0;
                 listViewIPChannel.Items.Clear();//清空通道列表 Clean up the channel list
                 m_lUserID = -1;
                 // btnLogin.Text = "Login";
@@ -532,6 +535,7 @@ namespace YYOPInspectionClient
                 else
                 {
                     DebugInfo("录像成功,录像中......");
+                    recordStatus = 4;
                     //DebugInfo("NET_DVR_SaveRealData succ!");
                     btnRecord.Text = "Stop";
                     m_bRecord = true;
@@ -1049,14 +1053,13 @@ namespace YYOPInspectionClient
             //recordPreview();
             if (m_lUserID < 0)
             {
-                MessagePrompt.Show("请检查是否登录录像机!");
+                //MessagePrompt.Show("请检查是否登录录像机!");
                 //MessageBox.Show("Please login the device firstly!");
                 return;
             }
-
             if (m_bRecord)
             {
-                MessagePrompt.Show("预览前请先停止正在录制的录像机!");
+                //MessagePrompt.Show("预览前请先停止正在录制的录像机!");
                 //MessageBox.Show("Please stop recording firstly!");
                 return;
             }
@@ -1140,13 +1143,14 @@ namespace YYOPInspectionClient
                 DebugInfo("停止预览成功!");
                 //DebugInfo("NET_DVR_StopRealPlay succ!");
                 m_lRealHandle = -1;
+                recordStatus = 2;
                 btnPreview.Text = "启动录像机";
                 RealPlayWnd.Invalidate();//刷新窗口 refresh the window
             }
             return;
         }
 
-       // 表单开启录像成功后实时显示预览
+        // 表单开启录像成功后实时显示预览
         public static void RealTimePreview(MainWindow window)
         {
             window.RealPlayWnd.BringToFront();
