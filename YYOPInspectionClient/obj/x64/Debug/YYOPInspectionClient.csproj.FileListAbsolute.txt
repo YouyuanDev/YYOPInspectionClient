@@ -42,3 +42,4 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspect
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.NumberKeyboardForm.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.ServerSetting.resources
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.ThreadingForm.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.csprojResolveAssemblyReference.cache

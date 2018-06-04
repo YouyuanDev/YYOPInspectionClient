@@ -62,16 +62,22 @@ namespace YYOPInspectionClient
                 //thread.Abort();
             }
             finally {
-                MainWindow.getForm();
-                if (MainWindow.recordStatus == 0)
+                try
+                {
+                    MainWindow.getForm();
+                    if (MainWindow.recordStatus == 0)
                         MainWindow.getForm().btnLogin_Click(null, null);
-                if (MainWindow.recordStatus == 1)
+                    if (MainWindow.recordStatus == 1)
                         MainWindow.getForm().btnPreview_Click_1(null, null);
-                AlphabetKeyboardForm.getForm();
-                YYKeyenceReaderConsole.getForm().Show();
-                YYKeyenceReaderConsole.getForm().Hide();
-                YYKeyenceReaderConsole.codeReaderConnect();
-                ThreadingForm.getMyForm();
+                    AlphabetKeyboardForm.getForm();
+                    YYKeyenceReaderConsole.getForm().Show();
+                    YYKeyenceReaderConsole.getForm().Hide();
+                    YYKeyenceReaderConsole.codeReaderConnect();
+                    ThreadingForm.getMyForm();
+                }
+                catch (Exception ex) {
+                    MessagePrompt.Show("请检查录像机或读码器是否正常连接!");
+                }
             }
         } 
         #endregion
