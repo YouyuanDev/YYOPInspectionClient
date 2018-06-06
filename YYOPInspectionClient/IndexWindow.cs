@@ -72,7 +72,8 @@ namespace YYOPInspectionClient
                     AlphabetKeyboardForm.getForm();
                     YYKeyenceReaderConsole.getForm().Show();
                     YYKeyenceReaderConsole.getForm().Hide();
-                    YYKeyenceReaderConsole.codeReaderConnect();
+                    if(YYKeyenceReaderConsole.readerStatus==0)
+                       YYKeyenceReaderConsole.codeReaderConnect();
                     ThreadingForm.getMyForm();
                 }
                 catch (Exception ex) {

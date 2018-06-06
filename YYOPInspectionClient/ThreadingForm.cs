@@ -35,15 +35,18 @@ namespace YYOPInspectionClient
         public static string focusTextBoxName = null;
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
+        #region 构造函数
         public static ThreadingForm getMyForm()
         {
             if (myForm == null)
             {
-               new ThreadingForm();
+                new ThreadingForm();
             }
             return myForm;
         }
 
+        #endregion
+       
         #region 窗体构造函数
         public ThreadingForm()
         {
@@ -77,7 +80,7 @@ namespace YYOPInspectionClient
                         this.lblVideoStatus.Text = "录像异常...";
                     //this.Font = new Font("宋体", 12, FontStyle.Bold);
                     //1------------初始化合同Combobox
-                    InitContractList();
+                    
                     flag = true;
                     //2------------初始化检验记录表单
                     InitThreadForm();
@@ -738,7 +741,7 @@ namespace YYOPInspectionClient
                     {"machine_no", HttpUtility.UrlEncode(txtMachineNo.Text.Trim(), Encoding.UTF8) },
                     { "operator_no", HttpUtility.UrlEncode(txtOperatorNo.Text.Trim(), Encoding.UTF8)},
                     {"production_crew",HttpUtility.UrlEncode(this.cmbProductionCrew.Text, Encoding.UTF8)  },
-                    { "production_shift",HttpUtility.UrlEncode("", Encoding.UTF8) },
+                    { "production_shift",HttpUtility.UrlEncode(this.cmbProductionShift.Text, Encoding.UTF8) },
                      {"video_no",HttpUtility.UrlEncode(videoNo, Encoding.UTF8)  },
                     { "inspection_result",HttpUtility.UrlEncode(inspectionResult, Encoding.UTF8) },
                      {"coupling_heat_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8)  },
@@ -990,8 +993,10 @@ namespace YYOPInspectionClient
                     if (YYKeyenceReaderConsole.readerStatus == 1)
                     {
                         YYKeyenceReaderConsole.codeReaderLon();
-                        this.lblReaderStatus.Text = "读码中...";
-                        this.button1.Text = "结束扫码";
+                        if (YYKeyenceReaderConsole.readerStatus == 1) {
+                            this.lblReaderStatus.Text = "读码中...";
+                            this.button1.Text = "结束扫码";
+                        }
                     }
                     else {
                         MessagePrompt.Show("请检查读码器的状态!");
@@ -1011,29 +1016,33 @@ namespace YYOPInspectionClient
         {
             if (this.button2.Text.Contains("开始录制"))
             {
-                timestamp = CommonUtil.getMesuringRecord();
                 try
                 {
-                    RealTimePreview();
-                    MainWindow.RecordVideo(timestamp);
-                    this.lblVideoStatus.Text = "开始录制...";
-                    this.lblVideoStatus.Text = "录像中...";
-                    videosArr += timestamp + "_vcr.mp4;";
-                    if (timer != null)
-                    {
-                        countTime = 0;
-                        timer.Start();
-                    }
-                    else
-                    {
-                        timer = new System.Timers.Timer();
-                        timer.Enabled = true;
-                        timer.AutoReset = true;
-                        timer.Interval = 1000;
-                        timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
-                        timer.Start();
-                    }
-                    this.button2.Text = "结束录制";
+                    if (MainWindow.recordStatus == 3) {
+                        timestamp = CommonUtil.getMesuringRecord();
+                        RealTimePreview();
+                        MainWindow.RecordVideo(timestamp);
+                        this.lblVideoStatus.Text = "开始录制...";
+                        this.lblVideoStatus.Text = "录像中...";
+                        videosArr += timestamp + "_vcr.mp4;";
+                        if (timer != null)
+                        {
+                            countTime = 0;
+                            timer.Start();
+                        }
+                        else
+                        {
+                            timer = new System.Timers.Timer();
+                            timer.Enabled = true;
+                            timer.AutoReset = true;
+                            timer.Interval = 1000;
+                            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
+                            timer.Start();
+                        }
+                        this.button2.Text = "结束录制";
+                    }else
+                        MessagePrompt.Show("录像机暂未启动!");
+
                 }
                 catch (Exception ex) {
                     MessagePrompt.Show("录制出错，错误信息:"+ex.Message);
@@ -1051,20 +1060,22 @@ namespace YYOPInspectionClient
             }
             else if (this.button2.Text.Contains("结束录制"))
             {
-                MainWindow.stopRecordVideo();
-                timer.Stop();
-                //保存timestamp到fileuploadrecord中
-                RestoreSetting();
-                this.button2.Text = "开始录制";
-                this.lblVideoStatus.Text = "录制完成...";
-                //将视频移到done文件夹下
-                string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
-                string destPath = Application.StartupPath + "\\done\\" + timestamp + ".mp4";
-                if (CommonUtil.MoveFile(sourceFilePath, destPath))
-                {
-                    CommonUtil.DeleteFile(sourceFilePath);
+                if (MainWindow.recordStatus == 4) {
+                    MainWindow.stopRecordVideo();
+                    timer.Stop();
+                    //保存timestamp到fileuploadrecord中
+                    RestoreSetting();
+                    this.button2.Text = "开始录制";
+                    this.lblVideoStatus.Text = "录制完成...";
+                    //将视频移到done文件夹下
+                    string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
+                    string destPath = Application.StartupPath + "\\done\\" + timestamp + ".mp4";
+                    if (CommonUtil.MoveFile(sourceFilePath, destPath))
+                    {
+                        CommonUtil.DeleteFile(sourceFilePath);
+                    }
+                    this.lblTimer.Text = "";
                 }
-                this.lblTimer.Text = "";
             }
         }
         #endregion
@@ -1414,5 +1425,9 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        private void ThreadingForm_Load(object sender, EventArgs e)
+        {
+            InitContractList();
+        }
     }
 }

@@ -809,6 +809,7 @@
             this.Name = "ThreadingForm";
             this.Text = "表单";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ThreadingForm_Load);
             this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
