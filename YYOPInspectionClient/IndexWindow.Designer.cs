@@ -292,7 +292,7 @@
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnDelete.Location = new System.Drawing.Point(1269, 77);
+            this.btnDelete.Location = new System.Drawing.Point(1072, 77);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(90, 46);
             this.btnDelete.TabIndex = 32;
@@ -529,7 +529,7 @@
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearch.Location = new System.Drawing.Point(1061, 76);
+            this.btnSearch.Location = new System.Drawing.Point(1264, 76);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(90, 46);
             this.btnSearch.TabIndex = 4;

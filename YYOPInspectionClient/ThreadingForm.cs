@@ -370,9 +370,9 @@ namespace YYOPInspectionClient
                     pnlMeasureTool.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString(), Location = new Point(10, 40), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString(),Font=new Font("宋体",12), Location = new Point(5, 40),AutoSize=false,Width=90,Height=50, TextAlign = ContentAlignment.MiddleLeft};
                         pnlMeasureTool.Controls.Add(lbl0_1);
-                        TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(160, 40) };
+                        TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 45),Width=200};
                         pnlMeasureTool.Controls.Add(tbTool1);
                         controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool1", tbTool1);
                         tbTool1.Enter += new EventHandler(txt_Enter);
@@ -381,9 +381,9 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString(), Location = new Point(10, 90), AutoSize = true, MaximumSize = new Size(150, 0), TextAlign = ContentAlignment.MiddleRight };
+                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString(), Location = new Point(5, 90), Font = new Font("宋体", 12), AutoSize = false, Width = 90, Height = 50, TextAlign = ContentAlignment.MiddleLeft };
                         pnlMeasureTool.Controls.Add(lbl0_2);
-                        TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(160, 90) };
+                        TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 95),Width=200 };
                         pnlMeasureTool.Controls.Add(tbTool2);
                         controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool2", tbTool2);
                         tbTool2.Enter += new EventHandler(txt_Enter);
