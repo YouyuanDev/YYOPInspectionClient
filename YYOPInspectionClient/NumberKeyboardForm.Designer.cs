@@ -273,6 +273,7 @@
             this.lblNumberTitle.Size = new System.Drawing.Size(82, 24);
             this.lblNumberTitle.TabIndex = 0;
             this.lblNumberTitle.Text = "label1";
+            this.lblNumberTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblNumberTitle_MouseDown);
             // 
             // panel2
             // 

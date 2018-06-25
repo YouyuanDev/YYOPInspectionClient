@@ -30,11 +30,14 @@ namespace YYOPInspectionClient
            
             if (messagePrompt != null) {
                 messagePrompt.Show();
+                messagePrompt.TopMost = true;
             } else {
                 messagePrompt = new MessagePrompt();
+                messagePrompt.TopMost = true;
                 messagePrompt.Show();
             }
             messagePrompt.label2.Text = msg;
+            messagePrompt.BringToFront();
             messagePrompt.TopMost = true;
         }
 

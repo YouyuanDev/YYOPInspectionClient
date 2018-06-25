@@ -87,6 +87,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblDetailFormTitle = new System.Windows.Forms.Label();
+            this.btnBrowseVideo = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.pnlTabTwoTitle.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -698,6 +699,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.btnBrowseVideo);
             this.panel1.Controls.Add(this.lblDetailFormTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -714,6 +716,17 @@
             this.lblDetailFormTitle.Size = new System.Drawing.Size(94, 24);
             this.lblDetailFormTitle.TabIndex = 0;
             this.lblDetailFormTitle.Text = "label18";
+            // 
+            // btnBrowseVideo
+            // 
+            this.btnBrowseVideo.AutoSize = true;
+            this.btnBrowseVideo.Location = new System.Drawing.Point(1045, 7);
+            this.btnBrowseVideo.Name = "btnBrowseVideo";
+            this.btnBrowseVideo.Size = new System.Drawing.Size(146, 37);
+            this.btnBrowseVideo.TabIndex = 1;
+            this.btnBrowseVideo.Text = "浏览视频";
+            this.btnBrowseVideo.UseVisualStyleBackColor = true;
+            this.btnBrowseVideo.Click += new System.EventHandler(this.btnBrowseVideo_Click);
             // 
             // DetailForm
             // 
@@ -805,5 +818,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label18;
         public System.Windows.Forms.Label lblInspectionTime;
+        private System.Windows.Forms.Button btnBrowseVideo;
     }
 }

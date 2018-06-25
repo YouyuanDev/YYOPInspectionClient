@@ -1053,6 +1053,7 @@ namespace YYOPInspectionClient
             e.DrawFocusRectangle();
         }
 
+
         private void cmbProductionShift_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
@@ -1256,5 +1257,11 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 视频查看
+        private void btnBrowseVideo_Click(object sender, EventArgs e)
+        {
+
+        } 
+        #endregion
     }
 }

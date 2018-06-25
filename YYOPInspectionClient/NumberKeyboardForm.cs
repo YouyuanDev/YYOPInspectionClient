@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace YYOPInspectionClient
@@ -180,6 +181,19 @@ namespace YYOPInspectionClient
                                     TextBox txtMaxOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MaxB_Value");
                                     TextBox txtMinOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinA_Value");
                                     TextBox txtMinOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinB_Value");
+                                    //判断输入的数值是否合理
+                                    bool reasonableFlag = false;
+                                    if ((txtMaxOfA != null && !string.IsNullOrEmpty(txtMaxOfA.Text))||
+                                        (txtMaxOfB != null && !string.IsNullOrEmpty(txtMaxOfB.Text))||
+                                        (txtMinOfA != null && !string.IsNullOrEmpty(txtMinOfA.Text))||
+                                        (txtMinOfB != null && !string.IsNullOrEmpty(txtMinOfB.Text))
+                                        ) {
+                                        if (maxVal * 10<txtVal)
+                                            reasonableFlag = true;
+                                    }
+                                    if (reasonableFlag) {
+                                        MessagePrompt.Show("输入的数据偏差过大, 请检查!");
+                                    }
                                     if (txtMaxOfA != null && txtMinOfA != null)
                                     {
                                         if (!string.IsNullOrWhiteSpace(txtMaxOfA.Text) && !string.IsNullOrWhiteSpace(txtMinOfA.Text))
@@ -395,6 +409,27 @@ namespace YYOPInspectionClient
             //Textbox_display.SelectionStart = mouseIndex + 1;
             //Textbox_display.Focus();
         }
-         
+
+
+        private static bool IsNumber(string strNumber)
+        {
+            Regex objNotNumberPattern = new Regex("[^0-9.-]");
+            Regex objTwoDotPattern = new Regex("[0-9]*[.][0-9]*[.][0-9]*");
+            Regex objTwoMinusPattern = new Regex("[0-9]*[-][0-9]*[-][0-9]*");
+            String strValidRealPattern = "^([-]|[.]|[-.]|[0-9])[0-9]*[.]*[0-9]+$";
+            String strValidIntegerPattern = "^([-]|[0-9])[0-9]*$";
+            Regex objNumberPattern = new Regex("(" + strValidRealPattern + ")|(" + strValidIntegerPattern + ")");
+
+            return !objNotNumberPattern.IsMatch(strNumber) &&
+                   !objTwoDotPattern.IsMatch(strNumber) &&
+                   !objTwoMinusPattern.IsMatch(strNumber) &&
+                    objNumberPattern.IsMatch(strNumber);
+        }
+
+        private void lblNumberTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+        }
     }
 }

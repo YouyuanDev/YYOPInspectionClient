@@ -91,6 +91,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblCountSubmit = new System.Windows.Forms.Label();
             this.lblFormTitle = new System.Windows.Forms.Label();
+            this.btnChanger = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
@@ -769,6 +771,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.btnChanger);
             this.panel1.Controls.Add(this.lblCountSubmit);
             this.panel1.Controls.Add(this.lblFormTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -796,6 +800,32 @@
             this.lblFormTitle.Size = new System.Drawing.Size(94, 24);
             this.lblFormTitle.TabIndex = 0;
             this.lblFormTitle.Text = "label19";
+            // 
+            // btnChanger
+            // 
+            this.btnChanger.AutoSize = true;
+            this.btnChanger.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnChanger.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnChanger.Location = new System.Drawing.Point(863, 4);
+            this.btnChanger.Name = "btnChanger";
+            this.btnChanger.Size = new System.Drawing.Size(106, 31);
+            this.btnChanger.TabIndex = 17;
+            this.btnChanger.Text = "换刀3支全检";
+            this.btnChanger.UseVisualStyleBackColor = false;
+            this.btnChanger.Click += new System.EventHandler(this.btnChanger_Click);
+            // 
+            // button3
+            // 
+            this.button3.AutoSize = true;
+            this.button3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.Location = new System.Drawing.Point(977, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(106, 31);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "交班3支全检";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // ThreadingForm
             // 
@@ -892,5 +922,7 @@
         private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.Label lblCountSubmit;
         private System.Windows.Forms.ComboBox cmbProductionShift;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnChanger;
     }
 }

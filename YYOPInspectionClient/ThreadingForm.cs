@@ -37,6 +37,8 @@ namespace YYOPInspectionClient
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         private string tempLblTxt = "",tempLblTxt1="";
         private Label tempLbl = null,tempLbl1= null,tempLbl2 = null, tempLbl3 = null;
+        private static int fullInspection =0;
+        private static bool isFullInspection = false;
         #region 构造函数
         public static ThreadingForm getMyForm()
         {
@@ -675,11 +677,7 @@ namespace YYOPInspectionClient
                 //一条item_record检验记录包括(检测项编码、最大值、最小值、均值、椭圆度、量具编号1、量具编号2、检测项值)
                 //检测项值、最大值、最小值、均值、椭圆度分为A、B
                 string itemvalue = "", reading_max = "",reading_min="",reading_avg="",reading_ovality="",toolcode1="",toolcode2="",measure_sample1="",measure_sample2="";
-               
-                //获取所有的flpTabOne容器中所有的TextBox控件
-                //GoThroughControls(this.flpTabOneContent,flpTabOneTxtList,null);
-                //获取所有的flpTabTwo容器中所有的TextBox和Label控件
-                //GoThroughControls(this.flpTabTwoContent,flpTabTwoTxtList,flpTabTwoLblList);
+                
                 //遍历所有属于某个测量项的值
                 JArray jarray = new JArray();
                 foreach (string measure_item_code in measureItemCodeList)
@@ -884,7 +882,7 @@ namespace YYOPInspectionClient
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
-                            NumberKeyboardForm.getForm().TopMost = true;
+                            //NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -951,13 +949,12 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                       // MessageBox.Show(IsHaveCoupingNoAndStartRecordVideo().ToString());
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
-                            NumberKeyboardForm.getForm().TopMost = true;
+                            //NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -1384,8 +1381,8 @@ namespace YYOPInspectionClient
             {
                 flag = true;
             }
-            //return flag;
-            return true;
+            return flag;
+            //return true;
         }
         #endregion
 
@@ -1411,8 +1408,20 @@ namespace YYOPInspectionClient
                 {
                     countSumbit = Convert.ToInt32(countStr);//提交的次数
                 }
+                if (isFullInspection && fullInspection < 4)
+                {
+                    fullInspection++;
+                }
+                else {
+                    isFullInspection = false; fullInspection = 0;
+                }
                 foreach (Label lbl in flpTabTwoLblList)
                 {
+                    if (isFullInspection && fullInspection < 4)
+                    {
+                        lbl.Visible = true;
+                        continue;
+                    }
                     if (lbl.Name.Contains("_lbl_Prompt"))
                     {
                         float frequency = 9;
@@ -1449,6 +1458,8 @@ namespace YYOPInspectionClient
                 this.lblCountSubmit.Text = temp.ToString();
             }
         }
+
+        
         #endregion
 
         #region tabControl切换事件
@@ -1525,6 +1536,21 @@ namespace YYOPInspectionClient
                 }
             }
         }
+        #endregion
+
+        #region 3支全检
+        private void btnChanger_Click(object sender, EventArgs e)
+        {
+            isFullInspection = true;
+            fullInspection = 0;
+            ChangeFrequency();
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            isFullInspection = true;
+            fullInspection = 0;
+            ChangeFrequency();
+        } 
         #endregion
 
         private void ThreadingForm_Load(object sender, EventArgs e)
