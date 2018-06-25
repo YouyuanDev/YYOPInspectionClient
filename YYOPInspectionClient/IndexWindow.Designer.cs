@@ -30,22 +30,6 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.thread_inspection_record_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coupling_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.process_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_crew = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.production_shift = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coupling_heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coupling_lot_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.recordDelete = new System.Windows.Forms.DataGridViewLinkColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -83,6 +67,21 @@
             this.服务器设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblIndexFormTitle = new System.Windows.Forms.Label();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.thread_inspection_record_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contract_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_line = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.machine_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.process_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operator_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_crew = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.production_shift = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_heat_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coupling_lot_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -125,8 +124,7 @@
             this.coupling_lot_no,
             this.video_no,
             this.inspection_result,
-            this.inspection_time,
-            this.recordDelete});
+            this.inspection_time});
             this.dataGridView1.Location = new System.Drawing.Point(0, 144);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
@@ -135,121 +133,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1371, 405);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "流水号";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            // 
-            // thread_inspection_record_code
-            // 
-            this.thread_inspection_record_code.DataPropertyName = "thread_inspection_record_code";
-            this.thread_inspection_record_code.HeaderText = "接箍检验编号";
-            this.thread_inspection_record_code.Name = "thread_inspection_record_code";
-            this.thread_inspection_record_code.ReadOnly = true;
-            // 
-            // coupling_no
-            // 
-            this.coupling_no.DataPropertyName = "coupling_no";
-            this.coupling_no.HeaderText = "接箍编号";
-            this.coupling_no.Name = "coupling_no";
-            this.coupling_no.ReadOnly = true;
-            // 
-            // contract_no
-            // 
-            this.contract_no.DataPropertyName = "contract_no";
-            this.contract_no.HeaderText = "合同号";
-            this.contract_no.Name = "contract_no";
-            this.contract_no.ReadOnly = true;
-            // 
-            // production_line
-            // 
-            this.production_line.DataPropertyName = "production_line";
-            this.production_line.HeaderText = "生产区域";
-            this.production_line.Name = "production_line";
-            this.production_line.ReadOnly = true;
-            // 
-            // machine_no
-            // 
-            this.machine_no.DataPropertyName = "machine_no";
-            this.machine_no.HeaderText = "机床号";
-            this.machine_no.Name = "machine_no";
-            this.machine_no.ReadOnly = true;
-            // 
-            // process_no
-            // 
-            this.process_no.DataPropertyName = "process_no";
-            this.process_no.HeaderText = "工位编号";
-            this.process_no.Name = "process_no";
-            this.process_no.ReadOnly = true;
-            this.process_no.Visible = false;
-            // 
-            // operator_no
-            // 
-            this.operator_no.DataPropertyName = "operator_no";
-            this.operator_no.HeaderText = "操作工工号";
-            this.operator_no.Name = "operator_no";
-            this.operator_no.ReadOnly = true;
-            // 
-            // production_crew
-            // 
-            this.production_crew.DataPropertyName = "production_crew";
-            this.production_crew.HeaderText = "班别";
-            this.production_crew.Name = "production_crew";
-            this.production_crew.ReadOnly = true;
-            // 
-            // production_shift
-            // 
-            this.production_shift.DataPropertyName = "production_shift";
-            this.production_shift.HeaderText = "班次";
-            this.production_shift.Name = "production_shift";
-            this.production_shift.ReadOnly = true;
-            // 
-            // coupling_heat_no
-            // 
-            this.coupling_heat_no.DataPropertyName = "coupling_heat_no";
-            this.coupling_heat_no.HeaderText = "接箍炉号";
-            this.coupling_heat_no.Name = "coupling_heat_no";
-            this.coupling_heat_no.ReadOnly = true;
-            // 
-            // coupling_lot_no
-            // 
-            this.coupling_lot_no.DataPropertyName = "coupling_lot_no";
-            this.coupling_lot_no.HeaderText = "接箍批号";
-            this.coupling_lot_no.Name = "coupling_lot_no";
-            this.coupling_lot_no.ReadOnly = true;
-            // 
-            // video_no
-            // 
-            this.video_no.DataPropertyName = "video_no";
-            this.video_no.HeaderText = "视频编号";
-            this.video_no.Name = "video_no";
-            this.video_no.ReadOnly = true;
-            // 
-            // inspection_result
-            // 
-            this.inspection_result.DataPropertyName = "inspection_result";
-            this.inspection_result.HeaderText = "检验结果";
-            this.inspection_result.Name = "inspection_result";
-            this.inspection_result.ReadOnly = true;
-            this.inspection_result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // inspection_time
-            // 
-            this.inspection_time.DataPropertyName = "inspection_time";
-            this.inspection_time.HeaderText = "检验时间";
-            this.inspection_time.Name = "inspection_time";
-            this.inspection_time.ReadOnly = true;
-            this.inspection_time.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // recordDelete
-            // 
-            this.recordDelete.HeaderText = "删除";
-            this.recordDelete.Name = "recordDelete";
-            this.recordDelete.ReadOnly = true;
-            this.recordDelete.Text = "删除";
             // 
             // panel2
             // 
@@ -693,6 +576,114 @@
             this.lblIndexFormTitle.TabIndex = 0;
             this.lblIndexFormTitle.Text = "label5";
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "流水号";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            // 
+            // thread_inspection_record_code
+            // 
+            this.thread_inspection_record_code.DataPropertyName = "thread_inspection_record_code";
+            this.thread_inspection_record_code.HeaderText = "接箍检验编号";
+            this.thread_inspection_record_code.Name = "thread_inspection_record_code";
+            this.thread_inspection_record_code.ReadOnly = true;
+            // 
+            // coupling_no
+            // 
+            this.coupling_no.DataPropertyName = "coupling_no";
+            this.coupling_no.HeaderText = "接箍编号";
+            this.coupling_no.Name = "coupling_no";
+            this.coupling_no.ReadOnly = true;
+            // 
+            // contract_no
+            // 
+            this.contract_no.DataPropertyName = "contract_no";
+            this.contract_no.HeaderText = "合同号";
+            this.contract_no.Name = "contract_no";
+            this.contract_no.ReadOnly = true;
+            // 
+            // production_line
+            // 
+            this.production_line.DataPropertyName = "production_line";
+            this.production_line.HeaderText = "生产区域";
+            this.production_line.Name = "production_line";
+            this.production_line.ReadOnly = true;
+            // 
+            // machine_no
+            // 
+            this.machine_no.DataPropertyName = "machine_no";
+            this.machine_no.HeaderText = "机床号";
+            this.machine_no.Name = "machine_no";
+            this.machine_no.ReadOnly = true;
+            // 
+            // process_no
+            // 
+            this.process_no.DataPropertyName = "process_no";
+            this.process_no.HeaderText = "工位编号";
+            this.process_no.Name = "process_no";
+            this.process_no.ReadOnly = true;
+            this.process_no.Visible = false;
+            // 
+            // operator_no
+            // 
+            this.operator_no.DataPropertyName = "operator_no";
+            this.operator_no.HeaderText = "操作工工号";
+            this.operator_no.Name = "operator_no";
+            this.operator_no.ReadOnly = true;
+            // 
+            // production_crew
+            // 
+            this.production_crew.DataPropertyName = "production_crew";
+            this.production_crew.HeaderText = "班别";
+            this.production_crew.Name = "production_crew";
+            this.production_crew.ReadOnly = true;
+            // 
+            // production_shift
+            // 
+            this.production_shift.DataPropertyName = "production_shift";
+            this.production_shift.HeaderText = "班次";
+            this.production_shift.Name = "production_shift";
+            this.production_shift.ReadOnly = true;
+            // 
+            // coupling_heat_no
+            // 
+            this.coupling_heat_no.DataPropertyName = "coupling_heat_no";
+            this.coupling_heat_no.HeaderText = "接箍炉号";
+            this.coupling_heat_no.Name = "coupling_heat_no";
+            this.coupling_heat_no.ReadOnly = true;
+            // 
+            // coupling_lot_no
+            // 
+            this.coupling_lot_no.DataPropertyName = "coupling_lot_no";
+            this.coupling_lot_no.HeaderText = "接箍批号";
+            this.coupling_lot_no.Name = "coupling_lot_no";
+            this.coupling_lot_no.ReadOnly = true;
+            // 
+            // video_no
+            // 
+            this.video_no.DataPropertyName = "video_no";
+            this.video_no.HeaderText = "视频编号";
+            this.video_no.Name = "video_no";
+            this.video_no.ReadOnly = true;
+            // 
+            // inspection_result
+            // 
+            this.inspection_result.DataPropertyName = "inspection_result";
+            this.inspection_result.HeaderText = "检验结果";
+            this.inspection_result.Name = "inspection_result";
+            this.inspection_result.ReadOnly = true;
+            this.inspection_result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // inspection_time
+            // 
+            this.inspection_time.DataPropertyName = "inspection_time";
+            this.inspection_time.HeaderText = "检验时间";
+            this.inspection_time.Name = "inspection_time";
+            this.inspection_time.ReadOnly = true;
+            this.inspection_time.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // IndexWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -759,6 +750,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn thread_inspection_record_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn coupling_no;
@@ -774,7 +766,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
-        private System.Windows.Forms.DataGridViewLinkColumn recordDelete;
-        private System.Windows.Forms.Button btnDelete;
     }
 }

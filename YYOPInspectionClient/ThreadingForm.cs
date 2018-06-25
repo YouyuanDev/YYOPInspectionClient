@@ -734,7 +734,16 @@ namespace YYOPInspectionClient
                     inspectionResult = "合格";
                 else
                     inspectionResult = "不合格";
-                JObject dataJson = new JObject {
+                bool flag=true;
+                if (inspectionResult.Contains("不合格"))
+                {
+                    if (MessageBox.Show("数据不合格,确定要提交吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        flag = true;
+                    else
+                        flag = false;
+                }
+                if (flag) {
+                    JObject dataJson = new JObject {
                     {"isAdd","add" }, {"coupling_no",HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) },
                     {"contract_no", HttpUtility.UrlEncode(this.cmbContractNo.Text, Encoding.UTF8) },
                     { "production_line", HttpUtility.UrlEncode(txtProductionArea.Text.Trim(), Encoding.UTF8) },
@@ -747,48 +756,49 @@ namespace YYOPInspectionClient
                      {"coupling_heat_no",HttpUtility.UrlEncode(this.txtHeatNo.Text, Encoding.UTF8)  },
                     { "coupling_lot_no",HttpUtility.UrlEncode(this.txtBatchNo.Text, Encoding.UTF8) },
                      { "item_record",jarray.ToString() },
-                };
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                String content = "";
-                param = dataJson.ToString();
-                byte[] data = encoding.GetBytes(dataJson.ToString());
-                string url = CommonUtil.getServerIpAndPort() +"ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                request.KeepAlive = false;
-                request.Method = "POST";
-                request.ContentType = "application/json;characterSet:utf-8";
-                request.ContentLength = data.Length;
-                using (Stream sm = request.GetRequestStream())
-                {
-                    sm.Write(data, 0, data.Length);
-                }
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[1024];
-                int count = streamRead.Read(readBuff, 0, 1024);
-                while (count > 0)
-                {
-                    String outputData = new String(readBuff, 0, count);
-                    content += outputData;
-                    count = streamRead.Read(readBuff, 0, 1024);
-                }
-                response.Close();
-                string jsons = content;
-                if (jsons != null)
-                {
-                    JObject jobject = JObject.Parse(jsons);
-                    string rowsJson = jobject["rowsData"].ToString();
-                    
-                    if (rowsJson.Trim().Equals("success"))
+                   };
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    String content = "";
+                    param = dataJson.ToString();
+                    byte[] data = encoding.GetBytes(dataJson.ToString());
+                    string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
+                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+                    request.KeepAlive = false;
+                    request.Method = "POST";
+                    request.ContentType = "application/json;characterSet:utf-8";
+                    request.ContentLength = data.Length;
+                    using (Stream sm = request.GetRequestStream())
                     {
-                        MessagePrompt.Show("提交成功!");
+                        sm.Write(data, 0, data.Length);
                     }
-                    else
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    Stream streamResponse = response.GetResponseStream();
+                    StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                    Char[] readBuff = new Char[1024];
+                    int count = streamRead.Read(readBuff, 0, 1024);
+                    while (count > 0)
                     {
-                        MessagePrompt.Show("提交失败,表单暂时保存在本地!");
-                        string coupingDir = Application.StartupPath + "\\unsubmit";
-                        CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
+                        String outputData = new String(readBuff, 0, count);
+                        content += outputData;
+                        count = streamRead.Read(readBuff, 0, 1024);
+                    }
+                    response.Close();
+                    string jsons = content;
+                    if (jsons != null)
+                    {
+                        JObject jobject = JObject.Parse(jsons);
+                        string rowsJson = jobject["rowsData"].ToString();
+
+                        if (rowsJson.Trim().Equals("success"))
+                        {
+                            MessagePrompt.Show("提交成功!");
+                        }
+                        else
+                        {
+                            MessagePrompt.Show("提交失败,表单暂时保存在本地!");
+                            string coupingDir = Application.StartupPath + "\\unsubmit";
+                            CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
+                        }
                     }
                 }
             }
@@ -1319,7 +1329,8 @@ namespace YYOPInspectionClient
             {
                 flag = true;
             }
-            return flag;
+            //return flag;
+            return true;
         }
         #endregion
 
@@ -1400,7 +1411,8 @@ namespace YYOPInspectionClient
                     this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("请选择合同号!");
                 }
-                else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text)) {
+                else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text))
+                {
                     this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("请选择班别!");
                 }
@@ -1409,12 +1421,54 @@ namespace YYOPInspectionClient
                     this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("请选择班次!");
                 }
+                else if (JudgeMeasureToolsNoIsNull()) {
+                    //this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("存在没有输入的量具编号!");
+                }
                 else
                 {
                     isMeasuringToolTabSelected = false;
                 }
             }
            
+        }
+        #endregion
+
+        #region 判断量具编号是否全部输入
+        public bool JudgeMeasureToolsNoIsNull()
+        {
+            bool flag = false;
+            List<TextBox> list = new List<TextBox>();
+            GoThroughControlsMeasureInput(flpTabOneContent, list);
+            foreach (TextBox tb in list)
+            {
+                if (string.IsNullOrWhiteSpace(tb.Text))
+                    flag = true;
+            }
+            return flag;
+        } 
+        #endregion
+
+        #region 遍历量具编号输入框，判断是否输入量具编号
+        private void GoThroughControlsMeasureInput(Control parContainer, List<TextBox> txtList)
+        {
+            for (int index = 0; index < parContainer.Controls.Count; index++)
+            {
+                // 如果是容器类控件，递归调用自己
+                if (parContainer.Controls[index].HasChildren)
+                {
+                    GoThroughControlsMeasureInput(parContainer.Controls[index], txtList);
+                }
+                else
+                {
+                    switch (parContainer.Controls[index].GetType().Name)
+                    {
+                        case "TextBox":
+                            txtList.Add((TextBox)parContainer.Controls[index]);
+                            break;
+                    }
+                }
+            }
         }
         #endregion
 

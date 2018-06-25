@@ -107,8 +107,6 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    MessageBox.Show(rowsJson);
-
                     if (rowsJson.Trim().Contains("fail"))
                     {
                         this.flpTabOneContent.Controls.Clear();
