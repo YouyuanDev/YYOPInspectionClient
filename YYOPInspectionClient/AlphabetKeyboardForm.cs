@@ -232,7 +232,12 @@ namespace YYOPInspectionClient
             Color.DimGray, 2, ButtonBorderStyle.Solid, //上边
            Color.DimGray, 2, ButtonBorderStyle.Solid, //右边
            Color.DimGray, 0, ButtonBorderStyle.Solid);//底边
-        } 
+        }
         #endregion
+
+        private void buttonLine_Click(object sender, EventArgs e)
+        {
+            this.Textbox_display.Text += ((Button)sender).Text;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
     public partial class DetailForm : Form
     {
         //public string inspection_no;
-        public string operator_no, thread_inspection_record_code, inspection_time;
+        public string operator_no, thread_inspection_record_code;
         //private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         //private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
@@ -33,7 +33,7 @@ namespace YYOPInspectionClient
         public static bool isQualified = true;
         public static string focusTextBoxName = null;
         #region 构造函数
-        public DetailForm(string operator_no, string thread_inspection_record_code, string inspection_time)
+        public DetailForm(string operator_no, string thread_inspection_record_code)
         {
             InitializeComponent();
             try
@@ -43,7 +43,6 @@ namespace YYOPInspectionClient
                     NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
                     this.operator_no = operator_no;
                     this.thread_inspection_record_code = thread_inspection_record_code;
-                    this.inspection_time = inspection_time;
                     if (!string.IsNullOrWhiteSpace(thread_inspection_record_code) && !string.IsNullOrWhiteSpace(operator_no))
                     {
                         GetThreadFormInitData(thread_inspection_record_code);
@@ -67,7 +66,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 根据合同编号获取检验记录
+        #region 根据检验记录编号获取检验记录
         public void GetThreadFormInitData(string thread_inspection_record_code)
         {
             try
@@ -108,6 +107,8 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
+                    MessageBox.Show(rowsJson);
+
                     if (rowsJson.Trim().Contains("fail"))
                     {
                         this.flpTabOneContent.Controls.Clear();
@@ -117,27 +118,32 @@ namespace YYOPInspectionClient
                     else
                     {
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
-                        string contractInfo = jo["contractInfo"].ToString();
-                        string measureInfo = jo["measureInfo"].ToString();
-                        string inspectionData = jo["inspectionData"].ToString();
+                        string contractInfo = "", measureInfo = "", inspectionData = "";
+                        if (jo["contractInfo"]!=null)
+                           contractInfo = jo["contractInfo"].ToString();
+                        if(jo["measureInfo"]!=null)
+                           measureInfo = jo["measureInfo"].ToString();
+                        if (jo["inspectionData"] != null)
+                            inspectionData = jo["inspectionData"].ToString();
 
                         FillFormTitle(contractInfo);//填充表单合同信息
-                        JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
-                        JArray measureDataArr = (JArray)JsonConvert.DeserializeObject(inspectionData);
-
                         this.flpTabOneContent.Controls.Clear();
                         this.flpTabTwoContent.Controls.Clear();
-                        //初始化测量项
-                        InitMeasureTools(measureArr);
-                        //初始化测量项和测量值
-                        InitMeasureToolNoAndValue(measureDataArr);
-                        GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
-                        GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
-                        AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
-                        NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
-                        foreach (TextBox tb in flpTabTwoTxtList)
-                        {
-                            JudgeValIsRight(tb);
+                        if (!string.IsNullOrEmpty(measureInfo)&&!string.IsNullOrEmpty(inspectionData)) {
+                            JArray measureArr = (JArray)JsonConvert.DeserializeObject(measureInfo);
+                            JArray measureDataArr = (JArray)JsonConvert.DeserializeObject(inspectionData);
+                            //初始化测量项
+                            InitMeasureTools(measureArr);
+                            //初始化测量项和测量值
+                            InitMeasureToolNoAndValue(measureDataArr);
+                            GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
+                            GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
+                            AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
+                            NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
+                            foreach (TextBox tb in flpTabTwoTxtList)
+                            {
+                                JudgeValIsRight(tb);
+                            }
                         }
                     }
                 }
@@ -147,7 +153,6 @@ namespace YYOPInspectionClient
                 this.flpTabOneContent.Controls.Clear();
                 this.flpTabTwoContent.Controls.Clear();
                 MessagePrompt.Show("初始化表单出错,错误信息:" + e.Message);
-                // Console.WriteLine("初始化表单失败......");
             }
         }
         #endregion
@@ -684,6 +689,7 @@ namespace YYOPInspectionClient
                 {
                     if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                     {
+                        string inspection_time = this.lblInspectionTime.Text;
                         if (!string.IsNullOrWhiteSpace(inspection_time))
                         {
                             DateTime dt = DateTime.Parse(inspection_time);

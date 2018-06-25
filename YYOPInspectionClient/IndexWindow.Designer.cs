@@ -45,7 +45,9 @@
             this.video_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inspection_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inspection_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recordDelete = new System.Windows.Forms.DataGridViewLinkColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
@@ -60,7 +62,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.btnExit = new System.Windows.Forms.Button();
             this.cmbPipeHeatNo = new System.Windows.Forms.ComboBox();
             this.cmbThreadingType = new System.Windows.Forms.ComboBox();
             this.cmbWt = new System.Windows.Forms.ComboBox();
@@ -71,6 +72,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnExit = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,7 +125,8 @@
             this.coupling_lot_no,
             this.video_no,
             this.inspection_result,
-            this.inspection_time});
+            this.inspection_time,
+            this.recordDelete});
             this.dataGridView1.Location = new System.Drawing.Point(0, 144);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
@@ -241,6 +244,13 @@
             this.inspection_time.ReadOnly = true;
             this.inspection_time.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // recordDelete
+            // 
+            this.recordDelete.HeaderText = "删除";
+            this.recordDelete.Name = "recordDelete";
+            this.recordDelete.ReadOnly = true;
+            this.recordDelete.Text = "删除";
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -248,6 +258,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoSize = true;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.btnDelete);
             this.panel2.Controls.Add(this.dateTimePicker2);
             this.panel2.Controls.Add(this.dateTimePicker1);
             this.panel2.Controls.Add(this.label10);
@@ -262,7 +273,6 @@
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.btnExit);
             this.panel2.Controls.Add(this.cmbPipeHeatNo);
             this.panel2.Controls.Add(this.cmbThreadingType);
             this.panel2.Controls.Add(this.cmbWt);
@@ -278,6 +288,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1373, 142);
             this.panel2.TabIndex = 0;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnDelete.Location = new System.Drawing.Point(1269, 77);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(90, 46);
+            this.btnDelete.TabIndex = 32;
+            this.btnDelete.Text = "删除";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // dateTimePicker2
             // 
@@ -442,17 +463,6 @@
             this.label8.Text = "工号";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnExit
-            // 
-            this.btnExit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(1275, 76);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 46);
-            this.btnExit.TabIndex = 14;
-            this.btnExit.Text = "登出";
-            this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
             // cmbPipeHeatNo
             // 
             this.cmbPipeHeatNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -512,7 +522,7 @@
             this.btnDetail.Name = "btnDetail";
             this.btnDetail.Size = new System.Drawing.Size(90, 46);
             this.btnDetail.TabIndex = 9;
-            this.btnDetail.Text = "详细";
+            this.btnDetail.Text = "修改";
             this.btnDetail.UseVisualStyleBackColor = true;
             this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
             // 
@@ -567,6 +577,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "外径";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnExit
+            // 
+            this.btnExit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnExit.Location = new System.Drawing.Point(1197, 7);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(119, 46);
+            this.btnExit.TabIndex = 14;
+            this.btnExit.Text = "登出";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // menuStrip1
             // 
@@ -655,6 +676,7 @@
             this.panel3.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panel3.Controls.Add(this.lblIndexFormTitle);
             this.panel3.Controls.Add(this.menuStrip1);
+            this.panel3.Controls.Add(this.btnExit);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
@@ -665,7 +687,7 @@
             // 
             this.lblIndexFormTitle.AutoSize = true;
             this.lblIndexFormTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblIndexFormTitle.Location = new System.Drawing.Point(914, 23);
+            this.lblIndexFormTitle.Location = new System.Drawing.Point(809, 23);
             this.lblIndexFormTitle.Name = "lblIndexFormTitle";
             this.lblIndexFormTitle.Size = new System.Drawing.Size(82, 24);
             this.lblIndexFormTitle.TabIndex = 0;
@@ -684,7 +706,6 @@
             this.Text = "主页";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IndexWindow_FormClosing);
-            this.Load += new System.EventHandler(this.IndexWindow_Load);
             this.VisibleChanged += new System.EventHandler(this.IndexWindow_VisibleChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -722,21 +743,6 @@
         private System.Windows.Forms.ComboBox cmbOd;
         private System.Windows.Forms.ToolStripMenuItem 服务器设置ToolStripMenuItem;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thread_inspection_record_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn production_line;
-        private System.Windows.Forms.DataGridViewTextBoxColumn machine_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn process_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operator_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn production_crew;
-        private System.Windows.Forms.DataGridViewTextBoxColumn production_shift;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_heat_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_lot_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
-        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
-        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
         private System.Windows.Forms.Panel panel3;
         public System.Windows.Forms.Label lblIndexFormTitle;
         private System.Windows.Forms.TextBox txtOperatorno;
@@ -753,5 +759,22 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn thread_inspection_record_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn contract_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_line;
+        private System.Windows.Forms.DataGridViewTextBoxColumn machine_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn process_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operator_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_crew;
+        private System.Windows.Forms.DataGridViewTextBoxColumn production_shift;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_heat_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coupling_lot_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn video_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn inspection_time;
+        private System.Windows.Forms.DataGridViewLinkColumn recordDelete;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

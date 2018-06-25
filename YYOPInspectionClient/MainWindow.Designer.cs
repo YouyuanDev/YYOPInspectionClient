@@ -80,6 +80,8 @@
             this.RealPlayWnd.Size = new System.Drawing.Size(428, 341);
             this.RealPlayWnd.TabIndex = 62;
             this.RealPlayWnd.TabStop = false;
+            this.RealPlayWnd.Tag = "normal";
+            this.RealPlayWnd.Click += new System.EventHandler(this.RealPlayWnd_Click);
             // 
             // TextBoxInfo
             // 

@@ -1263,5 +1263,28 @@ namespace YYOPInspectionClient
         {
             e.Graphics.Clear(this.BackColor);
         }
+        #region 录像窗口最大化事件
+
+        private void RealPlayWnd_Click(object sender, EventArgs e)
+        {
+            int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+            int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
+            if (RealPlayWnd.Tag.ToString().Contains("normal"))
+            {
+                this.Width = iActulaWidth;
+                this.Height = iActulaHeight;
+                this.Location = new Point(0,0);
+                RealPlayWnd.Tag = "max";
+            }
+            else {
+                RealPlayWnd.Tag = "normal";
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                this.Width=150;this.Height = 150;
+                int x = iActulaWidth - 150;
+                int y = 55;
+                this.Location = new Point(x,y);
+            }
+        } 
+        #endregion
     }
 }

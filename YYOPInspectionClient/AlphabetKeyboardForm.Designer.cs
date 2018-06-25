@@ -76,6 +76,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblEnglishTitle = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonLine = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -600,6 +601,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.buttonLine);
             this.panel2.Controls.Add(this.button_enter);
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.num1);
@@ -652,6 +654,17 @@
             this.panel2.TabIndex = 67;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
+            // 
+            // buttonLine
+            // 
+            this.buttonLine.Font = new System.Drawing.Font("宋体", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonLine.Location = new System.Drawing.Point(26, 345);
+            this.buttonLine.Name = "buttonLine";
+            this.buttonLine.Size = new System.Drawing.Size(70, 70);
+            this.buttonLine.TabIndex = 67;
+            this.buttonLine.Text = "-";
+            this.buttonLine.UseVisualStyleBackColor = true;
+            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
             // AlphabetKeyboardForm
             // 
@@ -721,5 +734,6 @@
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Label lblEnglishTitle;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button buttonLine;
     }
 }

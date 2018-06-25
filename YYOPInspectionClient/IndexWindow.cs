@@ -37,10 +37,10 @@ namespace YYOPInspectionClient
         private IndexWindow()
         {
             InitializeComponent();
-            getSearchParam();
-            getThreadingProcessData();
             try
             {
+                getSearchParam();
+                getThreadingProcessData();
                 //---------------设置datagridView字体(开始)
                 this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -425,7 +425,7 @@ namespace YYOPInspectionClient
                 object obj10= this.dataGridView1.Rows[index].Cells["inspection_result"].Value;
                 object obj11 = this.dataGridView1.Rows[index].Cells["video_no"].Value;
                 object obj12 = this.dataGridView1.Rows[index].Cells["inspection_time"].Value;
-
+                object obj13= this.dataGridView1.Rows[index].Cells["inspection_result"].Value;
                 if (obj0!=null)
                     operator_no = Convert.ToString(obj0);
                  if(obj1!=null)
@@ -452,7 +452,9 @@ namespace YYOPInspectionClient
                     videoNo = Convert.ToString(obj11);
                 if (obj12 != null)
                     inspection_time = Convert.ToString(obj12);
-                DetailForm form = new DetailForm(operator_no, thread_inspection_record_code, inspection_time);
+                if (obj13 != null)
+                    inspection_result = Convert.ToString(obj13);
+                DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
                 form.indexWindow = this;
                 form.txtProductionArea.Text =production_line;
                 form.txtMachineNo.Text = machine_no;
@@ -466,6 +468,9 @@ namespace YYOPInspectionClient
                 form.txtBatchNo.Text = coupling_lot_no;
                 form.tbContractNo.Text =contract_no;
                 form.videoNoArr = videoNo;
+                form.lblresult1.Text = inspection_result;
+                form.lblresult2.Text = inspection_result;
+                form.lblInspectionTime.Text = inspection_time;
                 form.Show();
                 form.detailForm = form;
             }
@@ -583,9 +588,129 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        private void IndexWindow_Load(object sender, EventArgs e)
+        #region 删除记录
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            
+
+            if (MessageBox.Show("确定要删除吗?","提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    int index = this.dataGridView1.CurrentRow.Index;
+                    object obj0=this.dataGridView1.Rows[index].Cells["operator_no"].Value;
+                    object obj1 = this.dataGridView1.Rows[index].Cells["inspection_time"].Value;
+                    string operator_no = null, inspection_time = null;
+                    if (obj0 != null)
+                        operator_no = obj0.ToString();
+                    if (obj1 != null)
+                        inspection_time = obj1.ToString();
+                    if (!string.IsNullOrWhiteSpace(operator_no))
+                    {
+                        if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
+                        {
+                            if (!string.IsNullOrWhiteSpace(inspection_time))
+                            {
+                                DateTime dt = DateTime.Parse(inspection_time);
+                                if (Convert.ToSingle((DateTime.Now - dt).TotalHours.ToString()) > 12)
+                                    MessagePrompt.Show("已超过12小时的记录不能删除!");
+                                else
+                                {
+                                    if (operator_no.Equals(Person.employee_no))
+                                        excuteDelteInspectionRecord(index);
+                                    else
+                                        MessagePrompt.Show("只能删除自己的表单数据!");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessagePrompt.Show("您已掉线，请重新登录!");
+                            Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        MessagePrompt.Show("系统繁忙,请稍后修改!");
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+                    MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
+                }
+            }
         }
+        public void excuteDelteInspectionRecord(int index)
+        {
+            try {
+               
+                object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
+                if (obj1 != null)
+                {
+                    string thread_inspection_record_code = obj1.ToString();
+                    JObject jsonData = new JObject
+                         {
+                            {"thread_inspection_record_code",thread_inspection_record_code }
+                        };
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    String content = "";
+                    byte[] data = encoding.GetBytes(jsonData.ToString());
+                    string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/delThreadInspectionRecordOfWinform.action";
+                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+                    request.KeepAlive = false;
+                    request.Method = "POST";
+                    request.ContentType = "application/json;characterSet:UTF-8";
+                    request.ContentLength = data.Length;
+                    using (Stream sm = request.GetRequestStream())
+                    {
+                        sm.Write(data, 0, data.Length);
+                    }
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    Stream streamResponse = response.GetResponseStream();
+                    StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                    Char[] readBuff = new Char[1024];
+                    int count = streamRead.Read(readBuff, 0, 1024);
+                    while (count > 0)
+                    {
+                        String outputData = new String(readBuff, 0, count);
+                        content += outputData;
+                        count = streamRead.Read(readBuff, 0, 1024);
+                    }
+                    response.Close();
+                    string jsons = content;
+                    if (jsons != null)
+                    {
+                        JObject jobject = JObject.Parse(jsons);
+                        string rowsJson = jobject["rowsData"].ToString();
+                        if (!rowsJson.Trim().Equals("{}"))
+                        {
+                            if (rowsJson.Contains("True"))
+                            {
+                                MessagePrompt.Show("删除成功!");
+                                getThreadingProcessData();
+                            }
+                            else
+                            {
+                                MessagePrompt.Show("删除失败!");
+                            }
+                        }
+                        else
+                        {
+                            MessagePrompt.Show("删除失败!");
+                        }
+                    }
+                }
+                else
+                {
+                    MessagePrompt.Show("删除失败!");
+                }
+            }
+            catch (Exception ex) {
+                MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
+            }
+        }
+        #endregion
+
+
     }
 }

@@ -267,16 +267,16 @@ namespace YYOPInspectionClient
         {
             if (flag)
             {
-                ClearCntrValue(this);
-                flpTabOneTxtList.Clear();
-                flpTabTwoTxtList.Clear();
-                flpTabTwoLblList.Clear();
-                controlTxtDir.Clear();
-                controlLblDir.Clear();
-                string contract_no = this.cmbContractNo.Text.Trim();
-                GetThreadFormInitData(contract_no);
                 try
                 {
+                    ClearCntrValue(this);
+                    flpTabOneTxtList.Clear();
+                    flpTabTwoTxtList.Clear();
+                    flpTabTwoLblList.Clear();
+                    controlTxtDir.Clear();
+                    controlLblDir.Clear();
+                    string contract_no = this.cmbContractNo.Text.Trim();
+                    GetThreadFormInitData(contract_no);
                     this.lblCountSubmit.Text = "1";
                     ChangeFrequency();
                     GoThroughControls(this.flpTabOneContent, flpTabOneTxtList, null);
@@ -1016,46 +1016,37 @@ namespace YYOPInspectionClient
         {
             if (this.button2.Text.Contains("开始录制"))
             {
-                try
-                {
-                    if (MainWindow.recordStatus == 3) {
-                        timestamp = CommonUtil.getMesuringRecord();
-                        RealTimePreview();
-                        MainWindow.RecordVideo(timestamp);
-                        this.lblVideoStatus.Text = "开始录制...";
-                        this.lblVideoStatus.Text = "录像中...";
-                        videosArr += timestamp + "_vcr.mp4;";
-                        if (timer != null)
-                        {
-                            countTime = 0;
-                            timer.Start();
-                        }
-                        else
-                        {
-                            timer = new System.Timers.Timer();
-                            timer.Enabled = true;
-                            timer.AutoReset = true;
-                            timer.Interval = 1000;
-                            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
-                            timer.Start();
-                        }
-                        this.button2.Text = "结束录制";
-                    }else
-                        MessagePrompt.Show("录像机暂未启动!");
-
-                }
-                catch (Exception ex) {
-                    MessagePrompt.Show("录制出错，错误信息:"+ex.Message);
-                }
-                //switch (MainWindow.recordStatus)
+                RealTimePreview();
+                //try
                 //{
-                //    case 3:
-                       
-                //        break;
-                //    default :
-                //        this.lblVideoStatus.Text = "检查录像机是否启动...";
-                //        MessagePrompt.Show("录制失败,请检查录像机是否正常运行!");
-                //        break;
+                //    if (MainWindow.recordStatus == 3) {
+                //        timestamp = CommonUtil.getMesuringRecord();
+                //        RealTimePreview();
+                //        MainWindow.RecordVideo(timestamp);
+                //        this.lblVideoStatus.Text = "开始录制...";
+                //        this.lblVideoStatus.Text = "录像中...";
+                //        videosArr += timestamp + "_vcr.mp4;";
+                //        if (timer != null)
+                //        {
+                //            countTime = 0;
+                //            timer.Start();
+                //        }
+                //        else
+                //        {
+                //            timer = new System.Timers.Timer();
+                //            timer.Enabled = true;
+                //            timer.AutoReset = true;
+                //            timer.Interval = 1000;
+                //            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
+                //            timer.Start();
+                //        }
+                //        this.button2.Text = "结束录制";
+                //    }else
+                //        MessagePrompt.Show("录像机暂未启动!");
+
+                //}
+                //catch (Exception ex) {
+                //    MessagePrompt.Show("录制出错，错误信息:"+ex.Message);
                 //}
             }
             else if (this.button2.Text.Contains("结束录制"))
@@ -1116,16 +1107,18 @@ namespace YYOPInspectionClient
                 MainWindow.getForm().Height = 150;
                 MainWindow.getForm().RealPlayWnd.Width = width;
                 MainWindow.getForm().RealPlayWnd.Height = height;
-                int x = Screen.PrimaryScreen.WorkingArea.Width - 150;
+                int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+                int x = iActulaWidth - 150;
                 int y = 55;
-                MainWindow.getForm().Location = new Point(x, y);
-                //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
-                MainWindow.getForm().MaximumSize = new Size(150, 150);
                 MainWindow.getForm().RealPlayWnd.Left = 0;
                 MainWindow.getForm().RealPlayWnd.Top = 0;
                 MainWindow.getForm().RealPlayWnd.Dock = DockStyle.Fill;
                 MainWindow.getForm().Show();
                 MainWindow.getForm().TopMost = true;
+                MainWindow.getForm().Location = new Point(x, y);
+                //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
+                //MainWindow.getForm().MaximumSize = new Size(150, 150);
+                //MainWindow.getForm().MinimumSize=new Size(150, 150);
             }
         }
         #endregion

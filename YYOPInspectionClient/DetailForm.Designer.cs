@@ -31,6 +31,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lblresult2 = new System.Windows.Forms.Label();
             this.btnFormClose = new System.Windows.Forms.Button();
             this.btnFormSubmit = new System.Windows.Forms.Button();
             this.txtBatchNo = new System.Windows.Forms.TextBox();
@@ -43,7 +45,6 @@
             this.lblSteelGrade = new System.Windows.Forms.Label();
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
-            this.dtpInspectionTime = new System.Windows.Forms.DateTimePicker();
             this.cmbProductionShift = new System.Windows.Forms.ComboBox();
             this.cmbProductionCrew = new System.Windows.Forms.ComboBox();
             this.txtOperatorNo = new System.Windows.Forms.TextBox();
@@ -68,6 +69,10 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.pnlTabOneTitle = new System.Windows.Forms.Panel();
+            this.lblInspectionTime = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lblresult1 = new System.Windows.Forms.Label();
+            this.tbContractNo = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -82,7 +87,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblDetailFormTitle = new System.Windows.Forms.Label();
-            this.tbContractNo = new System.Windows.Forms.TextBox();
             this.tabPage2.SuspendLayout();
             this.pnlTabTwoTitle.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -121,6 +125,8 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTabTwoTitle.Controls.Add(this.label13);
+            this.pnlTabTwoTitle.Controls.Add(this.lblresult2);
             this.pnlTabTwoTitle.Controls.Add(this.btnFormClose);
             this.pnlTabTwoTitle.Controls.Add(this.btnFormSubmit);
             this.pnlTabTwoTitle.Controls.Add(this.txtBatchNo);
@@ -139,9 +145,27 @@
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1193, 104);
             this.pnlTabTwoTitle.TabIndex = 0;
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(599, 63);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(118, 24);
+            this.label13.TabIndex = 15;
+            this.label13.Text = "检验结果:";
+            // 
+            // lblresult2
+            // 
+            this.lblresult2.AutoSize = true;
+            this.lblresult2.Location = new System.Drawing.Point(739, 63);
+            this.lblresult2.Name = "lblresult2";
+            this.lblresult2.Size = new System.Drawing.Size(22, 24);
+            this.lblresult2.TabIndex = 14;
+            this.lblresult2.Text = " ";
+            // 
             // btnFormClose
             // 
-            this.btnFormClose.Location = new System.Drawing.Point(789, 51);
+            this.btnFormClose.Location = new System.Drawing.Point(794, 6);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(101, 39);
             this.btnFormClose.TabIndex = 13;
@@ -151,7 +175,7 @@
             // 
             // btnFormSubmit
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(660, 52);
+            this.btnFormSubmit.Location = new System.Drawing.Point(666, 6);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(95, 39);
             this.btnFormSubmit.TabIndex = 12;
@@ -248,16 +272,6 @@
             this.lblOd.Size = new System.Drawing.Size(94, 24);
             this.lblOd.TabIndex = 0;
             this.lblOd.Text = "label72";
-            // 
-            // dtpInspectionTime
-            // 
-            this.dtpInspectionTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            this.dtpInspectionTime.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dtpInspectionTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpInspectionTime.Location = new System.Drawing.Point(1036, 69);
-            this.dtpInspectionTime.Name = "dtpInspectionTime";
-            this.dtpInspectionTime.Size = new System.Drawing.Size(151, 29);
-            this.dtpInspectionTime.TabIndex = 29;
             // 
             // cmbProductionShift
             // 
@@ -503,9 +517,11 @@
             // 
             // pnlTabOneTitle
             // 
+            this.pnlTabOneTitle.Controls.Add(this.lblInspectionTime);
+            this.pnlTabOneTitle.Controls.Add(this.label18);
+            this.pnlTabOneTitle.Controls.Add(this.lblresult1);
             this.pnlTabOneTitle.Controls.Add(this.tbContractNo);
             this.pnlTabOneTitle.Controls.Add(this.btnClose);
-            this.pnlTabOneTitle.Controls.Add(this.dtpInspectionTime);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionShift);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionCrew);
             this.pnlTabOneTitle.Controls.Add(this.txtOperatorNo);
@@ -534,9 +550,44 @@
             this.pnlTabOneTitle.Size = new System.Drawing.Size(1193, 152);
             this.pnlTabOneTitle.TabIndex = 0;
             // 
+            // lblInspectionTime
+            // 
+            this.lblInspectionTime.AutoSize = true;
+            this.lblInspectionTime.Location = new System.Drawing.Point(843, 111);
+            this.lblInspectionTime.Name = "lblInspectionTime";
+            this.lblInspectionTime.Size = new System.Drawing.Size(22, 24);
+            this.lblInspectionTime.TabIndex = 34;
+            this.lblInspectionTime.Text = " ";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(524, 114);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(118, 24);
+            this.label18.TabIndex = 33;
+            this.label18.Text = "检验结果:";
+            // 
+            // lblresult1
+            // 
+            this.lblresult1.AutoSize = true;
+            this.lblresult1.Location = new System.Drawing.Point(637, 115);
+            this.lblresult1.Name = "lblresult1";
+            this.lblresult1.Size = new System.Drawing.Size(22, 24);
+            this.lblresult1.TabIndex = 32;
+            this.lblresult1.Text = " ";
+            // 
+            // tbContractNo
+            // 
+            this.tbContractNo.Location = new System.Drawing.Point(122, 18);
+            this.tbContractNo.Name = "tbContractNo";
+            this.tbContractNo.ReadOnly = true;
+            this.tbContractNo.Size = new System.Drawing.Size(141, 35);
+            this.tbContractNo.TabIndex = 31;
+            // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(1036, 102);
+            this.btnClose.Location = new System.Drawing.Point(1036, 60);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(151, 38);
             this.btnClose.TabIndex = 30;
@@ -584,7 +635,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(968, 71);
+            this.label7.Location = new System.Drawing.Point(773, 116);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(70, 24);
             this.label7.TabIndex = 6;
@@ -664,14 +715,6 @@
             this.lblDetailFormTitle.TabIndex = 0;
             this.lblDetailFormTitle.Text = "label18";
             // 
-            // tbContractNo
-            // 
-            this.tbContractNo.Location = new System.Drawing.Point(122, 18);
-            this.tbContractNo.Name = "tbContractNo";
-            this.tbContractNo.ReadOnly = true;
-            this.tbContractNo.Size = new System.Drawing.Size(141, 35);
-            this.tbContractNo.TabIndex = 31;
-            // 
             // DetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -714,7 +757,6 @@
         private System.Windows.Forms.Label lblSteelGrade;
         private System.Windows.Forms.Label lblWt;
         private System.Windows.Forms.Label lblOd;
-        private System.Windows.Forms.DateTimePicker dtpInspectionTime;
         private System.Windows.Forms.TextBox txtCriteriaNo;
         private System.Windows.Forms.TextBox txtTreadWt;
         private System.Windows.Forms.TextBox txtOdDiameter;
@@ -758,5 +800,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblDetailFormTitle;
         public System.Windows.Forms.TextBox tbContractNo;
+        public System.Windows.Forms.Label lblresult1;
+        public System.Windows.Forms.Label lblresult2;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label18;
+        public System.Windows.Forms.Label lblInspectionTime;
     }
 }

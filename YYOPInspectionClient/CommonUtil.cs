@@ -335,6 +335,7 @@ namespace YYOPInspectionClient
         public static string Encrypt()
         {
             string str = GetFirstMacAddress();
+            Console.WriteLine(str);
             string key = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
             for (int i = key.Length; i < 16; i++) {
                 key += "0";
