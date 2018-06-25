@@ -471,6 +471,7 @@ namespace YYOPInspectionClient
                 form.lblresult1.Text = inspection_result;
                 form.lblresult2.Text = inspection_result;
                 form.lblInspectionTime.Text = inspection_time;
+                form.video_url = videoNo;
                 form.Show();
                 form.detailForm = form;
             }

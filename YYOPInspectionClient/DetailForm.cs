@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
     public partial class DetailForm : Form
     {
         //public string inspection_no;
-        public string operator_no, thread_inspection_record_code;
+        public string operator_no, thread_inspection_record_code,video_url;
         //private AlphabetKeyboardForm englishKeyboard = new AlphabetKeyboardForm();
         //private NumberKeyboardForm numberKeyboard = new NumberKeyboardForm();
         private List<TextBox> flpTabOneTxtList = new List<TextBox>();
@@ -1260,7 +1260,14 @@ namespace YYOPInspectionClient
         #region 视频查看
         private void btnBrowseVideo_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(video_url))
+            {
+                VideoPlayer player = new VideoPlayer(video_url);
+                player.Show();
+            }
+            else {
+                MessagePrompt.Show("尚未找到录制的视频!");
+            }
         } 
         #endregion
     }
