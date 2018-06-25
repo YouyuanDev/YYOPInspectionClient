@@ -35,6 +35,8 @@ namespace YYOPInspectionClient
         public static string focusTextBoxName = null;
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
+        private string tempLblTxt = "",tempLblTxt1="";
+        private Label tempLbl = null,tempLbl1= null,tempLbl2 = null, tempLbl3 = null;
         #region 构造函数
         public static ThreadingForm getMyForm()
         {
@@ -370,7 +372,7 @@ namespace YYOPInspectionClient
                     pnlMeasureTool.Controls.Add(lbl0_0);
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
-                        Label lbl0_1 = new Label { Text = obj["measure_tool1"].ToString(),Font=new Font("宋体",12), Location = new Point(5, 40),AutoSize=false,Width=90,Height=50, TextAlign = ContentAlignment.MiddleLeft};
+                        Label lbl0_1 = new Label {Name= obj["measure_item_code"].ToString() + "_measure_tool1_lbl", Text = obj["measure_tool1"].ToString(),Font=new Font("宋体",12), Location = new Point(5, 40),AutoSize=false,Width=90,Height=50, TextAlign = ContentAlignment.MiddleLeft};
                         pnlMeasureTool.Controls.Add(lbl0_1);
                         TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 45),Width=200};
                         pnlMeasureTool.Controls.Add(tbTool1);
@@ -381,7 +383,7 @@ namespace YYOPInspectionClient
                     }
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
                     {
-                        Label lbl0_2 = new Label { Text = obj["measure_tool2"].ToString(), Location = new Point(5, 90), Font = new Font("宋体", 12), AutoSize = false, Width = 90, Height = 50, TextAlign = ContentAlignment.MiddleLeft };
+                        Label lbl0_2 = new Label { Name = obj["measure_item_code"].ToString() + "_measure_tool2_lbl", Text = obj["measure_tool2"].ToString(), Location = new Point(5, 90), Font = new Font("宋体", 12), AutoSize = false, Width = 90, Height = 50, TextAlign = ContentAlignment.MiddleLeft };
                         pnlMeasureTool.Controls.Add(lbl0_2);
                         TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 95),Width=200 };
                         pnlMeasureTool.Controls.Add(tbTool2);
@@ -1197,30 +1199,55 @@ namespace YYOPInspectionClient
             try
             {
                 if (inputTxtName.Contains("_A_Value"))
-                    inputTxtName = inputTxtName.Replace("_A_Value", "");
-                if (inputTxtName.Contains("_B_Value"))
-                    inputTxtName = inputTxtName.Replace("_B_Value", "");
-                if (inputTxtName.Contains("_MaxA_Value"))
-                    inputTxtName = inputTxtName.Replace("_MaxA_Value", "");
-                if (inputTxtName.Contains("_MaxB_Value"))
-                    inputTxtName = inputTxtName.Replace("_MaxB_Value", "");
-                if (inputTxtName.Contains("_MinA_Value"))
-                    inputTxtName = inputTxtName.Replace("_MinA_Value", "");
-                if (inputTxtName.Contains("_MinB_Value"))
-                    inputTxtName = inputTxtName.Replace("_MinB_Value", "");
-                Label lbl = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
-                Label lbl0 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Prompt");
-                if (lbl != null)
                 {
-                    if (lbl0.Visible == true)
-                        NumberKeyboardForm.getForm().lblNumberTitle.Text = lbl.Text + "(必填)";
-                    else
-                        NumberKeyboardForm.getForm().lblNumberTitle.Text = lbl.Text;
+                    inputTxtName = inputTxtName.Replace("_A_Value", "");
+                    tempLblTxt1 = "A端";
                 }
+                else if (inputTxtName.Contains("_B_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_B_Value", "");
+                    tempLblTxt1 = "B端";
+                }
+                else if (inputTxtName.Contains("_MaxA_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_MaxA_Value", "");
+                    tempLblTxt1 = "最大值A端";
+                }
+                else if (inputTxtName.Contains("_MaxB_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_MaxB_Value", "");
+                    tempLblTxt1 = "最大值B端";
+                }
+                else if (inputTxtName.Contains("_MinA_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_MinA_Value", "");
+                    tempLblTxt1 = "最小值A端";
+                }
+                else if (inputTxtName.Contains("_MinB_Value"))
+                {
+                    inputTxtName = inputTxtName.Replace("_MinB_Value", "");
+                    tempLblTxt1 = "最小值B端";
+                }
+                tempLbl1 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
+                tempLbl2 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Prompt");
+                tempLbl3 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_RangeFrequencyOvality_lbl");
+                if (tempLbl1 != null)
+                    NumberKeyboardForm.getForm().lblNumberTitle.Text = tempLbl1.Text;
+                NumberKeyboardForm.getForm().lblNumberTitle.Text += tempLblTxt1;
+                if (tempLbl3 != null)
+                    NumberKeyboardForm.getForm().lblNumberTitle.Text += "(" + tempLbl3.Text + ")";
+                if (tempLbl2 != null && tempLbl2.Visible == true)
+                    NumberKeyboardForm.getForm().lblNumberTitle.Text += "[必填]";
             }
             catch (Exception ex)
             {
                 Console.WriteLine("设置输入法头部信息时出错,错误信息:" + ex.Message);
+            }
+            finally {
+                tempLblTxt1 = "";
+                tempLbl1 = null;
+                tempLbl2 = null;
+                tempLbl3 = null;
             }
         }
         #endregion
@@ -1228,23 +1255,51 @@ namespace YYOPInspectionClient
         #region 设置英文键盘Title
         private void SetAlphaKeyboardText(string inputTxtName)
         {
-            if (inputTxtName.Contains("_measure_tool1"))
-                inputTxtName = inputTxtName.Replace("_measure_tool1", "");
-            else if (inputTxtName.Contains("_measure_tool2"))
-                inputTxtName = inputTxtName.Replace("_measure_tool2", "");
-            else if (inputTxtName.Contains("txtCoupingNo"))
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "接箍编号";
-            else if (inputTxtName.Contains("txtHeatNo"))
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "炉号";
-            else if (inputTxtName.Contains("txtBatchNo"))
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "批号";
-            else if (inputTxtName.Contains("txtMachineNo"))
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "机床号";
-            else if (inputTxtName.Contains("txtProductionArea"))
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "产线";
-            Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
-            if (lbl != null)
-                AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = lbl.Text;
+            try
+            {
+                if (inputTxtName.Contains("_measure_tool1"))
+                {
+                    inputTxtName = inputTxtName.Replace("_measure_tool1", "");
+                    tempLbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_measure_tool1_lbl");
+                    if (tempLbl != null)
+                        tempLblTxt = tempLbl.Text;
+                }
+                else if (inputTxtName.Contains("_measure_tool2"))
+                {
+                    inputTxtName = inputTxtName.Replace("_measure_tool2", "");
+                    tempLbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_measure_tool2_lbl");
+                    if (tempLbl != null)
+                        tempLblTxt = tempLbl.Text;
+                }
+                else if (inputTxtName.Contains("txtCoupingNo"))
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "接箍编号";
+                else if (inputTxtName.Contains("txtHeatNo"))
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "炉号";
+                else if (inputTxtName.Contains("txtBatchNo"))
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "批号";
+                else if (inputTxtName.Contains("txtMachineNo"))
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "机床号";
+                else if (inputTxtName.Contains("txtProductionArea"))
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "产线";
+                Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
+                if (lbl != null)
+                {
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = lbl.Text;
+                }
+                if (!string.IsNullOrEmpty(tempLblTxt))
+                {
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text += "(" + tempLblTxt + ")";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("设置输入法头部信息时出错,错误信息:" + ex.Message);
+            }
+            finally
+            {
+                tempLbl = null;
+                tempLblTxt = "";
+            }
         }
         #endregion
 
