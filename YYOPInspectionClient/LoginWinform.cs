@@ -43,6 +43,8 @@ namespace YYOPInspectionClient
             string verification_code = CommonUtil.Encrypt();
             string employee_no = this.txtLoginName.Text.Trim();
             string upwd = this.txtLoginPwd.Text.Trim();
+            this.button1.Enabled = false;
+            this.button1.Text = "登录中...";
             try
             {
                 JObject json = new JObject{
@@ -112,13 +114,19 @@ namespace YYOPInspectionClient
                         }
                     }
                 }
+                this.button1.Enabled = true;
+                this.button1.Text = "登录";
             }
             catch (WebException ex) {
                 MessagePrompt.Show("网络错误，错误信息:"+ex.Message);
+                this.button1.Enabled = true;
+                this.button1.Text = "登录";
             }
             catch (Exception ec)
             {
-                MessagePrompt.Show("服务器尚未开启......");
+                MessagePrompt.Show("连接服务器失败,失败原因:"+ec.Message);
+                this.button1.Enabled = true;
+                this.button1.Text = "登录";
                 Application.Exit();
             }
         }

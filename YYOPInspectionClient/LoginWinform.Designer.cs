@@ -86,9 +86,9 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(95, 185);
+            this.button1.Location = new System.Drawing.Point(63, 185);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 52);
+            this.button1.Size = new System.Drawing.Size(143, 52);
             this.button1.TabIndex = 4;
             this.button1.Text = "登录";
             this.button1.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@
             this.btnLoginOut.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnLoginOut.Location = new System.Drawing.Point(229, 185);
             this.btnLoginOut.Name = "btnLoginOut";
-            this.btnLoginOut.Size = new System.Drawing.Size(111, 52);
+            this.btnLoginOut.Size = new System.Drawing.Size(143, 52);
             this.btnLoginOut.TabIndex = 6;
             this.btnLoginOut.Text = "退出";
             this.btnLoginOut.UseVisualStyleBackColor = true;
