@@ -1263,6 +1263,8 @@ namespace YYOPInspectionClient
             if (!string.IsNullOrEmpty(video_url))
             {
                 VideoPlayer player = new VideoPlayer(video_url);
+                player.WindowState = FormWindowState.Maximized;
+                player.TopMost = true;
                 player.Show();
             }
             else {
