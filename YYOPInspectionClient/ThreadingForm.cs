@@ -1025,38 +1025,40 @@ namespace YYOPInspectionClient
         {
             if (this.button2.Text.Contains("开始录制"))
             {
-                RealTimePreview();
-                //try
-                //{
-                //    if (MainWindow.recordStatus == 3) {
-                //        timestamp = CommonUtil.getMesuringRecord();
-                //        RealTimePreview();
-                //        MainWindow.RecordVideo(timestamp);
-                //        this.lblVideoStatus.Text = "开始录制...";
-                //        this.lblVideoStatus.Text = "录像中...";
-                //        videosArr += timestamp + "_vcr.mp4;";
-                //        if (timer != null)
-                //        {
-                //            countTime = 0;
-                //            timer.Start();
-                //        }
-                //        else
-                //        {
-                //            timer = new System.Timers.Timer();
-                //            timer.Enabled = true;
-                //            timer.AutoReset = true;
-                //            timer.Interval = 1000;
-                //            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
-                //            timer.Start();
-                //        }
-                //        this.button2.Text = "结束录制";
-                //    }else
-                //        MessagePrompt.Show("录像机暂未启动!");
+                try
+                {
+                    if (MainWindow.recordStatus == 3)
+                    {
+                        timestamp = CommonUtil.getMesuringRecord();
+                        RealTimePreview();
+                        MainWindow.RecordVideo(timestamp);
+                        this.lblVideoStatus.Text = "开始录制...";
+                        this.lblVideoStatus.Text = "录像中...";
+                        videosArr += timestamp + "_vcr.mp4;";
+                        if (timer != null)
+                        {
+                            countTime = 0;
+                            timer.Start();
+                        }
+                        else
+                        {
+                            timer = new System.Timers.Timer();
+                            timer.Enabled = true;
+                            timer.AutoReset = true;
+                            timer.Interval = 1000;
+                            timer.Elapsed += new System.Timers.ElapsedEventHandler(CountTimer);
+                            timer.Start();
+                        }
+                        this.button2.Text = "结束录制";
+                    }
+                    else
+                        MessagePrompt.Show("录像机暂未启动!");
 
-                //}
-                //catch (Exception ex) {
-                //    MessagePrompt.Show("录制出错，错误信息:"+ex.Message);
-                //}
+                }
+                catch (Exception ex)
+                {
+                    MessagePrompt.Show("录制出错，错误信息:" + ex.Message);
+                }
             }
             else if (this.button2.Text.Contains("结束录制"))
             {
@@ -1488,7 +1490,7 @@ namespace YYOPInspectionClient
                     MessagePrompt.Show("请选择班次!");
                 }
                 else if (JudgeMeasureToolsNoIsNull()) {
-                    //this.tabControl1.SelectedIndex = 0;
+                    this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("存在没有输入的量具编号!");
                 }
                 else

@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.btnChange = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnChange = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -43,8 +43,18 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(5);
             this.panel1.Size = new System.Drawing.Size(1169, 418);
             this.panel1.TabIndex = 0;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(5, 5);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(1159, 408);
+            this.webBrowser1.TabIndex = 0;
             // 
             // panel2
             // 
@@ -56,25 +66,6 @@
             this.panel2.Size = new System.Drawing.Size(1169, 54);
             this.panel2.TabIndex = 1;
             // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1169, 418);
-            this.webBrowser1.TabIndex = 0;
-            // 
-            // btnChange
-            // 
-            this.btnChange.Location = new System.Drawing.Point(933, 9);
-            this.btnChange.Name = "btnChange";
-            this.btnChange.Size = new System.Drawing.Size(103, 37);
-            this.btnChange.TabIndex = 0;
-            this.btnChange.Text = "切换";
-            this.btnChange.UseVisualStyleBackColor = true;
-            this.btnChange.Click += new System.EventHandler(this.btnChange_Click_1);
-            // 
             // btnClose
             // 
             this.btnClose.Location = new System.Drawing.Point(1054, 9);
@@ -84,6 +75,16 @@
             this.btnClose.Text = "关闭";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnChange
+            // 
+            this.btnChange.Location = new System.Drawing.Point(933, 9);
+            this.btnChange.Name = "btnChange";
+            this.btnChange.Size = new System.Drawing.Size(103, 37);
+            this.btnChange.TabIndex = 0;
+            this.btnChange.Text = "下一个";
+            this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.Click += new System.EventHandler(this.btnChange_Click_1);
             // 
             // VideoPlayer
             // 

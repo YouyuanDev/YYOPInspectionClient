@@ -40,10 +40,6 @@ namespace YYOPInspectionClient
                     string videoUrl = serverUrl + "inspection/videoPlayer.jsp?video_url=" + url;
                     this.webBrowser1.Url = new Uri(videoUrl);
                 }
-                else
-                {
-                    MessagePrompt.Show("未找到视频链接,重新打开试一下!");
-                }
             }
             catch (Exception ex)
             {

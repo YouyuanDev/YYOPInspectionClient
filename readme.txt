@@ -1,0 +1,2 @@
+1：OP在线播放问题,WebBroswer默认使用ie7内核，需要修改注册表内容,修改方法:
+   打开注册表依次打开HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION然后新建DWORD32位的数据项(名称为程序名,比如YYInspectionClient.exe,修改十进制数据为:11000)

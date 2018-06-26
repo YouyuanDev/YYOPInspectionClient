@@ -43,8 +43,8 @@ namespace YYOPInspectionClient
             string verification_code = CommonUtil.Encrypt();
             string employee_no = this.txtLoginName.Text.Trim();
             string upwd = this.txtLoginPwd.Text.Trim();
-            this.button1.Enabled = false;
             this.button1.Text = "登录中...";
+            this.button1.Enabled = false;
             try
             {
                 JObject json = new JObject{
