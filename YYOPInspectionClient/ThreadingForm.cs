@@ -119,7 +119,7 @@ namespace YYOPInspectionClient
         {
             MainWindow.stopRecordVideo();
             //保存timestamp到fileuploadrecord中
-            RestoreSetting();
+            CommonUtil.RestoreSetting(true);
             this.button2.Text = "开始录制视频";
             this.lblVideoStatus.Text = "录像完成...";
             string sourceFilePath = Application.StartupPath + "\\draft\\" + timestamp + ".mp4";
@@ -659,7 +659,7 @@ namespace YYOPInspectionClient
             }
             else
             {
-                RestoreSetting();
+                CommonUtil.RestoreSetting(true);
                 //清空表单测量值
                 //ClearForm();
                 this.Hide();
@@ -1030,8 +1030,9 @@ namespace YYOPInspectionClient
                     if (MainWindow.recordStatus == 3)
                     {
                         timestamp = CommonUtil.getMesuringRecord();
-                        RealTimePreview();
+                        CommonUtil.RealTimePreview();
                         MainWindow.RecordVideo(timestamp);
+                        MainWindow.isRecordClick = false;
                         this.lblVideoStatus.Text = "开始录制...";
                         this.lblVideoStatus.Text = "录像中...";
                         videosArr += timestamp + "_vcr.mp4;";
@@ -1066,7 +1067,7 @@ namespace YYOPInspectionClient
                     MainWindow.stopRecordVideo();
                     timer.Stop();
                     //保存timestamp到fileuploadrecord中
-                    RestoreSetting();
+                    CommonUtil.RestoreSetting(true);
                     this.button2.Text = "开始录制";
                     this.lblVideoStatus.Text = "录制完成...";
                     //将视频移到done文件夹下
@@ -1105,58 +1106,58 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 小窗口显示实时录制视频内容
-        public void RealTimePreview()
-        {
-            if (MainWindow.getForm() != null)
-            {
-                MainWindow.getForm().groupBox1.Hide(); MainWindow.getForm().groupBox2.Hide();
-                MainWindow.getForm().groupBox3.Hide(); MainWindow.getForm().groupBox4.Hide();
-                int width = MainWindow.getForm().Width;
-                int height = MainWindow.getForm().Height;
-                MainWindow.getForm().Width = 150;
-                MainWindow.getForm().Height = 150;
-                MainWindow.getForm().RealPlayWnd.Width = width;
-                MainWindow.getForm().RealPlayWnd.Height = height;
-                int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
-                int x = iActulaWidth - 150;
-                int y = 55;
-                MainWindow.getForm().RealPlayWnd.Left = 0;
-                MainWindow.getForm().RealPlayWnd.Top = 0;
-                MainWindow.getForm().RealPlayWnd.Dock = DockStyle.Fill;
-                MainWindow.getForm().Show();
-                MainWindow.getForm().TopMost = true;
-                MainWindow.getForm().Location = new Point(x, y);
-                //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
-                //MainWindow.getForm().MaximumSize = new Size(150, 150);
-                //MainWindow.getForm().MinimumSize=new Size(150, 150);
-            }
-        }
-        #endregion
+        //#region 小窗口显示实时录制视频内容
+        //public void RealTimePreview()
+        //{
+        //    if (MainWindow.getForm() != null)
+        //    {
+        //        MainWindow.getForm().groupBox1.Hide(); MainWindow.getForm().groupBox2.Hide();
+        //        MainWindow.getForm().groupBox3.Hide(); MainWindow.getForm().groupBox4.Hide();
+        //        int width = MainWindow.getForm().Width;
+        //        int height = MainWindow.getForm().Height;
+        //        MainWindow.getForm().Width = 150;
+        //        MainWindow.getForm().Height = 150;
+        //        MainWindow.getForm().RealPlayWnd.Width = width;
+        //        MainWindow.getForm().RealPlayWnd.Height = height;
+        //        int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+        //        int x = iActulaWidth - 150;
+        //        int y = 55;
+        //        MainWindow.getForm().RealPlayWnd.Left = 0;
+        //        MainWindow.getForm().RealPlayWnd.Top = 0;
+        //        MainWindow.getForm().RealPlayWnd.Dock = DockStyle.Fill;
+        //        MainWindow.getForm().Show();
+        //        MainWindow.getForm().TopMost = true;
+        //        MainWindow.getForm().Location = new Point(x, y);
+        //        //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
+        //        //MainWindow.getForm().MaximumSize = new Size(150, 150);
+        //        //MainWindow.getForm().MinimumSize=new Size(150, 150);
+        //    }
+        //}
+        //#endregion
 
-        #region 重置录像机设置
-        public void RestoreSetting()
-        {
+        //#region 重置录像机设置
+        //public void RestoreSetting()
+        //{
             
-                MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
-                MainWindow.getForm().MaximumSize = new Size(2000, 2000);
-                MainWindow.getForm().Left = MainWindow.mainWindowX;
-                MainWindow.getForm().Top = MainWindow.mainWindowY;
-                MainWindow.getForm().Width = MainWindow.mainWindowWidth;
-                MainWindow.getForm().Height = MainWindow.mainWindowHeight;
-                MainWindow.getForm().RealPlayWnd.Left = MainWindow.realTimeX;
-                MainWindow.getForm().RealPlayWnd.Top = MainWindow.realTimeY;
-                MainWindow.getForm().RealPlayWnd.Width = MainWindow.realTimeWidth;
-                MainWindow.getForm().RealPlayWnd.Height = MainWindow.realTimeHeigh;
-                MainWindow.getForm().RealPlayWnd.Dock = DockStyle.None;
-                MainWindow.getForm().groupBox1.Show();
-                MainWindow.getForm().groupBox2.Show();
-                MainWindow.getForm().groupBox3.Show();
-                MainWindow.getForm().groupBox4.Show();
-                MainWindow.getForm().TopMost = false;
-                MainWindow.getForm().Hide();
-        }
-        #endregion
+        //        MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
+        //        MainWindow.getForm().MaximumSize = new Size(2000, 2000);
+        //        MainWindow.getForm().Left = MainWindow.mainWindowX;
+        //        MainWindow.getForm().Top = MainWindow.mainWindowY;
+        //        MainWindow.getForm().Width = MainWindow.mainWindowWidth;
+        //        MainWindow.getForm().Height = MainWindow.mainWindowHeight;
+        //        MainWindow.getForm().RealPlayWnd.Left = MainWindow.realTimeX;
+        //        MainWindow.getForm().RealPlayWnd.Top = MainWindow.realTimeY;
+        //        MainWindow.getForm().RealPlayWnd.Width = MainWindow.realTimeWidth;
+        //        MainWindow.getForm().RealPlayWnd.Height = MainWindow.realTimeHeigh;
+        //        MainWindow.getForm().RealPlayWnd.Dock = DockStyle.None;
+        //        MainWindow.getForm().groupBox1.Show();
+        //        MainWindow.getForm().groupBox2.Show();
+        //        MainWindow.getForm().groupBox3.Show();
+        //        MainWindow.getForm().groupBox4.Show();
+        //        MainWindow.getForm().TopMost = false;
+        //        MainWindow.getForm().Hide();
+        //}
+        //#endregion
 
         #region 根据控件名找到该控件
         private object GetControlInstance(object obj, string strControlName)
@@ -1332,7 +1333,7 @@ namespace YYOPInspectionClient
             }
             else
             {
-                RestoreSetting();
+                CommonUtil.RestoreSetting(true);
                 //清空表单测量值
                 ClearForm();
                 this.Hide();
@@ -1467,7 +1468,6 @@ namespace YYOPInspectionClient
         #region tabControl切换事件
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (this.tabControl1.SelectedIndex == 0)
             {
                 isMeasuringToolTabSelected = true;
@@ -1489,7 +1489,8 @@ namespace YYOPInspectionClient
                     this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("请选择班次!");
                 }
-                else if (JudgeMeasureToolsNoIsNull()) {
+                else if (JudgeMeasureToolsNoIsNull())
+                {
                     this.tabControl1.SelectedIndex = 0;
                     MessagePrompt.Show("存在没有输入的量具编号!");
                 }
@@ -1498,7 +1499,7 @@ namespace YYOPInspectionClient
                     isMeasuringToolTabSelected = false;
                 }
             }
-           
+
         }
         #endregion
 
@@ -1514,7 +1515,9 @@ namespace YYOPInspectionClient
                     flag = true;
             }
             return flag;
-        } 
+        }
+
+        
         #endregion
 
         #region 遍历量具编号输入框，判断是否输入量具编号
@@ -1552,9 +1555,18 @@ namespace YYOPInspectionClient
             isFullInspection = true;
             fullInspection = 0;
             ChangeFrequency();
-        } 
+        }
         #endregion
 
+        #region 取消3支全检
+        private void button4_Click(object sender, EventArgs e)
+        {
+            isFullInspection = false;
+            fullInspection = 0;
+            ChangeFrequency();
+        }
+
+        #endregion
         private void ThreadingForm_Load(object sender, EventArgs e)
         {
             InitContractList();

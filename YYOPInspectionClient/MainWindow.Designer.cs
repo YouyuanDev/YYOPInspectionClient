@@ -74,6 +74,7 @@
             // 
             // RealPlayWnd
             // 
+            this.RealPlayWnd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.RealPlayWnd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.RealPlayWnd.Location = new System.Drawing.Point(223, 132);
             this.RealPlayWnd.Name = "RealPlayWnd";

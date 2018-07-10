@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Net.NetworkInformation;
 using System.Management;
+using System.Drawing;
 
 namespace YYOPInspectionClient
 {
@@ -441,5 +442,66 @@ namespace YYOPInspectionClient
              //返回指示文件是否已被其它程序使用的值
             return result;
         }//end method FileIsUsed
+
+        #region 小窗口显示实时录制视频内容
+        public static void RealTimePreview()
+        {
+            if (MainWindow.getForm() != null)
+            {
+                MainWindow.getForm().groupBox1.Hide(); MainWindow.getForm().groupBox2.Hide();
+                MainWindow.getForm().groupBox3.Hide(); MainWindow.getForm().groupBox4.Hide();
+                int width = MainWindow.getForm().Width;
+                int height = MainWindow.getForm().Height;
+                MainWindow.getForm().Width = 150;
+                MainWindow.getForm().Height = 150;
+                MainWindow.getForm().RealPlayWnd.Width = width;
+                MainWindow.getForm().RealPlayWnd.Height = height;
+                int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+                int x = iActulaWidth - 150;
+                int y = 55;
+                MainWindow.getForm().RealPlayWnd.Left = 0;
+                MainWindow.getForm().RealPlayWnd.Top = 0;
+                MainWindow.getForm().RealPlayWnd.Dock = DockStyle.Fill;
+                MainWindow.getForm().Show();
+                MainWindow.getForm().TopMost = true;
+                MainWindow.getForm().Location = new Point(x, y);
+                //mainWindow.FormBorderStyle = FormBorderStyle.FixedDialog;
+                //MainWindow.getForm().MaximumSize = new Size(150, 150);
+                //MainWindow.getForm().MinimumSize=new Size(150, 150);
+            }
+        }
+        #endregion
+
+        #region 重置录像机设置
+        public static void RestoreSetting(bool isClose)
+        {
+
+            MainWindow.getForm().FormBorderStyle = FormBorderStyle.Sizable;
+            MainWindow.getForm().MaximumSize = new Size(2000, 2000);
+            MainWindow.getForm().Left = MainWindow.mainWindowX;
+            MainWindow.getForm().Top = MainWindow.mainWindowY;
+            MainWindow.getForm().Width = MainWindow.mainWindowWidth;
+            MainWindow.getForm().Height = MainWindow.mainWindowHeight;
+            MainWindow.getForm().RealPlayWnd.Left = MainWindow.realTimeX;
+            MainWindow.getForm().RealPlayWnd.Top = MainWindow.realTimeY;
+            MainWindow.getForm().RealPlayWnd.Width = MainWindow.realTimeWidth;
+            MainWindow.getForm().RealPlayWnd.Height = MainWindow.realTimeHeigh;
+            MainWindow.getForm().RealPlayWnd.Dock = DockStyle.None;
+            MainWindow.getForm().groupBox1.Show();
+            MainWindow.getForm().groupBox2.Show();
+            MainWindow.getForm().groupBox3.Show();
+            MainWindow.getForm().groupBox4.Show();
+            MainWindow.getForm().TopMost = false;
+            if (isClose)
+            {
+                MainWindow.getForm().Hide();
+            }
+            else {
+                MainWindow.isRecordClick = true;
+            }
+        }
+        #endregion
+
+
     }
 }

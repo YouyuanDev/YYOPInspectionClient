@@ -89,10 +89,11 @@
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btnChanger = new System.Windows.Forms.Button();
             this.lblCountSubmit = new System.Windows.Forms.Label();
             this.lblFormTitle = new System.Windows.Forms.Label();
-            this.btnChanger = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
@@ -771,6 +772,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.btnChanger);
             this.panel1.Controls.Add(this.lblCountSubmit);
@@ -780,6 +782,32 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1307, 38);
             this.panel1.TabIndex = 1;
+            // 
+            // button3
+            // 
+            this.button3.AutoSize = true;
+            this.button3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.Location = new System.Drawing.Point(977, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(106, 31);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "交班3支全检";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btnChanger
+            // 
+            this.btnChanger.AutoSize = true;
+            this.btnChanger.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnChanger.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnChanger.Location = new System.Drawing.Point(863, 4);
+            this.btnChanger.Name = "btnChanger";
+            this.btnChanger.Size = new System.Drawing.Size(106, 31);
+            this.btnChanger.TabIndex = 17;
+            this.btnChanger.Text = "换刀3支全检";
+            this.btnChanger.UseVisualStyleBackColor = false;
+            this.btnChanger.Click += new System.EventHandler(this.btnChanger_Click);
             // 
             // lblCountSubmit
             // 
@@ -801,31 +829,18 @@
             this.lblFormTitle.TabIndex = 0;
             this.lblFormTitle.Text = "label19";
             // 
-            // btnChanger
+            // button4
             // 
-            this.btnChanger.AutoSize = true;
-            this.btnChanger.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnChanger.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnChanger.Location = new System.Drawing.Point(863, 4);
-            this.btnChanger.Name = "btnChanger";
-            this.btnChanger.Size = new System.Drawing.Size(106, 31);
-            this.btnChanger.TabIndex = 17;
-            this.btnChanger.Text = "换刀3支全检";
-            this.btnChanger.UseVisualStyleBackColor = false;
-            this.btnChanger.Click += new System.EventHandler(this.btnChanger_Click);
-            // 
-            // button3
-            // 
-            this.button3.AutoSize = true;
-            this.button3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button3.Location = new System.Drawing.Point(977, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(106, 31);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "交班3支全检";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button4.AutoSize = true;
+            this.button4.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button4.Location = new System.Drawing.Point(749, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(106, 31);
+            this.button4.TabIndex = 19;
+            this.button4.Text = "取消3支全检";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // ThreadingForm
             // 
@@ -924,5 +939,6 @@
         private System.Windows.Forms.ComboBox cmbProductionShift;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnChanger;
+        private System.Windows.Forms.Button button4;
     }
 }

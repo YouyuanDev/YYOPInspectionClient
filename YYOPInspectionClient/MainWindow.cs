@@ -63,6 +63,9 @@ namespace YYOPInspectionClient
         public static int realTimeY = 0;
         public static int realTimeWidth = 0;
         public static int realTimeHeigh = 0;
+        public static bool isRecordClick = true;
+        public static bool isRealPicClick =true;
+        private int tempWidth = 0, tempHeihgt = 0, tempX = 0, tempY = 0;
 
         public static MainWindow getForm()
         {
@@ -1267,23 +1270,68 @@ namespace YYOPInspectionClient
 
         private void RealPlayWnd_Click(object sender, EventArgs e)
         {
-            int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
-            int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
-            if (RealPlayWnd.Tag.ToString().Contains("normal"))
+            //设置窗口点击
+            if (isRecordClick)
             {
-                this.Width = iActulaWidth;
-                this.Height = iActulaHeight;
-                this.Location = new Point(0,0);
-                RealPlayWnd.Tag = "max";
+                if (isRealPicClick)
+                {
+                    CommonUtil.RealTimePreview();
+                    int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+                    int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
+                    this.Width = iActulaWidth;
+                    this.Height = iActulaHeight;
+                    this.Location = new Point(0, 0);
+                    isRealPicClick = false;
+                }
+                else {
+                    CommonUtil.RestoreSetting(false);
+                    isRealPicClick =true;
+                    return;
+                }
+                //isRecordClick = false;
             }
             else {
-                RealPlayWnd.Tag = "normal";
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-                this.Width=150;this.Height = 150;
-                int x = iActulaWidth - 150;
-                int y = 55;
-                this.Location = new Point(x,y);
+                //isRecordClick=true;
+                int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+                int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
+                if (RealPlayWnd.Tag.ToString().Contains("normal"))
+                {
+                    this.Width = iActulaWidth;
+                    this.Height = iActulaHeight;
+                    this.Location = new Point(0, 0);
+                    RealPlayWnd.Tag = "max";
+                }
+                else
+                {
+                    RealPlayWnd.Tag = "normal";
+                    this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                    this.Width = 150; this.Height = 150;
+                    int x = iActulaWidth - 150;
+                    int y = 55;
+                    this.Location = new Point(x, y);
+                }
             }
+               
+            //}
+            //else {
+            //    isRecordClick = false;
+            //    //需要放大
+            //    if (!isRealPicClick)
+            //    {
+            //        tempWidth = RealPlayWnd.Width;
+            //        tempHeihgt = RealPlayWnd.Height;
+            //        int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
+            //        int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
+            //        RealPlayWnd.Width = iActulaHeight;
+            //        RealPlayWnd.Height = iActulaHeight;
+            //        isRealPicClick = true;
+            //    }
+            //    else {
+
+            //        isRealPicClick = false;
+            //    }
+            //}
+            
         } 
         #endregion
     }

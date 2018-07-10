@@ -362,6 +362,7 @@ namespace YYOPInspectionClient
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainWindow.getForm().Show();
+            MainWindow.isRecordClick = true;
         }
         #endregion
 
