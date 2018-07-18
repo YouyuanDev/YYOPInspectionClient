@@ -37,6 +37,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.lblLoginTitle = new System.Windows.Forms.Label();
             this.btnLoginOut = new System.Windows.Forms.Button();
+            this.pingLbl = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,11 +139,23 @@
             this.btnLoginOut.UseVisualStyleBackColor = true;
             this.btnLoginOut.Click += new System.EventHandler(this.btnLoginOut_Click);
             // 
+            // pingLbl
+            // 
+            this.pingLbl.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pingLbl.ForeColor = System.Drawing.Color.IndianRed;
+            this.pingLbl.Location = new System.Drawing.Point(105, 248);
+            this.pingLbl.Name = "pingLbl";
+            this.pingLbl.Size = new System.Drawing.Size(212, 22);
+            this.pingLbl.TabIndex = 7;
+            this.pingLbl.Text = " ";
+            this.pingLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // LoginWinform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 261);
+            this.ClientSize = new System.Drawing.Size(410, 275);
+            this.Controls.Add(this.pingLbl);
             this.Controls.Add(this.btnLoginOut);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
@@ -172,5 +185,6 @@
         private System.Windows.Forms.Label lblLoginTitle;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnLoginOut;
+        internal System.Windows.Forms.Label pingLbl;
     }
 }

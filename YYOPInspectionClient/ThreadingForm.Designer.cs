@@ -89,11 +89,12 @@
             this.lblWt = new System.Windows.Forms.Label();
             this.lblOd = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pingLbl = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnChanger = new System.Windows.Forms.Button();
             this.lblCountSubmit = new System.Windows.Forms.Label();
             this.lblFormTitle = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.pnlTabOneFooter.SuspendLayout();
@@ -772,6 +773,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.pingLbl);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.btnChanger);
@@ -782,6 +784,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1307, 38);
             this.panel1.TabIndex = 1;
+            // 
+            // pingLbl
+            // 
+            this.pingLbl.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pingLbl.ForeColor = System.Drawing.Color.IndianRed;
+            this.pingLbl.Location = new System.Drawing.Point(1119, 8);
+            this.pingLbl.Name = "pingLbl";
+            this.pingLbl.Size = new System.Drawing.Size(165, 23);
+            this.pingLbl.TabIndex = 20;
+            this.pingLbl.Text = " ";
+            this.pingLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // button4
+            // 
+            this.button4.AutoSize = true;
+            this.button4.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button4.Location = new System.Drawing.Point(749, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(106, 31);
+            this.button4.TabIndex = 19;
+            this.button4.Text = "取消3支全检";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -829,19 +855,6 @@
             this.lblFormTitle.TabIndex = 0;
             this.lblFormTitle.Text = "label19";
             // 
-            // button4
-            // 
-            this.button4.AutoSize = true;
-            this.button4.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button4.Location = new System.Drawing.Point(749, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(106, 31);
-            this.button4.TabIndex = 19;
-            this.button4.Text = "取消3支全检";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // ThreadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -855,6 +868,7 @@
             this.Text = "表单";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ThreadingForm_Load);
+            this.Shown += new System.EventHandler(this.ThreadingForm_Shown);
             this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -940,5 +954,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnChanger;
         private System.Windows.Forms.Button button4;
+        public System.Windows.Forms.Label pingLbl;
     }
 }

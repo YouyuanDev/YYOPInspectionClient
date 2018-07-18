@@ -11,13 +11,17 @@ using System.Security.Cryptography;
 using System.Net.NetworkInformation;
 using System.Management;
 using System.Drawing;
+using System.Threading;
 
 namespace YYOPInspectionClient
 {
 
     public class CommonUtil
     {
-
+        public static string ip = "";
+        public static bool flag = false;
+        private delegate void SetLblTextCallback(string message);
+        private delegate void SetLblTextCallbackOfThreading(string message);
         #region 获取服务地址(例如:http://100.100.0.1:8080/)
         public static string getServerIpAndPort()
         {
@@ -503,5 +507,78 @@ namespace YYOPInspectionClient
         #endregion
 
 
+
+        //定时器，定时更新与服务器连接情况
+        public static void UpdatePing(object source, System.Timers.ElapsedEventArgs e) {
+            try {
+                if (string.IsNullOrEmpty(ip))
+                {
+                    string str = getServerIpAndPort();
+                    str = str.Replace("http://", "");
+                    string[] strArr = str.Split(':');
+                    ip = strArr[0];
+                }
+                if (!string.IsNullOrEmpty(ip)) {
+                    Ping pingSender = new Ping();
+                    PingOptions options = new PingOptions();
+                    options.DontFragment = true;
+                    string data = "";
+                    byte[] buf = Encoding.ASCII.GetBytes(data);
+                    //调用同步send方法发送数据，结果存入reply对象;
+                    PingReply reply = pingSender.Send(ip, 120, buf, options);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                            SetTextOfLogin("Ping:" + reply.RoundtripTime+"ms");
+                            if(flag) 
+                            SetTextOfThreading("Ping:" + reply.RoundtripTime + "ms");
+                    }
+                    else {
+                            SetTextOfLogin("服务器未响应...");
+                            if (flag)
+                            SetTextOfThreading("服务器未响应...");
+                    }
+                }
+            } catch (Exception ex) {
+
+            }
+            
+        }
+        private static void SetTextOfLogin(string text)
+        {
+            try
+            {
+                    if (LoginWinform.getForm().pingLbl.InvokeRequired)
+                    {
+                        SetLblTextCallback d = new SetLblTextCallback(SetTextOfLogin);
+                        LoginWinform.getForm().pingLbl.Invoke(d, new object[] { text });
+                    }
+                    else
+                    {
+                        LoginWinform.getForm().pingLbl.Text = text;
+                    }
+            }
+            catch (Exception ex) {
+
+            }
+        }
+        private static void SetTextOfThreading(string text)
+        {
+            try
+            {
+                if (ThreadingForm.getMyForm().pingLbl.InvokeRequired)
+                {
+                    SetLblTextCallbackOfThreading d = new SetLblTextCallbackOfThreading(SetTextOfThreading);
+                    ThreadingForm.getMyForm().pingLbl.Invoke(d, new object[] { text });
+                }
+                else
+                {
+                    ThreadingForm.getMyForm().pingLbl.Text = text;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

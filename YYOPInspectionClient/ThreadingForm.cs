@@ -56,6 +56,7 @@ namespace YYOPInspectionClient
         {
            
             InitializeComponent();
+           
             //Control.CheckForIllegalCrossThreadCalls = false;
             try
             {
@@ -858,6 +859,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+
         #region 输入框获取焦点事件
         private void txt_Enter(object sender, EventArgs e)
         {
@@ -877,12 +879,12 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                        if (IsHaveCoupingNoAndStartRecordVideo())
+                        if (!IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
-                            //NumberKeyboardForm.getForm().TopMost = true;
+                            NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -949,12 +951,12 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                        if (IsHaveCoupingNoAndStartRecordVideo())
+                        if (!IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
-                            //NumberKeyboardForm.getForm().TopMost = true;
+                            NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb.Name);
                         }
                         else
@@ -1541,6 +1543,19 @@ namespace YYOPInspectionClient
                 }
             }
         }
+
+
+        #endregion
+
+        #region Shown事件
+        private void ThreadingForm_Shown(object sender, EventArgs e)
+        {
+            CommonUtil.flag = true;
+            System.Timers.Timer t = new System.Timers.Timer(10000);//实例化Timer类，设置时间间隔
+            t.Elapsed += new System.Timers.ElapsedEventHandler(CommonUtil.UpdatePing);//到达时间的时候执行事件
+            t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)
+            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件
+        } 
         #endregion
 
         #region 3支全检
@@ -1567,6 +1582,7 @@ namespace YYOPInspectionClient
         }
 
         #endregion
+
         private void ThreadingForm_Load(object sender, EventArgs e)
         {
             InitContractList();
