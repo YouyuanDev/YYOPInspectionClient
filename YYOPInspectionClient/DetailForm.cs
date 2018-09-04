@@ -26,7 +26,6 @@ namespace YYOPInspectionClient
         private List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         public string videoNoArr = "";
         public IndexWindow indexWindow = null;
-        public DetailForm detailForm = null;
         private List<string> measureItemCodeList = new List<string>();
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();

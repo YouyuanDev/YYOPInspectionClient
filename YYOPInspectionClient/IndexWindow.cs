@@ -17,12 +17,14 @@ namespace YYOPInspectionClient
 {
     public partial class IndexWindow : Form
     {
+        #region 全局变量
+        //定义上传视频的线程
         private static Thread thread = null;
-        //private YYKeyenceReaderConsole readerCodeWindow = null;
-        //private MainWindow videoWindow = null;
-        //public ThreadingForm threadFrom = null;
-        //public  LoginWinform loginWinform=null;
-        private static IndexWindow myForm=null;
+        //定义主窗体实例变量
+        private static IndexWindow myForm = null; 
+        #endregion
+
+        #region 获取主窗体实例
         public static IndexWindow getForm()
         {
             if (myForm == null)
@@ -31,7 +33,8 @@ namespace YYOPInspectionClient
             }
 
             return myForm;
-        }
+        } 
+        #endregion
 
         #region 构造函数
         private IndexWindow()
@@ -39,23 +42,25 @@ namespace YYOPInspectionClient
             InitializeComponent();
             try
             {
+                //获取模糊查询所需要的参数
                 getSearchParam();
+                //获取螺纹检验记录
                 getThreadingProcessData();
-                //---------------设置datagridView字体(开始)
+                //设置datagridView字体
                 this.dataGridView1.RowsDefaultCellStyle.Font = new Font("宋体", 18, FontStyle.Bold);
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
                 style.Font = new Font("宋体", 18, FontStyle.Bold);
+                //设置datagridView列和头部样式
                 foreach (DataGridViewColumn col in this.dataGridView1.Columns)
                 {
                     col.HeaderCell.Style = style;
                 }
                 this.dataGridView1.EnableHeadersVisualStyles = false;
                 myForm = this;
-                //---------------设置datagridView字体(结束)
+                //开启上传视频线程
                 thread = new Thread(UploadVideo);
                 thread.Start();
                 thread.IsBackground = true;
-
             }
             catch (Exception e)
             {
@@ -64,20 +69,26 @@ namespace YYOPInspectionClient
             finally {
                 try
                 {
+                    //初始化录像窗体
                     MainWindow.getForm();
+                    //开启录像机
                     if (MainWindow.recordStatus == 0)
                         MainWindow.getForm().btnLogin_Click(null, null);
                     if (MainWindow.recordStatus == 1)
                         MainWindow.getForm().btnPreview_Click_1(null, null);
+                    //初始化英文输入法
                     AlphabetKeyboardForm.getForm();
+                    //初始化读码器窗体
                     YYKeyenceReaderConsole.getForm().Show();
                     YYKeyenceReaderConsole.getForm().Hide();
+                    //连接读码器
                     if(YYKeyenceReaderConsole.readerStatus==0)
                        YYKeyenceReaderConsole.codeReaderConnect();
+                    //初始化螺纹检验表单窗体
                     ThreadingForm.getMyForm();
                 }
                 catch (Exception ex) {
-                    MessagePrompt.Show("请检查录像机或读码器是否正常连接!");
+                    MessagePrompt.Show("初始化窗体异常,异常信息:"+ex.Message);
                 }
             }
         } 
@@ -86,17 +97,12 @@ namespace YYOPInspectionClient
         #region 获取检验记录的查询条件参数
         private void getSearchParam()
         {
-
             try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("{");
-                sb.Append("}");
+                JObject json = new JObject { };
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
-                JObject o = JObject.Parse(sb.ToString());
-                String param = o.ToString();
-                byte[] data = encoding.GetBytes(param);
+                byte[] data = encoding.GetBytes(json.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "Contract/getAllContractNoOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.KeepAlive = false;
@@ -124,44 +130,56 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
+                    //将获取到的json格式的合同信息转成List对象
                     List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
+                    //添加空白选项
                     this.cmbContractNo.Items.Add("");
                     this.cmbOd.Items.Add("");
                     this.cmbWt.Items.Add("");
                     this.cmbThreadingType.Items.Add("");
                     this.cmbPipeHeatNo.Items.Add("");
                     this.cmbPipeLotNo.Items.Add("");
+                    //遍历合同信息集合
                     foreach (ContractInfo item in list)
                     {
+                        //如果合同编号不为空
                         if (!string.IsNullOrWhiteSpace(item.Contract_no))
                         {
+                            //如果合同编号下拉框没有当前合同编号
                             if (!cmbContractNo.Items.Contains(item.Contract_no))
                             {
+                                //添加当前合同编号到合同编号下拉框中
                                 this.cmbContractNo.Items.Add(item.Contract_no);
                             }
                         }
+                        //追加外径到外径下拉框中
                         if (!string.IsNullOrWhiteSpace(item.Od)) {
                             if (!this.cmbOd.Items.Contains(item.Od))
                                 this.cmbOd.Items.Add(item.Od);
                         }
+                        //追加壁厚到壁厚下拉框中
                         if (!string.IsNullOrWhiteSpace(item.Wt)) {
                             if (!this.cmbWt.Items.Contains(item.Wt))
                                 this.cmbWt.Items.Add(item.Wt);
                         }
+                        //追加螺纹类型到螺纹类型下拉框中
                         if (!string.IsNullOrWhiteSpace(item.Threading_type)) {
                             if (!this.cmbThreadingType.Items.Contains(item.Threading_type))
                                 this.cmbThreadingType.Items.Add(item.Threading_type);
                         }
+                        //追加炉号到炉号下拉框中
                         if (!string.IsNullOrWhiteSpace(item.Pipe_heat_no)) {
                             if (!this.cmbPipeHeatNo.Items.Contains(item.Pipe_heat_no))
                                 this.cmbPipeHeatNo.Items.Add(item.Pipe_heat_no);
                         }
+                        //追加试批号到试批号下拉框中
                         if (!string.IsNullOrWhiteSpace(item.Pipe_lot_no))
                         {
                             if (!this.cmbPipeLotNo.Items.Contains(item.Pipe_lot_no))
                                 this.cmbPipeLotNo.Items.Add(item.Pipe_lot_no);
                         }
                     }
+                    //设置主窗体搜索参数下拉框默认选择第一条空白选项
                     this.cmbProductionCrew.SelectedIndex = 0;
                     this.cmbProductionShift.SelectedIndex = 0;
                     this.cmbContractNo.SelectedIndex = 0;
@@ -175,74 +193,8 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                Console.WriteLine("获取查询条件时出错,错误原因:"+e.Message);
+                MessagePrompt.Show("获取查询条件时出错,错误原因:" + e.Message);
             }
-        }
-        #endregion
-
-        #region 多线程上传视频
-        private static void UploadVideo()
-        {
-            try
-            {
-                string basePath = Application.StartupPath + "\\";
-                string ffmpegPath = basePath + "ffmpeg.exe";
-                string donePath = basePath + "done";
-                //先判断done目录是否存在
-                if (!Directory.Exists(donePath))
-                {
-                    Directory.CreateDirectory(donePath);
-                }
-                DirectoryInfo folder = new DirectoryInfo(donePath);
-                FileInfo[] files = null;
-                while (true)
-                {
-                    Thread.Sleep(5000);
-                    try
-                    {
-                        files = folder.GetFiles("*.mp4");
-                        if (files.Length > 0)
-                        {
-                            foreach (FileInfo file in files)
-                            {
-                                //如果文件大小大于0，则开始编码然后上传到服务器
-                                if (file.Length > 0)
-                                {
-                                    if (!CommonUtil.FileIsUsed(file.FullName))
-                                    {
-                                        //视频格式转换，上传
-                                        if (!file.Name.Contains("vcr"))
-                                        {
-                                            CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
-                                        }
-                                        else
-                                        {
-                                            //直接上传
-                                            if (CommonUtil.uploadVideoToTomcat(file.FullName))
-                                            {
-                                                File.Delete(file.FullName);
-                                            }
-                                        }
-                                      
-                                    }
-                                }
-                                else
-                                {
-                                    File.Delete(file.FullName);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception exx) {}
-                }
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("上传视频出错,错误信息:"+e.Message);
-                //thread.Abort();
-                //thread.Start();
-            }
-
         }
         #endregion
 
@@ -252,6 +204,7 @@ namespace YYOPInspectionClient
         {
             try
             {
+                //封装查询螺纹检验记录的参数(参数依次是:操作工工号、班别、班次、合同号、接箍类型、外径、壁厚、炉号、试批号、开始日期、结束日期)
                 JObject jsonData = new JObject
                 {
                     {"operator_no",this.txtOperatorno.Text.Trim() },
@@ -262,9 +215,9 @@ namespace YYOPInspectionClient
                     { "od",this.cmbOd.Text.Trim()},
                     { "wt",this.cmbWt.Text.Trim()},
                     { "pipe_heat_no",this.cmbPipeHeatNo.Text.Trim()},
-                     { "pipe_lot_no",this.cmbPipeLotNo.Text.Trim()},
-                      { "beginTime",this.dateTimePicker1.Value.ToString("yyyy-MM-dd")},
-                      { "endTime",this.dateTimePicker2.Value.ToString("yyyy-MM-dd")}
+                    { "pipe_lot_no",this.cmbPipeLotNo.Text.Trim()},
+                    { "beginTime",this.dateTimePicker1.Value.ToString("yyyy-MM-dd")},
+                    { "endTime",this.dateTimePicker2.Value.ToString("yyyy-MM-dd")}
                 };
                 ASCIIEncoding encoding = new ASCIIEncoding();
                 String content = "";
@@ -296,13 +249,16 @@ namespace YYOPInspectionClient
                 {
                     JObject jobject = JObject.Parse(jsons);
                     string rowsJson = jobject["rowsData"].ToString();
-                    if (!rowsJson.Trim().Equals("{}"))
+                    if (!rowsJson.Trim().Contains("{}"))
                     {
+                        //将搜索到json格式的螺纹检验数据转换成对象
                         List<ThreadInspectionRecord> list = JsonConvert.DeserializeObject<List<ThreadInspectionRecord>>(rowsJson);
                         foreach (ThreadInspectionRecord item in list)
                         {
+                            //此时item.Inspection_time格式如：1531909218000,需转换成用户可读的时间类型
                             item.Inspection_time = CommonUtil.ConvertTimeStamp(item.Inspection_time);
                         }
+                        //设置dataGridView数据源为list集合
                         this.dataGridView1.DataSource = list;
                     }
                     else
@@ -314,7 +270,7 @@ namespace YYOPInspectionClient
             catch (Exception e)
             {
                 //throw e;
-                Console.WriteLine("获取检验记录时失败......" +e.Message);
+                Console.WriteLine("获取检验记录时失败......" + e.Message);
             }
 
         }
@@ -332,54 +288,74 @@ namespace YYOPInspectionClient
         {
             try
             {
+                //打开螺纹检验窗体
                 ThreadingForm.getMyForm().Show();
             }
             catch (Exception ex)
             {
-                MessagePrompt.Show("系统提示,提示信息:" + ex.Message);
+                MessagePrompt.Show("新建表单时出错,错误信息:" + ex.Message);
             }
-            
-            //form.Show();
         }
         #endregion
 
         #region 菜单栏未提交事件
         private void 未提交ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UnSubmitForm form = new UnSubmitForm();
-            form.Show();
+            try
+            {
+                //打开未提交表单窗体
+               new UnSubmitForm().Show();
+            }
+            catch (Exception ex) {
+                MessagePrompt.Show("查看未提交表单时出错,错误信息:" + ex.Message);
+            }
         }
         #endregion
 
         #region 菜单栏读码器设置事件
         private void 读码器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            YYKeyenceReaderConsole.getForm().Show();
+            try
+            {
+                //打开读码器设置窗体
+                YYKeyenceReaderConsole.getForm().Show();
+            }
+            catch (Exception ex) {
+                MessagePrompt.Show("打开读码器设置页面时出错,错误信息:" + ex.Message);
+            }
         }
         #endregion
 
         #region 菜单栏录像设置事件
         private void 录像设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainWindow.getForm().Show();
-            MainWindow.isRecordClick = true;
+            try
+            {
+                //打开录像设置窗体
+                MainWindow.getForm().Show();
+                MainWindow.isRecordClick = true;
+            }
+            catch (Exception ex) {
+                MessagePrompt.Show("打开录像设置页面时出错,错误信息:" + ex.Message);
+            }
         }
         #endregion
 
         #region 主页关闭事件
         private void IndexWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // 判断读码器和录像机是否关闭
             DateTime start = DateTime.Now;
             DateTime now = DateTime.Now;
             TimeSpan ts = now - start;
             while (true)
             {
                 ts = now - start;
+                //1秒后
                 if (ts.TotalSeconds > 1)
                 {
                     if (YYKeyenceReaderConsole.getForm() != null)
                     {
+                        //关闭读码器
                         YYKeyenceReaderConsole.codeReaderOff();
                     }
                     break;
@@ -391,6 +367,7 @@ namespace YYOPInspectionClient
             }
             if (MainWindow.getForm() != null)
             {
+                //关闭录像机
                 MainWindow.stopRecordVideo();
             }
         }
@@ -399,7 +376,14 @@ namespace YYOPInspectionClient
         #region 服务器设置事件
         private void 服务器设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new ServerSetting().Show();
+            try
+            {
+                new ServerSetting().Show();
+            }
+            catch (Exception ex) {
+                MessagePrompt.Show("打开服务器设置页面时出错,错误信息:" + ex.Message);
+            }
+            
         } 
         #endregion
 
@@ -408,11 +392,11 @@ namespace YYOPInspectionClient
         {
             try
             {
+                //当前dataGridView(数据显示控件)选中行的索引
                 int index = this.dataGridView1.CurrentRow.Index;
-                //string inspection_no = Convert.ToString(this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value);
-
                 string operator_no = "",thread_inspection_record_code = "",coupling_heat_no="", coupling_lot_no="", production_line="", machine_no="", coupling_no="",
                     production_crew="", production_shift="", contract_no="", inspection_result="",videoNo="",inspection_time="";
+                //获取选中行的数据
                 object obj0 = this.dataGridView1.Rows[index].Cells["operator_no"].Value;
                 object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
                 object obj2 = this.dataGridView1.Rows[index].Cells["coupling_heat_no"].Value;
@@ -455,6 +439,7 @@ namespace YYOPInspectionClient
                     inspection_time = Convert.ToString(obj12);
                 if (obj13 != null)
                     inspection_result = Convert.ToString(obj13);
+                //将选中行的数据填充到DetailForm中对应的控件上
                 DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
                 form.indexWindow = this;
                 form.txtProductionArea.Text =production_line;
@@ -474,11 +459,10 @@ namespace YYOPInspectionClient
                 form.lblInspectionTime.Text = inspection_time;
                 form.video_url = videoNo;
                 form.Show();
-                form.detailForm = form;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("获取选中的接箍检验记录编号时出错......");
+                MessagePrompt.Show("打开检验记录时出错,错误信息:"+ex.Message);
             }
 
         }
@@ -492,7 +476,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 下拉框绘制
+        #region 下拉框绘制(主要用于绘制下拉框样式和字体大小)
         private void cmbOd_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
@@ -713,6 +697,71 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 多线程上传视频
+        private static void UploadVideo()
+        {
+            try
+            {
+                string basePath = Application.StartupPath + "\\";
+                string ffmpegPath = basePath + "ffmpeg.exe";
+                string donePath = basePath + "done";
+                //先判断done目录是否存在
+                if (!Directory.Exists(donePath))
+                {
+                    Directory.CreateDirectory(donePath);
+                }
+                DirectoryInfo folder = new DirectoryInfo(donePath);
+                FileInfo[] files = null;
+                while (true)
+                {
+                    Thread.Sleep(5000);
+                    try
+                    {
+                        files = folder.GetFiles("*.mp4");
+                        if (files.Length > 0)
+                        {
+                            foreach (FileInfo file in files)
+                            {
+                                //如果文件大小大于0，则开始编码然后上传到服务器
+                                if (file.Length > 0)
+                                {
+                                    if (!CommonUtil.FileIsUsed(file.FullName))
+                                    {
+                                        //视频格式转换，上传
+                                        if (!file.Name.Contains("vcr"))
+                                        {
+                                            CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
+                                        }
+                                        else
+                                        {
+                                            //直接上传
+                                            if (CommonUtil.uploadVideoToTomcat(file.FullName))
+                                            {
+                                                File.Delete(file.FullName);
+                                            }
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    File.Delete(file.FullName);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exx) { }
+                }
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine("上传视频出错,错误信息:"+e.Message);
+                //thread.Abort();
+                //thread.Start();
+            }
+
+        }
+        #endregion
 
     }
 }

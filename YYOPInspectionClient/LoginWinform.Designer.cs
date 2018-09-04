@@ -33,12 +33,12 @@
             this.txtLoginName = new System.Windows.Forms.TextBox();
             this.txtLoginPwd = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.pnlLoginTitle = new System.Windows.Forms.Panel();
+            this.btnClose = new System.Windows.Forms.Button();
             this.lblLoginTitle = new System.Windows.Forms.Label();
             this.btnLoginOut = new System.Windows.Forms.Button();
             this.pingLbl = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.pnlLoginTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -95,28 +95,29 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // panel1
+            // pnlLoginTitle
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.lblLoginTitle);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(410, 39);
-            this.panel1.TabIndex = 5;
+            this.pnlLoginTitle.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlLoginTitle.Controls.Add(this.btnClose);
+            this.pnlLoginTitle.Controls.Add(this.lblLoginTitle);
+            this.pnlLoginTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlLoginTitle.Location = new System.Drawing.Point(0, 0);
+            this.pnlLoginTitle.Name = "pnlLoginTitle";
+            this.pnlLoginTitle.Size = new System.Drawing.Size(410, 39);
+            this.pnlLoginTitle.TabIndex = 5;
+            this.pnlLoginTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlLoginTitle_MouseDown);
             // 
-            // button2
+            // btnClose
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button2.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(367, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 39);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "×";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnClose.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnClose.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnClose.Location = new System.Drawing.Point(367, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(43, 39);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "×";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // lblLoginTitle
             // 
@@ -127,6 +128,7 @@
             this.lblLoginTitle.Size = new System.Drawing.Size(40, 16);
             this.lblLoginTitle.TabIndex = 0;
             this.lblLoginTitle.Text = "登录";
+            this.lblLoginTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblLoginTitle_MouseDown);
             // 
             // btnLoginOut
             // 
@@ -157,7 +159,7 @@
             this.ClientSize = new System.Drawing.Size(410, 275);
             this.Controls.Add(this.pingLbl);
             this.Controls.Add(this.btnLoginOut);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlLoginTitle);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtLoginPwd);
             this.Controls.Add(this.txtLoginName);
@@ -167,8 +169,9 @@
             this.Name = "LoginWinform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginWinform_MouseDown);
+            this.pnlLoginTitle.ResumeLayout(false);
+            this.pnlLoginTitle.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,9 +184,9 @@
         private System.Windows.Forms.TextBox txtLoginName;
         private System.Windows.Forms.TextBox txtLoginPwd;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlLoginTitle;
         private System.Windows.Forms.Label lblLoginTitle;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnLoginOut;
         internal System.Windows.Forms.Label pingLbl;
     }

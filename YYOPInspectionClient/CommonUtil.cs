@@ -18,10 +18,15 @@ namespace YYOPInspectionClient
 
     public class CommonUtil
     {
+        //定义临时服务器ip地址
         public static string ip = "";
+        //判断是登录页面还是螺纹检验页面的标识,用于更新与服务器的连接情况
         public static bool flag = false;
+        //定义一个委托用于更新LoginWinform中客户端ping服务器所需时间
         private delegate void SetLblTextCallback(string message);
+        //定义一个委托用于更新ThreadingForm中客户端ping服务器所需时间
         private delegate void SetLblTextCallbackOfThreading(string message);
+
         #region 获取服务地址(例如:http://100.100.0.1:8080/)
         public static string getServerIpAndPort()
         {
@@ -329,7 +334,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region  加密解密
+        #region  AES加密解密
 
         /// <summary>  
         /// AES加密  
@@ -339,27 +344,29 @@ namespace YYOPInspectionClient
         /// <returns></returns>  
         public static string Encrypt()
         {
+            //获取mac地址
             string str = GetFirstMacAddress();
-            Console.WriteLine(str);
+            //获取下一天日期
             string key = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+            //补全key为16个字符的字符串
             for (int i = key.Length; i < 16; i++) {
                 key += "0";
             }
             if (string.IsNullOrEmpty(str)) return null;
             Byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
-
+            //开始AES加密
             System.Security.Cryptography.RijndaelManaged rm = new System.Security.Cryptography.RijndaelManaged
             {
-                Key = Encoding.UTF8.GetBytes(key),
-                Mode = System.Security.Cryptography.CipherMode.ECB,
-                Padding = System.Security.Cryptography.PaddingMode.PKCS7
+                Key = Encoding.UTF8.GetBytes(key),//密钥
+                Mode = System.Security.Cryptography.CipherMode.ECB,//加密模式
+                Padding = System.Security.Cryptography.PaddingMode.PKCS7//填白模式，对于AES, C# 框架中的 PKCS　＃７等同与Java框架中 PKCS #5
             };
-
+            //字节编码， 将有特等含义的字符串转化为字节流
             System.Security.Cryptography.ICryptoTransform cTransform = rm.CreateEncryptor();
+            //加密
             Byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-
+            //将加密后的字节流转化为字符串，以便网络传输与储存。
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
-            
         }
 
         // <summary>  
@@ -384,14 +391,9 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 获取Mac地址
-        /// <summary>
-        /// Finds the MAC address of the first operation NIC found.
-        /// </summary>
-        /// <returns>The MAC address.</returns>
         public static string GetFirstMacAddress()
         {
             string macAddresses = string.Empty;
-
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (nic.OperationalStatus == OperationalStatus.Up)
@@ -400,7 +402,6 @@ namespace YYOPInspectionClient
                     break;
                 }
             }
-
             return macAddresses;
         }
         #endregion
@@ -506,19 +507,26 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-
-
-        //定时器，定时更新与服务器连接情况
-        public static void UpdatePing(object source, System.Timers.ElapsedEventArgs e) {
-            try {
+        #region 更新与服务器连接状态
+        public static void UpdatePing(object source, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                //如果服务器ip为空
                 if (string.IsNullOrEmpty(ip))
                 {
+                    //str数据格式为http://ip:port
                     string str = getServerIpAndPort();
+                    //移除http://字符串
                     str = str.Replace("http://", "");
+                    //移除端口
                     string[] strArr = str.Split(':');
                     ip = strArr[0];
                 }
-                if (!string.IsNullOrEmpty(ip)) {
+                //再次判断ip是否为空,因为上面解析ip可能会出错
+                if (!string.IsNullOrEmpty(ip))
+                {
+                    //以下为ping服务器代码段
                     Ping pingSender = new Ping();
                     PingOptions options = new PingOptions();
                     options.DontFragment = true;
@@ -528,39 +536,49 @@ namespace YYOPInspectionClient
                     PingReply reply = pingSender.Send(ip, 120, buf, options);
                     if (reply.Status == IPStatus.Success)
                     {
-                            SetTextOfLogin("Ping:" + reply.RoundtripTime+"ms");
-                            if(flag) 
+                        SetTextOfLogin("Ping:" + reply.RoundtripTime + "ms");
+                        if (flag)
                             SetTextOfThreading("Ping:" + reply.RoundtripTime + "ms");
                     }
-                    else {
-                            SetTextOfLogin("服务器未响应...");
-                            if (flag)
+                    else
+                    {
+                        SetTextOfLogin("服务器未响应...");
+                        if (flag)
                             SetTextOfThreading("服务器未响应...");
                     }
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
 
             }
-            
-        }
+
+        } 
+        #endregion
+
+        #region 更新LoginWinform中客户端ping服务器所需时间
         private static void SetTextOfLogin(string text)
         {
             try
             {
-                    if (LoginWinform.getForm().pingLbl.InvokeRequired)
-                    {
-                        SetLblTextCallback d = new SetLblTextCallback(SetTextOfLogin);
-                        LoginWinform.getForm().pingLbl.Invoke(d, new object[] { text });
-                    }
-                    else
-                    {
-                        LoginWinform.getForm().pingLbl.Text = text;
-                    }
+                if (LoginWinform.getForm().pingLbl.InvokeRequired)
+                {
+                    SetLblTextCallback d = new SetLblTextCallback(SetTextOfLogin);
+                    LoginWinform.getForm().pingLbl.Invoke(d, new object[] { text });
+                }
+                else
+                {
+                    LoginWinform.getForm().pingLbl.Text = text;
+                }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
             }
         }
+        #endregion
+
+        #region 更新ThreadingForm中客户端ping服务器所需时间
         private static void SetTextOfThreading(string text)
         {
             try
@@ -579,6 +597,7 @@ namespace YYOPInspectionClient
             {
 
             }
-        }
+        } 
+        #endregion
     }
 }

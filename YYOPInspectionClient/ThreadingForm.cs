@@ -54,9 +54,7 @@ namespace YYOPInspectionClient
         #region 窗体构造函数
         public ThreadingForm()
         {
-           
             InitializeComponent();
-           
             //Control.CheckForIllegalCrossThreadCalls = false;
             try
             {
@@ -110,8 +108,6 @@ namespace YYOPInspectionClient
             {
                 Console.WriteLine("新建表单时出错!");
             }
-           
-           
         }
         #endregion
 
