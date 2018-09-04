@@ -101,7 +101,7 @@ namespace YYOPInspectionClient
             {
                 JObject json = new JObject { };
                 ASCIIEncoding encoding = new ASCIIEncoding();
-                String content = "";
+                String content =null;
                 byte[] data = encoding.GetBytes(json.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "Contract/getAllContractNoOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -115,20 +115,14 @@ namespace YYOPInspectionClient
                 }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[1024];
-                int count = streamRead.Read(readBuff, 0, 1024);
-                while (count > 0)
+                using (StreamReader sr = new StreamReader(streamResponse))
                 {
-                    String outputData = new String(readBuff, 0, count);
-                    content += outputData;
-                    count = streamRead.Read(readBuff, 0, 1024);
+                    content = sr.ReadToEnd();
                 }
                 response.Close();
-                string jsons = content;
-                if (jsons != null)
+                if (content != null)
                 {
-                    JObject jobject = JObject.Parse(jsons);
+                    JObject jobject = JObject.Parse(content);
                     string rowsJson = jobject["rowsData"].ToString();
                     //将获取到的json格式的合同信息转成List对象
                     List<ContractInfo> list = JsonConvert.DeserializeObject<List<ContractInfo>>(rowsJson);
@@ -220,7 +214,7 @@ namespace YYOPInspectionClient
                     { "endTime",this.dateTimePicker2.Value.ToString("yyyy-MM-dd")}
                 };
                 ASCIIEncoding encoding = new ASCIIEncoding();
-                String content = "";
+                String content =null;
                 byte[] data = encoding.GetBytes(jsonData.ToString());
                 string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/getThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -234,20 +228,14 @@ namespace YYOPInspectionClient
                 }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[1024];
-                int count = streamRead.Read(readBuff, 0, 1024);
-                while (count > 0)
+                using (StreamReader sr = new StreamReader(streamResponse))
                 {
-                    String outputData = new String(readBuff, 0, count);
-                    content += outputData;
-                    count = streamRead.Read(readBuff, 0, 1024);
+                    content = sr.ReadToEnd();
                 }
                 response.Close();
-                string jsons = content;
-                if (jsons != null)
+                if (content != null)
                 {
-                    JObject jobject = JObject.Parse(jsons);
+                    JObject jobject = JObject.Parse(content);
                     string rowsJson = jobject["rowsData"].ToString();
                     if (!rowsJson.Trim().Contains("{}"))
                     {
@@ -387,7 +375,7 @@ namespace YYOPInspectionClient
         } 
         #endregion
 
-        #region 检验记录修改事件
+        #region 螺纹检验记录修改事件
         private void btnDetail_Click(object sender, EventArgs e)
         {
             try
@@ -441,7 +429,6 @@ namespace YYOPInspectionClient
                     inspection_result = Convert.ToString(obj13);
                 //将选中行的数据填充到DetailForm中对应的控件上
                 DetailForm form = new DetailForm(operator_no, thread_inspection_record_code);
-                form.indexWindow = this;
                 form.txtProductionArea.Text =production_line;
                 form.txtMachineNo.Text = machine_no;
                 form.txtOperatorNo.Text = operator_no;
@@ -465,6 +452,126 @@ namespace YYOPInspectionClient
                 MessagePrompt.Show("打开检验记录时出错,错误信息:"+ex.Message);
             }
 
+        }
+        #endregion
+
+        #region 螺纹检验记录删除事件
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("确定要删除吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    int index = this.dataGridView1.CurrentRow.Index;
+                    object obj0 = this.dataGridView1.Rows[index].Cells["operator_no"].Value;
+                    object obj1 = this.dataGridView1.Rows[index].Cells["inspection_time"].Value;
+                    string operator_no = null, inspection_time = null;
+                    //获取选中行的记录，并通过选中行记录获取此条记录提交的时间和提交此条记录的操作工工号
+                    if (obj0 != null)
+                        operator_no = obj0.ToString();
+                    if (obj1 != null)
+                        inspection_time = obj1.ToString();
+                    //如果没有查到提交该记录的操作工工号或提交时间
+                    if (string.IsNullOrWhiteSpace(operator_no)|| string.IsNullOrWhiteSpace(inspection_time)) {
+                        MessagePrompt.Show("系统繁忙,请稍后修改!");
+                        return;
+                    }
+                    DateTime dt = DateTime.Parse(inspection_time);
+                    //判断当前时间与螺纹检验记录提交时间间隔
+                    if (Convert.ToSingle((DateTime.Now - dt).TotalHours.ToString()) > 12) {
+                        MessagePrompt.Show("已超过12小时的记录不能删除!");
+                        return;
+                    }
+                    //判断用户是否已经掉线
+                    if (string.IsNullOrWhiteSpace(Person.pname) || string.IsNullOrWhiteSpace(Person.employee_no))
+                    {
+                        MessagePrompt.Show("您已掉线，请重新登录!");
+                        Application.Exit();
+                        return;
+                    }
+                    //判断删除的是否时自己提交的
+                    if (!operator_no.Equals(Person.employee_no)) {
+                        MessagePrompt.Show("只能删除自己的表单数据!");
+                        return;
+                    }
+                    //删除检验记录
+                    excuteDelteInspectionRecord(index);
+                }
+                catch (Exception ex)
+                {
+                    MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
+                }
+            }
+        }
+        #endregion
+
+        #region 螺纹检验记录删除
+        public void excuteDelteInspectionRecord(int index)
+        {
+            try
+            {
+                //获取删除选中行的检验记录编号
+                object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
+                if (obj1 == null) {
+                    MessagePrompt.Show("删除失败!");
+                    return;
+                }
+                string thread_inspection_record_code = obj1.ToString();
+                JObject jsonData = new JObject
+                         {
+                            {"thread_inspection_record_code",thread_inspection_record_code }
+                        };
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                String content = "";
+                byte[] data = encoding.GetBytes(jsonData.ToString());
+                string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/delThreadInspectionRecordOfWinform.action";
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.KeepAlive = false;
+                request.Method = "POST";
+                request.ContentType = "application/json;characterSet:UTF-8";
+                request.ContentLength = data.Length;
+                using (Stream sm = request.GetRequestStream())
+                {
+                    sm.Write(data, 0, data.Length);
+                }
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream streamResponse = response.GetResponseStream();
+                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
+                Char[] readBuff = new Char[1024];
+                int count = streamRead.Read(readBuff, 0, 1024);
+                while (count > 0)
+                {
+                    String outputData = new String(readBuff, 0, count);
+                    content += outputData;
+                    count = streamRead.Read(readBuff, 0, 1024);
+                }
+                response.Close();
+                string jsons = content;
+                if (jsons == null) {
+                    MessagePrompt.Show("删除失败!");
+                    return;
+                }
+                JObject jobject = JObject.Parse(jsons);
+                string rowsJson = jobject["rowsData"].ToString();
+                if (rowsJson.Trim().Contains("{}")) {
+                    MessagePrompt.Show("删除失败!");
+                    return;
+                }
+                if (rowsJson.Contains("True"))
+                {
+                    MessagePrompt.Show("删除成功!");
+                    //刷新检验记录列表(dataGridView)
+                    getThreadingProcessData();
+                }
+                else
+                {
+                    MessagePrompt.Show("删除失败!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
+            }
         }
         #endregion
 
@@ -566,134 +673,11 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region  窗体Visible改变事件
+        #region  窗体显示状态改变事件
         private void IndexWindow_VisibleChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(Person.pname))
                 this.lblIndexFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
-        }
-        #endregion
-
-        #region 删除记录
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-
-            if (MessageBox.Show("确定要删除吗?","提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                try
-                {
-                    int index = this.dataGridView1.CurrentRow.Index;
-                    object obj0=this.dataGridView1.Rows[index].Cells["operator_no"].Value;
-                    object obj1 = this.dataGridView1.Rows[index].Cells["inspection_time"].Value;
-                    string operator_no = null, inspection_time = null;
-                    if (obj0 != null)
-                        operator_no = obj0.ToString();
-                    if (obj1 != null)
-                        inspection_time = obj1.ToString();
-                    if (!string.IsNullOrWhiteSpace(operator_no))
-                    {
-                        if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
-                        {
-                            if (!string.IsNullOrWhiteSpace(inspection_time))
-                            {
-                                DateTime dt = DateTime.Parse(inspection_time);
-                                if (Convert.ToSingle((DateTime.Now - dt).TotalHours.ToString()) > 12)
-                                    MessagePrompt.Show("已超过12小时的记录不能删除!");
-                                else
-                                {
-                                    if (operator_no.Equals(Person.employee_no))
-                                        excuteDelteInspectionRecord(index);
-                                    else
-                                        MessagePrompt.Show("只能删除自己的表单数据!");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessagePrompt.Show("您已掉线，请重新登录!");
-                            Application.Exit();
-                        }
-                    }
-                    else
-                    {
-                        MessagePrompt.Show("系统繁忙,请稍后修改!");
-                    }
-                   
-                }
-                catch (Exception ex)
-                {
-                    MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
-                }
-            }
-        }
-        public void excuteDelteInspectionRecord(int index)
-        {
-            try {
-               
-                object obj1 = this.dataGridView1.Rows[index].Cells["thread_inspection_record_code"].Value;
-                if (obj1 != null)
-                {
-                    string thread_inspection_record_code = obj1.ToString();
-                    JObject jsonData = new JObject
-                         {
-                            {"thread_inspection_record_code",thread_inspection_record_code }
-                        };
-                    ASCIIEncoding encoding = new ASCIIEncoding();
-                    String content = "";
-                    byte[] data = encoding.GetBytes(jsonData.ToString());
-                    string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/delThreadInspectionRecordOfWinform.action";
-                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                    request.KeepAlive = false;
-                    request.Method = "POST";
-                    request.ContentType = "application/json;characterSet:UTF-8";
-                    request.ContentLength = data.Length;
-                    using (Stream sm = request.GetRequestStream())
-                    {
-                        sm.Write(data, 0, data.Length);
-                    }
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    Stream streamResponse = response.GetResponseStream();
-                    StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                    Char[] readBuff = new Char[1024];
-                    int count = streamRead.Read(readBuff, 0, 1024);
-                    while (count > 0)
-                    {
-                        String outputData = new String(readBuff, 0, count);
-                        content += outputData;
-                        count = streamRead.Read(readBuff, 0, 1024);
-                    }
-                    response.Close();
-                    string jsons = content;
-                    if (jsons != null)
-                    {
-                        JObject jobject = JObject.Parse(jsons);
-                        string rowsJson = jobject["rowsData"].ToString();
-                        if (!rowsJson.Trim().Equals("{}"))
-                        {
-                            if (rowsJson.Contains("True"))
-                            {
-                                MessagePrompt.Show("删除成功!");
-                                getThreadingProcessData();
-                            }
-                            else
-                            {
-                                MessagePrompt.Show("删除失败!");
-                            }
-                        }
-                        else
-                        {
-                            MessagePrompt.Show("删除失败!");
-                        }
-                    }
-                }
-                else
-                {
-                    MessagePrompt.Show("删除失败!");
-                }
-            }
-            catch (Exception ex) {
-                MessagePrompt.Show("删除失败,失败原因:" + ex.Message);
-            }
         }
         #endregion
 
@@ -702,50 +686,61 @@ namespace YYOPInspectionClient
         {
             try
             {
+                //获取程序中的根路径(bin目录,basePath格式如:C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\)
                 string basePath = Application.StartupPath + "\\";
+                //ffmpeg.exe用于转换视频格式
                 string ffmpegPath = basePath + "ffmpeg.exe";
+                //bin目录下的done文件下的视频文件为可上传视频文件
                 string donePath = basePath + "done";
-                //先判断done目录是否存在
+                //先判断done目录是否存在,不存在则创建文件
                 if (!Directory.Exists(donePath))
                 {
                     Directory.CreateDirectory(donePath);
                 }
+                //定义目录对象
                 DirectoryInfo folder = new DirectoryInfo(donePath);
                 FileInfo[] files = null;
                 while (true)
                 {
+                    //每执行一次循环，线程休眠5秒中
                     Thread.Sleep(5000);
                     try
                     {
+                        //获取done目录下所有以.mp4结尾的视频文件
                         files = folder.GetFiles("*.mp4");
+                        //如果done目录下有视频文件
                         if (files.Length > 0)
                         {
+                            //遍历done目录下所有的视频文件
                             foreach (FileInfo file in files)
                             {
-                                //如果文件大小大于0，则开始编码然后上传到服务器
-                                if (file.Length > 0)
+                                //判断当前视频文件是否在另一个线程中在占用(因为有可能视频格式刚转化完，正由其他目录转到done目录中)
+                                if (!CommonUtil.FileIsUsed(file.FullName))
                                 {
-                                    if (!CommonUtil.FileIsUsed(file.FullName))
+                                    //如果文件大小大于0，则开始编码然后上传到服务器,否则删除文件
+                                    if (file.Length > 0)
                                     {
-                                        //视频格式转换，上传
+                                        //判断当前视频是否已经转化格式
                                         if (!file.Name.Contains("vcr"))
                                         {
+                                            //开始转换视频格式
                                             CommonUtil.FormatAndUploadVideo(ffmpegPath, donePath, file.FullName);
                                         }
                                         else
                                         {
-                                            //直接上传
+                                            //开始上传转换后的视频文件()
                                             if (CommonUtil.uploadVideoToTomcat(file.FullName))
                                             {
+                                                //上传完成删除本地视频文件
                                                 File.Delete(file.FullName);
                                             }
                                         }
-
                                     }
-                                }
-                                else
-                                {
-                                    File.Delete(file.FullName);
+                                    else
+                                    {
+                                        //如果文件大小为空可能为垃圾文件
+                                        File.Delete(file.FullName);
+                                    }
                                 }
                             }
                         }
@@ -756,8 +751,6 @@ namespace YYOPInspectionClient
             catch (Exception e)
             {
                 //Console.WriteLine("上传视频出错,错误信息:"+e.Message);
-                //thread.Abort();
-                //thread.Start();
             }
 
         }

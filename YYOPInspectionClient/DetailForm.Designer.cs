@@ -86,8 +86,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblDetailFormTitle = new System.Windows.Forms.Label();
             this.btnBrowseVideo = new System.Windows.Forms.Button();
+            this.lblDetailFormTitle = new System.Windows.Forms.Label();
             this.tabPage2.SuspendLayout();
             this.pnlTabTwoTitle.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -707,16 +707,6 @@
             this.panel1.Size = new System.Drawing.Size(1215, 52);
             this.panel1.TabIndex = 2;
             // 
-            // lblDetailFormTitle
-            // 
-            this.lblDetailFormTitle.AutoSize = true;
-            this.lblDetailFormTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblDetailFormTitle.Location = new System.Drawing.Point(17, 15);
-            this.lblDetailFormTitle.Name = "lblDetailFormTitle";
-            this.lblDetailFormTitle.Size = new System.Drawing.Size(94, 24);
-            this.lblDetailFormTitle.TabIndex = 0;
-            this.lblDetailFormTitle.Text = "label18";
-            // 
             // btnBrowseVideo
             // 
             this.btnBrowseVideo.AutoSize = true;
@@ -727,6 +717,16 @@
             this.btnBrowseVideo.Text = "浏览视频";
             this.btnBrowseVideo.UseVisualStyleBackColor = true;
             this.btnBrowseVideo.Click += new System.EventHandler(this.btnBrowseVideo_Click);
+            // 
+            // lblDetailFormTitle
+            // 
+            this.lblDetailFormTitle.AutoSize = true;
+            this.lblDetailFormTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblDetailFormTitle.Location = new System.Drawing.Point(17, 15);
+            this.lblDetailFormTitle.Name = "lblDetailFormTitle";
+            this.lblDetailFormTitle.Size = new System.Drawing.Size(94, 24);
+            this.lblDetailFormTitle.TabIndex = 0;
+            this.lblDetailFormTitle.Text = "label18";
             // 
             // DetailForm
             // 
@@ -739,8 +739,6 @@
             this.Name = "DetailForm";
             this.Text = "详细";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.DetailForm_Load);
-            this.SizeChanged += new System.EventHandler(this.DetailForm_SizeChanged);
             this.VisibleChanged += new System.EventHandler(this.DetailForm_VisibleChanged);
             this.tabPage2.ResumeLayout(false);
             this.pnlTabTwoTitle.ResumeLayout(false);

@@ -39,7 +39,7 @@ namespace YYOPInspectionClient
         private Label tempLbl = null,tempLbl1= null,tempLbl2 = null, tempLbl3 = null;
         private static int fullInspection =0;
         private static bool isFullInspection = false;
-        #region 构造函数
+        #region 单例函数
         public static ThreadingForm getMyForm()
         {
             if (myForm == null)

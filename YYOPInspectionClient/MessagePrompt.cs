@@ -25,13 +25,18 @@ namespace YYOPInspectionClient
         {
             InitializeComponent();
         }
+        #region 自定义提示框显示事件
 
-        public static void Show(string msg) {
-           
-            if (messagePrompt != null) {
+        public static void Show(string msg)
+        {
+
+            if (messagePrompt != null)
+            {
                 messagePrompt.Show();
                 messagePrompt.TopMost = true;
-            } else {
+            }
+            else
+            {
                 messagePrompt = new MessagePrompt();
                 messagePrompt.TopMost = true;
                 messagePrompt.Show();
@@ -39,7 +44,8 @@ namespace YYOPInspectionClient
             messagePrompt.label2.Text = msg;
             messagePrompt.BringToFront();
             messagePrompt.TopMost = true;
-        }
+        } 
+        #endregion
 
         #region 绘制边框
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -74,9 +80,11 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 关闭提示框
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-        }
+        } 
+        #endregion
     }
 }

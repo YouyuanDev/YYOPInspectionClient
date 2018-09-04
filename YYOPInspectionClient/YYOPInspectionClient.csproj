@@ -97,7 +97,6 @@
   <ItemGroup>
     <Compile Include="CHCNetSDK.cs" />
     <Compile Include="ClientSocket.cs" />
-    <Compile Include="CodeReader.cs" />
     <Compile Include="ComboxItem.cs" />
     <Compile Include="CommonUtil.cs" />
     <Compile Include="ContractInfo.cs" />

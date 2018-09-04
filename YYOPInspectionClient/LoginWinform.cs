@@ -89,28 +89,22 @@ namespace YYOPInspectionClient
                 }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[1024];
-                int count = streamRead.Read(readBuff, 0, 1024);
-                while (count > 0)
+                using (StreamReader sr = new StreamReader(streamResponse))
                 {
-                    String outputData = new String(readBuff, 0, count);
-                    content += outputData;
-                    count = streamRead.Read(readBuff, 0, 1024);
+                    content = sr.ReadToEnd();
                 }
                 response.Close();
-                string jsons = content;
-                if (jsons != null)
+                if (content != null)
                 {
                     //如果返回的数据为"{}"
-                    if (jsons.Trim().Contains("{}"))
+                    if (content.Trim().Contains("{}"))
                     {
                         MessagePrompt.Show("登录异常!");
                     }
                     else
                     {
                         //如果登录成功,返回的数据格式为{success:'True/False',msg:'',rowsData:''},rowsData存放的为当前登录用户的信息
-                        JObject jobject = JObject.Parse(jsons);
+                        JObject jobject = JObject.Parse(content);
                         string loginFlag = jobject["success"].ToString().Trim();
                         string msg = jobject["msg"].ToString().Trim();
                         if (loginFlag.Contains("True"))

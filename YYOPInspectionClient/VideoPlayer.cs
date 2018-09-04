@@ -17,6 +17,7 @@ namespace YYOPInspectionClient
         public VideoPlayer(string url)
         {
             InitializeComponent();
+            //获取窗体宽度和高度
             int width = Screen.PrimaryScreen.Bounds.Width;
             int hight = Screen.PrimaryScreen.Bounds.Height;
             this.panel1.Height = hight -80;
@@ -53,6 +54,7 @@ namespace YYOPInspectionClient
         {
             if (!string.IsNullOrEmpty(url))
             {
+                //解析视频地址
                 videoList = url.Split(';');
                 if (videoList.Length > 0)
                     url = videoList[0];
