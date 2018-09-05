@@ -13,10 +13,14 @@ namespace YYOPInspectionClient
 {
     public partial class AlphabetKeyboardForm : Form
     {
+        //定义英文输入法弹出时对应的鼠标焦点所在的TextBox控件
         public  TextBox inputTxt;
+        //定义保存测量工具编号的TextBox控件集合
         public static List<TextBox> flpTabOneTxtList;
+        //定义存放测量工具编号的TextBox控件的容器控件
         public Control containerControl = null;
-        //public int type = 1;//标识是登录页面还是表单，0代表登录页面，1代表表单
+        //定义当前窗体
+        private static AlphabetKeyboardForm myForm = null;
         //---------------------拖动无窗体的控件(开始)
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -25,8 +29,9 @@ namespace YYOPInspectionClient
         public const int WM_SYSCOMMAND = 0x0112;
         public const int SC_MOVE = 0xF010;
         public const int HTCAPTION = 0x0002;
-        private static AlphabetKeyboardForm myForm=null;
         //---------------------拖动无窗体的控件(结束)
+
+        #region 单例函数
         public static AlphabetKeyboardForm getForm()
         {
             if (myForm == null)
@@ -36,21 +41,28 @@ namespace YYOPInspectionClient
 
             return myForm;
         }
+        #endregion
+
+        #region 构造函数
         private AlphabetKeyboardForm()
         {
             InitializeComponent();
-            myForm = this;         
+            myForm = this;
         }
+        #endregion
 
+        #region 数字点击事件
         private void letternum_Click(object sender, EventArgs e)
         {
             this.Textbox_display.Text += ((Button)sender).Text;
         }
+        #endregion
 
+        #region CAP点击事件(切换大小写)
         private void button_cap_Click(object sender, EventArgs e)
         {
             //切换大小写
-            if (((Button)sender).Text.Equals("CAP"))
+            if (((Button)sender).Text.Contains("CAP"))
             {//大写切换为小写
                 ((Button)sender).Text = "cap";
                 this.buttonA.Text = this.buttonA.Text.ToLower();
@@ -113,46 +125,48 @@ namespace YYOPInspectionClient
 
 
         }
+        #endregion
 
+        #region 清空输入法内容事件
         private void button_clear_Click(object sender, EventArgs e)
         {
             //清屏
             this.Textbox_display.Text = "";
         }
+        #endregion
+       
+        #region 关闭输入法事件
         private void button_close_Click(object sender, EventArgs e)
         {
             this.Textbox_display.Text = "";
             this.Hide();
         }
+        #endregion
 
+        #region 输入法Enter(确定)事件
         private void button_enter_Click(object sender, EventArgs e)
         {
             try
             {
+                //定义特殊的输入框名称数组(产线、用户名、密码、接箍编号、炉号、批号、机床号)
                 string[] filterArr = { "txtProductionArea", "txtLoginName", "txtLoginPwd", "txtCoupingNo",
                 "txtHeatNo", "txtBatchNo", "txtMachineNo" };
                 if (inputTxt != null)
                 {
+                    inputTxt.Text = Textbox_display.Text.Trim();
+                    this.Textbox_display.Text = "";
+                    //如果此时获取焦点的输入框的名称在数组中，则点击Enter后隐藏输入法
                     if (filterArr.Contains(inputTxt.Name))
                     {
-                        inputTxt.Text = Textbox_display.Text.Trim();
-                        this.Textbox_display.Text = "";
                         this.Hide();
                     }
-                    else
-                    {
-                        //输入
-                        if (inputTxt != null)
-                        {
-                            inputTxt.Text = Textbox_display.Text.Trim();
-                            this.Textbox_display.Text = "";
-                        }
-                    }
                 }
+                //查询鼠标焦点所在的TextBox控件在控件集合中的索引
                 int index = flpTabOneTxtList.IndexOf(inputTxt);
                 if (index < flpTabOneTxtList.Count - 1)
                     index++;
-                TextBox tb =flpTabOneTxtList[index];
+                //设置鼠标焦点在控件集合索引为index的控件上
+                TextBox tb = flpTabOneTxtList[index];
                 tb.Focus();
             }
             catch (Exception ex)
@@ -160,14 +174,18 @@ namespace YYOPInspectionClient
                 Console.WriteLine("英文键盘触发Enter时报错,错误信息:" + ex.Message);
             }
         }
+        #endregion
 
+        #region 输入法Backspace(退格)事件
         private void button_backspace_Click(object sender, EventArgs e)
         {
-            //退格键
+            //如果当前输入法里有内容，则去除内容的最后一个字符
             if (this.Textbox_display.Text.Length > 1)
                 this.Textbox_display.Text = this.Textbox_display.Text.Substring(0, this.Textbox_display.Text.Length - 1);
 
-        }
+        } 
+        #endregion
+        
         #region 根据控件名找到该控件
         private object GetControlInstance(object obj, string strControlName)
         {
@@ -235,9 +253,5 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        private void buttonLine_Click(object sender, EventArgs e)
-        {
-            this.Textbox_display.Text += ((Button)sender).Text;
-        }
     }
 }

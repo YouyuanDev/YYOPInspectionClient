@@ -31,14 +31,16 @@ namespace YYOPInspectionClient
         //测量值名称标签集合
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         //定义是否检验记录是否合格标识
-        public static bool isQualified = true;
+        //public static bool isQualified = true;
         //当前鼠标焦点所在的输入框名称
         public static string focusTextBoxName = null;
         //定义临时所用的Label控件值
         private string tempLblTxt = "", tempLblTxt1 = "";
         //定义临时所用的Label控件
         private Label tempLbl = null, tempLbl1 = null, tempLbl2 = null, tempLbl3 = null;
-        
+        //定义是否测量数据是否合法的集合
+        public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
+
         #region 构造函数
         public DetailForm(string operator_no, string thread_inspection_record_code)
         {
@@ -81,6 +83,8 @@ namespace YYOPInspectionClient
             {
                 //清理测量项编号集合
                 measureItemCodeList.Clear();
+                //清理测量数据是否合法的集合
+                qualifiedList.Clear();
                 //清理测量值输入框集合
                 controlTxtDir.Clear();
                 //清理测量值名称标签集合
@@ -239,6 +243,10 @@ namespace YYOPInspectionClient
                     JObject obj = (JObject)item;
                     //将测量工具编号添加到集合中
                     measureItemCodeList.Add(obj["measure_item_code"].ToString());
+                    //默认设置添加的测量数据都合法
+                    qualifiedList.Add(obj["measure_item_code"].ToString(), true);
+                    //设置数字输入法数据都合法的标识集合为当前的标识集合
+                    NumberKeyboardForm.qualifiedList = qualifiedList;
                     //----------------初始化测量工具编号表单
                     //一个测量项目前最多对应两个测量工具
                     string measure_tool1 = obj["measure_tool1"].ToString();
@@ -834,11 +842,15 @@ namespace YYOPInspectionClient
                     itemvalue = ""; reading_max = ""; reading_min = ""; reading_avg = ""; reading_ovality = "";
                     toolcode1 = ""; toolcode2 = ""; measure_sample1 = ""; measure_sample2 = "";
                 }
-                string inspectionResult = "";
-                if (isQualified)
-                    inspectionResult = "合格";
-                else
-                    inspectionResult = "不合格";
+                string inspectionResult = "合格";
+                foreach (var item in qualifiedList)
+                {
+                    if (item.Value == false)
+                    {
+                        inspectionResult = "不合格";
+                        break;
+                    }
+                }
                 JObject dataJson = new JObject {
                     {"isAdd","add" }, {"coupling_no",HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) },
                     {"contract_no", HttpUtility.UrlEncode(this.tbContractNo.Text, Encoding.UTF8) },
@@ -1150,10 +1162,19 @@ namespace YYOPInspectionClient
                                     if (txtVal < minVal || txtVal > maxVal)
                                     {
                                         inputTxt.BackColor = Color.LightCoral;
-                                        ThreadingForm.isQualified = false;
+                                        if (qualifiedList.ContainsKey(inputTxtName))
+                                        {
+                                            qualifiedList[inputTxtName] = false;
+                                        }
                                     }
-                                    else
+                                    else {
                                         inputTxt.BackColor = Color.White;
+                                        if (qualifiedList.ContainsKey(inputTxtName))
+                                        {
+                                            qualifiedList[inputTxtName] = false;
+                                        }
+                                    }
+                                       
                                 }
                             }
                             //找到最大值、最小值，然后判断是否存在均值和椭圆度
@@ -1173,10 +1194,18 @@ namespace YYOPInspectionClient
                                         if (avg < minVal || avg > maxVal)
                                         {
                                             lblAvgOfA.ForeColor = Color.Red;
-                                            ThreadingForm.isQualified = false;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = false;
+                                            }
                                         }
-                                        else
+                                        else {
                                             lblAvgOfA.ForeColor = Color.Black;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = true;
+                                            }
+                                        }
                                         lblAvgOfA.Text = Convert.ToString(Math.Round(avg, 2));
                                     }
                                     Label lblOvalityA = (Label)GetControlInstance(this.flpTabTwoContent, inputTxtName + "_OvalityA");
@@ -1187,10 +1216,18 @@ namespace YYOPInspectionClient
                                         if (ovality > maxOvality || ovality < 0)
                                         {
                                             lblOvalityA.ForeColor = Color.Red;
-                                            ThreadingForm.isQualified = false;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = false;
+                                            }
                                         }
-                                        else
+                                        else {
                                             lblOvalityA.ForeColor = Color.Black;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = true;
+                                            }
+                                        }
                                         lblOvalityA.Text = Convert.ToString(Math.Round(ovality, 2));
                                     }
                                 }
@@ -1206,10 +1243,18 @@ namespace YYOPInspectionClient
                                         if (avg < minVal || avg > maxVal)
                                         {
                                             lblAvgOfB.ForeColor = Color.Red;
-                                            ThreadingForm.isQualified = false;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = false;
+                                            }
                                         }
-                                        else
+                                        else {
                                             lblAvgOfB.ForeColor = Color.Black;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = true;
+                                            }
+                                        }
                                         lblAvgOfB.Text = Convert.ToString(Math.Round(avg, 2));
                                     }
                                     Label lblOvalityB = (Label)GetControlInstance(this.flpTabTwoContent, inputTxtName + "_OvalityB");
@@ -1220,10 +1265,18 @@ namespace YYOPInspectionClient
                                         if (ovality > maxOvality || ovality < 0)
                                         {
                                             lblOvalityB.ForeColor = Color.Red;
-                                            ThreadingForm.isQualified = false;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = false;
+                                            }
                                         }
-                                        else
+                                        else {
                                             lblOvalityB.ForeColor = Color.Black;
+                                            if (qualifiedList.ContainsKey(inputTxtName))
+                                            {
+                                                qualifiedList[inputTxtName] = true;
+                                            }
+                                        }
                                         lblOvalityB.Text = Convert.ToString(Math.Round(ovality, 2));
                                     }
                                 }

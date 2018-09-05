@@ -29,7 +29,9 @@ namespace YYOPInspectionClient
         private int countTime = 0;
         private static ThreadingForm myForm = null;
         public System.Timers.Timer timer = null;
-        public static bool isQualified =true;
+        //定义是否测量数据是否合法的集合
+        public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
+        //public static bool isQualified =true;
         public delegate void EventHandle(object sender, EventArgs e);
         public static bool isMeasuringToolTabSelected=true;//
         public static string focusTextBoxName = null;
@@ -357,10 +359,14 @@ namespace YYOPInspectionClient
         private void InitMeasureTools(JArray measureArr)
         {
             measureItemCodeList.Clear();
+            qualifiedList.Clear();
             foreach (var item in measureArr)
             {
                 JObject obj = (JObject)item;
                 measureItemCodeList.Add(obj["measure_item_code"].ToString());
+                qualifiedList.Add(obj["measure_item_code"].ToString(),true);
+                //设置数字输入法数据都合法的标识集合为当前的标识集合
+                NumberKeyboardForm.qualifiedList = qualifiedList;
                 //初始化测量工具编号表单
                 string measure_tool1 = obj["measure_tool1"].ToString();
                 string measure_tool2 = obj["measure_tool2"].ToString();
@@ -726,11 +732,14 @@ namespace YYOPInspectionClient
                     itemvalue = "";reading_max = "";reading_min = "";reading_avg = "";reading_ovality = "";
                     toolcode1 = "";toolcode2 = "";measure_sample1 = "";measure_sample2 = "";
                 }
-                string inspectionResult = "";
-                if (isQualified)
-                    inspectionResult = "合格";
-                else
-                    inspectionResult = "不合格";
+                string inspectionResult = "合格";
+                foreach (var item in qualifiedList)
+                {
+                    if (item.Value == false) {
+                        inspectionResult = "不合格";
+                        break;
+                    }
+                }
                 bool flag=true;
                 if (inspectionResult.Contains("不合格"))
                 {
@@ -854,7 +863,6 @@ namespace YYOPInspectionClient
             this.dtpInspectionTime.Value = DateTime.Now;
         }
         #endregion
-
 
         #region 输入框获取焦点事件
         private void txt_Enter(object sender, EventArgs e)

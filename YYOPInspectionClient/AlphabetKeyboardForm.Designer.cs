@@ -72,7 +72,6 @@
             this.buttonO = new System.Windows.Forms.Button();
             this.buttonP = new System.Windows.Forms.Button();
             this.button_cap = new System.Windows.Forms.Button();
-            this.dot = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblEnglishTitle = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -564,18 +563,6 @@
             this.button_cap.UseVisualStyleBackColor = true;
             this.button_cap.Click += new System.EventHandler(this.button_cap_Click);
             // 
-            // dot
-            // 
-            this.dot.Font = new System.Drawing.Font("宋体", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dot.Location = new System.Drawing.Point(769, 116);
-            this.dot.Name = "dot";
-            this.dot.Size = new System.Drawing.Size(70, 70);
-            this.dot.TabIndex = 28;
-            this.dot.Text = ".";
-            this.dot.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.dot.UseVisualStyleBackColor = true;
-            this.dot.Click += new System.EventHandler(this.letternum_Click);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -624,7 +611,6 @@
             this.panel2.Controls.Add(this.buttonR);
             this.panel2.Controls.Add(this.num0);
             this.panel2.Controls.Add(this.button_coma);
-            this.panel2.Controls.Add(this.dot);
             this.panel2.Controls.Add(this.buttonL);
             this.panel2.Controls.Add(this.button_backspace);
             this.panel2.Controls.Add(this.buttonK);
@@ -658,13 +644,13 @@
             // buttonLine
             // 
             this.buttonLine.Font = new System.Drawing.Font("宋体", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonLine.Location = new System.Drawing.Point(26, 345);
+            this.buttonLine.Location = new System.Drawing.Point(769, 116);
             this.buttonLine.Name = "buttonLine";
             this.buttonLine.Size = new System.Drawing.Size(70, 70);
             this.buttonLine.TabIndex = 67;
             this.buttonLine.Text = "-";
             this.buttonLine.UseVisualStyleBackColor = true;
-            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
+            this.buttonLine.Click += new System.EventHandler(this.letternum_Click);
             // 
             // AlphabetKeyboardForm
             // 
@@ -729,7 +715,6 @@
         private System.Windows.Forms.Button buttonO;
         private System.Windows.Forms.Button buttonP;
         private System.Windows.Forms.Button button_cap;
-        private System.Windows.Forms.Button dot;
         public System.Windows.Forms.TextBox Textbox_display;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Label lblEnglishTitle;
