@@ -13,8 +13,7 @@ namespace YYOPInspectionClient
         public static void deleteDirName(string dirName){
             string path = Application.StartupPath + "\\fileuploadrecord.txt";
             string text = "";
-            //用一个读出流去读里面的数据
-
+            //用流的方式去读txt文件中的数据
             using (StreamReader reader = new StreamReader(path, Encoding.Default))
             {
                 Console.WriteLine("传过来的值:"+dirName);

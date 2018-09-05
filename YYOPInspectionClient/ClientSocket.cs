@@ -15,8 +15,8 @@ namespace YYOPInspectionClient
     {
         public Socket commandSocket;   // socket for command
         public Socket dataSocket;      // socket for data
-        public IPEndPoint readerCommandEndPoint;
-        public IPEndPoint readerDataEndPoint;
+        public IPEndPoint readerCommandEndPoint;//一个IP地址和端口的绑定(命令传输使用)
+        public IPEndPoint readerDataEndPoint;//一个IP地址和端口的绑定(数据传输使用)
 
 
         public ClientSocket(byte[] ipAddress, int readerCommandPort, int readerDataPort)

@@ -16,8 +16,9 @@ namespace YYOPInspectionClient
 {
     public partial class UnSubmitForm : Form
     {
+        //定义ASCII编码
         private ASCIIEncoding encoding = new ASCIIEncoding();
-        private string content = "";
+        //定义选中要提交表单的总数
         private int totalForm = 0;
         private Dictionary<string, string> videoPathList = new Dictionary<string, string>();
         //---------------------拖动无窗体的控件(开始)
@@ -29,24 +30,39 @@ namespace YYOPInspectionClient
         public const int SC_MOVE = 0xF010;
         public const int HTCAPTION = 0x0002;
         //---------------------拖动无窗体的控件(结束)
+        #region 构造函数
         public UnSubmitForm()
         {
             InitializeComponent();
+            //设置窗体总体的字体样式
             this.Font = new Font("宋体", 12, FontStyle.Bold);
             getUnSummitFile();
         }
-        #region 获取所有没有上传的数据文件
+        #endregion
+
+        #region 获取所有未上传成功的数据文件
         private void getUnSummitFile()
         {
-            dataGridView1.Rows.Clear();
-            string path = Application.StartupPath + "\\unsubmit\\";
-            if (Directory.Exists(path))
+            try
             {
-                DirectoryInfo dir = new DirectoryInfo(path);
-                foreach (FileInfo file in dir.GetFiles("*.txt"))
+                dataGridView1.Rows.Clear();
+                //bin目录下unsubmit文件为未上传成功的文件(.txt格式)
+                string path = Application.StartupPath + "\\unsubmit\\";
+                //判断路径是否存在
+                if (Directory.Exists(path))
                 {
-                    dataGridView1.Rows.Add(false, file.Name);//显示 
+                    DirectoryInfo dir = new DirectoryInfo(path);
+                    //获取目录下所有的.txt文件
+                    foreach (FileInfo file in dir.GetFiles("*.txt"))
+                    {
+                        //添加到dataGridView1中
+                        dataGridView1.Rows.Add(false, file.Name);//显示 
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessagePrompt.Show("获取未上传成功的文件时出错,错误信息:" + ex.Message);
             }
         }
         #endregion
@@ -54,10 +70,13 @@ namespace YYOPInspectionClient
         #region 全选事件
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
+            //dataGridView1全部选中
             if (this.btnSelectAll.Text == "全选")
             {
+                //遍历每一行
                 for (int i = 0; i < this.dataGridView1.RowCount; i++)
                 {
+                    //设置当前遍历行选中
                     this.dataGridView1.Rows[i].Cells[0].Value = true;
                 }
                 if (this.dataGridView1.Rows.Count > 0)
@@ -76,21 +95,26 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 上传未提交表单事件
+        #region 点击上传未提交表单事件
         private void btnUpload_Click(object sender, EventArgs e)
         {
             try
             {
+                //定义存放未提交表单的所有的文件字典集合(参数为 文件名、文件路径)
                 Dictionary<string, string> listFormDir = new Dictionary<string, string>();
                 DataGridViewCheckBoxCell cell = null;
+                //如果dataGridView1中有未提交的表单
                 if (this.dataGridView1.Rows.Count > 0)
                 {
+                    //遍历所有未提交的表单
                     for (int i = 0; i < this.dataGridView1.Rows.Count; i++)
                     {
                         cell = (DataGridViewCheckBoxCell)this.dataGridView1.Rows[i].Cells["checkbox1"];
+                        //获取当前表单是否选中要提交
                         bool flag = Convert.ToBoolean(cell.Value);
                         if (flag)
                         {
+                            //如果选中上传,则将要上传的文件名添加到字典集合中
                             listFormDir.Add(this.dataGridView1.Rows[i].Cells["filename"].Value.ToString(), "");
                         }
                     }
@@ -98,16 +122,17 @@ namespace YYOPInspectionClient
                     string path = Application.StartupPath + "\\unsubmit\\";
                     //获取选中表单的路径集合
                     DirectoryInfo folder = new DirectoryInfo(path);
-                    string dirName = "";
+                    //遍历unsubmit目录下所有的.txt文件
                     foreach (FileInfo file in folder.GetFiles("*.txt"))
                     {
+                        //如果字典集合中的键包含当前文件的文件名
                         if (listFormDir.ContainsKey(file.Name))
                         {
-                            listFormDir[file.Name] = path + dirName + "\\" + file.Name;
+                            //设置该字典的键对应的值为此文件的路径
+                            listFormDir[file.Name] = path + "\\" + file.Name;
                         }
                     }
-
-                    //如果有选中的数
+                    //如果有选中的文件
                     if (listFormDir.Count > 0)
                     {
                         int tempTotal = 0;
@@ -115,9 +140,11 @@ namespace YYOPInspectionClient
                         //遍历listPath找到未提交文件，然后读出json数据
                         foreach (string item in listFormDir.Values)
                         {
+                            //读取当前txt文件中的所有的json格式的数据
                             jsonContent = File.ReadAllText(item, Encoding.UTF8).Trim();
-                            if (jsonContent != null && jsonContent.Length > 0)
+                            if (!string.IsNullOrWhiteSpace( jsonContent))
                             {
+                                //开始上传该表单
                                 if (uploadUnSubmitForm(jsonContent))
                                 {
                                     //如果上传成功删除文件
@@ -153,14 +180,13 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        #region 上传事件
+        #region 开始上传未提交成功的表单
         private bool uploadUnSubmitForm(string json)
         {
             bool flag = false;
             try
             {
-                // JObject o = JObject.Parse(json);
-                //String param = o.ToString();
+                string content = "";
                 byte[] data = encoding.GetBytes(json);
                 string url = CommonUtil.getServerIpAndPort() + "ThreadingOperation/saveThreadInspectionRecordOfWinform.action";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -174,22 +200,16 @@ namespace YYOPInspectionClient
                 }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse, Encoding.UTF8);
-                Char[] readBuff = new Char[1024];
-                int count = streamRead.Read(readBuff, 0, 1024);
-                while (count > 0)
+                using (StreamReader sr = new StreamReader(streamResponse))
                 {
-                    String outputData = new String(readBuff, 0, count);
-                    content += outputData;
-                    count = streamRead.Read(readBuff, 0, 1024);
+                    content = sr.ReadToEnd();
                 }
                 response.Close();
-                string jsons = content;
-                if (jsons != null)
+                if (content != null)
                 {
-                    JObject jobject = JObject.Parse(jsons);
+                    JObject jobject = JObject.Parse(content);
                     string rowsJson = jobject["rowsData"].ToString();
-                    if (rowsJson.Trim().Equals("success"))
+                    if (rowsJson.Trim().Contains("success"))
                     {
                         flag = true;
                     }
@@ -229,7 +249,6 @@ namespace YYOPInspectionClient
 
 
         #endregion
-
 
         #region 窗体关闭事件
         private void btnClose_Click(object sender, EventArgs e)
