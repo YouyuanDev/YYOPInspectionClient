@@ -30,8 +30,6 @@ namespace YYOPInspectionClient
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
         //测量值名称标签集合
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
-        //定义是否检验记录是否合格标识
-        //public static bool isQualified = true;
         //当前鼠标焦点所在的输入框名称
         public static string focusTextBoxName = null;
         //定义临时所用的Label控件值
@@ -56,6 +54,8 @@ namespace YYOPInspectionClient
                 }
                 this.operator_no = operator_no;
                 this.thread_inspection_record_code = thread_inspection_record_code;
+                //将英文输入法中显示测量值的控件容器指定为当前测量值的控件容器
+                AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
                 //将数字输入法中显示测量值的控件容器指定为当前测量值的控件容器
                 NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
                 //为机床号、产线输入框注册获取焦点的事件
@@ -243,7 +243,7 @@ namespace YYOPInspectionClient
                     JObject obj = (JObject)item;
                     //将测量工具编号添加到集合中
                     measureItemCodeList.Add(obj["measure_item_code"].ToString());
-                    //默认设置添加的测量数据都合法
+                    //设置默认添加的测量数据都合法
                     qualifiedList.Add(obj["measure_item_code"].ToString(), true);
                     //设置数字输入法数据都合法的标识集合为当前的标识集合
                     NumberKeyboardForm.qualifiedList = qualifiedList;
@@ -251,7 +251,7 @@ namespace YYOPInspectionClient
                     //一个测量项目前最多对应两个测量工具
                     string measure_tool1 = obj["measure_tool1"].ToString();
                     string measure_tool2 = obj["measure_tool2"].ToString();
-                    if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool1))
+                    if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool2))
                     {
                         //创建存放当前测量项的panel面板
                         Panel pnlMeasureTool = new Panel() { Width = 312, Height = 160, BorderStyle = BorderStyle.FixedSingle };
@@ -345,26 +345,18 @@ namespace YYOPInspectionClient
                             lblRangeFrequencyOvality.Width = 310;
                             lblRangeFrequencyOvality.TextAlign = ContentAlignment.MiddleCenter;
                             lblRangeFrequencyOvality.Location = new Point(0, 50);
-                            //如果该测量项的最大值大于最小值(即有取值范围)
-                            if (item_max_val - item_min_val > 0)
-                            {
-                                lblRangeFrequencyOvality.Tag = rangeFrequencyOvalitySdVal;
-                                lblRangeFrequencyOvality.Text = "±" + pos_deviation_value + "/" + item_frequency;
-                                pnlMeasureValue.Controls.Add(lblRangeFrequencyOvality);
-                            }
-                            else
-                            {
-                                lblRangeFrequencyOvality.Tag = rangeFrequencyOvalitySdVal;
-                                lblRangeFrequencyOvality.Text = item_frequency;
-                                pnlMeasureValue.Controls.Add(lblRangeFrequencyOvality);
-                            }
-                        }
-                        else
-                        {
-                            //添加频率
                             lblRangeFrequencyOvality.Tag = rangeFrequencyOvalitySdVal;
                             lblRangeFrequencyOvality.Text = item_frequency;
                             pnlMeasureValue.Controls.Add(lblRangeFrequencyOvality);
+                            //如果该测量项的最大值大于最小值(即有取值范围)
+                            if (item_max_val - item_min_val > 0)
+                            {
+                                if (Math.Abs(pos_deviation_value) - Math.Abs(neg_deviation_value) <= 0)
+                                    lblRangeFrequencyOvality.Text = "±" + pos_deviation_value + "/" + item_frequency;
+                                else
+                                    lblRangeFrequencyOvality.Text = neg_deviation_value + "～" + pos_deviation_value + "/" + item_frequency;
+                                pnlMeasureValue.Controls.Add(lblRangeFrequencyOvality);
+                            }
                         }
                         //代表该测量项只是个单值
                         if (readtyps.Contains("1"))

@@ -372,6 +372,7 @@
             this.txtMachineNo.Size = new System.Drawing.Size(150, 35);
             this.txtMachineNo.TabIndex = 23;
             this.txtMachineNo.Tag = "English";
+            this.txtMachineNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
             // txtProductionArea
             // 
@@ -381,6 +382,7 @@
             this.txtProductionArea.Size = new System.Drawing.Size(120, 35);
             this.txtProductionArea.TabIndex = 21;
             this.txtProductionArea.Tag = "English";
+            this.txtProductionArea.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
             // txtCriteriaNo
             // 
@@ -689,6 +691,7 @@
             this.txtBatchNo.Size = new System.Drawing.Size(120, 29);
             this.txtBatchNo.TabIndex = 9;
             this.txtBatchNo.Tag = "English";
+            this.txtBatchNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
             // txtHeatNo
             // 
@@ -698,6 +701,7 @@
             this.txtHeatNo.Size = new System.Drawing.Size(120, 29);
             this.txtHeatNo.TabIndex = 8;
             this.txtHeatNo.Tag = "English";
+            this.txtHeatNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
             // txtCoupingNo
             // 
@@ -707,6 +711,7 @@
             this.txtCoupingNo.Size = new System.Drawing.Size(120, 29);
             this.txtCoupingNo.TabIndex = 7;
             this.txtCoupingNo.Tag = "English";
+            this.txtCoupingNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
             // label78
             // 
