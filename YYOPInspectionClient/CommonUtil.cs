@@ -406,11 +406,7 @@ namespace YYOPInspectionClient
         }
         #endregion
 
-        /// <summary>
-        /// 返回指示文件是否已被其它程序使用的布尔值
-        /// </summary>
-        /// <param name="fileFullName">文件的完全限定名，例如：“C:\MyFile.txt”。</param>
-        /// <returns>如果文件已被其它程序使用，则为 true；否则为 false。</returns>
+        #region 返回指示文件是否已被其它程序使用的布尔值
         public static Boolean FileIsUsed(String fileFullName)
         {
             Boolean result = false;
@@ -446,7 +442,8 @@ namespace YYOPInspectionClient
             }//end: 如果文件存在的处理逻辑
              //返回指示文件是否已被其它程序使用的值
             return result;
-        }//end method FileIsUsed
+        } 
+        #endregion//end method FileIsUsed
 
         #region 小窗口显示实时录制视频内容
         public static void RealTimePreview()
