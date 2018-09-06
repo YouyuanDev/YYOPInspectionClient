@@ -461,6 +461,7 @@
             this.Controls.Add(this.groupBox3);
             this.Name = "MainWindow";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "录像设置";
             ((System.ComponentModel.ISupportInitialize)(this.RealPlayWnd)).EndInit();
             this.groupBox2.ResumeLayout(false);

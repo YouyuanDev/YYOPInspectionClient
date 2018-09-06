@@ -157,6 +157,7 @@
             this.Controls.Add(this.lblMsg);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "UnSubmitForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UnSubmitForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);

@@ -173,14 +173,10 @@ namespace YYOPInspectionClient
                     Label lblRangeFrequencyOvality = (Label)GetControlInstance(containerControl, inputTxtName + "_RangeFrequencyOvality_lbl");
                     //如果该Label控件没有找到
                     if (lblRangeFrequencyOvality == null)
-                    {
                         return;
-                    }
                     //如果该Label控件的Tag属性为空
                     if (lblRangeFrequencyOvality.Tag == null)
-                    {
                         return;
-                    }
                     //找到该测量项的值范围、和椭圆度最大值
                     float maxVal = 0, minVal = 0, txtVal = 0, maxOvality = 0, sdVal = 0;
                     //获取该Label控件上的tag属性值
@@ -188,15 +184,17 @@ namespace YYOPInspectionClient
                     {
                         //将tag属性值以","分割,分割后依次代表的时 最大值、最小值、检验频率、椭圆度、目标值 
                         string[] rangeFrequency = lblRangeFrequencyOvality.Tag.ToString().Split(',');
-                        Console.WriteLine(lblRangeFrequencyOvality.Tag.ToString());
-                        maxVal = Convert.ToSingle(rangeFrequency[0]);
-                        minVal = Convert.ToSingle(rangeFrequency[1]);
-                        txtVal = Convert.ToSingle(inputTxt.Text.Trim());
-                        if (!string.IsNullOrWhiteSpace(rangeFrequency[3]))
+                        if (CommonUtil.IsNumeric(rangeFrequency[0]))
+                            maxVal = Convert.ToSingle(rangeFrequency[0]);
+                        if (CommonUtil.IsNumeric(rangeFrequency[1]))
+                            minVal = Convert.ToSingle(rangeFrequency[1]);
+                        if (CommonUtil.IsNumeric(inputTxt.Text.Trim()))
+                            txtVal = Convert.ToSingle(inputTxt.Text.Trim());
+                        if (CommonUtil.IsNumeric(rangeFrequency[3]))
                             maxOvality = Convert.ToSingle(rangeFrequency[3]);
-                        if (!string.IsNullOrWhiteSpace(rangeFrequency[4]))
+                        if (CommonUtil.IsNumeric(rangeFrequency[4]))
                             sdVal = Convert.ToSingle(rangeFrequency[4]);
-                        if (maxVal - minVal > 0.00001)
+                        if (maxVal - minVal >0&&!string.IsNullOrWhiteSpace(inputTxt.Text.Trim()))
                         {
                             //如果输入法输入的值不符合标准
                             if (txtVal < minVal || txtVal > maxVal)

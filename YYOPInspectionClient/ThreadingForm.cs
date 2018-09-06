@@ -911,7 +911,7 @@ namespace YYOPInspectionClient
                     else
                     {
                         //判断接箍编号是否存在和视频录像是否启动（设置同上）
-                        if (!IsHaveCoupingNoAndStartRecordVideo())
+                        if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
@@ -983,7 +983,7 @@ namespace YYOPInspectionClient
                     }
                     else
                     {
-                        if (!IsHaveCoupingNoAndStartRecordVideo())
+                        if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.getForm().inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
@@ -996,10 +996,8 @@ namespace YYOPInspectionClient
                             txtCoupingNo.Focus();
                             MessagePrompt.Show("请检查接箍编号是否输入和视频录制是否启动!");
                         }
-
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -1348,7 +1346,7 @@ namespace YYOPInspectionClient
         private bool IsHaveCoupingNoAndStartRecordVideo()
         {
             bool flag = false;
-            if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text)&&button2.Text.Contains("结束录制"))
+            if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && button2.Text.Contains("结束录制"))
             {
                 flag = true;
             }

@@ -368,7 +368,6 @@
             this.txtMachineNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtMachineNo.Location = new System.Drawing.Point(112, 105);
             this.txtMachineNo.Name = "txtMachineNo";
-            this.txtMachineNo.ReadOnly = true;
             this.txtMachineNo.Size = new System.Drawing.Size(150, 35);
             this.txtMachineNo.TabIndex = 23;
             this.txtMachineNo.Tag = "English";

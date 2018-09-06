@@ -95,6 +95,7 @@
             this.Controls.Add(this.txtIp);
             this.Controls.Add(this.label1);
             this.Name = "ServerSetting";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "服务器设置";
             this.ResumeLayout(false);
             this.PerformLayout();

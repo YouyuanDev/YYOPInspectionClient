@@ -12,6 +12,7 @@ using System.Net.NetworkInformation;
 using System.Management;
 using System.Drawing;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace YYOPInspectionClient
 {
@@ -594,6 +595,16 @@ namespace YYOPInspectionClient
             {
 
             }
+        }
+        #endregion
+
+        #region 判断字符串是否时数字
+        public static bool IsNumeric(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+                return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
+            else
+                return false;
         } 
         #endregion
     }
