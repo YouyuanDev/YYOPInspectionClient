@@ -327,6 +327,7 @@
             this.MaximizeBox = false;
             this.Name = "NumberKeyboardForm";
             this.Text = "数字键盘";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NumberKeyboardForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

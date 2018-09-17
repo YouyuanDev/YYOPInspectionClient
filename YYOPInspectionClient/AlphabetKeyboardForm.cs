@@ -13,12 +13,14 @@ namespace YYOPInspectionClient
 {
     public partial class AlphabetKeyboardForm : Form
     {
+        //定义标识(判断输入框实在那个窗体中,0代表在ThreadingForm中,1代表在DetailForm中)
+        public static int flag = 0;
         //定义英文输入法弹出时对应的鼠标焦点所在的TextBox控件
         public static  TextBox inputTxt=null;
         //定义保存测量工具编号的TextBox控件集合
-        public static List<TextBox> flpTabOneTxtList=new List<TextBox>();
+        //public static List<TextBox> flpTabOneTextBoxList = new List<TextBox>();
         //定义存放测量工具编号的TextBox控件的容器控件
-        public Control containerControl = null;
+        //public Control containerControl = null;
         //定义当前窗体
         private static AlphabetKeyboardForm myForm = null;
         //---------------------拖动无窗体的控件(开始)
@@ -162,16 +164,26 @@ namespace YYOPInspectionClient
                     }
                 }
                 //查询鼠标焦点所在的TextBox控件在控件集合中的索引
-                int index = flpTabOneTxtList.IndexOf(inputTxt);
-                if (index < flpTabOneTxtList.Count - 1)
-                    index++;
-                //设置鼠标焦点在控件集合索引为index的控件上
-                TextBox tb = flpTabOneTxtList[index];
+                TextBox tb = null;int index = 0;
+                if (flag == 0)
+                {
+                    index =ThreadingForm.flpTabOneTextBoxList.IndexOf(inputTxt);
+                    if (index < ThreadingForm.flpTabOneTextBoxList.Count - 1)
+                        index++;
+                    //设置鼠标焦点在控件集合索引为index的控件上
+                    tb = ThreadingForm.flpTabOneTextBoxList[index];
+                }
+                else if (flag == 1) {
+                    index = DetailForm.flpTabOneTextBoxList.IndexOf(inputTxt);
+                    if (index < DetailForm.flpTabOneTextBoxList.Count - 1)
+                        index++;
+                    //设置鼠标焦点在控件集合索引为index的控件上
+                    tb = DetailForm.flpTabOneTextBoxList[index];
+                }
                 tb.Focus();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("英文键盘触发Enter时报错,错误信息:" + ex.Message);
             }
         }
         #endregion

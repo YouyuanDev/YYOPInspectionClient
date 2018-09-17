@@ -223,7 +223,7 @@ namespace YYOPInspectionClient
         #region 退出登录事件
         private void btnLoginOut_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Environment.Exit(0);
         }
         #endregion
 

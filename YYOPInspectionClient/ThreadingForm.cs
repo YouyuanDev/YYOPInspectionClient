@@ -20,15 +20,13 @@ namespace YYOPInspectionClient
         //防止合同combobox自动执行选中事件
         private bool autoSelectContractNo = false;
         //输入框集合,存放检验记录使用测量工具
-        public static List<TextBox> flpTabOneTxtList = new List<TextBox>();
+        public static List<TextBox> flpTabOneTextBoxList = new List<TextBox>();
         //输入框集合,存放检验记录测量的数据
-        public static List<TextBox> flpTabTwoTxtList = new List<TextBox>();
+        public static List<TextBox> flpTabTwoTextBoxList = new List<TextBox>();
         //测量值输入框集合(参数为:测量项名称、测量值对应的TextBox控件)
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
         //定义是否测量数据是否合法的集合
         public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
-        //Label控件集合，存放"*"字符,用于提示是否必填
-        //private List<Label> flpTabTwoLblList = new List<Label>();
         //测量项编号集合
         private List<string> measureItemCodeList = new List<string>();
         //时间戳(视频和form表单保存的目录名)
@@ -44,9 +42,7 @@ namespace YYOPInspectionClient
         //定义鼠标事件的委托
         public delegate void EventHandle(object sender, EventArgs e);
         //定义是否打开测量工具tab
-        public static bool isMeasuringToolTabSelected=true;//
-        //当前鼠标焦点所在的输入框名称
-       // public static string focusTextBoxName = null;
+        public static bool isMeasuringToolTabSelected=true;
         //定义当是三支全检的时候检验到第几支
         private static int fullInspectionCount =0;
         //判断是否时三只全检
@@ -57,7 +53,6 @@ namespace YYOPInspectionClient
         private Dictionary<string, Label> requiredMarkDic = new Dictionary<string, Label>();
         //存放输入法头部信息得集合
         private Dictionary<string, string>keyboardTitleDic = new Dictionary<string, string>();
-        //private Dictionary<string, string> textboxNameDic = new Dictionary<string, string>();
         #region 单例函数
         public static ThreadingForm getMyForm()
         {
@@ -79,9 +74,9 @@ namespace YYOPInspectionClient
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
                     //将英文输入法中显示测量值的控件容器指定为当前测量值的控件容器
-                    AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
+                    //AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
                     //将数字输入法中显示测量值的控件容器指定为当前测量值的控件容器
-                    NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
+                    //NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
                     //设置时间戳
                     timestamp = CommonUtil.getMesuringRecord();
                     //设置读码器和录像机状态标识
@@ -296,19 +291,22 @@ namespace YYOPInspectionClient
             {
                 try
                 {
+                    //清理集合元素
                     ClearCntrValue(this);
-                    flpTabOneTxtList.Clear();
-                    flpTabTwoTxtList.Clear();
-                   // flpTabTwoLblList.Clear();
+                    flpTabOneTextBoxList.Clear();
+                    flpTabTwoTextBoxList.Clear();
+                    measureItemCodeList.Clear();
                     controlTxtDir.Clear();
+                    qualifiedList.Clear();
+                    measureInfoDic.Clear();
+                    requiredMarkDic.Clear();
+                    keyboardTitleDic.Clear();
+                    videosArr = "";
+                    countTime = 0;
                     string contract_no = this.cmbContractNo.Text.Trim();
                     GetThreadFormInitData(contract_no);
                     this.lblCountSubmit.Text = "1";
                     ChangeFrequency();
-                    GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
-                    GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
-                   // AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
-                   // NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
                 }
                 catch (Exception ex)
                 {
@@ -416,12 +414,8 @@ namespace YYOPInspectionClient
                 measureInfoDic.Add(measure_item_code, itemDic);
                 //设置默认添加的测量数据都合法
                 qualifiedList.Add(measure_item_code, true);
-
                 //将测量工具编号添加到集合中
                 measureItemCodeList.Add(measure_item_code);
-
-                //设置数字输入法数据都合法的标识集合为当前的标识集合
-                NumberKeyboardForm.qualifiedList = qualifiedList;
                 //------------------------------------------初始化测量工具编号表单
                 //如果测量工具1、2有一个不为空
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool2))
@@ -440,7 +434,7 @@ namespace YYOPInspectionClient
                         //创建存放当前测量项工具1编号的TextBox控件
                         string controlTool1Name = Convert.ToString(obj["measure_item_code"]) + "_measure_tool1";
                         TextBox tbTool1 = new TextBox { Tag = "English", Name = controlTool1Name, Location = new Point(100, 45), Width = 200 };
-                        //textboxNameDic.Add(controlTool1Name, measure_tool1);
+                        flpTabOneTextBoxList.Add(tbTool1);
                         keyboardTitleDic.Add(controlTool1Name, measure_tool1);
                         pnlMeasureTool.Controls.Add(tbTool1);
                         controlTxtDir.Add(controlTool1Name, tbTool1);
@@ -456,7 +450,7 @@ namespace YYOPInspectionClient
                         pnlMeasureTool.Controls.Add(lbl0_2);
                         string controlTool2Name = Convert.ToString(obj["measure_item_code"]) + "_measure_tool2";
                         TextBox tbTool2 = new TextBox { Tag = "English", Name = controlTool2Name, Location = new Point(100, 95), Width = 200 };
-                        //textboxNameDic.Add(controlTool2Name, measure_tool2);
+                        flpTabOneTextBoxList.Add(tbTool2);
                         keyboardTitleDic.Add(controlTool2Name, measure_tool2);
                         pnlMeasureTool.Controls.Add(tbTool2);
                         controlTxtDir.Add(controlTool2Name, tbTool2);
@@ -537,6 +531,8 @@ namespace YYOPInspectionClient
                             index++;
                             tbA.Location = new Point(index * 100 + 60, 80);
                             tbB.Location = new Point(index * 100 + 60, 120);
+                            flpTabTwoTextBoxList.Add(tbA);
+                            flpTabTwoTextBoxList.Add(tbB);
                             pnlMeasureValue.Controls.Add(tbA);
                             pnlMeasureValue.Controls.Add(tbB);
                             keyboardTitleDic.Add(measure_item_code + "_A_Value",measure_item_name+"A端("+txt+")");
@@ -556,9 +552,11 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblMax.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblMax);
                             tbMaxA.Location = new Point(index * 100 + 60, 80);
                             tbMaxB.Location = new Point(index * 100 + 60, 120);
+                            flpTabTwoTextBoxList.Add(tbMaxA);
+                            flpTabTwoTextBoxList.Add(tbMaxB);
+                            pnlMeasureValue.Controls.Add(lblMax);
                             pnlMeasureValue.Controls.Add(tbMaxA);
                             pnlMeasureValue.Controls.Add(tbMaxB);
                             keyboardTitleDic.Add(measure_item_code + "_MaxA_Value", measure_item_name + "最大值A端(" + txt + ")");
@@ -578,9 +576,11 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblMin.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblMin);
                             tbMinA.Location = new Point(index * 100 + 50, 80);
                             tbMinB.Location = new Point(index * 100 + 50, 120);
+                            flpTabTwoTextBoxList.Add(tbMinA);
+                            flpTabTwoTextBoxList.Add(tbMinB);
+                            pnlMeasureValue.Controls.Add(lblMin);
                             pnlMeasureValue.Controls.Add(tbMinA);
                             pnlMeasureValue.Controls.Add(tbMinB);
                             keyboardTitleDic.Add(measure_item_code + "_MinA_Value", measure_item_name + "最小值A端(" + txt + ")");
@@ -600,9 +600,11 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblAvg.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblAvg);
                             tbAvgA.Location = new Point(index * 100 + 60, 80);
                             tbAvgB.Location = new Point(index * 100 + 60, 120);
+                            flpTabTwoTextBoxList.Add(tbAvgA);
+                            flpTabTwoTextBoxList.Add(tbAvgB);
+                            pnlMeasureValue.Controls.Add(lblAvg);
                             pnlMeasureValue.Controls.Add(tbAvgA);
                             pnlMeasureValue.Controls.Add(tbAvgB);
                             keyboardTitleDic.Add(measure_item_code + "_AvgA", measure_item_name + "均值A端(" + txt + ")");
@@ -622,9 +624,11 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblOvality.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblOvality);
                             tbOvalityA.Location = new Point(index * 100 + 50, 80);
                             tbOvalityB.Location = new Point(index * 100 + 50, 120);
+                            flpTabTwoTextBoxList.Add(tbOvalityA);
+                            flpTabTwoTextBoxList.Add(tbOvalityB);
+                            pnlMeasureValue.Controls.Add(lblOvality);
                             pnlMeasureValue.Controls.Add(tbOvalityA);
                             pnlMeasureValue.Controls.Add(tbOvalityB);
                             if (!string.IsNullOrWhiteSpace(ovality_max) && Convert.ToSingle(ovality_max) > 0)
@@ -663,6 +667,7 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             tbA.Location = new Point(index * 100 + 50, 80);
+                            flpTabTwoTextBoxList.Add(tbA);
                             pnlMeasureValue.Controls.Add(tbA);
                             keyboardTitleDic.Add(measure_item_code + "_A_Value", measure_item_name+"("+txt+")");
                             controlTxtDir.Add(measure_item_code + "_A_Value", tbA);
@@ -676,8 +681,9 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblMax.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblMax);
                             tbMaxA.Location = new Point(index * 100 + 60, 80);
+                            flpTabTwoTextBoxList.Add(tbMaxA);
+                            pnlMeasureValue.Controls.Add(lblMax);
                             pnlMeasureValue.Controls.Add(tbMaxA);
                             keyboardTitleDic.Add(measure_item_code + "_MaxA_Value", measure_item_name+"最大值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MaxA_Value", tbMaxA);
@@ -691,8 +697,9 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblMin.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblMin);
                             tbMinA.Location = new Point(index * 100 + 50, 80);
+                            flpTabTwoTextBoxList.Add(tbMinA);
+                            pnlMeasureValue.Controls.Add(lblMin);
                             pnlMeasureValue.Controls.Add(tbMinA);
                             keyboardTitleDic.Add(measure_item_code + "_MinA_Value", measure_item_name + "最小值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MinA_Value", tbMinA);
@@ -706,8 +713,9 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblAvg.Location = new Point(index * 100 + 60, 40);
-                            pnlMeasureValue.Controls.Add(lblAvg);
                             tbAvgA.Location = new Point(index * 100 + 60, 80);
+                            flpTabTwoTextBoxList.Add(tbAvgA);
+                            pnlMeasureValue.Controls.Add(lblAvg);
                             pnlMeasureValue.Controls.Add(tbAvgA);
                             keyboardTitleDic.Add(measure_item_code + "_AvgA", measure_item_name + "均值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_AvgA", tbAvgA);
@@ -721,8 +729,9 @@ namespace YYOPInspectionClient
                         {
                             index++;
                             lblOvality.Location = new Point(index * 100 + 50, 40);
-                            pnlMeasureValue.Controls.Add(lblOvality);
                             tbOvalityA.Location = new Point(index * 100 + 50, 80);
+                            flpTabTwoTextBoxList.Add(tbOvalityA);
+                            pnlMeasureValue.Controls.Add(lblOvality);
                             pnlMeasureValue.Controls.Add(tbOvalityA);
                             if (!string.IsNullOrWhiteSpace(ovality_max) && Convert.ToSingle(ovality_max) > 0)
                             {
@@ -813,6 +822,7 @@ namespace YYOPInspectionClient
         private void ThreadFormSubmit()
         {
             String param = "";
+            bool submitFlag = true;
             try
             {
                 string videoNo = videosArr;
@@ -885,15 +895,15 @@ namespace YYOPInspectionClient
                         break;
                     }
                 }
-                bool flag = true;
+              
                 if (inspectionResult.Contains("不合格"))
                 {
                     if (MessageBox.Show("数据不合格,确定要提交吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        flag = true;
+                        submitFlag = true;
                     else
-                        flag = false;
+                        submitFlag = false;
                 }
-                if (flag)
+                if (submitFlag)
                 {
                     //封装检验数据
                     JObject dataJson = new JObject {
@@ -960,14 +970,16 @@ namespace YYOPInspectionClient
             {
                 try
                 {
-                    //改变表单提交次数
-                    ChangeSubmitCount();
-                    //改变检验频率
-                    ChangeFrequency();
+                    if (submitFlag) {
+                        //改变表单提交次数
+                        ChangeSubmitCount();
+                        //改变检验频率
+                        ChangeFrequency();
+                        //刷新主页面检验记录
+                        IndexWindow.getForm().getThreadingProcessData();
+                    }
                     //清理表单
                     ClearForm();
-                    //刷新主页面检验记录
-                    IndexWindow.getForm().getThreadingProcessData();
                 }
                 catch (Exception ex)
                 {
@@ -1020,6 +1032,7 @@ namespace YYOPInspectionClient
                     {
                         //打开英文输入法
                         AlphabetKeyboardForm.inputTxt = tb;
+                        AlphabetKeyboardForm.flag = 0;
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         //设置输入法头部对应输入框名称
@@ -1033,6 +1046,7 @@ namespace YYOPInspectionClient
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.inputTxt = tb;
+                            NumberKeyboardForm.flag = 0;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
                             NumberKeyboardForm.getForm().TopMost = true;
@@ -1094,6 +1108,7 @@ namespace YYOPInspectionClient
                     if (tb.Tag.ToString().Contains("English"))
                     {
                         AlphabetKeyboardForm.inputTxt = tb;
+                        AlphabetKeyboardForm.flag = 0;
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         AlphabetKeyboardForm.getForm().TopMost = true;
@@ -1105,6 +1120,7 @@ namespace YYOPInspectionClient
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
                             NumberKeyboardForm.inputTxt = tb;
+                            NumberKeyboardForm.flag = 0;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
                             NumberKeyboardForm.getForm().TopMost = true;
@@ -1338,7 +1354,6 @@ namespace YYOPInspectionClient
                 //根据输入框Name查找键盘title内容
                 item_title= keyboardTitleDic[item_name];
                 item_title.Replace("()","");
-                Console.WriteLine(item_title);
                 //查找显示是否为必填得label控件
                 Label requiredLabel=requiredMarkDic[item_code];
                 if (requiredLabel != null && requiredLabel.Visible == true)
@@ -1389,21 +1404,21 @@ namespace YYOPInspectionClient
         private void ClearForm()
         {
             //遍历所有存放测量值的输入框，然后清理输入框内容并设置输入框背景色为白色
-            foreach (TextBox tb in flpTabTwoTxtList) {
+            foreach (TextBox tb in flpTabTwoTextBoxList) {
                 tb.Text ="";
                 tb.BackColor = Color.White;
             }
-            //遍历所有存放测量项名称的Label控件，然后清理Label内容
-            //foreach (Label lbl in flpTabTwoLblList) {
-            //    if (lbl.Tag != null) {
-            //        if(lbl.Tag.ToString().Contains("lblVal"))
-            //        lbl.Text = "";
-            //    }
-            //}
             this.txtCoupingNo.Text = "";
             this.txtHeatNo.Text = "";
             this.txtBatchNo.Text = "";
             videosArr = "";
+            //重置各测量项数据合法
+            List<string> list = new List<string>();
+            list.AddRange(qualifiedList.Keys);
+            for (int i=0;i< list.Count;i++)
+            {
+                qualifiedList[list[i]] = true;
+            }
         }
         #endregion
 

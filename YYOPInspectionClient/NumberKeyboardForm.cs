@@ -14,12 +14,17 @@ namespace YYOPInspectionClient
 {
     public partial class NumberKeyboardForm : Form
     {
+        //定义保存测量值的TextBox控件集合
+        //public static List<TextBox> flpTabTwoTextBoxList;
+
+        //定义标识(判断输入框实在那个窗体中,0代表在ThreadingForm中,1代表在DetailForm中)
+        public static int flag = 0;
         //定义数字输入法弹出时对应的鼠标焦点所在的TextBox控件
         public static TextBox inputTxt=null;
         //定义存放测量值的TextBox控件的容器控件
-        public Control containerControl=null;
+        //public Control containerControl=null;
         //定义存放测量项是否合法的标识集合
-        public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
+        //public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
         //定义当前窗体
         private static NumberKeyboardForm myForm = null;
 
@@ -155,6 +160,8 @@ namespace YYOPInspectionClient
                     {
                         return;
                     }
+                    //当前输入框得类型,0代表时最大值、最小值和均值，1代表椭圆度
+                    int tbType=0;
                     //如果控件名包含以下字符则将这些字符替换为空
                     if (inputTxtName.Contains("_A_Value"))
                         inputTxtName = inputTxtName.Replace("_A_Value", "");
@@ -173,12 +180,25 @@ namespace YYOPInspectionClient
                     else if (inputTxtName.Contains("_AvgB"))
                         inputTxtName = inputTxtName.Replace("_AvgB", "");
                     else if (inputTxtName.Contains("_OvalityA"))
+                    {
                         inputTxtName = inputTxtName.Replace("_OvalityA", "");
+                        tbType = 1;
+                    }
                     else if (inputTxtName.Contains("_OvalityB"))
+                    {
                         inputTxtName = inputTxtName.Replace("_OvalityB", "");
+                        tbType = 1;
+                    }
                     //找到该测量项的值范围、和椭圆度最大值
-                    float maxVal = 0, minVal = 0, txtVal = 0, maxOvality = 0, sdVal = 0;
-                    Dictionary<string, string> dic = ThreadingForm.measureInfoDic[inputTxtName];
+                    float maxVal = 0, minVal = 0, txtVal = float.MaxValue, maxOvality = 0, sdVal = 0;
+                    Dictionary<string, string> dic = null;
+                    if (flag == 0)
+                    {
+                        dic = ThreadingForm.measureInfoDic[inputTxtName];
+                    }
+                    else if (flag == 1) {
+                        dic = DetailForm.measureInfoDic[inputTxtName];
+                    }
                     if (dic != null)
                     {
                         if (CommonUtil.IsNumeric(Convert.ToString(dic["item_max_value"])))
@@ -190,7 +210,10 @@ namespace YYOPInspectionClient
                         if (CommonUtil.IsNumeric(Convert.ToString(dic["item_std_value"])))
                             sdVal = Convert.ToSingle(dic["item_std_value"]);
                     }
-                    if (maxVal - minVal > 0 && !string.IsNullOrWhiteSpace(inputTxt.Text.Trim()))
+                    if (!string.IsNullOrWhiteSpace(inputTxt.Text.Trim())) {
+                        txtVal = Convert.ToSingle(inputTxt.Text.Trim());
+                    }
+                    if (maxVal - minVal > 0 && txtVal!=float.MaxValue)
                     {
                         //如果输入法输入的值不符合标准
                         if (txtVal < minVal || txtVal > maxVal)
@@ -198,36 +221,74 @@ namespace YYOPInspectionClient
                             //设置存放测量值的输入框的背景色
                             inputTxt.BackColor = Color.LightCoral;
                             //如果该集合中包含该控件的名称
-                            if (qualifiedList.ContainsKey(inputTxtName))
+                            if (flag == 0)
                             {
-                                qualifiedList[inputTxtName] = false;
+                                if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                {
+                                    ThreadingForm.qualifiedList[inputTxtName] = false;
+                                }
+                            }
+                            else if (flag == 1) {
+                                if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                {
+                                    DetailForm.qualifiedList[inputTxtName] = false;
+                                }
                             }
                         }
                         else
                         {
                             inputTxt.BackColor = Color.White;
-                            if (qualifiedList.ContainsKey(inputTxtName))
+                            if (flag == 0)
                             {
-                                qualifiedList[inputTxtName] = true;
+                                if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                {
+                                    ThreadingForm.qualifiedList[inputTxtName] = true;
+                                }
+                            }
+                            else if (flag == 1)
+                            {
+                                if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                {
+                                    DetailForm.qualifiedList[inputTxtName] = true;
+                                }
                             }
                         }
                     }
                     //找到该测量项A端、B端最大值、最小值，然后判断是否存在均值和椭圆度
-                    TextBox txtMaxOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MaxA_Value");
-                    TextBox txtMaxOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MaxB_Value");
-                    TextBox txtMinOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinA_Value");
-                    TextBox txtMinOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_MinB_Value");
+                    TextBox txtMaxOfA = null, txtMaxOfB = null, txtMinOfA = null, txtMinOfB = null, tbAvgOfA = null, tbOvalityA = null,
+                          tbAvgOfB = null, tbOvalityB = null;
+                    if (flag == 0)
+                    {
+                        txtMaxOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
+                        txtMaxOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
+                        txtMinOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MinA_Value"];
+                        txtMinOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MinB_Value"];
+                        tbAvgOfA =  ThreadingForm.controlTxtDir[inputTxtName + "_AvgA"];
+                        tbAvgOfB = ThreadingForm.controlTxtDir[inputTxtName + "_AvgB"];
+                        tbOvalityA = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityA"];
+                        tbOvalityB = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityB"];
+                    }
+                    else if (flag == 1) {
+                        txtMaxOfA = DetailForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
+                        txtMaxOfB = DetailForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
+                        txtMinOfA = DetailForm.controlTxtDir[inputTxtName + "_MinA_Value"];
+                        txtMinOfB = DetailForm.controlTxtDir[inputTxtName + "_MinB_Value"];
+                        tbAvgOfA = DetailForm.controlTxtDir[inputTxtName + "_AvgA"];
+                        tbAvgOfB = DetailForm.controlTxtDir[inputTxtName + "_AvgB"];
+                        tbOvalityA = DetailForm.controlTxtDir[inputTxtName + "_OvalityA"];
+                        tbOvalityB = DetailForm.controlTxtDir[inputTxtName + "_OvalityB"];
+                    }
                     //判断输入的数值是否合理
                     bool reasonableFlag = false;
-                    if ((txtMaxOfA != null && !string.IsNullOrEmpty(txtMaxOfA.Text)) ||
-                        (txtMaxOfB != null && !string.IsNullOrEmpty(txtMaxOfB.Text)) ||
-                        (txtMinOfA != null && !string.IsNullOrEmpty(txtMinOfA.Text)) ||
-                        (txtMinOfB != null && !string.IsNullOrEmpty(txtMinOfB.Text))
-                        )
-                    {
-                        //如果输入的值比最大值的10倍还大，则判定为偏差过大
-                        if (maxVal * 10 < txtVal)
-                            reasonableFlag = true;
+                    switch (tbType) {
+                        case 0:
+                            if (maxVal * 10 < txtVal)
+                                reasonableFlag = true;
+                            break;
+                        case 1:
+                            if (maxOvality > 0 && maxOvality * 10 < txtVal)
+                                reasonableFlag = true;
+                            break;
                     }
                     if (reasonableFlag)
                     {
@@ -239,8 +300,6 @@ namespace YYOPInspectionClient
                     {
                         //获取均值
                         float avg = ((Convert.ToSingle(txtMaxOfA.Text) + Convert.ToSingle(txtMinOfA.Text)) / 2);
-                        //获取存放均值的TextBox控件
-                        TextBox tbAvgOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_AvgA");
                         //判断均值是否符合要求
                         if (tbAvgOfA != null)
                         {
@@ -249,23 +308,33 @@ namespace YYOPInspectionClient
                             {
                                 //设置显示均值的label控件的标红
                                 tbAvgOfA.BackColor = Color.LightCoral;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = false;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = false;
+                                }
+                                else if (flag == 1) {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = false;
                                 }
                             }
                             else
                             {
                                 tbAvgOfA.BackColor = Color.White;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = true;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = true;
                                 }
+                                else if (flag == 1) {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = true;
+                                }
+                               
                             }
                             tbAvgOfA.Text = Convert.ToString(Math.Round(avg, 2));
                         }
                         //获取该测量项显示椭圆度的TextBox控件
-                        TextBox tbOvalityA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_OvalityA");
                         //如果显示椭圆度的label控件存在
                         if (tbOvalityA != null)
                         {
@@ -276,18 +345,29 @@ namespace YYOPInspectionClient
                             {
                                 //同上
                                 tbOvalityA.BackColor = Color.LightCoral;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = false;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = false;
+                                }
+                                else if (flag == 1) {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = false;
                                 }
                             }
                             else
                             {
                                 tbOvalityA.BackColor = Color.White;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = true;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = true;
                                 }
+                                else if (flag == 1) {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = true;
+                                }
+                               
                             }
                             tbOvalityA.Text = Convert.ToString(Math.Round(ovality, 2));
                         }
@@ -297,28 +377,43 @@ namespace YYOPInspectionClient
                         && txtMinOfB != null && !string.IsNullOrWhiteSpace(txtMinOfB.Text))
                     {
                         float avg = ((Convert.ToSingle(txtMaxOfB.Text) + Convert.ToSingle(txtMinOfB.Text)) / 2);
-                        TextBox tbAvgOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_AvgB");
                         if (tbAvgOfB != null)
                         {
                             if (avg < minVal || avg > maxVal)
                             {
                                 tbAvgOfB.BackColor = Color.LightCoral;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = false;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                    {
+                                        ThreadingForm.qualifiedList[inputTxtName] = false;
+                                    }
                                 }
+                                else if (flag == 1) {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                    {
+                                        DetailForm.qualifiedList[inputTxtName] = false;
+                                    }
+                                }
+                               
                             }
                             else
                             {
                                 tbAvgOfB.BackColor = Color.White;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = true;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = true;
                                 }
+                                else if (flag == 1)
+                                {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = true;
+                                }
+                               
                             }
                             tbAvgOfB.Text = Convert.ToString(Math.Round(avg, 2));
                         }
-                        TextBox tbOvalityB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_OvalityB");
                         //判断椭圆度是否满足要求
                         if (tbOvalityB != null)
                         {
@@ -326,17 +421,30 @@ namespace YYOPInspectionClient
                             if (ovality > maxOvality || ovality < 0)
                             {
                                 tbOvalityB.BackColor = Color.LightCoral;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = false;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = false;
                                 }
+                                else if (flag == 1)
+                                {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = false;
+                                }
+                               
                             }
                             else
                             {
                                 tbOvalityB.BackColor = Color.White;
-                                if (qualifiedList.ContainsKey(inputTxtName))
+                                if (flag == 0)
                                 {
-                                    qualifiedList[inputTxtName] = true;
+                                    if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                        ThreadingForm.qualifiedList[inputTxtName] = true;
+                                }
+                                else if (flag == 1)
+                                {
+                                    if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                        DetailForm.qualifiedList[inputTxtName] = true;
                                 }
                             }
                             tbOvalityB.Text = Convert.ToString(Math.Round(ovality, 2));
@@ -350,11 +458,21 @@ namespace YYOPInspectionClient
                 finally //跳转到下一个输入框
                 {
                     //查询鼠标焦点所在的TextBox控件在控件集合中的索引
-                    int index = ThreadingForm.flpTabTwoTxtList.IndexOf(inputTxt);
-                    if (index < ThreadingForm.flpTabTwoTxtList.Count - 1)
-                        index++;
+                    TextBox tb = null;int index =0;
+                    if (flag == 0)
+                    {
+                        index =ThreadingForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
+                        if (index < ThreadingForm.flpTabTwoTextBoxList.Count - 1)
+                            index++;
+                        tb = ThreadingForm.flpTabTwoTextBoxList[index];
+                    }
+                    else if (flag == 1) {
+                        index = DetailForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
+                        if (index < DetailForm.flpTabTwoTextBoxList.Count - 1)
+                            index++;
+                        tb = DetailForm.flpTabTwoTextBoxList[index];
+                    }
                     //设置鼠标焦点在控件集合索引为index的控件上
-                    TextBox tb = ThreadingForm.flpTabTwoTxtList[index];
                     if (tb != null)
                         tb.Focus();
                 }
@@ -497,7 +615,12 @@ namespace YYOPInspectionClient
                    !objTwoDotPattern.IsMatch(strNumber) &&
                    !objTwoMinusPattern.IsMatch(strNumber) &&
                     objNumberPattern.IsMatch(strNumber);
-        } 
+        }
         #endregion
+
+        private void NumberKeyboardForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+        }
     }
 }
