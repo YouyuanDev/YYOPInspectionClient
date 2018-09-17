@@ -258,6 +258,7 @@ namespace YYOPInspectionClient
                     else
                     {
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
+                        Console.WriteLine(jo);
                         //获取合同信息
                         string contractInfo = jo["contractInfo"].ToString();
                         //获取测量信息
@@ -489,7 +490,6 @@ namespace YYOPInspectionClient
                     Label lblMin = new Label { Text = "最小", AutoSize = true };
                     Label lblAvg = new Label { Text = "均值", AutoSize = true };
                     Label lblOvality = new Label { Text = "椭圆度", AutoSize = true };
-                    Console.WriteLine(both_ends+"------------------------");
                     //两端都测量
                     if (both_ends.Contains("1"))
                     {

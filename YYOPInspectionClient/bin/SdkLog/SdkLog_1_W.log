@@ -1,5 +1,5 @@
-[2018-09-17 18:44:38.328][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
-[2018-09-17 18:44:38.328][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
-[2018-09-17 18:44:38.330][INF] login dev 100.100.0.90:8000.
-[2018-09-17 18:44:41.999][ERR] Private connect 100.100.0.90:8000 sock=2412 this=0x33b472e4 cmd=0x10000 sys_err=10060, timeout= 3500
-[2018-09-17 18:44:41.999][ERR] [100.100.0.90:8000]LogonDevice Link_CreateLink fail[7].
+[2018-09-17 18:51:31.560][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
+[2018-09-17 18:51:31.560][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
+[2018-09-17 18:51:31.562][INF] login dev 100.100.0.90:8000.
+[2018-09-17 18:51:35.229][ERR] Private connect 100.100.0.90:8000 sock=2428 this=0x424a41f4 cmd=0x10000 sys_err=10060, timeout= 3500
+[2018-09-17 18:51:35.229][ERR] [100.100.0.90:8000]LogonDevice Link_CreateLink fail[7].

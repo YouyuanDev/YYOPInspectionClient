@@ -272,12 +272,8 @@ namespace YYOPInspectionClient
                 measureInfoDic.Add(measure_item_code, itemDic);
                 //设置默认添加的测量数据都合法
                 qualifiedList.Add(measure_item_code, true);
-
                 //将测量工具编号添加到集合中
                 measureItemCodeList.Add(measure_item_code);
-
-                //设置数字输入法数据都合法的标识集合为当前的标识集合
-               // NumberKeyboardForm.qualifiedList = qualifiedList;
                 //------------------------------------------初始化测量工具编号表单
                 //如果测量工具1、2有一个不为空
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool2))
@@ -326,7 +322,7 @@ namespace YYOPInspectionClient
                     //定义label控件用于显示正负偏差或检验频率
                     Label lblRangeFrequency = new Label { AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Location = new Point(150, 10) };
                     //是否必填标识
-                    Label lblRequired = new Label { AutoSize = true, Text = "*必填", Name = measure_item_code + "_lbl_Prompt", Location = new Point(320, 10), TextAlign = ContentAlignment.MiddleCenter, ForeColor = Color.Red };
+                    Label lblRequired = new Label { Tag = measure_item_name, AutoSize = true, Text = "*必填", Name = measure_item_code + "_lbl_Prompt", Location = new Point(320, 10), TextAlign = ContentAlignment.MiddleCenter, ForeColor = Color.Red };
                     requiredMarkDic.Add(measure_item_code, lblRequired);
                     pnlMeasureValue.Controls.Add(lblMeasureName);
                     pnlMeasureValue.Controls.Add(lblRequired);
@@ -362,9 +358,9 @@ namespace YYOPInspectionClient
                     if (both_ends.Contains("1"))
                     {
                         //Label控件用于存放测量项A端名称
-                        Label lblA = new Label { Text = "A:", Location = new Point(20, 80), AutoSize = true, TextAlign = ContentAlignment.MiddleRight };
+                        Label lblA = new Label { Text = "A", Location = new Point(20, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
                         //Label控件用于存放测量项B端名称
-                        Label lblB = new Label { Text = "B:", Location = new Point(20, 120), AutoSize = true, TextAlign = ContentAlignment.MiddleRight };
+                        Label lblB = new Label { Text = "B", Location = new Point(20, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
                         pnlMeasureValue.Controls.Add(lblA);
                         pnlMeasureValue.Controls.Add(lblB);
                         //TextBox控件用于存放测量项A端值、最大值、最小值、均值、椭圆度
@@ -379,13 +375,14 @@ namespace YYOPInspectionClient
                         TextBox tbMinB = new TextBox { Tag = "Number", Name = measure_item_code + "_MinB_Value", Width = 70 };
                         TextBox tbAvgB = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgB", Width = 70 };
                         TextBox tbOvalityB = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityB", Width = 70 };
-                        int index = -1;
+                        List<Label> lblList = new List<Label>();
+                        List<TextBox> tbAList = new List<TextBox>();
+                        List<TextBox> tbBList = new List<TextBox>();
                         //该测量项包含单值
                         if (readtyps.Contains("1"))
                         {
-                            index++;
-                            tbA.Location = new Point(index * 100 + 60, 80);
-                            tbB.Location = new Point(index * 100 + 60, 120);
+                            tbAList.Add(tbA);
+                            tbBList.Add(tbB);
                             flpTabTwoTextBoxList.Add(tbA);
                             flpTabTwoTextBoxList.Add(tbB);
                             pnlMeasureValue.Controls.Add(tbA);
@@ -398,10 +395,9 @@ namespace YYOPInspectionClient
                         //该测量项包含最大值
                         if (readtyps.Contains("2"))
                         {
-                            index++;
-                            lblMax.Location = new Point(index * 100 + 50, 40);
-                            tbMaxA.Location = new Point(index * 100 + 60, 80);
-                            tbMaxB.Location = new Point(index * 100 + 60, 120);
+                            lblList.Add(lblMax);
+                            tbAList.Add(tbMaxA);
+                            tbBList.Add(tbMaxB);
                             flpTabTwoTextBoxList.Add(tbMaxA);
                             flpTabTwoTextBoxList.Add(tbMaxB);
                             pnlMeasureValue.Controls.Add(lblMax);
@@ -415,10 +411,9 @@ namespace YYOPInspectionClient
                         //该测量项包含最小值
                         if (readtyps.Contains("3"))
                         {
-                            index++;
-                            lblMin.Location = new Point(index * 100 + 50, 40);
-                            tbMinA.Location = new Point(index * 100 + 50, 80);
-                            tbMinB.Location = new Point(index * 100 + 50, 120);
+                            lblList.Add(lblMin);
+                            tbAList.Add(tbMinA);
+                            tbBList.Add(tbMinB);
                             flpTabTwoTextBoxList.Add(tbMinA);
                             flpTabTwoTextBoxList.Add(tbMinB);
                             pnlMeasureValue.Controls.Add(lblMin);
@@ -432,10 +427,9 @@ namespace YYOPInspectionClient
                         //该测量项包含均值
                         if (readtyps.Contains("4"))
                         {
-                            index++;
-                            lblAvg.Location = new Point(index * 100 + 50, 40);
-                            tbAvgA.Location = new Point(index * 100 + 60, 80);
-                            tbAvgB.Location = new Point(index * 100 + 60, 120);
+                            lblList.Add(lblAvg);
+                            tbAList.Add(tbAvgA);
+                            tbBList.Add(tbAvgB);
                             flpTabTwoTextBoxList.Add(tbAvgA);
                             flpTabTwoTextBoxList.Add(tbAvgB);
                             pnlMeasureValue.Controls.Add(lblAvg);
@@ -449,10 +443,9 @@ namespace YYOPInspectionClient
                         //该测量项包含椭圆度
                         if (readtyps.Contains("5"))
                         {
-                            index++;
-                            lblOvality.Location = new Point(index * 100 + 50, 40);
-                            tbOvalityA.Location = new Point(index * 100 + 50, 80);
-                            tbOvalityB.Location = new Point(index * 100 + 50, 120);
+                            lblList.Add(lblOvality);
+                            tbAList.Add(tbOvalityA);
+                            tbBList.Add(tbOvalityB);
                             flpTabTwoTextBoxList.Add(tbOvalityA);
                             flpTabTwoTextBoxList.Add(tbOvalityB);
                             pnlMeasureValue.Controls.Add(lblOvality);
@@ -471,6 +464,25 @@ namespace YYOPInspectionClient
                             controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
                             controlTxtDir.Add(measure_item_code + "_OvalityB", tbOvalityB);
                         }
+                        //计算TextBox在Panel容器的位置
+                        if (tbAList.Count > 0)
+                        {
+                            int block_width = (450 - 60) / (tbAList.Count + 1);
+                            for (int i = 0; i < tbAList.Count; i++)
+                            {
+                                tbAList[i].Location = new Point(block_width * (i + 1) + 20, 80);
+                            }
+                            for (int i = 0; i < tbBList.Count; i++)
+                            {
+                                tbBList[i].Location = new Point(block_width * (i + 1) + 20, 120);
+                            }
+                            for (int i = 0; i < lblList.Count; i++)
+                            {
+                                lblList[i].Location = new Point(block_width * (i + 1) + 20, 40);
+                            }
+                            lblA.Location = new Point(block_width - 40, 80);
+                            lblB.Location = new Point(block_width - 40, 120);
+                        }
                     }
                     //一端测量
                     else
@@ -481,12 +493,12 @@ namespace YYOPInspectionClient
                         TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value" };
                         TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA" };
                         TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA" };
-                        int index = 0;
+                        List<Label> lblList = new List<Label>();
+                        List<TextBox> tbAList = new List<TextBox>();
                         //该测量项包含单值
                         if (readtyps.Contains("1"))
                         {
-                            index++;
-                            tbA.Location = new Point(index * 100 + 50, 80);
+                            tbAList.Add(tbA);
                             flpTabTwoTextBoxList.Add(tbA);
                             pnlMeasureValue.Controls.Add(tbA);
                             keyboardTitleDic.Add(measure_item_code + "_A_Value", measure_item_name + "(" + txt + ")");
@@ -495,9 +507,8 @@ namespace YYOPInspectionClient
                         //该测量项包含最大值
                         if (readtyps.Contains("2"))
                         {
-                            index++;
-                            lblMax.Location = new Point(index * 100 + 50, 40);
-                            tbMaxA.Location = new Point(index * 100 + 60, 80);
+                            lblList.Add(lblMax);
+                            tbAList.Add(tbMaxA);
                             flpTabTwoTextBoxList.Add(tbMaxA);
                             pnlMeasureValue.Controls.Add(lblMax);
                             pnlMeasureValue.Controls.Add(tbMaxA);
@@ -507,9 +518,8 @@ namespace YYOPInspectionClient
                         //该测量项包含最小值
                         if (readtyps.Contains("3"))
                         {
-                            index++;
-                            lblMin.Location = new Point(index * 100 + 50, 40);
-                            tbMinA.Location = new Point(index * 100 + 50, 80);
+                            lblList.Add(lblMin);
+                            tbAList.Add(tbMinA);
                             flpTabTwoTextBoxList.Add(tbMinA);
                             pnlMeasureValue.Controls.Add(lblMin);
                             pnlMeasureValue.Controls.Add(tbMinA);
@@ -519,9 +529,8 @@ namespace YYOPInspectionClient
                         //该测量项包含均值
                         if (readtyps.Contains("4"))
                         {
-                            index++;
-                            lblAvg.Location = new Point(index * 100 + 60, 40);
-                            tbAvgA.Location = new Point(index * 100 + 60, 80);
+                            lblList.Add(lblAvg);
+                            tbAList.Add(tbAvgA);
                             flpTabTwoTextBoxList.Add(tbAvgA);
                             pnlMeasureValue.Controls.Add(lblAvg);
                             pnlMeasureValue.Controls.Add(tbAvgA);
@@ -531,9 +540,8 @@ namespace YYOPInspectionClient
                         //该测量项包含椭圆度
                         if (readtyps.Contains("5"))
                         {
-                            index++;
-                            lblOvality.Location = new Point(index * 100 + 50, 40);
-                            tbOvalityA.Location = new Point(index * 100 + 50, 80);
+                            lblList.Add(lblOvality);
+                            tbAList.Add(tbOvalityA);
                             flpTabTwoTextBoxList.Add(tbOvalityA);
                             pnlMeasureValue.Controls.Add(lblOvality);
                             pnlMeasureValue.Controls.Add(tbOvalityA);
@@ -546,6 +554,19 @@ namespace YYOPInspectionClient
                                 keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度");
                             }
                             controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
+                        }
+                        //计算TextBox在Panel容器的位置
+                        if (tbAList.Count > 0)
+                        {
+                            int block_width = (450 - 60) / (tbAList.Count + 1);
+                            for (int i = 0; i < tbAList.Count; i++)
+                            {
+                                tbAList[i].Location = new Point(block_width * (i + 1) + 20, 80);
+                            }
+                            for (int i = 0; i < lblList.Count; i++)
+                            {
+                                lblList[i].Location = new Point(block_width * (i + 1) + 20, 40);
+                            }
                         }
                     }
                     this.flpTabTwoContent.Controls.Add(pnlMeasureValue);
