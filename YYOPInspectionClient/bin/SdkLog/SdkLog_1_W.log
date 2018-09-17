@@ -1,9 +1,9 @@
-[2018-09-06 17:31:41.027][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
-[2018-09-06 17:31:41.027][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
-[2018-09-06 17:31:41.029][INF] login dev 100.100.0.90:8000.
-[2018-09-06 17:31:44.696][ERR] Private connect 100.100.0.90:8000 sock=2508 this=0x7eb52894 cmd=0x10000 sys_err=10060, timeout= 3500
-[2018-09-06 17:31:44.696][ERR] [100.100.0.90:8000]LogonDevice Link_CreateLink fail[7].
-[2018-09-06 17:32:06.621][DBG] load[C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\HCNetSDKCom/HCPreview.dll] succ
-[2018-09-06 17:32:06.621][INF] AbilityAnalyze---Init-- start
-[2018-09-06 17:32:06.621][ERR] AbilityAnalyze---open zip package error, package path C:/Workspace/YYOPInspectionClient/YYOPInspectionClient/bin/LocalXml.zip
-[2018-09-06 17:32:06.622][INF] The COM:Preview ver is 5.3.1.22, 2017_09_09.
+[2018-09-17 12:05:04.626][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
+[2018-09-17 12:05:04.626][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
+[2018-09-17 12:05:04.628][INF] login dev 100.100.0.90:8000.
+[2018-09-17 12:05:08.293][ERR] Private connect 100.100.0.90:8000 sock=2252 this=0x4b486d4 cmd=0x10000 sys_err=10060, timeout= 3500
+[2018-09-17 12:05:08.293][ERR] [100.100.0.90:8000]LogonDevice Link_CreateLink fail[7].
+[2018-09-17 12:05:30.800][DBG] load[C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\HCNetSDKCom/HCPreview.dll] succ
+[2018-09-17 12:05:30.800][INF] AbilityAnalyze---Init-- start
+[2018-09-17 12:05:30.800][ERR] AbilityAnalyze---open zip package error, package path C:/Workspace/YYOPInspectionClient/YYOPInspectionClient/bin/LocalXml.zip
+[2018-09-17 12:05:30.800][INF] The COM:Preview ver is 5.3.1.22, 2017_09_09.

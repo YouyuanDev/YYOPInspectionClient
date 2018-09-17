@@ -31,7 +31,9 @@ namespace YYOPInspectionClient
         //测量值名称标签集合
         public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         //当前鼠标焦点所在的输入框名称
-        public static string focusTextBoxName = null;
+        //public static string focusTextBoxName = null;
+        //定义数字键盘弹出时对应的鼠标焦点所在的TextBox控件
+        public static TextBox inputTxt;
         //定义临时所用的Label控件值
         private string tempLblTxt = "", tempLblTxt1 = "";
         //定义临时所用的Label控件
@@ -153,9 +155,9 @@ namespace YYOPInspectionClient
                             //将flpTabTwoContent容器中所有的TextBox控件添加到flpTabTwoTxtList集合中
                             GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
                             //将英文输入法中的TextBox控件集合指向flpTabOneTxtList
-                            AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
+                            //AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
                             //将数字输入法中的TextBox控件集合指向flpTabOneTxtList
-                            NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
+                           // NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
                             //遍历测量项值得TextBox集合
                             foreach (TextBox tb in flpTabTwoTxtList)
                             {
@@ -624,7 +626,7 @@ namespace YYOPInspectionClient
                     if (tb.Tag.ToString().Contains("English"))
                     {
                         //将英文输入法中的TextBox控件执行当前控件
-                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        inputTxt = tb;
                         //将英文输入法中的输入内容设置为当前输入框的输入内容
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         //显示英文输入法
@@ -632,11 +634,11 @@ namespace YYOPInspectionClient
                         //设置英文输入法的Title
                         SetAlphaKeyboardText(tb.Name);
                         //设置全局鼠标所在焦点输入框名称变量为当前输入框名称
-                        focusTextBoxName = tb.Name;
+                        //focusTextBoxName = tb.Name;
                     }
                     else//如果当前TextBox为数字输入法属性
                     {
-                        NumberKeyboardForm.getForm().inputTxt = tb;
+                        inputTxt = tb;
                         NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         NumberKeyboardForm.getForm().Show();
                         NumberKeyboardForm.getForm().TopMost = true;
@@ -680,16 +682,16 @@ namespace YYOPInspectionClient
 
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        inputTxt = tb;
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         AlphabetKeyboardForm.getForm().TopMost = true;
-                        focusTextBoxName = tb.Name;
+                        //focusTextBoxName = tb.Name;
                         SetAlphaKeyboardText(tb.Name);
                     }
                     else
                     {
-                        NumberKeyboardForm.getForm().inputTxt = tb;
+                        inputTxt = tb;
                         NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         NumberKeyboardForm.getForm().Show();
                         NumberKeyboardForm.getForm().TopMost = true;

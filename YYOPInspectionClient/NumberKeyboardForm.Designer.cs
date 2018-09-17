@@ -270,9 +270,9 @@
             this.lblNumberTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblNumberTitle.Location = new System.Drawing.Point(13, 11);
             this.lblNumberTitle.Name = "lblNumberTitle";
-            this.lblNumberTitle.Size = new System.Drawing.Size(82, 24);
+            this.lblNumberTitle.Size = new System.Drawing.Size(22, 24);
             this.lblNumberTitle.TabIndex = 0;
-            this.lblNumberTitle.Text = "label1";
+            this.lblNumberTitle.Text = " ";
             this.lblNumberTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblNumberTitle_MouseDown);
             // 
             // panel2

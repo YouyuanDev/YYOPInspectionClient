@@ -168,7 +168,7 @@ namespace YYOPInspectionClient
                 if (tb.Tag.ToString().Contains("English"))
                 {
                     //设置英文输入法中输入框变量等于当前获取焦点的输入框
-                    AlphabetKeyboardForm.getForm().inputTxt = tb;
+                    AlphabetKeyboardForm.inputTxt = tb;
                     //设置英文输入法输入框内容为当前输入框内容
                     AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                     AlphabetKeyboardForm.getForm().Show();

@@ -582,9 +582,9 @@
             this.lblEnglishTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblEnglishTitle.Location = new System.Drawing.Point(13, 13);
             this.lblEnglishTitle.Name = "lblEnglishTitle";
-            this.lblEnglishTitle.Size = new System.Drawing.Size(82, 24);
+            this.lblEnglishTitle.Size = new System.Drawing.Size(22, 24);
             this.lblEnglishTitle.TabIndex = 0;
-            this.lblEnglishTitle.Text = "label1";
+            this.lblEnglishTitle.Text = " ";
             // 
             // panel2
             // 

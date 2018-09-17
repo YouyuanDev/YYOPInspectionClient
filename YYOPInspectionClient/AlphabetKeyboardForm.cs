@@ -14,9 +14,9 @@ namespace YYOPInspectionClient
     public partial class AlphabetKeyboardForm : Form
     {
         //定义英文输入法弹出时对应的鼠标焦点所在的TextBox控件
-        public  TextBox inputTxt;
+        public static  TextBox inputTxt=null;
         //定义保存测量工具编号的TextBox控件集合
-        public static List<TextBox> flpTabOneTxtList;
+        public static List<TextBox> flpTabOneTxtList=new List<TextBox>();
         //定义存放测量工具编号的TextBox控件的容器控件
         public Control containerControl = null;
         //定义当前窗体

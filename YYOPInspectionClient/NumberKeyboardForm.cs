@@ -15,15 +15,14 @@ namespace YYOPInspectionClient
     public partial class NumberKeyboardForm : Form
     {
         //定义数字输入法弹出时对应的鼠标焦点所在的TextBox控件
-        public TextBox inputTxt;
-        //定义保存测量值的TextBox控件集合
-        public static List<TextBox> flpTabTwoTxtList;
+        public static TextBox inputTxt=null;
         //定义存放测量值的TextBox控件的容器控件
         public Control containerControl=null;
         //定义存放测量项是否合法的标识集合
         public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
         //定义当前窗体
         private static NumberKeyboardForm myForm = null;
+
         //---------------------拖动无窗体的控件(开始)
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -169,51 +168,47 @@ namespace YYOPInspectionClient
                         inputTxtName = inputTxtName.Replace("_MinA_Value", "");
                     else if (inputTxtName.Contains("_MinB_Value"))
                         inputTxtName = inputTxtName.Replace("_MinB_Value", "");
-                    //找到与该TextBox控件名称相同的Label控件
-                    Label lblRangeFrequencyOvality = (Label)GetControlInstance(containerControl, inputTxtName + "_RangeFrequencyOvality_lbl");
-                    //如果该Label控件没有找到
-                    if (lblRangeFrequencyOvality == null)
-                        return;
-                    //如果该Label控件的Tag属性为空
-                    if (lblRangeFrequencyOvality.Tag == null)
-                        return;
+                    else if (inputTxtName.Contains("_AvgA"))
+                        inputTxtName = inputTxtName.Replace("_AvgA", "");
+                    else if (inputTxtName.Contains("_AvgB"))
+                        inputTxtName = inputTxtName.Replace("_AvgB", "");
+                    else if (inputTxtName.Contains("_OvalityA"))
+                        inputTxtName = inputTxtName.Replace("_OvalityA", "");
+                    else if (inputTxtName.Contains("_OvalityB"))
+                        inputTxtName = inputTxtName.Replace("_OvalityB", "");
                     //找到该测量项的值范围、和椭圆度最大值
                     float maxVal = 0, minVal = 0, txtVal = 0, maxOvality = 0, sdVal = 0;
-                    //获取该Label控件上的tag属性值
-                    if (!string.IsNullOrWhiteSpace(lblRangeFrequencyOvality.Tag.ToString()))
+                    Dictionary<string, string> dic = ThreadingForm.measureInfoDic[inputTxtName];
+                    if (dic != null)
                     {
-                        //将tag属性值以","分割,分割后依次代表的时 最大值、最小值、检验频率、椭圆度、目标值 
-                        string[] rangeFrequency = lblRangeFrequencyOvality.Tag.ToString().Split(',');
-                        if (CommonUtil.IsNumeric(rangeFrequency[0]))
-                            maxVal = Convert.ToSingle(rangeFrequency[0]);
-                        if (CommonUtil.IsNumeric(rangeFrequency[1]))
-                            minVal = Convert.ToSingle(rangeFrequency[1]);
-                        if (CommonUtil.IsNumeric(inputTxt.Text.Trim()))
-                            txtVal = Convert.ToSingle(inputTxt.Text.Trim());
-                        if (CommonUtil.IsNumeric(rangeFrequency[3]))
-                            maxOvality = Convert.ToSingle(rangeFrequency[3]);
-                        if (CommonUtil.IsNumeric(rangeFrequency[4]))
-                            sdVal = Convert.ToSingle(rangeFrequency[4]);
-                        if (maxVal - minVal >0&&!string.IsNullOrWhiteSpace(inputTxt.Text.Trim()))
+                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_max_value"])))
+                            maxVal = Convert.ToSingle(dic["item_max_value"]);
+                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_min_value"])))
+                            minVal = Convert.ToSingle(dic["item_min_value"]);
+                        if (CommonUtil.IsNumeric(Convert.ToString(dic["ovality_max"])))
+                            maxOvality = Convert.ToSingle(dic["ovality_max"]);
+                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_std_value"])))
+                            sdVal = Convert.ToSingle(dic["item_std_value"]);
+                    }
+                    if (maxVal - minVal > 0 && !string.IsNullOrWhiteSpace(inputTxt.Text.Trim()))
+                    {
+                        //如果输入法输入的值不符合标准
+                        if (txtVal < minVal || txtVal > maxVal)
                         {
-                            //如果输入法输入的值不符合标准
-                            if (txtVal < minVal || txtVal > maxVal)
+                            //设置存放测量值的输入框的背景色
+                            inputTxt.BackColor = Color.LightCoral;
+                            //如果该集合中包含该控件的名称
+                            if (qualifiedList.ContainsKey(inputTxtName))
                             {
-                                //设置存放测量值的输入框的背景色
-                                inputTxt.BackColor = Color.LightCoral;
-                                //如果该集合中包含该控件的名称
-                                if (qualifiedList.ContainsKey(inputTxtName))
-                                {
-                                    qualifiedList[inputTxtName] = false;
-                                }
+                                qualifiedList[inputTxtName] = false;
                             }
-                            else
+                        }
+                        else
+                        {
+                            inputTxt.BackColor = Color.White;
+                            if (qualifiedList.ContainsKey(inputTxtName))
                             {
-                                inputTxt.BackColor = Color.White;
-                                if (qualifiedList.ContainsKey(inputTxtName))
-                                {
-                                    qualifiedList[inputTxtName] = true;
-                                }
+                                qualifiedList[inputTxtName] = true;
                             }
                         }
                     }
@@ -244,16 +239,16 @@ namespace YYOPInspectionClient
                     {
                         //获取均值
                         float avg = ((Convert.ToSingle(txtMaxOfA.Text) + Convert.ToSingle(txtMinOfA.Text)) / 2);
-                        //获取存放均值的Label控件
-                        Label lblAvgOfA = (Label)GetControlInstance(containerControl, inputTxtName + "_AvgA");
+                        //获取存放均值的TextBox控件
+                        TextBox tbAvgOfA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_AvgA");
                         //判断均值是否符合要求
-                        if (lblAvgOfA != null)
+                        if (tbAvgOfA != null)
                         {
                             //如果均值不符合标准
                             if (avg < minVal || avg > maxVal)
                             {
                                 //设置显示均值的label控件的标红
-                                lblAvgOfA.ForeColor = Color.Red;
+                                tbAvgOfA.BackColor = Color.LightCoral;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = false;
@@ -261,18 +256,18 @@ namespace YYOPInspectionClient
                             }
                             else
                             {
-                                lblAvgOfA.ForeColor = Color.Black;
+                                tbAvgOfA.BackColor = Color.White;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = true;
                                 }
                             }
-                            lblAvgOfA.Text = Convert.ToString(Math.Round(avg, 2));
+                            tbAvgOfA.Text = Convert.ToString(Math.Round(avg, 2));
                         }
-                        //获取该测量项显示椭圆度的label控件
-                        Label lblOvalityA = (Label)GetControlInstance(containerControl, inputTxtName + "_OvalityA");
+                        //获取该测量项显示椭圆度的TextBox控件
+                        TextBox tbOvalityA = (TextBox)GetControlInstance(containerControl, inputTxtName + "_OvalityA");
                         //如果显示椭圆度的label控件存在
-                        if (lblOvalityA != null)
+                        if (tbOvalityA != null)
                         {
                             //计算该测量项的椭圆度
                             float ovality = (Convert.ToSingle(txtMaxOfA.Text) - Convert.ToSingle(txtMinOfA.Text)) / sdVal;
@@ -280,7 +275,7 @@ namespace YYOPInspectionClient
                             if (ovality > maxOvality || ovality < 0)
                             {
                                 //同上
-                                lblOvalityA.ForeColor = Color.Red;
+                                tbOvalityA.BackColor = Color.LightCoral;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = false;
@@ -288,13 +283,13 @@ namespace YYOPInspectionClient
                             }
                             else
                             {
-                                lblOvalityA.ForeColor = Color.Black;
+                                tbOvalityA.BackColor = Color.White;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = true;
                                 }
                             }
-                            lblOvalityA.Text = Convert.ToString(Math.Round(ovality, 2));
+                            tbOvalityA.Text = Convert.ToString(Math.Round(ovality, 2));
                         }
                     }
                     //同上
@@ -302,12 +297,12 @@ namespace YYOPInspectionClient
                         && txtMinOfB != null && !string.IsNullOrWhiteSpace(txtMinOfB.Text))
                     {
                         float avg = ((Convert.ToSingle(txtMaxOfB.Text) + Convert.ToSingle(txtMinOfB.Text)) / 2);
-                        Label lblAvgOfB = (Label)GetControlInstance(containerControl, inputTxtName + "_AvgB");
-                        if (lblAvgOfB != null)
+                        TextBox tbAvgOfB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_AvgB");
+                        if (tbAvgOfB != null)
                         {
                             if (avg < minVal || avg > maxVal)
                             {
-                                lblAvgOfB.ForeColor = Color.Red;
+                                tbAvgOfB.BackColor = Color.LightCoral;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = false;
@@ -315,22 +310,22 @@ namespace YYOPInspectionClient
                             }
                             else
                             {
-                                lblAvgOfB.ForeColor = Color.Black;
+                                tbAvgOfB.BackColor = Color.White;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = true;
                                 }
                             }
-                            lblAvgOfB.Text = Convert.ToString(Math.Round(avg, 2));
+                            tbAvgOfB.Text = Convert.ToString(Math.Round(avg, 2));
                         }
-                        Label lblOvalityB = (Label)GetControlInstance(containerControl, inputTxtName + "_OvalityB");
+                        TextBox tbOvalityB = (TextBox)GetControlInstance(containerControl, inputTxtName + "_OvalityB");
                         //判断椭圆度是否满足要求
-                        if (lblOvalityB != null)
+                        if (tbOvalityB != null)
                         {
                             float ovality = (Convert.ToSingle(txtMaxOfB.Text) - Convert.ToSingle(txtMinOfB.Text)) / sdVal;
                             if (ovality > maxOvality || ovality < 0)
                             {
-                                lblOvalityB.ForeColor = Color.Red;
+                                tbOvalityB.BackColor = Color.LightCoral;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = false;
@@ -338,13 +333,13 @@ namespace YYOPInspectionClient
                             }
                             else
                             {
-                                lblOvalityB.ForeColor = Color.Black;
+                                tbOvalityB.BackColor = Color.White;
                                 if (qualifiedList.ContainsKey(inputTxtName))
                                 {
                                     qualifiedList[inputTxtName] = true;
                                 }
                             }
-                            lblOvalityB.Text = Convert.ToString(Math.Round(ovality, 2));
+                            tbOvalityB.Text = Convert.ToString(Math.Round(ovality, 2));
                         }
                     }
                 }
@@ -355,11 +350,11 @@ namespace YYOPInspectionClient
                 finally //跳转到下一个输入框
                 {
                     //查询鼠标焦点所在的TextBox控件在控件集合中的索引
-                    int index = flpTabTwoTxtList.IndexOf(inputTxt);
-                    if (index < flpTabTwoTxtList.Count - 1)
+                    int index = ThreadingForm.flpTabTwoTxtList.IndexOf(inputTxt);
+                    if (index < ThreadingForm.flpTabTwoTxtList.Count - 1)
                         index++;
                     //设置鼠标焦点在控件集合索引为index的控件上
-                    TextBox tb = flpTabTwoTxtList[index];
+                    TextBox tb = ThreadingForm.flpTabTwoTxtList[index];
                     if (tb != null)
                         tb.Focus();
                 }

@@ -25,12 +25,10 @@ namespace YYOPInspectionClient
         public static List<TextBox> flpTabTwoTxtList = new List<TextBox>();
         //测量值输入框集合(参数为:测量项名称、测量值对应的TextBox控件)
         public static Dictionary<string, TextBox> controlTxtDir = new Dictionary<string, TextBox>();
-        //测量值名称标签集合
-        public static Dictionary<string, Label> controlLblDir = new Dictionary<string, Label>();
         //定义是否测量数据是否合法的集合
         public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
         //Label控件集合，存放"*"字符,用于提示是否必填
-        private List<Label> flpTabTwoLblList = new List<Label>();
+        //private List<Label> flpTabTwoLblList = new List<Label>();
         //测量项编号集合
         private List<string> measureItemCodeList = new List<string>();
         //时间戳(视频和form表单保存的目录名)
@@ -48,15 +46,18 @@ namespace YYOPInspectionClient
         //定义是否打开测量工具tab
         public static bool isMeasuringToolTabSelected=true;//
         //当前鼠标焦点所在的输入框名称
-        public static string focusTextBoxName = null;
-        //定义临时所用的Label控件值
-        private string tempLblTxt = "",tempLblTxt1="";
-        //定义临时所用的Label控件
-        private Label tempLbl = null,tempLbl1= null,tempLbl2 = null, tempLbl3 = null;
+       // public static string focusTextBoxName = null;
         //定义当是三支全检的时候检验到第几支
         private static int fullInspectionCount =0;
         //判断是否时三只全检
         private static bool isFullInspection = false;
+        //存放测量项信息得集合
+        public static Dictionary<string, Dictionary<string, string>> measureInfoDic = new Dictionary<string, Dictionary<string, string>>();
+        //存放必填标识"*"号得Label集合
+        private Dictionary<string, Label> requiredMarkDic = new Dictionary<string, Label>();
+        //存放输入法头部信息得集合
+        private Dictionary<string, string>keyboardTitleDic = new Dictionary<string, string>();
+        //private Dictionary<string, string> textboxNameDic = new Dictionary<string, string>();
         #region 单例函数
         public static ThreadingForm getMyForm()
         {
@@ -298,17 +299,16 @@ namespace YYOPInspectionClient
                     ClearCntrValue(this);
                     flpTabOneTxtList.Clear();
                     flpTabTwoTxtList.Clear();
-                    flpTabTwoLblList.Clear();
+                   // flpTabTwoLblList.Clear();
                     controlTxtDir.Clear();
-                    controlLblDir.Clear();
                     string contract_no = this.cmbContractNo.Text.Trim();
                     GetThreadFormInitData(contract_no);
                     this.lblCountSubmit.Text = "1";
                     ChangeFrequency();
-                    GoThroughControls(this.flpTabOneContent, flpTabOneTxtList, null);
-                    GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList, flpTabTwoLblList);
-                    AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
-                    NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
+                    GoThroughControls(this.flpTabOneContent, flpTabOneTxtList);
+                    GoThroughControls(this.flpTabTwoContent, flpTabTwoTxtList);
+                   // AlphabetKeyboardForm.flpTabOneTxtList = flpTabOneTxtList;
+                   // NumberKeyboardForm.flpTabTwoTxtList = flpTabTwoTxtList;
                 }
                 catch (Exception ex)
                 {
@@ -375,33 +375,75 @@ namespace YYOPInspectionClient
             foreach (var item in measureArr)
             {
                 JObject obj = (JObject)item;
-                //将测量工具编号添加到集合中
-                measureItemCodeList.Add(obj["measure_item_code"].ToString());
+                //获取是否是两端检验
+                string both_ends = Convert.ToString(obj["both_ends"]);
+                //读数类型数组
+                string[] readtyps = { };
+                if (obj["reading_types"] != null)
+                    readtyps = Convert.ToString(obj["reading_types"]).Split(',');
+                //测量项编号
+                string measure_item_code = Convert.ToString(obj["measure_item_code"]);
+                //测量项名称
+                string measure_item_name = Convert.ToString(obj["measure_item_name"]);
+                //测量项最大值
+                string item_max_value = Convert.ToString(obj["item_max_value"]);
+                //测量项最小值
+                string item_min_value = Convert.ToString(obj["item_min_value"]);
+                //检测频率
+                string item_frequency = Convert.ToString(obj["item_frequency"]);
+                //测量项椭圆度最大值
+                string ovality_max = Convert.ToString(obj["ovality_max"]);
+                //测量项目标值
+                string item_std_value = Convert.ToString(obj["item_std_value"]);
+                //测量项正偏差
+                string item_pos_deviation_value = Convert.ToString(obj["item_pos_deviation_value"]);
+                //测量项负偏差
+                string item_neg_deviation_value = Convert.ToString(obj["item_neg_deviation_value"]);
+                //测量项测量工具1名称
+                string measure_tool1 = Convert.ToString(obj["measure_tool1"]);
+                //测量项测量工具2名称
+                string measure_tool2 = Convert.ToString(obj["measure_tool2"]);
+
+                //定义保存该测量项值得字典集合
+                Dictionary<string, string> itemDic = new Dictionary<string, string>();
+                //依次为测量项名称、最大值、最小值、检验频率、椭圆度最大值、目标值、是否合法
+                itemDic.Add("measure_item_name", measure_item_name);
+                itemDic.Add("item_max_value", item_max_value);
+                itemDic.Add("item_min_value", item_min_value);
+                itemDic.Add("item_frequency", item_frequency);
+                itemDic.Add("ovality_max", ovality_max);
+                itemDic.Add("item_std_value", item_std_value);
+                measureInfoDic.Add(measure_item_code, itemDic);
                 //设置默认添加的测量数据都合法
-                qualifiedList.Add(obj["measure_item_code"].ToString(),true);
+                qualifiedList.Add(measure_item_code, true);
+
+                //将测量工具编号添加到集合中
+                measureItemCodeList.Add(measure_item_code);
+
                 //设置数字输入法数据都合法的标识集合为当前的标识集合
                 NumberKeyboardForm.qualifiedList = qualifiedList;
                 //------------------------------------------初始化测量工具编号表单
-                string measure_tool1 = obj["measure_tool1"].ToString();
-                string measure_tool2 = obj["measure_tool2"].ToString();
                 //如果测量工具1、2有一个不为空
                 if (!string.IsNullOrWhiteSpace(measure_tool1) || !string.IsNullOrWhiteSpace(measure_tool2))
                 {
                     //创建存放测量工具编号的Panel控件
                     Panel pnlMeasureTool = new Panel() { Width = 312, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                     //创建存放测量项名称的label控件
-                    Label lbl0_0 = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(50, 10), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter };
+                    Label lbl0_0 = new Label { Text = measure_item_name, Location = new Point(50, 10), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter };
                     pnlMeasureTool.Controls.Add(lbl0_0);
                     //如果测量工具1不为空
                     if (!string.IsNullOrWhiteSpace(measure_tool1))
                     {
                         //创建存放当前测量项工具1名称的Label控件
-                        Label lbl0_1 = new Label {Name= obj["measure_item_code"].ToString() + "_measure_tool1_lbl", Text = obj["measure_tool1"].ToString(),Font=new Font("宋体",12), Location = new Point(5, 40),AutoSize=false,Width=90,Height=50, TextAlign = ContentAlignment.MiddleLeft};
+                        Label lbl0_1 = new Label { Text = measure_tool1, Font = new Font("宋体", 12), Location = new Point(5, 40), AutoSize = false, Width = 90, Height = 50, TextAlign = ContentAlignment.MiddleLeft };
                         pnlMeasureTool.Controls.Add(lbl0_1);
                         //创建存放当前测量项工具1编号的TextBox控件
-                        TextBox tbTool1 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool1", Location = new Point(100, 45),Width=200};
+                        string controlTool1Name = Convert.ToString(obj["measure_item_code"]) + "_measure_tool1";
+                        TextBox tbTool1 = new TextBox { Tag = "English", Name = controlTool1Name, Location = new Point(100, 45), Width = 200 };
+                        //textboxNameDic.Add(controlTool1Name, measure_tool1);
+                        keyboardTitleDic.Add(controlTool1Name, measure_tool1);
                         pnlMeasureTool.Controls.Add(tbTool1);
-                        controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool1", tbTool1);
+                        controlTxtDir.Add(controlTool1Name, tbTool1);
                         //为创建的textbox控件绑定鼠标Enter/MouseDown/leave事件
                         tbTool1.Enter += new EventHandler(txt_Enter);
                         tbTool1.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -412,9 +454,12 @@ namespace YYOPInspectionClient
                     {
                         Label lbl0_2 = new Label { Name = obj["measure_item_code"].ToString() + "_measure_tool2_lbl", Text = obj["measure_tool2"].ToString(), Location = new Point(5, 90), Font = new Font("宋体", 12), AutoSize = false, Width = 90, Height = 50, TextAlign = ContentAlignment.MiddleLeft };
                         pnlMeasureTool.Controls.Add(lbl0_2);
-                        TextBox tbTool2 = new TextBox { Tag = "English", Name = obj["measure_item_code"].ToString() + "_measure_tool2", Location = new Point(100, 95),Width=200 };
+                        string controlTool2Name = Convert.ToString(obj["measure_item_code"]) + "_measure_tool2";
+                        TextBox tbTool2 = new TextBox { Tag = "English", Name = controlTool2Name, Location = new Point(100, 95), Width = 200 };
+                        //textboxNameDic.Add(controlTool2Name, measure_tool2);
+                        keyboardTitleDic.Add(controlTool2Name, measure_tool2);
                         pnlMeasureTool.Controls.Add(tbTool2);
-                        controlTxtDir.Add(obj["measure_item_code"].ToString() + "_measure_tool2", tbTool2);
+                        controlTxtDir.Add(controlTool2Name, tbTool2);
                         tbTool2.Enter += new EventHandler(txt_Enter);
                         tbTool2.MouseDown += new MouseEventHandler(txt_MouseDown);
                         tbTool2.Leave += new EventHandler(txt_Leave);
@@ -423,98 +468,81 @@ namespace YYOPInspectionClient
                 }
                 //--------------------------------------初始化测量值表单
                 //1.先获取readingTypes(1代表单值,2代表最大值,3代表最小值,4代表均值,5代表椭圆度)
-                string[] readtyps = { };
-                if (obj["reading_types"] != null)
-                    readtyps = obj["reading_types"].ToString().Split(',');
                 if (readtyps.Length > 0)
                 {
                     //添加测量项的名字和是否必填提示
-                    Panel pnlMeasureValue = new Panel { Width = 310, Height = 160, BorderStyle = BorderStyle.FixedSingle };
+                    Panel pnlMeasureValue = new Panel { Width = 450, Height = 160, BorderStyle = BorderStyle.FixedSingle };
                     //测量项名称
-                    Label lblMeasureName = new Label { Text = obj["measure_item_name"].ToString(), Name = obj["measure_item_code"].ToString() + "_lbl_Name", Location = new Point(10, 10), AutoSize = true };
+                    Label lblMeasureName = new Label { Text = measure_item_name, Location = new Point(10, 10), AutoSize = true };
+                    //定义label控件用于显示正负偏差或检验频率
+                    Label lblRangeFrequency = new Label { AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Location = new Point(150, 10) };
                     //是否必填标识
-                    Label lblRequired = new Label { Text = "*必填", Name = obj["measure_item_code"].ToString() + "_lbl_Prompt", Location = new Point(220, 10), Width = 100, TextAlign = ContentAlignment.MiddleCenter, ForeColor = Color.Red };
+                    Label lblRequired = new Label { AutoSize = true, Text = "*必填", Name = measure_item_code + "_lbl_Prompt", Location = new Point(320, 10), TextAlign = ContentAlignment.MiddleCenter, ForeColor = Color.Red };
+                    requiredMarkDic.Add(measure_item_code, lblRequired);
                     pnlMeasureValue.Controls.Add(lblMeasureName);
                     pnlMeasureValue.Controls.Add(lblRequired);
-                    //2.获取是否是两端检验
-                    string both_ends = "0";
-                    if (obj["both_ends"] != null)
-                        both_ends = obj["both_ends"].ToString();
-                    //定义该测量线的最小值、最大值、检验频率、正偏差、负偏差、椭圆度、目标值
-                    string item_min_value = "", item_max_value = "", item_frequency = "", item_pos_deviation_value = "", item_neg_deviation_value = "", ovality_max="",item_std_value="";
-                    if (obj["item_min_value"] != null)
-                        item_min_value = obj["item_min_value"].ToString();
-                    if (obj["item_max_value"] != null)
-                        item_max_value = obj["item_max_value"].ToString();
-                    if (obj["item_frequency"] != null)
+                    //上面Label控件显示得内容
+                    string txt = "";
+                    //判断是否有正负偏差
+                    double d_item_pos_deviation_value = Convert.ToDouble(item_pos_deviation_value);
+                    double d_item_neg_deviation_value = Convert.ToDouble(item_neg_deviation_value);
+                    if (d_item_pos_deviation_value != 0 || d_item_neg_deviation_value != 0)
                     {
-                        item_frequency = obj["item_frequency"].ToString();
-                        lblRequired.Tag = item_frequency;
-                    }
-                    if (obj["item_pos_deviation_value"] != null)
-                        item_pos_deviation_value = obj["item_pos_deviation_value"].ToString();
-                    if (obj["item_neg_deviation_value"] != null)
-                        item_neg_deviation_value = obj["item_neg_deviation_value"].ToString();
-                    if (obj["ovality_max"] != null)
-                        ovality_max = obj["ovality_max"].ToString();
-                    if (obj["item_std_value"] != null)
-                        item_std_value = obj["item_std_value"].ToString();
-                    //定义显示测量项正负偏差和检验频率的Label控件
-                    Label lblRangeFrequencyOvality = new Label();
-                    float item_max_val = 0, item_min_val = 0, pos_deviation_value = 0, neg_deviation_value = 0;
-                    if (!string.IsNullOrWhiteSpace(item_pos_deviation_value))
-                        pos_deviation_value = Convert.ToSingle(item_pos_deviation_value);
-                    if (!string.IsNullOrWhiteSpace(item_neg_deviation_value))
-                        neg_deviation_value = Convert.ToSingle(item_neg_deviation_value);
-                    //","拼接最大值、最小值、检验频率、椭圆度、目标值
-                    string rangeFrequencyOvalitySdVal = item_max_value + "," + item_min_value + ","+item_frequency+","+ ovality_max+","+ item_std_value;
-                    //3.判断该测量项是否有范围
-                    if (!string.IsNullOrWhiteSpace(item_min_value) && !string.IsNullOrWhiteSpace(item_max_value) && !string.IsNullOrWhiteSpace(item_frequency))
-                    {
-                        item_max_val = Convert.ToSingle(item_max_value);
-                        item_min_val = Convert.ToSingle(item_min_value);
-                        //设置检验频率百分比显示
-                        item_frequency = Convert.ToDouble(item_frequency).ToString("00%");
-                        //设置控件名称
-                        lblRangeFrequencyOvality.Name = obj["measure_item_code"].ToString() + "_RangeFrequencyOvality_lbl";
-                        //设置控件样式
-                        lblRangeFrequencyOvality.Width = 310;
-                        lblRangeFrequencyOvality.TextAlign = ContentAlignment.MiddleCenter;
-                        lblRangeFrequencyOvality.Location = new Point(0, 50);
-                        //设置控件的tag内容
-                        lblRangeFrequencyOvality.Tag = rangeFrequencyOvalitySdVal;
-                        lblRangeFrequencyOvality.Text = item_frequency;
-                        pnlMeasureValue.Controls.Add(lblRangeFrequencyOvality);
-                        if (item_max_val - item_min_val > 0)
+                        if (Math.Abs(d_item_pos_deviation_value) == Math.Abs(d_item_neg_deviation_value))
                         {
-                            lblRangeFrequencyOvality.Tag = rangeFrequencyOvalitySdVal;
-                            //如果正负偏差相同
-                            if (Math.Abs(pos_deviation_value)- Math.Abs(neg_deviation_value) <=0)
-                                lblRangeFrequencyOvality.Text = "±"+ pos_deviation_value + "/" + item_frequency;
-                            else
-                                lblRangeFrequencyOvality.Text = neg_deviation_value + "～" + pos_deviation_value + "/" + item_frequency;
+                            txt += "±" + item_pos_deviation_value;
                         }
-                    }
-                    //代表该测量项只是个单值
-                    if (readtyps.Contains("1"))
-                    {
-                        //判断是否为两端都测量
-                        if (both_ends.Contains("1"))
+                        else
                         {
-                            //Label控件用于存放测量项A端名称
-                            Label lblA = new Label { Text = "A:", Location = new Point(60, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                            //TextBox控件用于存放测量项A端值
-                            TextBox tbA = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(100, 80) };
-                            //Label控件用于存放测量项B端名称
-                            Label lblB = new Label { Text = "B:", Location = new Point(60, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                            //TextBox控件用于存放测量项B端值
-                            TextBox tbB = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_B_Value", Location = new Point(100, 120) };
-                            pnlMeasureValue.Controls.Add(lblA);
-                            pnlMeasureValue.Controls.Add(lblB);
+                            txt += (item_neg_deviation_value + "～" + item_pos_deviation_value);
+                        }
+                        txt += ("/" + Convert.ToDouble(item_frequency).ToString("00%"));
+                    }
+                    else
+                    {
+                        txt += Convert.ToDouble(item_frequency).ToString("00%");
+                    }
+                    lblRangeFrequency.Text = txt;
+                    pnlMeasureValue.Controls.Add(lblRangeFrequency);
+                    //Panel头部提示 最大值、最小值、均值、椭圆度
+                    Label lblMax = new Label { Text = "最大", AutoSize = true };
+                    Label lblMin = new Label { Text = "最小", AutoSize = true };
+                    Label lblAvg = new Label { Text = "均值", AutoSize = true };
+                    Label lblOvality = new Label { Text = "椭圆度", AutoSize = true };
+                    //两端都测量
+                    if (both_ends.Contains("1"))
+                    {
+                        //Label控件用于存放测量项A端名称
+                        Label lblA = new Label { Text = "A:", Location = new Point(20, 80), AutoSize = true, TextAlign = ContentAlignment.MiddleRight };
+                        //Label控件用于存放测量项B端名称
+                        Label lblB = new Label { Text = "B:", Location = new Point(20, 120), AutoSize = true, TextAlign = ContentAlignment.MiddleRight };
+                        pnlMeasureValue.Controls.Add(lblA);
+                        pnlMeasureValue.Controls.Add(lblB);
+                        //TextBox控件用于存放测量项A端值、最大值、最小值、均值、椭圆度
+                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value", Width = 70 };
+                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value", Width = 70 };
+                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value", Width = 70 };
+                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA", Width = 70 };
+                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA", Width = 70 };
+                        //TextBox控件用于存放测量项B端值、最大值、最小值、均值、椭圆度
+                        TextBox tbB = new TextBox { Tag = "Number", Name = measure_item_code + "_B_Value", Width = 70 };
+                        TextBox tbMaxB = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxB_Value", Width = 70 };
+                        TextBox tbMinB = new TextBox { Tag = "Number", Name = measure_item_code + "_MinB_Value", Width = 70 };
+                        TextBox tbAvgB = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgB", Width = 70 };
+                        TextBox tbOvalityB = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityB", Width = 70 };
+                        int index = -1;
+                        //该测量项包含单值
+                        if (readtyps.Contains("1"))
+                        {
+                            index++;
+                            tbA.Location = new Point(index * 100 + 60, 80);
+                            tbB.Location = new Point(index * 100 + 60, 120);
                             pnlMeasureValue.Controls.Add(tbA);
                             pnlMeasureValue.Controls.Add(tbB);
-                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_A_Value", tbA);
-                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_B_Value", tbB);
+                            keyboardTitleDic.Add(measure_item_code + "_A_Value",measure_item_name+"A端("+txt+")");
+                            keyboardTitleDic.Add(measure_item_code + "_B_Value", measure_item_name + "B端(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_A_Value", tbA);
+                            controlTxtDir.Add(measure_item_code + "_B_Value", tbB);
                             //为TextBox绑定鼠标事件
                             tbA.Enter += new EventHandler(txt_Enter);
                             tbA.MouseDown += new MouseEventHandler(txt_MouseDown);
@@ -523,104 +551,192 @@ namespace YYOPInspectionClient
                             tbB.MouseDown += new MouseEventHandler(txt_MouseDown);
                             tbB.Leave += new EventHandler(txt_Leave);
                         }
-                        else//如果该测量项只测量一端(控件创建同上)
-                        {
-                            TextBox tbValue = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_A_Value", Location = new Point(90, 80) };
-                            pnlMeasureValue.Controls.Add(tbValue);
-                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_A_Value", tbValue);
-                            tbValue.Enter += new EventHandler(txt_Enter);
-                            tbValue.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbValue.Leave += new EventHandler(txt_Leave);
-                        }
-                    }
-                    else//如果测量线不是单值则可能包含(最大值、最小值、均值、椭圆度)
-                    {
-                        lblMeasureName.Location = new Point(10, 10);
-                        Label lblMax = new Label { Text = "最大", Location = new Point(40, 50), AutoSize = true };
-                        Label lblMin = new Label { Text = "最小", Location = new Point(180, 50) };
-                        Label lblMaxA = new Label { Text = "A:", Location = new Point(10, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_MaxA_Value", Location = new Point(40, 80) };
-                        Label lblMaxB = new Label { Text = "B:", Location = new Point(10, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                        TextBox tbMaxB = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_MaxB_Value", Location = new Point(40, 120) };
-                        Label lblMinA = new Label { Text = "A:", Location = new Point(150, 80), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                        TextBox tbMinA = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_MinA_Value", Location = new Point(170, 80) };
-                        Label lblMinB = new Label { Text = "B:", Location = new Point(150, 120), Width = 20, TextAlign = ContentAlignment.MiddleRight };
-                        TextBox tbMinB = new TextBox { Tag = "Number", Name = obj["measure_item_code"].ToString() + "_MinB_Value", Location = new Point(170, 120) };
-                        Label lblAvg = new Label { Text = "均值", Location = new Point(290, 50), AutoSize = true };
-                        Label lblOvality = new Label { Text = "椭圆度", Location = new Point(370, 50), AutoSize = true };
-                        Label lblAvgA = new Label {Tag="lblVal", Text = "", Location = new Point(290, 80), Name = obj["measure_item_code"].ToString() + "_AvgA" };
-                        Label lblAvgB = new Label { Tag = "lblVal", Text = "", Location = new Point(290, 120), Name = obj["measure_item_code"].ToString() + "_AvgB" };
-                        Label lblOvalityA = new Label { Tag = "lblVal", Text = "", Location = new Point(390, 80), Name = obj["measure_item_code"].ToString() + "_OvalityA" };
-                        Label lblOvalityB = new Label { Tag = "lblVal", Text = "", Location = new Point(390, 120), Name = obj["measure_item_code"].ToString() + "_OvalityB" };
-                        tbMaxA.Enter += new EventHandler(txt_Enter);
-                        tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbMaxA.Leave += new EventHandler(txt_Leave);
-                        tbMaxB.Enter += new EventHandler(txt_Enter);
-                        tbMaxB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbMaxB.Leave += new EventHandler(txt_Leave);
-                        tbMinA.Enter += new EventHandler(txt_Enter);
-                        tbMinA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbMinA.Leave += new EventHandler(txt_Leave);
-                        tbMinB.Enter += new EventHandler(txt_Enter);
-                        tbMinB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbMinB.Leave += new EventHandler(txt_Leave);
-                        //如果包含最大值
+                        //该测量项包含最大值
                         if (readtyps.Contains("2"))
                         {
+                            index++;
+                            lblMax.Location = new Point(index * 100 + 50, 40);
                             pnlMeasureValue.Controls.Add(lblMax);
-                            pnlMeasureValue.Controls.Add(lblMaxA);
+                            tbMaxA.Location = new Point(index * 100 + 60, 80);
+                            tbMaxB.Location = new Point(index * 100 + 60, 120);
                             pnlMeasureValue.Controls.Add(tbMaxA);
-                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MaxA_Value", tbMaxA);
-                            if (both_ends.Contains("1"))
-                            {
-                                pnlMeasureValue.Controls.Add(lblMaxB);
-                                pnlMeasureValue.Controls.Add(tbMaxB);
-                                controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MaxB_Value", tbMaxB);
-                            }
+                            pnlMeasureValue.Controls.Add(tbMaxB);
+                            keyboardTitleDic.Add(measure_item_code + "_MaxA_Value", measure_item_name + "最大值A端(" + txt + ")");
+                            keyboardTitleDic.Add(measure_item_code + "_MaxB_Value", measure_item_name + "最大值B端(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_MaxA_Value", tbMaxA);
+                            controlTxtDir.Add(measure_item_code + "_MaxB_Value", tbMaxB);
+                            //为TextBox绑定鼠标事件
+                            tbMaxA.Enter += new EventHandler(txt_Enter);
+                            tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMaxA.Leave += new EventHandler(txt_Leave);
+                            tbMaxB.Enter += new EventHandler(txt_Enter);
+                            tbMaxB.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMaxB.Leave += new EventHandler(txt_Leave);
                         }
-                        //如果包含最小值
+                        //该测量项包含最小值
                         if (readtyps.Contains("3"))
                         {
+                            index++;
+                            lblMin.Location = new Point(index * 100 + 50, 40);
                             pnlMeasureValue.Controls.Add(lblMin);
-                            pnlMeasureValue.Controls.Add(lblMinA);
+                            tbMinA.Location = new Point(index * 100 + 50, 80);
+                            tbMinB.Location = new Point(index * 100 + 50, 120);
                             pnlMeasureValue.Controls.Add(tbMinA);
-                            controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MinA_Value", tbMinA);
-                            if (both_ends.Contains("1"))
-                            {
-                                pnlMeasureValue.Controls.Add(lblMinB);
-                                pnlMeasureValue.Controls.Add(tbMinB);
-                                controlTxtDir.Add(obj["measure_item_code"].ToString() + "_MinB_Value", tbMinB);
-                            }
+                            pnlMeasureValue.Controls.Add(tbMinB);
+                            keyboardTitleDic.Add(measure_item_code + "_MinA_Value", measure_item_name + "最小值A端(" + txt + ")");
+                            keyboardTitleDic.Add(measure_item_code + "_MinB_Value", measure_item_name + "最小值B端(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_MinA_Value", tbMinA);
+                            controlTxtDir.Add(measure_item_code + "_MinB_Value", tbMinB);
+                            //为TextBox绑定鼠标事件
+                            tbMinA.Enter += new EventHandler(txt_Enter);
+                            tbMinA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMinA.Leave += new EventHandler(txt_Leave);
+                            tbMinB.Enter += new EventHandler(txt_Enter);
+                            tbMinB.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMinB.Leave += new EventHandler(txt_Leave);
                         }
-                        //如果包含均值
+                        //该测量项包含均值
                         if (readtyps.Contains("4"))
                         {
-                            pnlMeasureValue.Width = 480;
-                            lblRangeFrequencyOvality.Location = new Point(130, 10);
-                            lblRequired.Location = new Point(380, 10);
+                            index++;
+                            lblAvg.Location = new Point(index * 100 + 50, 40);
                             pnlMeasureValue.Controls.Add(lblAvg);
-                            pnlMeasureValue.Controls.Add(lblAvgA);
-                            controlLblDir.Add(obj["measure_item_code"].ToString() + "_AvgA", lblAvgA);
-                            if (both_ends.Contains("1")) {
-                                pnlMeasureValue.Controls.Add(lblAvgB);
-                                controlLblDir.Add(obj["measure_item_code"].ToString() + "_AvgB", lblAvgB);
-                            }
-                                
+                            tbAvgA.Location = new Point(index * 100 + 60, 80);
+                            tbAvgB.Location = new Point(index * 100 + 60, 120);
+                            pnlMeasureValue.Controls.Add(tbAvgA);
+                            pnlMeasureValue.Controls.Add(tbAvgB);
+                            keyboardTitleDic.Add(measure_item_code + "_AvgA", measure_item_name + "均值A端(" + txt + ")");
+                            keyboardTitleDic.Add(measure_item_code + "_AvgB", measure_item_name + "均值B端(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_AvgA", tbAvgA);
+                            controlTxtDir.Add(measure_item_code + "_AvgB", tbAvgB);
+                            //为TextBox绑定鼠标事件
+                            tbAvgA.Enter += new EventHandler(txt_Enter);
+                            tbAvgA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbAvgA.Leave += new EventHandler(txt_Leave);
+                            tbAvgB.Enter += new EventHandler(txt_Enter);
+                            tbAvgB.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbAvgB.Leave += new EventHandler(txt_Leave);
                         }
-                        //如果包含椭圆度
+                        //该测量项包含椭圆度
                         if (readtyps.Contains("5"))
                         {
-                            pnlMeasureValue.Width = 480;
-                            lblRangeFrequencyOvality.Location = new Point(130, 10);
-                            lblRequired.Location = new Point(380, 10);
+                            index++;
+                            lblOvality.Location = new Point(index * 100 + 50, 40);
                             pnlMeasureValue.Controls.Add(lblOvality);
-                            pnlMeasureValue.Controls.Add(lblOvalityA);
-                            controlLblDir.Add(obj["measure_item_code"].ToString() + "_OvalityA", lblOvalityA);
-                            if (both_ends.Contains("1")) {
-                                pnlMeasureValue.Controls.Add(lblOvalityB);
-                                controlLblDir.Add(obj["measure_item_code"].ToString() + "_OvalityB", lblOvalityB);
+                            tbOvalityA.Location = new Point(index * 100 + 50, 80);
+                            tbOvalityB.Location = new Point(index * 100 + 50, 120);
+                            pnlMeasureValue.Controls.Add(tbOvalityA);
+                            pnlMeasureValue.Controls.Add(tbOvalityB);
+                            if (!string.IsNullOrWhiteSpace(ovality_max) && Convert.ToSingle(ovality_max) > 0)
+                            {
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度A端" + "(<=" + ovality_max + ")");
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityB", measure_item_name + "椭圆度B端" + "(<=" + ovality_max + ")");
                             }
-                               
+                            else
+                            {
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度A端");
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityB", measure_item_name + "椭圆度B端");
+                            }
+                            controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
+                            controlTxtDir.Add(measure_item_code + "_OvalityB", tbOvalityB);
+                            //为TextBox绑定鼠标事件
+                            tbOvalityA.Enter += new EventHandler(txt_Enter);
+                            tbOvalityA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbOvalityA.Leave += new EventHandler(txt_Leave);
+                            tbOvalityB.Enter += new EventHandler(txt_Enter);
+                            tbOvalityB.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbOvalityB.Leave += new EventHandler(txt_Leave);
+                        }
+                    }
+                    //一端测量
+                    else
+                    {
+                        //TextBox控件用于存放测量项A端值、最大值、最小值、均值、椭圆度
+                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value" };
+                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value" };
+                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value" };
+                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA" };
+                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA" };
+                        int index = 0;
+                        //该测量项包含单值
+                        if (readtyps.Contains("1"))
+                        {
+                            index++;
+                            tbA.Location = new Point(index * 100 + 50, 80);
+                            pnlMeasureValue.Controls.Add(tbA);
+                            keyboardTitleDic.Add(measure_item_code + "_A_Value", measure_item_name+"("+txt+")");
+                            controlTxtDir.Add(measure_item_code + "_A_Value", tbA);
+                            //为TextBox绑定鼠标事件
+                            tbA.Enter += new EventHandler(txt_Enter);
+                            tbA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbA.Leave += new EventHandler(txt_Leave);
+                        }
+                        //该测量项包含最大值
+                        if (readtyps.Contains("2"))
+                        {
+                            index++;
+                            lblMax.Location = new Point(index * 100 + 50, 40);
+                            pnlMeasureValue.Controls.Add(lblMax);
+                            tbMaxA.Location = new Point(index * 100 + 60, 80);
+                            pnlMeasureValue.Controls.Add(tbMaxA);
+                            keyboardTitleDic.Add(measure_item_code + "_MaxA_Value", measure_item_name+"最大值" + "(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_MaxA_Value", tbMaxA);
+                            //为TextBox绑定鼠标事件
+                            tbMaxA.Enter += new EventHandler(txt_Enter);
+                            tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMaxA.Leave += new EventHandler(txt_Leave);
+                        }
+                        //该测量项包含最小值
+                        if (readtyps.Contains("3"))
+                        {
+                            index++;
+                            lblMin.Location = new Point(index * 100 + 50, 40);
+                            pnlMeasureValue.Controls.Add(lblMin);
+                            tbMinA.Location = new Point(index * 100 + 50, 80);
+                            pnlMeasureValue.Controls.Add(tbMinA);
+                            keyboardTitleDic.Add(measure_item_code + "_MinA_Value", measure_item_name + "最小值" + "(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_MinA_Value", tbMinA);
+                            //为TextBox绑定鼠标事件
+                            tbMinA.Enter += new EventHandler(txt_Enter);
+                            tbMinA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbMinA.Leave += new EventHandler(txt_Leave);
+                        }
+                        //该测量项包含均值
+                        if (readtyps.Contains("4"))
+                        {
+                            index++;
+                            lblAvg.Location = new Point(index * 100 + 60, 40);
+                            pnlMeasureValue.Controls.Add(lblAvg);
+                            tbAvgA.Location = new Point(index * 100 + 60, 80);
+                            pnlMeasureValue.Controls.Add(tbAvgA);
+                            keyboardTitleDic.Add(measure_item_code + "_AvgA", measure_item_name + "均值" + "(" + txt + ")");
+                            controlTxtDir.Add(measure_item_code + "_AvgA", tbAvgA);
+                            //为TextBox绑定鼠标事件
+                            tbAvgA.Enter += new EventHandler(txt_Enter);
+                            tbAvgA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbAvgA.Leave += new EventHandler(txt_Leave);
+                        }
+                        //该测量项包含椭圆度
+                        if (readtyps.Contains("5"))
+                        {
+                            index++;
+                            lblOvality.Location = new Point(index * 100 + 50, 40);
+                            pnlMeasureValue.Controls.Add(lblOvality);
+                            tbOvalityA.Location = new Point(index * 100 + 50, 80);
+                            pnlMeasureValue.Controls.Add(tbOvalityA);
+                            if (!string.IsNullOrWhiteSpace(ovality_max) && Convert.ToSingle(ovality_max) > 0)
+                            {
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度" + "(<=" + ovality_max + ")");
+                            }
+                            else
+                            {
+                                keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度");
+                            }
+                            controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
+                            //为TextBox绑定鼠标事件
+                            tbOvalityA.Enter += new EventHandler(txt_Enter);
+                            tbOvalityA.MouseDown += new MouseEventHandler(txt_MouseDown);
+                            tbOvalityA.Leave += new EventHandler(txt_Leave);
                         }
                     }
                     this.flpTabTwoContent.Controls.Add(pnlMeasureValue);
@@ -702,36 +818,36 @@ namespace YYOPInspectionClient
                 string videoNo = videosArr;
                 //一条item_record检验记录包括(检测项编码、最大值、最小值、均值、椭圆度、量具编号1、量具编号2、检测项值)
                 //检测项值、最大值、最小值、均值、椭圆度分为A、B
-                string itemvalue = "", reading_max = "",reading_min="",reading_avg="",reading_ovality="",toolcode1="",toolcode2="",measure_sample1="",measure_sample2="";
+                string itemvalue = "", reading_max = "", reading_min = "", reading_avg = "", reading_ovality = "", toolcode1 = "", toolcode2 = "", measure_sample1 = "", measure_sample2 = "";
                 //遍历所有属于某个测量项的值
                 JArray jarray = new JArray();
                 foreach (string measure_item_code in measureItemCodeList)
                 {
                     //根据测量项名称在集合中找到对应的存放测量项值的控件，并获取控件的值
-                    if(controlTxtDir.ContainsKey(measure_item_code + "_A_Value"))
-                        itemvalue += controlTxtDir[measure_item_code + "_A_Value"].Text.Trim() + ",";
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_A_Value"))
+                        itemvalue += controlTxtDir[measure_item_code + "_A_Value"].Text.Trim();
                     if (controlTxtDir.ContainsKey(measure_item_code + "_B_Value"))
-                        itemvalue += controlTxtDir[measure_item_code + "_B_Value"].Text.Trim();
+                        itemvalue += ("," + controlTxtDir[measure_item_code + "_B_Value"].Text.Trim());
                     if (controlTxtDir.ContainsKey(measure_item_code + "_MaxA_Value"))
-                        reading_max += controlTxtDir[measure_item_code + "_MaxA_Value"].Text.Trim() + ",";
+                        reading_max += controlTxtDir[measure_item_code + "_MaxA_Value"].Text.Trim();
                     if (controlTxtDir.ContainsKey(measure_item_code + "_MaxB_Value"))
-                        reading_max += controlTxtDir[measure_item_code + "_MaxB_Value"].Text.Trim();
+                        reading_max += ("," + controlTxtDir[measure_item_code + "_MaxB_Value"].Text.Trim());
                     if (controlTxtDir.ContainsKey(measure_item_code + "_MinA_Value"))
-                        reading_min += controlTxtDir[measure_item_code + "_MinA_Value"].Text.Trim() + ",";
+                        reading_min += controlTxtDir[measure_item_code + "_MinA_Value"].Text.Trim();
                     if (controlTxtDir.ContainsKey(measure_item_code + "_MinB_Value"))
-                        reading_min += controlTxtDir[measure_item_code + "_MinB_Value"].Text.Trim();
+                        reading_min += ("," + controlTxtDir[measure_item_code + "_MinB_Value"].Text.Trim());
                     if (controlTxtDir.ContainsKey(measure_item_code + "_measure_tool1"))
                         toolcode1 += controlTxtDir[measure_item_code + "_measure_tool1"].Text.Trim();
                     if (controlTxtDir.ContainsKey(measure_item_code + "_measure_tool2"))
                         toolcode2 += controlTxtDir[measure_item_code + "_measure_tool2"].Text.Trim();
-                    if (controlLblDir.ContainsKey(measure_item_code + "_AvgA"))
-                        reading_avg += controlLblDir[measure_item_code + "_AvgA"].Text.Trim()+ ",";
-                    if (controlLblDir.ContainsKey(measure_item_code + "_AvgB"))
-                        reading_avg += controlLblDir[measure_item_code + "_AvgB"].Text.Trim();
-                    if (controlLblDir.ContainsKey(measure_item_code + "_OvalityA"))
-                        reading_ovality += controlLblDir[measure_item_code + "_OvalityA"].Text.Trim() + ",";
-                    if (controlLblDir.ContainsKey(measure_item_code + "_OvalityB"))
-                        reading_ovality += controlLblDir[measure_item_code + "_OvalityB"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_AvgA"))
+                        reading_avg += controlTxtDir[measure_item_code + "_AvgA"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_AvgB"))
+                        reading_avg += ("," + controlTxtDir[measure_item_code + "_AvgB"].Text.Trim());
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_OvalityA"))
+                        reading_ovality += controlTxtDir[measure_item_code + "_OvalityA"].Text.Trim();
+                    if (controlTxtDir.ContainsKey(measure_item_code + "_OvalityB"))
+                        reading_ovality += ("," + controlTxtDir[measure_item_code + "_OvalityB"].Text.Trim());
                     if (itemvalue.Equals(","))
                         itemvalue = itemvalue.Replace(",", "");
                     if (reading_max.Equals(","))
@@ -745,26 +861,31 @@ namespace YYOPInspectionClient
                     //封装测量项的值
                     JObject jobject = new JObject{
                         {"itemcode", measure_item_code },
-                        {"itemvalue",HttpUtility.UrlEncode(itemvalue,Encoding.UTF8)}, {"reading_max",reading_max},
-                        {"reading_min",reading_min}, {"reading_avg",reading_avg},
-                        {"reading_ovality",reading_ovality}, {"toolcode1",toolcode1},
-                         {"toolcode2",toolcode2}, {"measure_sample1",measure_sample1},
-                         { "measure_sample2",measure_sample2}
+                        {"itemvalue",HttpUtility.UrlEncode(itemvalue,Encoding.UTF8)},
+                        { "reading_max",reading_max},
+                        {"reading_min",reading_min},
+                        { "reading_avg",reading_avg},
+                        {"reading_ovality",reading_ovality},
+                        { "toolcode1",toolcode1},
+                        {"toolcode2",toolcode2},
+                        { "measure_sample1",measure_sample1},
+                        { "measure_sample2",measure_sample2}
                     };
                     jarray.Add(jobject);
-                    itemvalue = "";reading_max = "";reading_min = "";reading_avg = "";reading_ovality = "";
-                    toolcode1 = "";toolcode2 = "";measure_sample1 = "";measure_sample2 = "";
+                    itemvalue = ""; reading_max = ""; reading_min = ""; reading_avg = ""; reading_ovality = "";
+                    toolcode1 = ""; toolcode2 = ""; measure_sample1 = ""; measure_sample2 = "";
                 }
                 string inspectionResult = "合格";
                 //遍历每个测量项，判断是否符合标准
                 foreach (var item in qualifiedList)
                 {
-                    if (item.Value == false) {
+                    if (item.Value == false)
+                    {
                         inspectionResult = "不合格";
                         break;
                     }
                 }
-                bool flag=true;
+                bool flag = true;
                 if (inspectionResult.Contains("不合格"))
                 {
                     if (MessageBox.Show("数据不合格,确定要提交吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -772,7 +893,8 @@ namespace YYOPInspectionClient
                     else
                         flag = false;
                 }
-                if (flag) {
+                if (flag)
+                {
                     //封装检验数据
                     JObject dataJson = new JObject {
                     {"isAdd","add" }, {"coupling_no",HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8) },
@@ -830,9 +952,9 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessagePrompt.Show("提交出错,表单暂时保存在本地,错误信息:"+e.Message);
+                MessagePrompt.Show("提交出错,表单暂时保存在本地,错误信息:" + e.Message);
                 string coupingDir = Application.StartupPath + "\\unsubmit";
-                CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8),param, coupingDir);
+                CommonUtil.writeUnSubmitForm(HttpUtility.UrlEncode(txtCoupingNo.Text.Trim(), Encoding.UTF8), param, coupingDir);
             }
             finally
             {
@@ -847,22 +969,23 @@ namespace YYOPInspectionClient
                     //刷新主页面检验记录
                     IndexWindow.getForm().getThreadingProcessData();
                 }
-                catch (Exception ex) {
-                    MessageBox.Show("表单清理数据时出错,错误信息:"+ex.Message);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("表单清理数据时出错,错误信息:" + ex.Message);
                 }
             }
         }
         #endregion
 
         #region 遍历封装提交项函数
-        private void GoThroughControls(Control parContainer, List<TextBox> txtList,List<Label>lblList)
+        private void GoThroughControls(Control parContainer, List<TextBox> txtList)
         {
             for (int index = 0; index < parContainer.Controls.Count; index++)
             {
                 // 如果是容器类控件，递归调用自己
                 if (parContainer.Controls[index].HasChildren)
                 {
-                    GoThroughControls(parContainer.Controls[index], txtList, lblList);
+                    GoThroughControls(parContainer.Controls[index], txtList);
                 }
                 else
                 {
@@ -870,10 +993,6 @@ namespace YYOPInspectionClient
                     {
                         case "TextBox":
                             txtList.Add((TextBox)parContainer.Controls[index]);
-                            break;
-                        case "Label":
-                            if(lblList!=null)
-                                 lblList.Add((Label)parContainer.Controls[index]);
                             break;
                     }
                 }
@@ -900,24 +1019,24 @@ namespace YYOPInspectionClient
                     if (tb.Tag.ToString().Contains("English"))
                     {
                         //打开英文输入法
-                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.inputTxt = tb;
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         //设置输入法头部对应输入框名称
-                        SetAlphaKeyboardText(tb.Name);
+                        SetAlphaKeyboardText(tb);
                         //设置变量focusTextBoxName为当前鼠标焦点所在输入框的名称
-                        focusTextBoxName = tb.Name;
+                        //focusTextBoxName = tb.Name;
                     }
                     else
                     {
                         //判断接箍编号是否存在和视频录像是否启动（设置同上）
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
-                            NumberKeyboardForm.getForm().inputTxt = tb;
+                            NumberKeyboardForm.inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
                             NumberKeyboardForm.getForm().TopMost = true;
-                            SetNumberKeyboardText(tb.Name);
+                            SetNumberKeyboardText(tb);
                         }
                         else
                         {
@@ -974,22 +1093,22 @@ namespace YYOPInspectionClient
                     //注释同上
                     if (tb.Tag.ToString().Contains("English"))
                     {
-                        AlphabetKeyboardForm.getForm().inputTxt = tb;
+                        AlphabetKeyboardForm.inputTxt = tb;
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         AlphabetKeyboardForm.getForm().TopMost = true;
-                        focusTextBoxName = tb.Name;
-                        SetAlphaKeyboardText(tb.Name);
+                        //focusTextBoxName = tb.Name;
+                        SetAlphaKeyboardText(tb);
                     }
                     else
                     {
                         if (IsHaveCoupingNoAndStartRecordVideo())
                         {
-                            NumberKeyboardForm.getForm().inputTxt = tb;
+                            NumberKeyboardForm.inputTxt = tb;
                             NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
                             NumberKeyboardForm.getForm().Show();
                             NumberKeyboardForm.getForm().TopMost = true;
-                            SetNumberKeyboardText(tb.Name);
+                            SetNumberKeyboardText(tb);
                         }
                         else
                         {
@@ -1187,116 +1306,81 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 设置数字键盘Title
-        private void SetNumberKeyboardText(string inputTxtName)
+        private void SetNumberKeyboardText(TextBox tb)
         {
             try
             {
+                //获取控件得Name属性
+                string item_name =tb.Name;
+                //数字键盘Title、测量项编号
+                string item_title = "",item_code="";
                 //如果当前鼠标焦点所在的控件的名称包含以下字符串，则先替换以下字符串，目的是取得相应的测量项编号
-                if (inputTxtName.Contains("_A_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_A_Value", "");
-                    tempLblTxt1 = "A端";
-                }
-                else if (inputTxtName.Contains("_B_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_B_Value", "");
-                    tempLblTxt1 = "B端";
-                }
-                else if (inputTxtName.Contains("_MaxA_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_MaxA_Value", "");
-                    tempLblTxt1 = "最大值A端";
-                }
-                else if (inputTxtName.Contains("_MaxB_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_MaxB_Value", "");
-                    tempLblTxt1 = "最大值B端";
-                }
-                else if (inputTxtName.Contains("_MinA_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_MinA_Value", "");
-                    tempLblTxt1 = "最小值A端";
-                }
-                else if (inputTxtName.Contains("_MinB_Value"))
-                {
-                    inputTxtName = inputTxtName.Replace("_MinB_Value", "");
-                    tempLblTxt1 = "最小值B端";
-                }
-                //根据上面获取到的测量项编号找到对应的存放测量项名称的Label控件
-                tempLbl1 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Name");
-                //根据上面获取到的测量项编号找到对应的存放测量项是否必填的Label控件
-                tempLbl2 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_lbl_Prompt");
-                //根据上面获取到的测量项编号找到对应的存放测量项正负偏差和取值范围的Label控件
-                tempLbl3 = (Label)GetControlInstance(flpTabTwoContent, inputTxtName + "_RangeFrequencyOvality_lbl");
-                if (tempLbl1 != null)
-                    NumberKeyboardForm.getForm().lblNumberTitle.Text = tempLbl1.Text;
-                NumberKeyboardForm.getForm().lblNumberTitle.Text += tempLblTxt1;
-                if (tempLbl3 != null)
-                    NumberKeyboardForm.getForm().lblNumberTitle.Text += "(" + tempLbl3.Text + ")";
-                if (tempLbl2 != null && tempLbl2.Visible == true)
-                    NumberKeyboardForm.getForm().lblNumberTitle.Text += "[必填]";
+                if (item_name.Contains("_A_Value"))
+                    item_code = item_name.Replace("_A_Value", "");
+                else if (item_name.Contains("_B_Value"))
+                    item_code = item_name.Replace("_B_Value", "");
+                else if (item_name.Contains("_MaxA_Value"))
+                    item_code = item_name.Replace("_MaxA_Value", "");
+                else if (item_name.Contains("_MaxB_Value"))
+                    item_code = item_name.Replace("_MaxB_Value", "");
+                else if (item_name.Contains("_MinA_Value"))
+                    item_code = item_name.Replace("_MinA_Value", "");
+                else if (item_name.Contains("_MinB_Value"))
+                    item_code = item_name.Replace("_MinB_Value", "");
+                else if (item_name.Contains("_AvgA"))
+                    item_code = item_name.Replace("_AvgA", "");
+                else if (item_name.Contains("_AvgB"))
+                    item_code = item_name.Replace("_AvgB", "");
+                else if (item_name.Contains("_OvalityA"))
+                    item_code = item_name.Replace("_OvalityA", "");
+                else if (item_name.Contains("_OvalityB"))
+                    item_code = item_name.Replace("_OvalityB", "");
+                //根据输入框Name查找键盘title内容
+                item_title= keyboardTitleDic[item_name];
+                item_title.Replace("()","");
+                Console.WriteLine(item_title);
+                //查找显示是否为必填得label控件
+                Label requiredLabel=requiredMarkDic[item_code];
+                if (requiredLabel != null && requiredLabel.Visible == true)
+                    item_title += "[必填]";
+                    NumberKeyboardForm.getForm().lblNumberTitle.Text= item_title;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("设置输入法头部信息时出错,错误信息:" + ex.Message);
-            }
-            finally {
-                tempLblTxt1 = "";
-                tempLbl1 = null;
-                tempLbl2 = null;
-                tempLbl3 = null;
+                
             }
         }
         #endregion
 
         #region 设置英文键盘Title
-        private void SetAlphaKeyboardText(string inputTxtName)
+        private void SetAlphaKeyboardText(TextBox tb)
         {
             try
             {
                 //注释同上
-                if (inputTxtName.Contains("_measure_tool1"))
+                string tb_name = tb.Name;
+                string keyboard_title = "";
+                if (tb_name.Contains("_measure_tool1")|| tb_name.Contains("_measure_tool2"))
                 {
-                    inputTxtName = inputTxtName.Replace("_measure_tool1", "");
-                    tempLbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_measure_tool1_lbl");
-                    if (tempLbl != null)
-                        tempLblTxt = tempLbl.Text;
+                    keyboard_title = keyboardTitleDic[tb_name];
                 }
-                else if (inputTxtName.Contains("_measure_tool2"))
+                else if (tb_name.Contains("txtCoupingNo"))
+                    keyboard_title = "接箍编号";
+                else if (tb_name.Contains("txtHeatNo"))
+                    keyboard_title = "炉号";
+                else if (tb_name.Contains("txtBatchNo"))
+                    keyboard_title = "批号";
+                else if (tb_name.Contains("txtMachineNo"))
+                    keyboard_title = "机床号";
+                else if (tb_name.Contains("txtProductionArea"))
+                    keyboard_title = "产线";
+                if (!string.IsNullOrEmpty(keyboard_title))
                 {
-                    inputTxtName = inputTxtName.Replace("_measure_tool2", "");
-                    tempLbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_measure_tool2_lbl");
-                    if (tempLbl != null)
-                        tempLblTxt = tempLbl.Text;
-                }
-                else if (inputTxtName.Contains("txtCoupingNo"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "接箍编号";
-                else if (inputTxtName.Contains("txtHeatNo"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "炉号";
-                else if (inputTxtName.Contains("txtBatchNo"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "批号";
-                else if (inputTxtName.Contains("txtMachineNo"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "机床号";
-                else if (inputTxtName.Contains("txtProductionArea"))
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = "产线";
-                Label lbl = (Label)GetControlInstance(flpTabOneContent, inputTxtName + "_lbl_Name");
-                if (lbl != null)
-                {
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text = lbl.Text;
-                }
-                if (!string.IsNullOrEmpty(tempLblTxt))
-                {
-                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text += "(" + tempLblTxt + ")";
+                    AlphabetKeyboardForm.getForm().lblEnglishTitle.Text=keyboard_title;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("设置输入法头部信息时出错,错误信息:" + ex.Message);
-            }
-            finally
-            {
-                tempLbl = null;
-                tempLblTxt = "";
             }
         }
         #endregion
@@ -1310,12 +1394,12 @@ namespace YYOPInspectionClient
                 tb.BackColor = Color.White;
             }
             //遍历所有存放测量项名称的Label控件，然后清理Label内容
-            foreach (Label lbl in flpTabTwoLblList) {
-                if (lbl.Tag != null) {
-                    if(lbl.Tag.ToString().Contains("lblVal"))
-                    lbl.Text = "";
-                }
-            }
+            //foreach (Label lbl in flpTabTwoLblList) {
+            //    if (lbl.Tag != null) {
+            //        if(lbl.Tag.ToString().Contains("lblVal"))
+            //        lbl.Text = "";
+            //    }
+            //}
             this.txtCoupingNo.Text = "";
             this.txtHeatNo.Text = "";
             this.txtBatchNo.Text = "";
@@ -1345,12 +1429,13 @@ namespace YYOPInspectionClient
         #region 判断接箍编号是否存在和视频录像是否启动
         private bool IsHaveCoupingNoAndStartRecordVideo()
         {
-            bool flag = false;
-            if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && button2.Text.Contains("结束录制"))
-            {
-                flag = true;
-            }
-            return flag;
+            return true;
+            //bool flag = false;
+            //if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && button2.Text.Contains("结束录制"))
+            //{
+            //    flag = true;
+            //}
+            //return flag;
         }
         #endregion
 
@@ -1384,7 +1469,8 @@ namespace YYOPInspectionClient
                 else {
                     isFullInspection = false; fullInspectionCount = 0;
                 }
-                foreach (Label lbl in flpTabTwoLblList)
+
+                foreach (Label lbl in requiredMarkDic.Values)
                 {
                     //如果时三支全检 并且还未达到三次
                     if (isFullInspection && fullInspectionCount < 3)
@@ -1440,38 +1526,38 @@ namespace YYOPInspectionClient
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //如果切换到输入测量工具编号tab
-            if (this.tabControl1.SelectedIndex == 0)
-            {
-                isMeasuringToolTabSelected = true;
-            }
-            else
-            {
-                //否则判断是否选择了以下内容
-                if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
-                {
-                    this.tabControl1.SelectedIndex = 0;
-                    MessagePrompt.Show("请选择合同号!");
-                }
-                else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text))
-                {
-                    this.tabControl1.SelectedIndex = 0;
-                    MessagePrompt.Show("请选择班别!");
-                }
-                else if (string.IsNullOrWhiteSpace(cmbProductionShift.Text))
-                {
-                    this.tabControl1.SelectedIndex = 0;
-                    MessagePrompt.Show("请选择班次!");
-                }
-                else if (JudgeMeasureToolsNoIsNull())
-                {
-                    this.tabControl1.SelectedIndex = 0;
-                    MessagePrompt.Show("存在没有输入的量具编号!");
-                }
-                else
-                {
-                    isMeasuringToolTabSelected = false;
-                }
-            }
+            //if (this.tabControl1.SelectedIndex == 0)
+            //{
+            //    isMeasuringToolTabSelected = true;
+            //}
+            //else
+            //{
+            //    //否则判断是否选择了以下内容
+            //    if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
+            //    {
+            //        this.tabControl1.SelectedIndex = 0;
+            //        MessagePrompt.Show("请选择合同号!");
+            //    }
+            //    else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text))
+            //    {
+            //        this.tabControl1.SelectedIndex = 0;
+            //        MessagePrompt.Show("请选择班别!");
+            //    }
+            //    else if (string.IsNullOrWhiteSpace(cmbProductionShift.Text))
+            //    {
+            //        this.tabControl1.SelectedIndex = 0;
+            //        MessagePrompt.Show("请选择班次!");
+            //    }
+            //    else if (JudgeMeasureToolsNoIsNull())
+            //    {
+            //        this.tabControl1.SelectedIndex = 0;
+            //        MessagePrompt.Show("存在没有输入的量具编号!");
+            //    }
+            //    else
+            //    {
+            //        isMeasuringToolTabSelected = false;
+            //    }
+            //}
 
         }
         #endregion
