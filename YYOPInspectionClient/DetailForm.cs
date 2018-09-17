@@ -148,7 +148,6 @@ namespace YYOPInspectionClient
                             InitMeasureTools(measureArr);
                             //初始化测量项和测量值
                             InitMeasureToolNoAndValue(measureDataArr);
-                            
                             //遍历测量项值得TextBox集合
                             foreach (TextBox tb in flpTabTwoTextBoxList)
                             {
@@ -301,10 +300,6 @@ namespace YYOPInspectionClient
                         keyboardTitleDic.Add(controlTool1Name, measure_tool1);
                         pnlMeasureTool.Controls.Add(tbTool1);
                         controlTxtDir.Add(controlTool1Name, tbTool1);
-                        //为创建的textbox控件绑定鼠标Enter/MouseDown/leave事件
-                        tbTool1.Enter += new EventHandler(txt_Enter);
-                        tbTool1.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbTool1.Leave += new EventHandler(txt_Leave);
                     }
                     //如果测量工具2不为空(同上)
                     if (!string.IsNullOrWhiteSpace(measure_tool2))
@@ -317,9 +312,6 @@ namespace YYOPInspectionClient
                         keyboardTitleDic.Add(controlTool2Name, measure_tool2);
                         pnlMeasureTool.Controls.Add(tbTool2);
                         controlTxtDir.Add(controlTool2Name, tbTool2);
-                        tbTool2.Enter += new EventHandler(txt_Enter);
-                        tbTool2.MouseDown += new MouseEventHandler(txt_MouseDown);
-                        tbTool2.Leave += new EventHandler(txt_Leave);
                     }
                     this.flpTabOneContent.Controls.Add(pnlMeasureTool);
                 }
@@ -402,13 +394,6 @@ namespace YYOPInspectionClient
                             keyboardTitleDic.Add(measure_item_code + "_B_Value", measure_item_name + "B端(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_A_Value", tbA);
                             controlTxtDir.Add(measure_item_code + "_B_Value", tbB);
-                            //为TextBox绑定鼠标事件
-                            tbA.Enter += new EventHandler(txt_Enter);
-                            tbA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbA.Leave += new EventHandler(txt_Leave);
-                            tbB.Enter += new EventHandler(txt_Enter);
-                            tbB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbB.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含最大值
                         if (readtyps.Contains("2"))
@@ -426,13 +411,6 @@ namespace YYOPInspectionClient
                             keyboardTitleDic.Add(measure_item_code + "_MaxB_Value", measure_item_name + "最大值B端(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MaxA_Value", tbMaxA);
                             controlTxtDir.Add(measure_item_code + "_MaxB_Value", tbMaxB);
-                            //为TextBox绑定鼠标事件
-                            tbMaxA.Enter += new EventHandler(txt_Enter);
-                            tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMaxA.Leave += new EventHandler(txt_Leave);
-                            tbMaxB.Enter += new EventHandler(txt_Enter);
-                            tbMaxB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMaxB.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含最小值
                         if (readtyps.Contains("3"))
@@ -450,13 +428,6 @@ namespace YYOPInspectionClient
                             keyboardTitleDic.Add(measure_item_code + "_MinB_Value", measure_item_name + "最小值B端(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MinA_Value", tbMinA);
                             controlTxtDir.Add(measure_item_code + "_MinB_Value", tbMinB);
-                            //为TextBox绑定鼠标事件
-                            tbMinA.Enter += new EventHandler(txt_Enter);
-                            tbMinA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMinA.Leave += new EventHandler(txt_Leave);
-                            tbMinB.Enter += new EventHandler(txt_Enter);
-                            tbMinB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMinB.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含均值
                         if (readtyps.Contains("4"))
@@ -474,13 +445,6 @@ namespace YYOPInspectionClient
                             keyboardTitleDic.Add(measure_item_code + "_AvgB", measure_item_name + "均值B端(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_AvgA", tbAvgA);
                             controlTxtDir.Add(measure_item_code + "_AvgB", tbAvgB);
-                            //为TextBox绑定鼠标事件
-                            tbAvgA.Enter += new EventHandler(txt_Enter);
-                            tbAvgA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbAvgA.Leave += new EventHandler(txt_Leave);
-                            tbAvgB.Enter += new EventHandler(txt_Enter);
-                            tbAvgB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbAvgB.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含椭圆度
                         if (readtyps.Contains("5"))
@@ -506,13 +470,6 @@ namespace YYOPInspectionClient
                             }
                             controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
                             controlTxtDir.Add(measure_item_code + "_OvalityB", tbOvalityB);
-                            //为TextBox绑定鼠标事件
-                            tbOvalityA.Enter += new EventHandler(txt_Enter);
-                            tbOvalityA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbOvalityA.Leave += new EventHandler(txt_Leave);
-                            tbOvalityB.Enter += new EventHandler(txt_Enter);
-                            tbOvalityB.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbOvalityB.Leave += new EventHandler(txt_Leave);
                         }
                     }
                     //一端测量
@@ -534,10 +491,6 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(tbA);
                             keyboardTitleDic.Add(measure_item_code + "_A_Value", measure_item_name + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_A_Value", tbA);
-                            //为TextBox绑定鼠标事件
-                            tbA.Enter += new EventHandler(txt_Enter);
-                            tbA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbA.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含最大值
                         if (readtyps.Contains("2"))
@@ -550,10 +503,6 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(tbMaxA);
                             keyboardTitleDic.Add(measure_item_code + "_MaxA_Value", measure_item_name + "最大值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MaxA_Value", tbMaxA);
-                            //为TextBox绑定鼠标事件
-                            tbMaxA.Enter += new EventHandler(txt_Enter);
-                            tbMaxA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMaxA.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含最小值
                         if (readtyps.Contains("3"))
@@ -566,10 +515,6 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(tbMinA);
                             keyboardTitleDic.Add(measure_item_code + "_MinA_Value", measure_item_name + "最小值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_MinA_Value", tbMinA);
-                            //为TextBox绑定鼠标事件
-                            tbMinA.Enter += new EventHandler(txt_Enter);
-                            tbMinA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbMinA.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含均值
                         if (readtyps.Contains("4"))
@@ -582,10 +527,6 @@ namespace YYOPInspectionClient
                             pnlMeasureValue.Controls.Add(tbAvgA);
                             keyboardTitleDic.Add(measure_item_code + "_AvgA", measure_item_name + "均值" + "(" + txt + ")");
                             controlTxtDir.Add(measure_item_code + "_AvgA", tbAvgA);
-                            //为TextBox绑定鼠标事件
-                            tbAvgA.Enter += new EventHandler(txt_Enter);
-                            tbAvgA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbAvgA.Leave += new EventHandler(txt_Leave);
                         }
                         //该测量项包含椭圆度
                         if (readtyps.Contains("5"))
@@ -605,15 +546,12 @@ namespace YYOPInspectionClient
                                 keyboardTitleDic.Add(measure_item_code + "_OvalityA", measure_item_name + "椭圆度");
                             }
                             controlTxtDir.Add(measure_item_code + "_OvalityA", tbOvalityA);
-                            //为TextBox绑定鼠标事件
-                            tbOvalityA.Enter += new EventHandler(txt_Enter);
-                            tbOvalityA.MouseDown += new MouseEventHandler(txt_MouseDown);
-                            tbOvalityA.Leave += new EventHandler(txt_Leave);
                         }
                     }
                     this.flpTabTwoContent.Controls.Add(pnlMeasureValue);
                 }
             }
+            BindMouseEvent();
         }
         #endregion
 
@@ -731,6 +669,18 @@ namespace YYOPInspectionClient
             catch (Exception ex)
             {
                 MessagePrompt.Show("初始化测量数据时出错,错误信息:" + ex.Message);
+            }
+        }
+        #endregion
+
+        #region 为输入框绑定事件
+        public void BindMouseEvent()
+        {
+            foreach (TextBox item in controlTxtDir.Values)
+            {
+                item.Enter += new EventHandler(txt_Enter);
+                item.MouseDown += new MouseEventHandler(txt_MouseDown);
+                item.Leave += new EventHandler(txt_Leave);
             }
         }
         #endregion

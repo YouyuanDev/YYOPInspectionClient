@@ -142,7 +142,6 @@ namespace YYOPInspectionClient
                 {
                     Textbox_display.Text = "0";
                 }
-
             }
             //鼠标焦点所在的TextBox控件不为空
             if (inputTxt != null)
@@ -158,6 +157,10 @@ namespace YYOPInspectionClient
                     //如果鼠标焦点所在的TextBox控件名称为空
                     if (string.IsNullOrWhiteSpace(inputTxtName))
                     {
+                        return;
+                    }
+                    //判断输入的内容是否为数字
+                    if (!CommonUtil.IsNumeric(inputTxt.Text)) {
                         return;
                     }
                     //当前输入框得类型,0代表时最大值、最小值和均值，1代表椭圆度
@@ -194,10 +197,12 @@ namespace YYOPInspectionClient
                     Dictionary<string, string> dic = null;
                     if (flag == 0)
                     {
-                        dic = ThreadingForm.measureInfoDic[inputTxtName];
+                        if(ThreadingForm.measureInfoDic.ContainsKey(inputTxtName))
+                           dic = ThreadingForm.measureInfoDic[inputTxtName];
                     }
                     else if (flag == 1) {
-                        dic = DetailForm.measureInfoDic[inputTxtName];
+                        if(DetailForm.measureInfoDic.ContainsKey(inputTxtName))
+                           dic = DetailForm.measureInfoDic[inputTxtName];
                     }
                     if (dic != null)
                     {
@@ -213,7 +218,7 @@ namespace YYOPInspectionClient
                     if (!string.IsNullOrWhiteSpace(inputTxt.Text.Trim())) {
                         txtVal = Convert.ToSingle(inputTxt.Text.Trim());
                     }
-                    if (maxVal - minVal > 0 && txtVal!=float.MaxValue)
+                    if (txtVal!=float.MaxValue)
                     {
                         //如果输入法输入的值不符合标准
                         if (txtVal < minVal || txtVal > maxVal)
@@ -259,35 +264,65 @@ namespace YYOPInspectionClient
                           tbAvgOfB = null, tbOvalityB = null;
                     if (flag == 0)
                     {
-                        txtMaxOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
-                        txtMaxOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
-                        txtMinOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MinA_Value"];
-                        txtMinOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MinB_Value"];
-                        tbAvgOfA =  ThreadingForm.controlTxtDir[inputTxtName + "_AvgA"];
-                        tbAvgOfB = ThreadingForm.controlTxtDir[inputTxtName + "_AvgB"];
-                        tbOvalityA = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityA"];
-                        tbOvalityB = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityB"];
+                        if(ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxA_Value"))
+                          txtMaxOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxB_Value"))
+                            txtMaxOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_MinA_Value"))
+                            txtMinOfA = ThreadingForm.controlTxtDir[inputTxtName + "_MinA_Value"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_MinB_Value"))
+                            txtMinOfB = ThreadingForm.controlTxtDir[inputTxtName + "_MinB_Value"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgA"))
+                            tbAvgOfA =  ThreadingForm.controlTxtDir[inputTxtName + "_AvgA"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgB"))
+                            tbAvgOfB = ThreadingForm.controlTxtDir[inputTxtName + "_AvgB"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityA"))
+                            tbOvalityA = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityA"];
+                        if (ThreadingForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityB"))
+                            tbOvalityB = ThreadingForm.controlTxtDir[inputTxtName + "_OvalityB"];
                     }
                     else if (flag == 1) {
-                        txtMaxOfA = DetailForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
-                        txtMaxOfB = DetailForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
-                        txtMinOfA = DetailForm.controlTxtDir[inputTxtName + "_MinA_Value"];
-                        txtMinOfB = DetailForm.controlTxtDir[inputTxtName + "_MinB_Value"];
-                        tbAvgOfA = DetailForm.controlTxtDir[inputTxtName + "_AvgA"];
-                        tbAvgOfB = DetailForm.controlTxtDir[inputTxtName + "_AvgB"];
-                        tbOvalityA = DetailForm.controlTxtDir[inputTxtName + "_OvalityA"];
-                        tbOvalityB = DetailForm.controlTxtDir[inputTxtName + "_OvalityB"];
+                        if(DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxA_Value"))
+                          txtMaxOfA = DetailForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxB_Value"))
+                            txtMaxOfB = DetailForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MinA_Value"))
+                            txtMinOfA = DetailForm.controlTxtDir[inputTxtName + "_MinA_Value"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MinB_Value"))
+                            txtMinOfB = DetailForm.controlTxtDir[inputTxtName + "_MinB_Value"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgA"))
+                            tbAvgOfA = DetailForm.controlTxtDir[inputTxtName + "_AvgA"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgB"))
+                            tbAvgOfB = DetailForm.controlTxtDir[inputTxtName + "_AvgB"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityA"))
+                            tbOvalityA = DetailForm.controlTxtDir[inputTxtName + "_OvalityA"];
+                        if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityB"))
+                            tbOvalityB = DetailForm.controlTxtDir[inputTxtName + "_OvalityB"];
                     }
                     //判断输入的数值是否合理
                     bool reasonableFlag = false;
                     switch (tbType) {
                         case 0:
-                            if (maxVal * 10 < txtVal)
-                                reasonableFlag = true;
+                            if (maxVal != 0)
+                            {
+                                if (maxVal * 10 < txtVal)
+                                    reasonableFlag = true;
+                            }
+                            else {
+                                if (txtVal > 10 || txtVal < -10)
+                                    reasonableFlag = true;
+                            }
                             break;
                         case 1:
-                            if (maxOvality > 0 && maxOvality * 10 < txtVal)
-                                reasonableFlag = true;
+                            if (maxOvality != 0) {
+                                if (maxOvality > 0 && maxOvality * 10 < txtVal)
+                                    reasonableFlag = true;
+                            }
+                            else
+                            {
+                                if (maxOvality+10<txtVal)
+                                    reasonableFlag = true;
+                            }
                             break;
                     }
                     if (reasonableFlag)
@@ -338,10 +373,12 @@ namespace YYOPInspectionClient
                         //如果显示椭圆度的label控件存在
                         if (tbOvalityA != null)
                         {
+                            float ovality = float.MaxValue;
                             //计算该测量项的椭圆度
-                            float ovality = (Convert.ToSingle(txtMaxOfA.Text) - Convert.ToSingle(txtMinOfA.Text)) / sdVal;
+                            if (sdVal!=0)
+                              ovality = (Convert.ToSingle(txtMaxOfA.Text) - Convert.ToSingle(txtMinOfA.Text)) / sdVal;
                             //如果该测量项A端椭圆度不符合标准
-                            if (ovality > maxOvality || ovality < 0)
+                            if ((ovality > maxOvality || ovality < 0)&&ovality!=float.MaxValue)
                             {
                                 //同上
                                 tbOvalityA.BackColor = Color.LightCoral;
@@ -417,8 +454,10 @@ namespace YYOPInspectionClient
                         //判断椭圆度是否满足要求
                         if (tbOvalityB != null)
                         {
-                            float ovality = (Convert.ToSingle(txtMaxOfB.Text) - Convert.ToSingle(txtMinOfB.Text)) / sdVal;
-                            if (ovality > maxOvality || ovality < 0)
+                            float ovality = float.MaxValue;
+                            if(sdVal!=0)
+                               ovality = (Convert.ToSingle(txtMaxOfB.Text) - Convert.ToSingle(txtMinOfB.Text)) / sdVal;
+                            if ((ovality > maxOvality || ovality < 0)&&ovality!=float.MaxValue)
                             {
                                 tbOvalityB.BackColor = Color.LightCoral;
                                 if (flag == 0)
@@ -618,9 +657,11 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 窗体关闭前事件
         private void NumberKeyboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-        }
+            e.Cancel = true;//阻止窗体释放
+        } 
+        #endregion
     }
 }
