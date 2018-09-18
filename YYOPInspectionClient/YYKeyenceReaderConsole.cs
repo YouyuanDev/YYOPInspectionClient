@@ -228,9 +228,15 @@ namespace YYOPInspectionClient
         #region 打印读码器内容
         private static void setLogText(string str)
         {
-            myselfForm.textBox_LogConsole.AppendText(str);
-            myselfForm.textBox_LogConsole.AppendText("\r\n");
-            myselfForm.textBox_LogConsole.Update();
+            try {
+                myselfForm.textBox_LogConsole.AppendText(str);
+                myselfForm.textBox_LogConsole.AppendText("\r\n");
+                myselfForm.textBox_LogConsole.Update();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
         #endregion
 
@@ -533,53 +539,61 @@ namespace YYOPInspectionClient
         #region 更新TextBox内容
         private static void UpdateTextBox(Object form, string message)
         {
-            //目前读码器读出的数据格式一般分为两种,一种时读出的量具编号,另一种时接箍编号、炉号、批号的拼接(空格拼接)
-            //如果当前读码器读出的是量具编号
-            if (ThreadingForm.isMeasuringToolTabSelected)
+            try
             {
+                //目前读码器读出的数据格式一般分为两种,一种时读出的量具编号,另一种时接箍编号、炉号、批号的拼接(空格拼接)
+                //如果当前读码器读出的是量具编号
+                if (ThreadingForm.isMeasuringToolTabSelected)
+                {
+                    //判断是否是跨线程访问控件
+                    if (AlphabetKeyboardForm.getForm().Textbox_display.InvokeRequired)
+                    {
+                        UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                        AlphabetKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)AlphabetKeyboardForm.getForm(), message });
+                    }
+                    else
+                    {
+                        //设置英文输入法中输入的内容为读码器读出的内容
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = message;
+                    }
+                    return;
+                }
+                //将读码器读出的数据以空格分隔
+                strArr = Regex.Split(message, "\\s+");
+                //如果读码器读接箍内容则读出的数据格式目前如:"12323 43434 5454 5454"
+                if (strArr.Length > 3)
+                {
+                    argHeatNo = strArr[1];//炉号
+                    argBatchNo = strArr[2];//批号
+                    argCoupingNo = strArr[3];//接箍编号
+                }
                 //判断是否是跨线程访问控件
-                if (AlphabetKeyboardForm.getForm().Textbox_display.InvokeRequired)
+                if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
                 {
                     UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                    AlphabetKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)AlphabetKeyboardForm.getForm(), message });
+                    //设置表单上接箍编号、炉号、批号控件内容
+                    if (!string.IsNullOrWhiteSpace(argCoupingNo))
+                        ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                    if (!string.IsNullOrWhiteSpace(argHeatNo))
+                        ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                    if (!string.IsNullOrWhiteSpace(argBatchNo))
+                        ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
                 }
                 else
                 {
-                    //设置英文输入法中输入的内容为读码器读出的内容
-                    AlphabetKeyboardForm.getForm().Textbox_display.Text = message;
+                    //设置表单上接箍编号、炉号、批号控件内容
+                    if (!string.IsNullOrWhiteSpace(argCoupingNo))
+                        ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo;
+                    if (!string.IsNullOrWhiteSpace(argHeatNo))
+                        ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo;
+                    if (!string.IsNullOrWhiteSpace(argBatchNo))
+                        ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo;
                 }
-                return;
+
             }
-            //将读码器读出的数据以空格分隔
-            strArr = Regex.Split(message, "\\s+");
-            //如果读码器读接箍内容则读出的数据格式目前如:"12323 43434 5454 5454"
-            if (strArr.Length > 3)
+            catch (Exception ex)
             {
-                argHeatNo = strArr[1];//炉号
-                argBatchNo = strArr[2];//批号
-                argCoupingNo = strArr[3];//接箍编号
-            }
-            //判断是否是跨线程访问控件
-            if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
-            {
-                UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                //设置表单上接箍编号、炉号、批号控件内容
-                if (!string.IsNullOrWhiteSpace(argCoupingNo))
-                    ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
-                if (!string.IsNullOrWhiteSpace(argHeatNo))
-                    ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
-                if (!string.IsNullOrWhiteSpace(argBatchNo))
-                    ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
-            }
-            else
-            {
-                //设置表单上接箍编号、炉号、批号控件内容
-                if (!string.IsNullOrWhiteSpace(argCoupingNo))
-                    ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo;
-                if (!string.IsNullOrWhiteSpace(argHeatNo))
-                    ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo;
-                if (!string.IsNullOrWhiteSpace(argBatchNo))
-                    ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo;
+
             }
         }
         #endregion
@@ -587,22 +601,29 @@ namespace YYOPInspectionClient
         #region 向显示读码器读出数据的显示框追加内容
         private void SetText(string text)
         {
-            //判断控件是否在另一个线程中,如果在跨线程访问控件
-            if (this.textbox_DataConsole.InvokeRequired)
+            try
             {
-                //创建委托实例
-                SetTextCallback d = new SetTextCallback(SetText);
-                //调用控件的Invoke方法(Invoke方法会顺着控件树向上搜索，直到找到创建控件的那个线程（通常是主线程），然后进入那个线程改变控件的外观，确保不发生线程冲突)
-                this.textbox_DataConsole.Invoke(d, new object[] { text });
+                //判断控件是否在另一个线程中,如果在跨线程访问控件
+                if (this.textbox_DataConsole.InvokeRequired)
+                {
+                    //创建委托实例
+                    SetTextCallback d = new SetTextCallback(SetText);
+                    //调用控件的Invoke方法(Invoke方法会顺着控件树向上搜索，直到找到创建控件的那个线程（通常是主线程），然后进入那个线程改变控件的外观，确保不发生线程冲突)
+                    this.textbox_DataConsole.Invoke(d, new object[] { text });
+                }
+                else//如果不是跨线程访问则直接操作控件
+                {
+                    //向textbox_DataConsole(显示读码器读出数据的控件)追加内容
+                    this.textbox_DataConsole.AppendText(text);
+                    //textbox_DataConsole内容换行
+                    this.textbox_DataConsole.AppendText("\r\n");
+                    //textbox_DataConsole内容刷新
+                    this.textbox_DataConsole.Refresh();
+                }
             }
-            else//如果不是跨线程访问则直接操作控件
+            catch (Exception ex)
             {
-                //向textbox_DataConsole(显示读码器读出数据的控件)追加内容
-                this.textbox_DataConsole.AppendText(text);
-                //textbox_DataConsole内容换行
-                this.textbox_DataConsole.AppendText("\r\n");
-                //textbox_DataConsole内容刷新
-                this.textbox_DataConsole.Refresh();
+
             }
         }
         #endregion
@@ -610,16 +631,23 @@ namespace YYOPInspectionClient
         #region 向显示读码器读出数据的显示框追加内容(静态方法)
         private static void SetTextTwo(string text)
         {
-            if (myselfForm.textbox_DataConsole.InvokeRequired)
+            try
             {
-                SetTextCallback d = new SetTextCallback(SetTextTwo);
-                myselfForm.textbox_DataConsole.Invoke(d, new object[] { text });
+                if (myselfForm.textbox_DataConsole.InvokeRequired)
+                {
+                    SetTextCallback d = new SetTextCallback(SetTextTwo);
+                    myselfForm.textbox_DataConsole.Invoke(d, new object[] { text });
+                }
+                else
+                {
+                    myselfForm.textbox_DataConsole.AppendText(text);
+                    myselfForm.textbox_DataConsole.AppendText("\r\n");
+                    myselfForm.textbox_DataConsole.Refresh();
+                }
             }
-            else
+            catch(Exception e)
             {
-                myselfForm.textbox_DataConsole.AppendText(text);
-                myselfForm.textbox_DataConsole.AppendText("\r\n");
-                myselfForm.textbox_DataConsole.Refresh();
+
             }
         } 
         #endregion

@@ -710,12 +710,14 @@
             // btnBrowseVideo
             // 
             this.btnBrowseVideo.AutoSize = true;
+            this.btnBrowseVideo.BackColor = System.Drawing.Color.Transparent;
+            this.btnBrowseVideo.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnBrowseVideo.Location = new System.Drawing.Point(1045, 7);
             this.btnBrowseVideo.Name = "btnBrowseVideo";
             this.btnBrowseVideo.Size = new System.Drawing.Size(146, 37);
             this.btnBrowseVideo.TabIndex = 1;
             this.btnBrowseVideo.Text = "浏览视频";
-            this.btnBrowseVideo.UseVisualStyleBackColor = true;
+            this.btnBrowseVideo.UseVisualStyleBackColor = false;
             this.btnBrowseVideo.Click += new System.EventHandler(this.btnBrowseVideo_Click);
             // 
             // lblDetailFormTitle

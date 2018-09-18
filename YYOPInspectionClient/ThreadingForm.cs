@@ -624,11 +624,11 @@ namespace YYOPInspectionClient
                     else
                     {
                         //TextBox控件用于存放测量项A端值、最大值、最小值、均值、椭圆度
-                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value" };
-                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value" };
-                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value" };
-                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA" };
-                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA" };
+                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value", Width = 70 };
+                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value", Width = 70 };
+                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value", Width = 70 };
+                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA", Width = 70 };
+                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA", Width = 70 };
                         List<Label> lblList = new List<Label>();
                         List<TextBox> tbAList = new List<TextBox>();
                         //该测量项包含单值
@@ -1420,13 +1420,12 @@ namespace YYOPInspectionClient
         #region 判断接箍编号是否存在和视频录像是否启动
         private bool IsHaveCoupingNoAndStartRecordVideo()
         {
-            return true;
-            //bool flag = false;
-            //if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && button2.Text.Contains("结束录制"))
-            //{
-            //    flag = true;
-            //}
-            //return flag;
+            bool flag = false;
+            if (!string.IsNullOrWhiteSpace(this.txtCoupingNo.Text) && button2.Text.Contains("结束录制"))
+            {
+                flag = true;
+            }
+            return flag;
         }
         #endregion
 
@@ -1520,39 +1519,38 @@ namespace YYOPInspectionClient
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //如果切换到输入测量工具编号tab
-            //if (this.tabControl1.SelectedIndex == 0)
-            //{
-            //    isMeasuringToolTabSelected = true;
-            //}
-            //else
-            //{
-            //    //否则判断是否选择了以下内容
-            //    if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
-            //    {
-            //        this.tabControl1.SelectedIndex = 0;
-            //        MessagePrompt.Show("请选择合同号!");
-            //    }
-            //    else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text))
-            //    {
-            //        this.tabControl1.SelectedIndex = 0;
-            //        MessagePrompt.Show("请选择班别!");
-            //    }
-            //    else if (string.IsNullOrWhiteSpace(cmbProductionShift.Text))
-            //    {
-            //        this.tabControl1.SelectedIndex = 0;
-            //        MessagePrompt.Show("请选择班次!");
-            //    }
-            //    else if (JudgeMeasureToolsNoIsNull())
-            //    {
-            //        this.tabControl1.SelectedIndex = 0;
-            //        MessagePrompt.Show("存在没有输入的量具编号!");
-            //    }
-            //    else
-            //    {
-            //        isMeasuringToolTabSelected = false;
-            //    }
-            //}
-
+            if (this.tabControl1.SelectedIndex == 0)
+            {
+                isMeasuringToolTabSelected = true;
+            }
+            else
+            {
+                //否则判断是否选择了以下内容
+                if (string.IsNullOrWhiteSpace(cmbContractNo.Text))
+                {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("请选择合同号!");
+                }
+                else if (string.IsNullOrWhiteSpace(cmbProductionCrew.Text))
+                {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("请选择班别!");
+                }
+                else if (string.IsNullOrWhiteSpace(cmbProductionShift.Text))
+                {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("请选择班次!");
+                }
+                else if (JudgeMeasureToolsNoIsNull())
+                {
+                    this.tabControl1.SelectedIndex = 0;
+                    MessagePrompt.Show("存在没有输入的量具编号!");
+                }
+                else
+                {
+                    isMeasuringToolTabSelected = false;
+                }
+            }
         }
         #endregion
 
@@ -1560,11 +1558,8 @@ namespace YYOPInspectionClient
         public bool JudgeMeasureToolsNoIsNull()
         {
             bool flag = false;
-            List<TextBox> list = new List<TextBox>();
-            //遍历tab中所有的输入框，然后保存到list集合中
-            GoThroughControlsMeasureInput(flpTabOneContent, list);
             //遍历list集合，如果每一个输入框值都不为空返回true,否则返回false
-            foreach (TextBox tb in list)
+            foreach (TextBox tb in flpTabOneTextBoxList)
             {
                 if (string.IsNullOrWhiteSpace(tb.Text))
                     flag = true;
@@ -1573,31 +1568,6 @@ namespace YYOPInspectionClient
         }
 
         
-        #endregion
-
-        #region 遍历量具编号输入框，判断是否输入量具编号
-        private void GoThroughControlsMeasureInput(Control parContainer, List<TextBox> txtList)
-        {
-            for (int index = 0; index < parContainer.Controls.Count; index++)
-            {
-                // 如果是容器类控件，递归调用自己
-                if (parContainer.Controls[index].HasChildren)
-                {
-                    GoThroughControlsMeasureInput(parContainer.Controls[index], txtList);
-                }
-                else
-                {
-                    switch (parContainer.Controls[index].GetType().Name)
-                    {
-                        case "TextBox":
-                            txtList.Add((TextBox)parContainer.Controls[index]);
-                            break;
-                    }
-                }
-            }
-        }
-
-
         #endregion
 
         #region 3支全检
@@ -1716,7 +1686,7 @@ namespace YYOPInspectionClient
                 }
             }
             if (!string.IsNullOrWhiteSpace(flag))
-                flag += "不能为必填项!";
+                flag += "为必填项!";
             return flag;
         }
         #endregion

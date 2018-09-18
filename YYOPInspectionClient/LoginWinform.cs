@@ -116,6 +116,7 @@ namespace YYOPInspectionClient
                                 Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
                                 IndexWindow.getForm().Show();
                                 this.Hide();
+                                NumberKeyboardForm.getForm().Hide();
                                 AlphabetKeyboardForm.getForm().Hide();
                             }
                             else

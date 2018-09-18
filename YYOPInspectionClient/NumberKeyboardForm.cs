@@ -367,7 +367,7 @@ namespace YYOPInspectionClient
                                 }
                                
                             }
-                            tbAvgOfA.Text = Convert.ToString(Math.Round(avg, 2));
+                            tbAvgOfA.Text = Convert.ToString(Math.Round(avg, 3));
                         }
                         //获取该测量项显示椭圆度的TextBox控件
                         //如果显示椭圆度的label控件存在
@@ -406,7 +406,7 @@ namespace YYOPInspectionClient
                                 }
                                
                             }
-                            tbOvalityA.Text = Convert.ToString(Math.Round(ovality, 2));
+                            tbOvalityA.Text = Convert.ToString(Math.Round(ovality, 3));
                         }
                     }
                     //同上
@@ -449,7 +449,7 @@ namespace YYOPInspectionClient
                                 }
                                
                             }
-                            tbAvgOfB.Text = Convert.ToString(Math.Round(avg, 2));
+                            tbAvgOfB.Text = Convert.ToString(Math.Round(avg, 3));
                         }
                         //判断椭圆度是否满足要求
                         if (tbOvalityB != null)
@@ -486,13 +486,13 @@ namespace YYOPInspectionClient
                                         DetailForm.qualifiedList[inputTxtName] = true;
                                 }
                             }
-                            tbOvalityB.Text = Convert.ToString(Math.Round(ovality, 2));
+                            tbOvalityB.Text = Convert.ToString(Math.Round(ovality, 3));
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("英文键盘回车时出错,错误信息:" + ex.Message);
+                    //Console.WriteLine("英文键盘回车时出错,错误信息:" + ex.Message);
                 }
                 finally //跳转到下一个输入框
                 {

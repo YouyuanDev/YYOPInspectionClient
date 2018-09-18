@@ -76,10 +76,7 @@ namespace YYOPInspectionClient
                         MainWindow.getForm().btnLogin_Click(null, null);
                     if (MainWindow.recordStatus == 1)
                         MainWindow.getForm().btnPreview_Click_1(null, null);
-                    //初始化英文输入法
-                    AlphabetKeyboardForm.getForm();
                     //初始化读码器窗体
-                    YYKeyenceReaderConsole.getForm().Show();
                     YYKeyenceReaderConsole.getForm().Hide();
                     //连接读码器
                     if(YYKeyenceReaderConsole.readerStatus==0)

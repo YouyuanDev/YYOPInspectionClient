@@ -488,11 +488,11 @@ namespace YYOPInspectionClient
                     else
                     {
                         //TextBox控件用于存放测量项A端值、最大值、最小值、均值、椭圆度
-                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value" };
-                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value" };
-                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value" };
-                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA" };
-                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA" };
+                        TextBox tbA = new TextBox { Tag = "Number", Name = measure_item_code + "_A_Value",Width=70 };
+                        TextBox tbMaxA = new TextBox { Tag = "Number", Name = measure_item_code + "_MaxA_Value", Width = 70 };
+                        TextBox tbMinA = new TextBox { Tag = "Number", Name = measure_item_code + "_MinA_Value", Width = 70 };
+                        TextBox tbAvgA = new TextBox { Tag = "Number", Name = measure_item_code + "_AvgA", Width = 70 };
+                        TextBox tbOvalityA = new TextBox { Tag = "Number", Name = measure_item_code + "_OvalityA", Width = 70 };
                         List<Label> lblList = new List<Label>();
                         List<TextBox> tbAList = new List<TextBox>();
                         //该测量项包含单值
@@ -1233,16 +1233,19 @@ namespace YYOPInspectionClient
                     inputTxtName = inputTxtName.Replace("_OvalityB", "");
                 //找到该测量项的值范围、和椭圆度最大值
                 float maxVal = 0, minVal = 0, txtVal = 0, maxOvality = 0, sdVal = 0;
-                Dictionary<string, string> dic = DetailForm.measureInfoDic[inputTxtName];
+                Dictionary<string, string> dic = null;
+                if(DetailForm.measureInfoDic.ContainsKey(inputTxtName))
+                    dic = DetailForm.measureInfoDic[inputTxtName];
                 if (dic != null)
                 {
-                    if (CommonUtil.IsNumeric(Convert.ToString(dic["item_max_value"])))
+                    
+                    if (dic.ContainsKey("item_max_value") &&CommonUtil.IsNumeric(Convert.ToString(dic["item_max_value"])))
                         maxVal = Convert.ToSingle(dic["item_max_value"]);
-                    if (CommonUtil.IsNumeric(Convert.ToString(dic["item_min_value"])))
+                    if (dic.ContainsKey("item_min_value") && CommonUtil.IsNumeric(Convert.ToString(dic["item_min_value"])))
                         minVal = Convert.ToSingle(dic["item_min_value"]);
-                    if (CommonUtil.IsNumeric(Convert.ToString(dic["ovality_max"])))
+                    if (dic.ContainsKey("ovality_max") && CommonUtil.IsNumeric(Convert.ToString(dic["ovality_max"])))
                         maxOvality = Convert.ToSingle(dic["ovality_max"]);
-                    if (CommonUtil.IsNumeric(Convert.ToString(dic["item_std_value"])))
+                    if (dic.ContainsKey("item_std_value") && CommonUtil.IsNumeric(Convert.ToString(dic["item_std_value"])))
                         sdVal = Convert.ToSingle(dic["item_std_value"]);
                 }
                 if (maxVal - minVal > 0 && !string.IsNullOrWhiteSpace(inputTxt.Text.Trim()))
@@ -1270,14 +1273,22 @@ namespace YYOPInspectionClient
                 //找到该测量项A端、B端最大值、最小值，然后判断是否存在均值和椭圆度
                 TextBox txtMaxOfA = null, txtMaxOfB = null, txtMinOfA = null, txtMinOfB = null, tbAvgOfA = null, tbOvalityA = null,
                       tbAvgOfB = null, tbOvalityB = null;
-                txtMaxOfA = DetailForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
-                txtMaxOfB = DetailForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
-                txtMinOfA = DetailForm.controlTxtDir[inputTxtName + "_MinA_Value"];
-                txtMinOfB = DetailForm.controlTxtDir[inputTxtName + "_MinB_Value"];
-                tbAvgOfA = DetailForm.controlTxtDir[inputTxtName + "_AvgA"];
-                tbAvgOfB = DetailForm.controlTxtDir[inputTxtName + "_AvgB"];
-                tbOvalityA = DetailForm.controlTxtDir[inputTxtName + "_OvalityA"];
-                tbOvalityB = DetailForm.controlTxtDir[inputTxtName + "_OvalityB"];
+                if(DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxA_Value"))
+                  txtMaxOfA = DetailForm.controlTxtDir[inputTxtName + "_MaxA_Value"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MaxB_Value"))
+                    txtMaxOfB = DetailForm.controlTxtDir[inputTxtName + "_MaxB_Value"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MinA_Value"))
+                    txtMinOfA = DetailForm.controlTxtDir[inputTxtName + "_MinA_Value"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_MinB_Value"))
+                    txtMinOfB = DetailForm.controlTxtDir[inputTxtName + "_MinB_Value"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgA"))
+                    tbAvgOfA = DetailForm.controlTxtDir[inputTxtName + "_AvgA"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_AvgB"))
+                    tbAvgOfB = DetailForm.controlTxtDir[inputTxtName + "_AvgB"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityA"))
+                    tbOvalityA = DetailForm.controlTxtDir[inputTxtName + "_OvalityA"];
+                if (DetailForm.controlTxtDir.ContainsKey(inputTxtName + "_OvalityB"))
+                    tbOvalityB = DetailForm.controlTxtDir[inputTxtName + "_OvalityB"];
                 //如果测量项A端最大值、最小值不为空
                 if (txtMaxOfA != null && !string.IsNullOrWhiteSpace(txtMaxOfA.Text)
                     && txtMinOfA != null && !string.IsNullOrWhiteSpace(txtMinOfA.Text))
