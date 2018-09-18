@@ -230,7 +230,7 @@ namespace YYOPInspectionClient
         #region 关闭登录窗体事件
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Environment.Exit(0);
         }
         #endregion
     }

@@ -187,7 +187,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessagePrompt.Show("获取查询条件时出错,错误原因:" + e.Message);
+                //MessagePrompt.Show("获取查询条件时出错,错误原因:" + e.Message);
             }
         }
         #endregion
@@ -258,7 +258,6 @@ namespace YYOPInspectionClient
             catch (Exception e)
             {
                 //throw e;
-                Console.WriteLine("获取检验记录时失败......" + e.Message);
             }
 
         }

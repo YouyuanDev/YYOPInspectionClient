@@ -167,20 +167,34 @@ namespace YYOPInspectionClient
                 TextBox tb = null;int index = 0;
                 if (flag == 0)
                 {
-                    index =ThreadingForm.flpTabOneTextBoxList.IndexOf(inputTxt);
-                    if (index < ThreadingForm.flpTabOneTextBoxList.Count - 1)
-                        index++;
-                    //设置鼠标焦点在控件集合索引为index的控件上
-                    tb = ThreadingForm.flpTabOneTextBoxList[index];
+                    if (ThreadingForm.flpTabOneTextBoxList != null) {
+                        index = ThreadingForm.flpTabOneTextBoxList.IndexOf(inputTxt);
+                        if (index != -1)
+                        {
+                            if (index < ThreadingForm.flpTabOneTextBoxList.Count - 1)
+                                index++;
+                            //设置鼠标焦点在控件集合索引为index的控件上
+                            if (ThreadingForm.flpTabOneTextBoxList.Count > 0)
+                                tb = ThreadingForm.flpTabOneTextBoxList[index];
+                        }
+                    }
                 }
                 else if (flag == 1) {
-                    index = DetailForm.flpTabOneTextBoxList.IndexOf(inputTxt);
-                    if (index < DetailForm.flpTabOneTextBoxList.Count - 1)
-                        index++;
-                    //设置鼠标焦点在控件集合索引为index的控件上
-                    tb = DetailForm.flpTabOneTextBoxList[index];
+                    if (DetailForm.flpTabOneTextBoxList != null)
+                    {
+                        index = DetailForm.flpTabOneTextBoxList.IndexOf(inputTxt);
+                        if (index != -1)
+                        {
+                            if (index < DetailForm.flpTabOneTextBoxList.Count - 1)
+                                index++;
+                            //设置鼠标焦点在控件集合索引为index的控件上
+                            if (DetailForm.flpTabOneTextBoxList.Count > 0)
+                                tb = DetailForm.flpTabOneTextBoxList[index];
+                        }
+                    }
                 }
-                tb.Focus();
+                if(tb!=null)
+                   tb.Focus();
             }
             catch (Exception ex)
             {

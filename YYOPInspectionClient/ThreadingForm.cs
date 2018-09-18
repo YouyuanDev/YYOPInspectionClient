@@ -258,7 +258,6 @@ namespace YYOPInspectionClient
                     else
                     {
                         JObject jo = (JObject)JsonConvert.DeserializeObject(rowsJson);
-                        Console.WriteLine(jo);
                         //获取合同信息
                         string contractInfo = jo["contractInfo"].ToString();
                         //获取测量信息
@@ -287,6 +286,8 @@ namespace YYOPInspectionClient
                 {
                     //清理集合元素
                     ClearCntrValue(this);
+                    flpTabOneContent.Controls.Clear();
+                    flpTabTwoContent.Controls.Clear();
                     flpTabOneTextBoxList.Clear();
                     flpTabTwoTextBoxList.Clear();
                     measureItemCodeList.Clear();

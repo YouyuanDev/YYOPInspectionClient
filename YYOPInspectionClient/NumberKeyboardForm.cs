@@ -500,16 +500,30 @@ namespace YYOPInspectionClient
                     TextBox tb = null;int index =0;
                     if (flag == 0)
                     {
-                        index =ThreadingForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
-                        if (index < ThreadingForm.flpTabTwoTextBoxList.Count - 1)
-                            index++;
-                        tb = ThreadingForm.flpTabTwoTextBoxList[index];
+                        if (ThreadingForm.flpTabTwoTextBoxList != null)
+                        {
+                            index = ThreadingForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
+                            if (index != -1)
+                            {
+                                if (index < ThreadingForm.flpTabTwoTextBoxList.Count - 1)
+                                    index++;
+                                if (ThreadingForm.flpTabTwoTextBoxList.Count > 0)
+                                    tb = ThreadingForm.flpTabTwoTextBoxList[index];
+                            }
+                        }
                     }
                     else if (flag == 1) {
-                        index = DetailForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
-                        if (index < DetailForm.flpTabTwoTextBoxList.Count - 1)
-                            index++;
-                        tb = DetailForm.flpTabTwoTextBoxList[index];
+                        if (DetailForm.flpTabTwoTextBoxList != null)
+                        {
+                            index = DetailForm.flpTabTwoTextBoxList.IndexOf(inputTxt);
+                            if (index != -1)
+                            {
+                                if (index < DetailForm.flpTabTwoTextBoxList.Count - 1)
+                                    index++;
+                                if (DetailForm.flpTabTwoTextBoxList.Count > 0)
+                                    tb = DetailForm.flpTabTwoTextBoxList[index];
+                            }
+                        }
                     }
                     //设置鼠标焦点在控件集合索引为index的控件上
                     if (tb != null)

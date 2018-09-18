@@ -879,6 +879,7 @@ namespace YYOPInspectionClient
         #region 表单提交
         private void ThreadFormSubmit()
         {
+            bool isSuccess = false;
             try
             {
                 //一条item_record检验记录包括(检测项编码、最大值、最小值、均值、椭圆度、量具编号1、量具编号2、检测项值)
@@ -950,7 +951,7 @@ namespace YYOPInspectionClient
                         break;
                     }
                 }
-                bool submitFlag = false;
+                bool submitFlag = true;
                 if (inspectionResult.Contains("不合格"))
                 {
                     if (MessageBox.Show("数据不合格,确定要提交吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -960,7 +961,6 @@ namespace YYOPInspectionClient
                 }
                 if (!string.IsNullOrWhiteSpace(thread_inspection_record_code))
                 {
-
                     if (submitFlag)
                     {
                         //封装检验数据
@@ -1006,11 +1006,7 @@ namespace YYOPInspectionClient
                             //如果提交表单成功
                             if (rowsJson.Trim().Contains("success"))
                             {
-                                MessagePrompt.Show("修改成功!");
-                            }
-                            else//提交失败，将表单数据保存到本地
-                            {
-                                MessagePrompt.Show("修改失败!");
+                                isSuccess = true;
                             }
                         }
                     }
@@ -1028,8 +1024,14 @@ namespace YYOPInspectionClient
             {
                 try
                 {
-                    this.Close();
-                    IndexWindow.getForm().getThreadingProcessData();
+                    if (isSuccess)
+                    {
+                        this.Close();
+                        IndexWindow.getForm().getThreadingProcessData();
+                    }else
+                    {
+                        MessagePrompt.Show("修改失败!");
+                    }
                 }
                 catch (Exception ex)
                 {
