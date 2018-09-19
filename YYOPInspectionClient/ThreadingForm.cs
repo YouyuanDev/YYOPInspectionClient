@@ -73,31 +73,42 @@ namespace YYOPInspectionClient
             {
                 if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
                 {
-                    //将英文输入法中显示测量值的控件容器指定为当前测量值的控件容器
-                    //AlphabetKeyboardForm.getForm().containerControl = this.flpTabOneContent;
-                    //将数字输入法中显示测量值的控件容器指定为当前测量值的控件容器
-                    //NumberKeyboardForm.getForm().containerControl = this.flpTabTwoContent;
                     //设置时间戳
                     timestamp = CommonUtil.getMesuringRecord();
                     //设置读码器和录像机状态标识
-                    if (YYKeyenceReaderConsole.readerStatus == -1)
-                        this.lblReaderStatus.Text = "读码器未连接...";
-                    else if (YYKeyenceReaderConsole.readerStatus == 1)
-                        this.lblReaderStatus.Text = "读码器已启动...";
-                    else
-                        this.lblReaderStatus.Text = "读码器异常...";
-                    if (MainWindow.recordStatus == 0)
-                        this.lblVideoStatus.Text = "录像机未连接...";
-                    else if (MainWindow.recordStatus == 1)
-                        this.lblVideoStatus.Text = "录像机已连接...";
-                    else if (MainWindow.recordStatus == 2)
-                        this.lblVideoStatus.Text = "录像机未启动...";
-                    else if (MainWindow.recordStatus == 3)
-                        this.lblVideoStatus.Text = "录像机已启动...";
-                    else if (MainWindow.recordStatus == 4)
-                        this.lblVideoStatus.Text = "录像中...";
-                    else
-                        this.lblVideoStatus.Text = "录像机异常...";
+                    switch (YYKeyenceReaderConsole.readerStatus)
+                    {
+                        case -1:
+                            this.lblReaderStatus.Text = "读码器未连接...";
+                            break;
+                        case 1:
+                            this.lblReaderStatus.Text = "读码器已启动...";
+                            break;
+                        default:
+                            this.lblReaderStatus.Text = "读码器连接异常...";
+                            break;
+                    }
+                    switch (MainWindow.recordStatus)
+                    {
+                        case 0:
+                            this.lblVideoStatus.Text = "录像机未连接...";
+                            break;
+                        case 1:
+                            this.lblVideoStatus.Text = "录像机已连接...";
+                            break;
+                        case 2:
+                            this.lblVideoStatus.Text = "录像机未启动...";
+                            break;
+                        case 3:
+                            this.lblVideoStatus.Text = "录像机已启动...";
+                            break;
+                        case 4:
+                            this.lblVideoStatus.Text = "录像中...";
+                            break;
+                        default:
+                            this.lblVideoStatus.Text = "录像机连接异常...";
+                            break;
+                    }
                     autoSelectContractNo = true;
                     //初始化表单
                     InitThreadForm();
@@ -105,8 +116,7 @@ namespace YYOPInspectionClient
                 else
                 {
                     MessagePrompt.Show("您已掉线,请重新登录!");
-                    this.Dispose();
-                    Application.Exit();
+                    System.Environment.Exit(0);
                 }
             }
             catch (Exception e)

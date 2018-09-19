@@ -19,7 +19,7 @@ namespace YYOPInspectionClient
         private const int READER_COUNT = 30;
         //数据量buff最大值    
         private const int RECV_DATA_MAX = 10240;
-        //接受读码器数据的最小精度 100毫秒 0为不等待
+        //读码器暂停读取数据时间 100毫秒 0为不等待
         private const int ACCURACY = 200;
         //基恩士读码器clientSocket数组
         public static ClientSocket[] clientSocketInstance;
@@ -512,7 +512,6 @@ namespace YYOPInspectionClient
                         {
                             continue;
                         }
-
                         if (recvSize!= 0)
                         {
                             recvBytes[recvSize] = 0;
@@ -531,7 +530,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show("接收服务端发送的消息出错:" + ex.ToString());
+                SetText("读码器读数据时出错,错误信息:" + ex.ToString());
             }
         }
         #endregion

@@ -625,7 +625,7 @@
             // 
             this.lblVideoStatus.AutoSize = true;
             this.lblVideoStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblVideoStatus.Location = new System.Drawing.Point(1017, 13);
+            this.lblVideoStatus.Location = new System.Drawing.Point(1065, 13);
             this.lblVideoStatus.Name = "lblVideoStatus";
             this.lblVideoStatus.Size = new System.Drawing.Size(94, 24);
             this.lblVideoStatus.TabIndex = 15;
@@ -635,7 +635,7 @@
             // 
             this.lblReaderStatus.AutoSize = true;
             this.lblReaderStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblReaderStatus.Location = new System.Drawing.Point(524, 13);
+            this.lblReaderStatus.Location = new System.Drawing.Point(550, 13);
             this.lblReaderStatus.Name = "lblReaderStatus";
             this.lblReaderStatus.Size = new System.Drawing.Size(94, 24);
             this.lblReaderStatus.TabIndex = 14;
@@ -644,7 +644,7 @@
             // 
             // btnFormClose
             // 
-            this.btnFormClose.Location = new System.Drawing.Point(874, 54);
+            this.btnFormClose.Location = new System.Drawing.Point(926, 54);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(115, 46);
             this.btnFormClose.TabIndex = 13;
@@ -654,7 +654,7 @@
             // 
             // btnFormSubmit
             // 
-            this.btnFormSubmit.Location = new System.Drawing.Point(736, 54);
+            this.btnFormSubmit.Location = new System.Drawing.Point(781, 54);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(115, 47);
             this.btnFormSubmit.TabIndex = 12;
@@ -664,7 +664,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(874, 6);
+            this.button2.Location = new System.Drawing.Point(926, 6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(115, 43);
             this.button2.TabIndex = 11;
@@ -674,7 +674,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(735, 6);
+            this.button1.Location = new System.Drawing.Point(780, 6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(116, 43);
             this.button1.TabIndex = 10;
