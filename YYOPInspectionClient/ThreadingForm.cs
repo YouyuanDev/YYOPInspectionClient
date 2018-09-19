@@ -28,7 +28,7 @@ namespace YYOPInspectionClient
         //定义是否测量数据是否合法的集合
         public static Dictionary<string, bool> qualifiedList = new Dictionary<string, bool>();
         //测量项编号集合
-        private List<string> measureItemCodeList = new List<string>();
+        private static List<string> measureItemCodeList = new List<string>();
         //时间戳(视频和form表单保存的目录名)
         private string videosArr = "";
         //定义时间戳变量
@@ -50,9 +50,11 @@ namespace YYOPInspectionClient
         //存放测量项信息得集合
         public static Dictionary<string, Dictionary<string, string>> measureInfoDic = new Dictionary<string, Dictionary<string, string>>();
         //存放必填标识"*"号得Label集合
-        private Dictionary<string, Label> requiredMarkDic = new Dictionary<string, Label>();
+        private static Dictionary<string, Label> requiredMarkDic = new Dictionary<string, Label>();
         //存放输入法头部信息得集合
-        private Dictionary<string, string>keyboardTitleDic = new Dictionary<string, string>();
+        private static Dictionary<string, string>keyboardTitleDic = new Dictionary<string, string>();
+        //用于测试与服务器的连接情况
+        private static System.Timers.Timer t = new System.Timers.Timer(10000);
         #region 单例函数
         public static ThreadingForm getMyForm()
         {
@@ -132,23 +134,28 @@ namespace YYOPInspectionClient
         #region 窗体Load事件
         private void ThreadingForm_Load(object sender, EventArgs e)
         {
-            //初始化表单合同数组
-            InitContractList();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Person.pname))
+                {
+                    //设置现在登录的人员信息
+                    this.lblFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
+                    this.txtOperatorNo.Text = Person.employee_no;
+                    this.txtOperatorName.Text = Person.pname;
+                }
+                //开始定时器，用于检测客户端与服务器连接情况(ping测试)
+                CommonUtil.flag = true;
+                t.Elapsed += new System.Timers.ElapsedEventHandler(CommonUtil.UpdatePing);//到达时间的时候执行事件
+                t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)
+                t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件
+                //初始化表单合同数组
+                InitContractList();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
-        #endregion
-
-        #region 窗体Shown事件
-        private void ThreadingForm_Shown(object sender, EventArgs e)
-        {
-            //开始定时器，用于检测客户端与服务器连接情况(ping测试)
-            CommonUtil.flag = true;
-            System.Timers.Timer t = new System.Timers.Timer(10000);//实例化Timer类，设置时间间隔
-            t.Elapsed += new System.Timers.ElapsedEventHandler(CommonUtil.UpdatePing);//到达时间的时候执行事件
-            t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)
-            t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件
-        }
-
-
         #endregion
 
         #region 初始化检验表单
@@ -790,7 +797,10 @@ namespace YYOPInspectionClient
             }
             else
             {
-                //重置录像机设置
+                //关闭读码器
+                if (YYKeyenceReaderConsole.readerStatus == 1)
+                    YYKeyenceReaderConsole.codeReaderOff();
+                //重置录像机页面
                 CommonUtil.RestoreSetting(true);
                 this.Hide();
             }
@@ -1418,10 +1428,11 @@ namespace YYOPInspectionClient
             }
             else
             {
+                //关闭读码器
+                if (YYKeyenceReaderConsole.readerStatus == 1)
+                    YYKeyenceReaderConsole.codeReaderOff();
                 //重置录像机页面
                 CommonUtil.RestoreSetting(true);
-                //清空表单测量值
-                ClearForm();
                 this.Hide();
             }
         }
@@ -1442,12 +1453,14 @@ namespace YYOPInspectionClient
         #region 窗体Visible改变事件
         private void ThreadingForm_VisibleChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(Person.pname))
+            try
             {
-                this.lblFormTitle.Text = "现在登录的是:" + Person.pname + ",工号:" + Person.employee_no;
-                this.txtOperatorNo.Text = Person.employee_no;
-                this.txtOperatorName.Text = Person.pname;
+                if (this.Visible)//当显示窗体的时候开始检测与服务器的连接情况 
+                    t.Start();
+                else
+                    t.Stop();
             }
+            catch(Exception ex) { }
         }
         #endregion
 

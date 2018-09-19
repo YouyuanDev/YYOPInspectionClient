@@ -161,6 +161,39 @@ namespace YYOPInspectionClient
                     }
                     //判断输入的内容是否为数字
                     if (!CommonUtil.IsNumeric(inputTxt.Text)) {
+                        //如果输入为合格
+                        if (inputTxt.Text.Contains("不合格"))
+                        {
+                            //设置输入框标红
+                            inputTxt.BackColor = Color.LightCoral;
+                            if (flag == 0)
+                            {
+                                if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                    ThreadingForm.qualifiedList[inputTxtName] = false;
+                            }
+                            else if (flag == 1)
+                            {
+                                if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                    DetailForm.qualifiedList[inputTxtName] = false;
+                            }
+                        }
+                        else
+                        {
+                            //设置输入框不标红
+                            inputTxt.BackColor = Color.White;
+                            //如果为表单页面
+                            if (flag == 0)
+                            {
+                                if (ThreadingForm.qualifiedList.ContainsKey(inputTxtName))
+                                    ThreadingForm.qualifiedList[inputTxtName] = true;
+                            }
+                            else if (flag == 1)//如果为修改页面
+                            {
+                                //判断测量项是否合格的集合中是否存在该测量项
+                                if (DetailForm.qualifiedList.ContainsKey(inputTxtName))
+                                    DetailForm.qualifiedList[inputTxtName] = true;
+                            }
+                        }
                         return;
                     }
                     //当前输入框得类型,0代表时最大值、最小值和均值，1代表椭圆度
@@ -206,14 +239,31 @@ namespace YYOPInspectionClient
                     }
                     if (dic != null)
                     {
-                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_max_value"])))
-                            maxVal = Convert.ToSingle(dic["item_max_value"]);
-                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_min_value"])))
-                            minVal = Convert.ToSingle(dic["item_min_value"]);
-                        if (CommonUtil.IsNumeric(Convert.ToString(dic["ovality_max"])))
-                            maxOvality = Convert.ToSingle(dic["ovality_max"]);
-                        if (CommonUtil.IsNumeric(Convert.ToString(dic["item_std_value"])))
-                            sdVal = Convert.ToSingle(dic["item_std_value"]);
+                        string item_max_value = null, item_min_value = null, ovality_max = null, item_std_value = null;
+                        if (dic.ContainsKey("item_max_value"))
+                        {
+                            item_max_value = Convert.ToString(dic["item_max_value"]);
+                            if (CommonUtil.IsNumeric(item_max_value))
+                                maxVal = Convert.ToSingle(item_max_value);
+                        }
+                        if (dic.ContainsKey("item_min_value"))
+                        {
+                            item_min_value = Convert.ToString(dic["item_min_value"]);
+                            if (CommonUtil.IsNumeric(item_min_value))
+                                minVal = Convert.ToSingle(dic["item_min_value"]);
+                        }
+                        if (dic.ContainsKey("ovality_max"))
+                        {
+                            ovality_max = Convert.ToString(dic["ovality_max"]);
+                            if (CommonUtil.IsNumeric(ovality_max))
+                                maxOvality = Convert.ToSingle(dic["ovality_max"]);
+                        }
+                        if (dic.ContainsKey("item_std_value"))
+                        {
+                            item_std_value = Convert.ToString(dic["item_std_value"]);
+                            if (CommonUtil.IsNumeric(item_std_value))
+                                sdVal = Convert.ToSingle(dic["item_std_value"]);
+                        }
                     }
                     if (!string.IsNullOrWhiteSpace(inputTxt.Text.Trim())) {
                         txtVal = Convert.ToSingle(inputTxt.Text.Trim());

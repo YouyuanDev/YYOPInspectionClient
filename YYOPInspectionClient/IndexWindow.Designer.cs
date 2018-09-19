@@ -99,7 +99,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 65);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1371, 549);
+            this.panel1.Size = new System.Drawing.Size(2085, 737);
             this.panel1.TabIndex = 4;
             // 
             // dataGridView1
@@ -131,7 +131,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 50;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1371, 405);
+            this.dataGridView1.Size = new System.Drawing.Size(1767, 593);
             this.dataGridView1.TabIndex = 1;
             // 
             // id
@@ -275,15 +275,16 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 14);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1373, 142);
+            this.panel2.Size = new System.Drawing.Size(2072, 330);
             this.panel2.TabIndex = 0;
             // 
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDelete.Location = new System.Drawing.Point(1072, 77);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(90, 46);
             this.btnDelete.TabIndex = 32;
@@ -296,9 +297,10 @@
             this.dateTimePicker2.CustomFormat = "yyyy-MM-dd";
             this.dateTimePicker2.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(1175, 18);
+            this.dateTimePicker2.Location = new System.Drawing.Point(1176, 18);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(171, 41);
+            this.dateTimePicker2.Size = new System.Drawing.Size(172, 41);
             this.dateTimePicker2.TabIndex = 31;
             // 
             // dateTimePicker1
@@ -307,8 +309,9 @@
             this.dateTimePicker1.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(918, 19);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(167, 41);
+            this.dateTimePicker1.Size = new System.Drawing.Size(166, 41);
             this.dateTimePicker1.TabIndex = 30;
             this.dateTimePicker1.Value = new System.DateTime(2018, 5, 1, 0, 0, 0, 0);
             // 
@@ -316,6 +319,7 @@
             // 
             this.label10.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label10.Location = new System.Drawing.Point(1082, 12);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(98, 54);
             this.label10.TabIndex = 27;
@@ -325,10 +329,10 @@
             // label11
             // 
             this.label11.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(819, 12);
+            this.label11.Location = new System.Drawing.Point(818, 12);
             this.label11.Margin = new System.Windows.Forms.Padding(0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(105, 54);
+            this.label11.Size = new System.Drawing.Size(104, 54);
             this.label11.TabIndex = 26;
             this.label11.Text = "开始时间";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -340,7 +344,8 @@
             this.cmbPipeLotNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbPipeLotNo.FormattingEnabled = true;
             this.cmbPipeLotNo.ItemHeight = 40;
-            this.cmbPipeLotNo.Location = new System.Drawing.Point(903, 77);
+            this.cmbPipeLotNo.Location = new System.Drawing.Point(902, 77);
+            this.cmbPipeLotNo.Margin = new System.Windows.Forms.Padding(2);
             this.cmbPipeLotNo.Name = "cmbPipeLotNo";
             this.cmbPipeLotNo.Size = new System.Drawing.Size(150, 46);
             this.cmbPipeLotNo.TabIndex = 25;
@@ -349,7 +354,8 @@
             // label9
             // 
             this.label9.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(815, 73);
+            this.label9.Location = new System.Drawing.Point(816, 72);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(90, 54);
             this.label9.TabIndex = 24;
@@ -359,7 +365,8 @@
             // txtOperatorno
             // 
             this.txtOperatorno.Font = new System.Drawing.Font("宋体", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtOperatorno.Location = new System.Drawing.Point(51, 12);
+            this.txtOperatorno.Location = new System.Drawing.Point(50, 12);
+            this.txtOperatorno.Margin = new System.Windows.Forms.Padding(2);
             this.txtOperatorno.Name = "txtOperatorno";
             this.txtOperatorno.Size = new System.Drawing.Size(118, 47);
             this.txtOperatorno.TabIndex = 23;
@@ -371,7 +378,8 @@
             this.cmbContractNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbContractNo.FormattingEnabled = true;
             this.cmbContractNo.ItemHeight = 40;
-            this.cmbContractNo.Location = new System.Drawing.Point(658, 13);
+            this.cmbContractNo.Location = new System.Drawing.Point(658, 12);
+            this.cmbContractNo.Margin = new System.Windows.Forms.Padding(2);
             this.cmbContractNo.Name = "cmbContractNo";
             this.cmbContractNo.Size = new System.Drawing.Size(150, 46);
             this.cmbContractNo.TabIndex = 22;
@@ -388,7 +396,8 @@
             "",
             "白班",
             "夜班"});
-            this.cmbProductionShift.Location = new System.Drawing.Point(449, 13);
+            this.cmbProductionShift.Location = new System.Drawing.Point(450, 12);
+            this.cmbProductionShift.Margin = new System.Windows.Forms.Padding(2);
             this.cmbProductionShift.Name = "cmbProductionShift";
             this.cmbProductionShift.Size = new System.Drawing.Size(118, 46);
             this.cmbProductionShift.TabIndex = 21;
@@ -407,7 +416,8 @@
             "乙",
             "丙",
             "丁"});
-            this.cmbProductionCrew.Location = new System.Drawing.Point(226, 13);
+            this.cmbProductionCrew.Location = new System.Drawing.Point(226, 12);
+            this.cmbProductionCrew.Margin = new System.Windows.Forms.Padding(2);
             this.cmbProductionCrew.Name = "cmbProductionCrew";
             this.cmbProductionCrew.Size = new System.Drawing.Size(118, 46);
             this.cmbProductionCrew.TabIndex = 20;
@@ -416,7 +426,8 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(570, 9);
+            this.label5.Location = new System.Drawing.Point(570, 8);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(90, 54);
             this.label5.TabIndex = 18;
@@ -426,7 +437,8 @@
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(352, 9);
+            this.label6.Location = new System.Drawing.Point(352, 8);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(96, 54);
             this.label6.TabIndex = 17;
@@ -436,9 +448,10 @@
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(175, 9);
+            this.label7.Location = new System.Drawing.Point(174, 8);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 54);
+            this.label7.Size = new System.Drawing.Size(54, 54);
             this.label7.TabIndex = 16;
             this.label7.Text = "班别";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -446,10 +459,10 @@
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(0, 9);
+            this.label8.Location = new System.Drawing.Point(0, 8);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 54);
+            this.label8.Size = new System.Drawing.Size(54, 54);
             this.label8.TabIndex = 15;
             this.label8.Text = "工号";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -462,6 +475,7 @@
             this.cmbPipeHeatNo.FormattingEnabled = true;
             this.cmbPipeHeatNo.ItemHeight = 40;
             this.cmbPipeHeatNo.Location = new System.Drawing.Point(658, 77);
+            this.cmbPipeHeatNo.Margin = new System.Windows.Forms.Padding(2);
             this.cmbPipeHeatNo.Name = "cmbPipeHeatNo";
             this.cmbPipeHeatNo.Size = new System.Drawing.Size(150, 46);
             this.cmbPipeHeatNo.TabIndex = 13;
@@ -474,7 +488,8 @@
             this.cmbThreadingType.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbThreadingType.FormattingEnabled = true;
             this.cmbThreadingType.ItemHeight = 40;
-            this.cmbThreadingType.Location = new System.Drawing.Point(449, 77);
+            this.cmbThreadingType.Location = new System.Drawing.Point(450, 77);
+            this.cmbThreadingType.Margin = new System.Windows.Forms.Padding(2);
             this.cmbThreadingType.Name = "cmbThreadingType";
             this.cmbThreadingType.Size = new System.Drawing.Size(118, 46);
             this.cmbThreadingType.TabIndex = 12;
@@ -488,6 +503,7 @@
             this.cmbWt.FormattingEnabled = true;
             this.cmbWt.ItemHeight = 40;
             this.cmbWt.Location = new System.Drawing.Point(226, 77);
+            this.cmbWt.Margin = new System.Windows.Forms.Padding(2);
             this.cmbWt.Name = "cmbWt";
             this.cmbWt.Size = new System.Drawing.Size(118, 46);
             this.cmbWt.TabIndex = 11;
@@ -500,7 +516,8 @@
             this.cmbOd.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbOd.FormattingEnabled = true;
             this.cmbOd.ItemHeight = 40;
-            this.cmbOd.Location = new System.Drawing.Point(51, 77);
+            this.cmbOd.Location = new System.Drawing.Point(50, 77);
+            this.cmbOd.Margin = new System.Windows.Forms.Padding(2);
             this.cmbOd.Name = "cmbOd";
             this.cmbOd.Size = new System.Drawing.Size(118, 46);
             this.cmbOd.TabIndex = 10;
@@ -510,6 +527,7 @@
             // 
             this.btnDetail.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDetail.Location = new System.Drawing.Point(1168, 76);
+            this.btnDetail.Margin = new System.Windows.Forms.Padding(2);
             this.btnDetail.Name = "btnDetail";
             this.btnDetail.Size = new System.Drawing.Size(90, 46);
             this.btnDetail.TabIndex = 9;
@@ -521,6 +539,7 @@
             // 
             this.btnSearch.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSearch.Location = new System.Drawing.Point(1264, 76);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(90, 46);
             this.btnSearch.TabIndex = 4;
@@ -531,7 +550,8 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(570, 73);
+            this.label4.Location = new System.Drawing.Point(570, 72);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(90, 54);
             this.label4.TabIndex = 3;
@@ -541,7 +561,8 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(352, 73);
+            this.label3.Location = new System.Drawing.Point(352, 72);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 54);
             this.label3.TabIndex = 2;
@@ -551,9 +572,10 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(175, 73);
+            this.label2.Location = new System.Drawing.Point(174, 72);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 54);
+            this.label2.Size = new System.Drawing.Size(54, 54);
             this.label2.TabIndex = 1;
             this.label2.Text = "壁厚";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -561,10 +583,10 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(0, 73);
+            this.label1.Location = new System.Drawing.Point(0, 72);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 54);
+            this.label1.Size = new System.Drawing.Size(54, 54);
             this.label1.TabIndex = 0;
             this.label1.Text = "外径";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -572,9 +594,10 @@
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(1197, 7);
+            this.btnExit.Location = new System.Drawing.Point(1196, 7);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(2);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(119, 46);
+            this.btnExit.Size = new System.Drawing.Size(120, 46);
             this.btnExit.TabIndex = 14;
             this.btnExit.Text = "登出";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -593,7 +616,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(4, 7);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(20, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(605, 50);
+            this.menuStrip1.Size = new System.Drawing.Size(606, 50);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -670,15 +693,17 @@
             this.panel3.Controls.Add(this.btnExit);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1372, 62);
+            this.panel3.Size = new System.Drawing.Size(1361, 62);
             this.panel3.TabIndex = 6;
             // 
             // lblIndexFormTitle
             // 
             this.lblIndexFormTitle.AutoSize = true;
             this.lblIndexFormTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblIndexFormTitle.Location = new System.Drawing.Point(640, 23);
+            this.lblIndexFormTitle.Location = new System.Drawing.Point(640, 24);
+            this.lblIndexFormTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblIndexFormTitle.Name = "lblIndexFormTitle";
             this.lblIndexFormTitle.Size = new System.Drawing.Size(82, 24);
             this.lblIndexFormTitle.TabIndex = 0;
@@ -689,7 +714,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1372, 623);
+            this.ClientSize = new System.Drawing.Size(1361, 565);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

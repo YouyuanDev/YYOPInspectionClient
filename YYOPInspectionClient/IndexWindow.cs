@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 
@@ -77,10 +78,13 @@ namespace YYOPInspectionClient
                     if (MainWindow.recordStatus == 1)
                         MainWindow.getForm().btnPreview_Click_1(null, null);
                     //初始化读码器窗体
-                    YYKeyenceReaderConsole.getForm().Hide();
+                    YYKeyenceReaderConsole.getForm();
                     //连接读码器
-                    if(YYKeyenceReaderConsole.readerStatus==0)
-                       YYKeyenceReaderConsole.codeReaderConnect();
+                    if (YYKeyenceReaderConsole.readerStatus == 0)
+                        YYKeyenceReaderConsole.codeReaderConnect();
+                    //开启读码器
+                    if (YYKeyenceReaderConsole.readerStatus == 1)
+                        YYKeyenceReaderConsole.codeReaderLon();
                     //初始化螺纹检验表单窗体
                     ThreadingForm.getMyForm();
                 }
@@ -273,7 +277,7 @@ namespace YYOPInspectionClient
             try
             {
                 //打开螺纹检验窗体
-                ThreadingForm.getMyForm().Show();
+                ThreadingForm.getMyForm().Show();            
             }
             catch (Exception ex)
             {

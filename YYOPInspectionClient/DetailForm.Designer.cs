@@ -450,7 +450,7 @@
             // 
             // txtThreadDrawingNo
             // 
-            this.txtThreadDrawingNo.Location = new System.Drawing.Point(868, 11);
+            this.txtThreadDrawingNo.Location = new System.Drawing.Point(868, 12);
             this.txtThreadDrawingNo.Name = "txtThreadDrawingNo";
             this.txtThreadDrawingNo.ReadOnly = true;
             this.txtThreadDrawingNo.Size = new System.Drawing.Size(100, 35);
@@ -458,7 +458,7 @@
             // 
             // txtSealPatternNo
             // 
-            this.txtSealPatternNo.Location = new System.Drawing.Point(590, 13);
+            this.txtSealPatternNo.Location = new System.Drawing.Point(590, 12);
             this.txtSealPatternNo.Name = "txtSealPatternNo";
             this.txtSealPatternNo.ReadOnly = true;
             this.txtSealPatternNo.Size = new System.Drawing.Size(100, 35);
@@ -483,7 +483,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(696, 17);
+            this.label17.Location = new System.Drawing.Point(696, 16);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(166, 24);
             this.label17.TabIndex = 3;
@@ -492,7 +492,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(409, 17);
+            this.label16.Location = new System.Drawing.Point(409, 16);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(166, 24);
             this.label16.TabIndex = 2;
@@ -501,7 +501,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(203, 18);
+            this.label15.Location = new System.Drawing.Point(203, 16);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 24);
             this.label15.TabIndex = 1;

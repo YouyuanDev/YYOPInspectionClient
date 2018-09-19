@@ -155,44 +155,44 @@
             // 
             // txtThreadDrawingNo
             // 
-            this.txtThreadDrawingNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtThreadDrawingNo.Location = new System.Drawing.Point(893, 18);
+            this.txtThreadDrawingNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtThreadDrawingNo.Location = new System.Drawing.Point(893, 10);
             this.txtThreadDrawingNo.Name = "txtThreadDrawingNo";
             this.txtThreadDrawingNo.ReadOnly = true;
-            this.txtThreadDrawingNo.Size = new System.Drawing.Size(120, 29);
+            this.txtThreadDrawingNo.Size = new System.Drawing.Size(120, 35);
             this.txtThreadDrawingNo.TabIndex = 7;
             // 
             // txtSealPatternNo
             // 
-            this.txtSealPatternNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtSealPatternNo.Location = new System.Drawing.Point(604, 16);
+            this.txtSealPatternNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtSealPatternNo.Location = new System.Drawing.Point(604, 10);
             this.txtSealPatternNo.Name = "txtSealPatternNo";
             this.txtSealPatternNo.ReadOnly = true;
-            this.txtSealPatternNo.Size = new System.Drawing.Size(120, 29);
+            this.txtSealPatternNo.Size = new System.Drawing.Size(120, 35);
             this.txtSealPatternNo.TabIndex = 6;
             // 
             // txtHandbookNo
             // 
-            this.txtHandbookNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtHandbookNo.Location = new System.Drawing.Point(310, 18);
+            this.txtHandbookNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtHandbookNo.Location = new System.Drawing.Point(310, 10);
             this.txtHandbookNo.Name = "txtHandbookNo";
             this.txtHandbookNo.ReadOnly = true;
-            this.txtHandbookNo.Size = new System.Drawing.Size(120, 29);
+            this.txtHandbookNo.Size = new System.Drawing.Size(120, 35);
             this.txtHandbookNo.TabIndex = 5;
             // 
             // txtDrawingNo
             // 
-            this.txtDrawingNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtDrawingNo.Location = new System.Drawing.Point(96, 16);
+            this.txtDrawingNo.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtDrawingNo.Location = new System.Drawing.Point(96, 10);
             this.txtDrawingNo.Name = "txtDrawingNo";
             this.txtDrawingNo.ReadOnly = true;
-            this.txtDrawingNo.Size = new System.Drawing.Size(120, 29);
+            this.txtDrawingNo.Size = new System.Drawing.Size(120, 35);
             this.txtDrawingNo.TabIndex = 4;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(730, 19);
+            this.label17.Location = new System.Drawing.Point(730, 16);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(166, 24);
             this.label17.TabIndex = 3;
@@ -201,7 +201,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(436, 18);
+            this.label16.Location = new System.Drawing.Point(436, 16);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(166, 24);
             this.label16.TabIndex = 2;
@@ -210,7 +210,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(222, 18);
+            this.label15.Location = new System.Drawing.Point(222, 16);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 24);
             this.label15.TabIndex = 1;
@@ -627,9 +627,9 @@
             this.lblVideoStatus.ForeColor = System.Drawing.Color.Red;
             this.lblVideoStatus.Location = new System.Drawing.Point(1065, 13);
             this.lblVideoStatus.Name = "lblVideoStatus";
-            this.lblVideoStatus.Size = new System.Drawing.Size(94, 24);
+            this.lblVideoStatus.Size = new System.Drawing.Size(106, 24);
             this.lblVideoStatus.TabIndex = 15;
-            this.lblVideoStatus.Text = "label19";
+            this.lblVideoStatus.Text = "        ";
             // 
             // lblReaderStatus
             // 
@@ -637,9 +637,9 @@
             this.lblReaderStatus.ForeColor = System.Drawing.Color.Red;
             this.lblReaderStatus.Location = new System.Drawing.Point(550, 13);
             this.lblReaderStatus.Name = "lblReaderStatus";
-            this.lblReaderStatus.Size = new System.Drawing.Size(94, 24);
+            this.lblReaderStatus.Size = new System.Drawing.Size(106, 24);
             this.lblReaderStatus.TabIndex = 14;
-            this.lblReaderStatus.Text = "label18";
+            this.lblReaderStatus.Text = "        ";
             this.lblReaderStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnFormClose
@@ -793,7 +793,7 @@
             // 
             this.pingLbl.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pingLbl.ForeColor = System.Drawing.Color.IndianRed;
-            this.pingLbl.Location = new System.Drawing.Point(1119, 8);
+            this.pingLbl.Location = new System.Drawing.Point(1128, 8);
             this.pingLbl.Name = "pingLbl";
             this.pingLbl.Size = new System.Drawing.Size(165, 23);
             this.pingLbl.TabIndex = 20;
@@ -803,11 +803,15 @@
             // button4
             // 
             this.button4.AutoSize = true;
-            this.button4.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button4.Location = new System.Drawing.Point(749, 3);
+            this.button4.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.SystemColors.ScrollBar;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button4.ForeColor = System.Drawing.Color.Black;
+            this.button4.Location = new System.Drawing.Point(721, 3);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(106, 31);
+            this.button4.Size = new System.Drawing.Size(129, 31);
             this.button4.TabIndex = 19;
             this.button4.Text = "取消3支全检";
             this.button4.UseVisualStyleBackColor = false;
@@ -816,11 +820,14 @@
             // button3
             // 
             this.button3.AutoSize = true;
-            this.button3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button3.Location = new System.Drawing.Point(977, 4);
+            this.button3.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Location = new System.Drawing.Point(994, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(106, 31);
+            this.button3.Size = new System.Drawing.Size(126, 31);
             this.button3.TabIndex = 18;
             this.button3.Text = "交班3支全检";
             this.button3.UseVisualStyleBackColor = false;
@@ -829,11 +836,14 @@
             // btnChanger
             // 
             this.btnChanger.AutoSize = true;
-            this.btnChanger.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnChanger.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnChanger.Location = new System.Drawing.Point(863, 4);
+            this.btnChanger.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.btnChanger.FlatAppearance.BorderSize = 0;
+            this.btnChanger.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChanger.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnChanger.ForeColor = System.Drawing.Color.Black;
+            this.btnChanger.Location = new System.Drawing.Point(862, 4);
             this.btnChanger.Name = "btnChanger";
-            this.btnChanger.Size = new System.Drawing.Size(106, 31);
+            this.btnChanger.Size = new System.Drawing.Size(126, 31);
             this.btnChanger.TabIndex = 17;
             this.btnChanger.Text = "换刀3支全检";
             this.btnChanger.UseVisualStyleBackColor = false;
@@ -872,7 +882,6 @@
             this.Text = "表单";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ThreadingForm_Load);
-            this.Shown += new System.EventHandler(this.ThreadingForm_Shown);
             this.VisibleChanged += new System.EventHandler(this.ThreadingForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

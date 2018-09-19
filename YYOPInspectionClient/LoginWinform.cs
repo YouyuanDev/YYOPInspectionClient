@@ -26,7 +26,9 @@ namespace YYOPInspectionClient
         [DllImport("user32.dll")]
         public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
         //定义登录窗体实例变量
-        private static LoginWinform myForm = null; 
+        private static LoginWinform myForm = null;
+        //定义计时器 测试与服务器的连接情况
+        private static  System.Timers.Timer t = new System.Timers.Timer(5000);//实例化Timer类，设置时间间隔
         #endregion
 
         #region 获取登录窗体实例
@@ -48,7 +50,6 @@ namespace YYOPInspectionClient
             this.lblLoginTitle.Text = "接箍螺纹检验监造系统(" + CommonUtil.GetVersion() + ")" + CommonUtil.GetFirstMacAddress();
             myForm = this;
             //开始测试客户端与服务器连接是否通畅
-            System.Timers.Timer t = new System.Timers.Timer(5000);//实例化Timer类，设置时间间隔
             t.Elapsed += new System.Timers.ElapsedEventHandler(CommonUtil.UpdatePing);//到达时间的时候执行事件
             t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)
             t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件
@@ -115,9 +116,9 @@ namespace YYOPInspectionClient
                                 //登录成功返回当前登录用户的信息,将返回的json格式的信息转换成指定对象
                                 Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
                                 IndexWindow.getForm().Show();
+                                NumberKeyboardForm.getForm();
+                                AlphabetKeyboardForm.getForm();
                                 this.Hide();
-                                NumberKeyboardForm.getForm().Hide();
-                                AlphabetKeyboardForm.getForm().Hide();
                             }
                             else
                             {
@@ -233,6 +234,20 @@ namespace YYOPInspectionClient
         {
             System.Environment.Exit(0);
         }
+        #endregion
+
+        #region 窗体显示与隐藏
+        private void LoginWinform_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                t.Start();
+            }
+            else
+            {
+                t.Stop();
+            }
+        } 
         #endregion
     }
 }

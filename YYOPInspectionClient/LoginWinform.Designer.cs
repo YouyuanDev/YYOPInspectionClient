@@ -169,6 +169,7 @@
             this.Name = "LoginWinform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";
+            this.VisibleChanged += new System.EventHandler(this.LoginWinform_VisibleChanged);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginWinform_MouseDown);
             this.pnlLoginTitle.ResumeLayout(false);
             this.pnlLoginTitle.PerformLayout();

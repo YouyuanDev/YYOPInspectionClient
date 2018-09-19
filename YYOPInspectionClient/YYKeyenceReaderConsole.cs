@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,7 +17,7 @@ namespace YYOPInspectionClient
     internal partial class YYKeyenceReaderConsole : Form
     {
         //连接基恩士读码器个数
-        private const int READER_COUNT = 30;
+        private const int READER_COUNT = 1;
         //数据量buff最大值    
         private const int RECV_DATA_MAX = 10240;
         //读码器暂停读取数据时间 100毫秒 0为不等待
@@ -36,8 +37,13 @@ namespace YYOPInspectionClient
         //定义全局变量依次为接箍编号、炉号、批号
         private static string argCoupingNo = null, argHeatNo = null, argBatchNo = null;
         //读码器的状态,0代表未连接,1代表读码器连接成功,2代表异常
-        public static int readerStatus=-1;
-
+        public static int readerStatus=0;
+        //是否播放声音标识
+        public static bool isPlayAudio = false;
+        //声音路径
+        public static string audioFilePath = null;
+        //定义播放声音的对象
+        SoundPlayer p = new SoundPlayer();
         #region 读码器窗体单例函数
         public static YYKeyenceReaderConsole getForm()
         {
@@ -67,6 +73,8 @@ namespace YYOPInspectionClient
             DataPortInput.Text = Convert.ToString(DataPort);
             try
             {
+                //设置读码完成的声音文件路径
+                audioFilePath = Application.StartupPath + "\\audio\\completed.wav";
                 //读取本地目录config.txt文件，读出所有读码器IP地址
                 string configPath = Application.StartupPath + "\\config.txt";
                 string str = File.ReadAllText(configPath);
@@ -85,7 +93,7 @@ namespace YYOPInspectionClient
             }
             catch (Exception e)
             {
-                MessagePrompt.Show("实例化客户端连接读码器数组时错误,错误信息:" + e.Message);
+                MessagePrompt.Show("实例化客户端连接读码器时错误,错误信息:" + e.Message);
             }
             finally {
                 myselfForm = this;
@@ -519,6 +527,8 @@ namespace YYOPInspectionClient
                             if (!Encoding.UTF8.GetString(recvBytes).TrimEnd().Contains("ERROR"))
                             {
                                 UpdateTextBox(ThreadingForm.getMyForm(), Encoding.UTF8.GetString(recvBytes).TrimEnd());
+                                if(isPlayAudio)
+                                    playAudio();
                             }
                             //更新读码器读出的数据到日志中
                             SetText(DateTime.Now.ToString() + "    " + Encoding.UTF8.GetString(recvBytes));
@@ -617,7 +627,7 @@ namespace YYOPInspectionClient
                     //textbox_DataConsole内容换行
                     this.textbox_DataConsole.AppendText("\r\n");
                     //textbox_DataConsole内容刷新
-                    this.textbox_DataConsole.Refresh();
+                    //this.textbox_DataConsole.Refresh();
                 }
             }
             catch (Exception ex)
@@ -666,6 +676,20 @@ namespace YYOPInspectionClient
         }
         #endregion
 
+        #region 播放声音选中事件
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                isPlayAudio = true;
+            }
+            else
+            {
+                isPlayAudio = false;
+            }
+        } 
+        #endregion
+
         #region 读码器窗体Load函数
         private void YYKeyenceReaderConsole_Load(object sender, EventArgs e)
         {
@@ -679,6 +703,26 @@ namespace YYOPInspectionClient
             catch (Exception ex)
             {
             }
+        }
+        #endregion
+
+        #region 播放读码器读出数据时的音频
+        private void playAudio()
+        {
+            try
+            {
+                if (File.Exists(audioFilePath))
+                {
+                    p.SoundLocation = audioFilePath;
+                    p.Load();
+                    p.Play();
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }
+           
         } 
         #endregion
     }

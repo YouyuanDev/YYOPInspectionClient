@@ -48,6 +48,7 @@
             this.DataPortInput = new System.Windows.Forms.TextBox();
             this.CommandPortInput = new System.Windows.Forms.TextBox();
             this.btnHide = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label5
@@ -108,7 +109,7 @@
             // 
             // button_Clear
             // 
-            this.button_Clear.Location = new System.Drawing.Point(525, 237);
+            this.button_Clear.Location = new System.Drawing.Point(525, 233);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(373, 59);
             this.button_Clear.TabIndex = 55;
@@ -160,7 +161,7 @@
             // 
             // loff
             // 
-            this.loff.Location = new System.Drawing.Point(720, 320);
+            this.loff.Location = new System.Drawing.Point(720, 316);
             this.loff.Name = "loff";
             this.loff.Size = new System.Drawing.Size(178, 91);
             this.loff.TabIndex = 50;
@@ -170,7 +171,7 @@
             // 
             // lon
             // 
-            this.lon.Location = new System.Drawing.Point(525, 319);
+            this.lon.Location = new System.Drawing.Point(525, 316);
             this.lon.Name = "lon";
             this.lon.Size = new System.Drawing.Size(189, 91);
             this.lon.TabIndex = 49;
@@ -246,12 +247,24 @@
             this.btnHide.UseVisualStyleBackColor = true;
             this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(525, 429);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(120, 16);
+            this.checkBox1.TabIndex = 63;
+            this.checkBox1.Text = "播放读码完成声音";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // YYKeyenceReaderConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 641);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -303,5 +316,6 @@
         public System.Windows.Forms.TextBox CommandPortInput;
         private System.Windows.Forms.Button btnHide;
         internal System.Windows.Forms.Button loff;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
