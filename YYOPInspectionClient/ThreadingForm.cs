@@ -55,12 +55,14 @@ namespace YYOPInspectionClient
         private static Dictionary<string, string>keyboardTitleDic = new Dictionary<string, string>();
         //用于测试与服务器的连接情况
         private static System.Timers.Timer t = new System.Timers.Timer(10000);
+        //当前焦点所在的输入框
+        public static TextBox fpcusTxt = null;
         #region 单例函数
         public static ThreadingForm getMyForm()
         {
             if (myForm == null)
             {
-                new ThreadingForm();
+                myForm=new ThreadingForm();
             }
             return myForm;
         }
@@ -1023,6 +1025,7 @@ namespace YYOPInspectionClient
                 TextBox tb = (TextBox)sender;
                 if (tb.Tag != null)
                 {
+                    fpcusTxt = tb;
                     //如果输入框为英文输入法输入框
                     if (tb.Tag.ToString().Contains("English"))
                     {
@@ -1100,6 +1103,7 @@ namespace YYOPInspectionClient
             {
                 if (tb.Tag != null)
                 {
+                    fpcusTxt = tb;
                     //注释同上
                     if (tb.Tag.ToString().Contains("English"))
                     {

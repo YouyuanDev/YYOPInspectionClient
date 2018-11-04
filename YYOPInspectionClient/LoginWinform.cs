@@ -118,6 +118,7 @@ namespace YYOPInspectionClient
                                 IndexWindow.getForm().Show();
                                 NumberKeyboardForm.getForm();
                                 AlphabetKeyboardForm.getForm();
+                                ScanerHook.executeScanerHook();
                                 this.Hide();
                             }
                             else
@@ -247,7 +248,21 @@ namespace YYOPInspectionClient
             {
                 t.Stop();
             }
-        } 
+        }
+        #endregion
+
+        #region 窗体关闭事件
+        private void LoginWinform_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                ScanerHook.GetScanerHookInstance().Stop();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         #endregion
     }
 }

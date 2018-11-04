@@ -546,7 +546,7 @@ namespace YYOPInspectionClient
         #endregion
 
         #region 更新TextBox内容
-        private static void UpdateTextBox(Object form, string message)
+        public static void UpdateTextBox(Object form, string message)
         {
             try
             {
@@ -565,40 +565,73 @@ namespace YYOPInspectionClient
                         //设置英文输入法中输入的内容为读码器读出的内容
                         AlphabetKeyboardForm.getForm().Textbox_display.Text = message;
                     }
-                    return;
-                }
-                //将读码器读出的数据以空格分隔
-                strArr = Regex.Split(message, "\\s+");
-                //如果读码器读接箍内容则读出的数据格式目前如:"12323 43434 5454 5454"
-                if (strArr.Length > 3)
-                {
-                    argHeatNo = strArr[1];//炉号
-                    argBatchNo = strArr[2];//批号
-                    argCoupingNo = strArr[3];//接箍编号
-                }
-                //判断是否是跨线程访问控件
-                if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
-                {
-                    UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                    //设置表单上接箍编号、炉号、批号控件内容
-                    if (!string.IsNullOrWhiteSpace(argCoupingNo))
-                        ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
-                    if (!string.IsNullOrWhiteSpace(argHeatNo))
-                        ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
-                    if (!string.IsNullOrWhiteSpace(argBatchNo))
-                        ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
                 }
                 else
                 {
-                    //设置表单上接箍编号、炉号、批号控件内容
-                    if (!string.IsNullOrWhiteSpace(argCoupingNo))
-                        ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo;
-                    if (!string.IsNullOrWhiteSpace(argHeatNo))
-                        ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo;
-                    if (!string.IsNullOrWhiteSpace(argBatchNo))
-                        ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo;
+                    //将读码器读出的数据以空格分隔
+                    string[] strArr = Regex.Split(message, "\\s+");
+                    string argHeatNo = string.Empty, argBatchNo = string.Empty, argCoupingNo = string.Empty;
+                    //如果读码器读接箍内容则读出的数据格式目前如:"12323 43434 5454 5454"
+                    if (strArr.Length > 1)
+                    {
+                        if (strArr.Length > 3)
+                        {
+                            argHeatNo = strArr[1];//炉号
+                            argBatchNo = strArr[2];//批号
+                            argCoupingNo = strArr[3];//接箍编号
+                                                     //判断是否是跨线程访问控件
+                            if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
+                            {
+                                UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                                //设置表单上接箍编号、炉号、批号控件内容
+                                if (!string.IsNullOrWhiteSpace(argCoupingNo))
+                                    ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                                if (!string.IsNullOrWhiteSpace(argHeatNo))
+                                    ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                                if (!string.IsNullOrWhiteSpace(argBatchNo))
+                                    ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
+                            }
+                            else
+                            {
+                                //设置表单上接箍编号、炉号、批号控件内容
+                                if (!string.IsNullOrWhiteSpace(argCoupingNo))
+                                    ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo;
+                                if (!string.IsNullOrWhiteSpace(argHeatNo))
+                                    ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo;
+                                if (!string.IsNullOrWhiteSpace(argBatchNo))
+                                    ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo;
+                            }
+                        }
+                    }
+                    else//数字键盘
+                    {
+                        //判断是否是跨线程访问控件
+                        if (NumberKeyboardForm.getForm().Textbox_display.InvokeRequired)
+                        {
+                            UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                            NumberKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)NumberKeyboardForm.getForm(), message });
+                        }
+                        else
+                        {
+                            //设置数值输入法中输入的内容为读码器读出的内容
+                            NumberKeyboardForm.getForm().Textbox_display.Text = message;
+                        }
+                    }
                 }
-
+                //设置当前焦点所在文本框内容
+                if (ThreadingForm.fpcusTxt != null)
+                {
+                    if (ThreadingForm.fpcusTxt.InvokeRequired)
+                    {
+                        UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                        ThreadingForm.fpcusTxt.Invoke(md, new object[] { (object)ThreadingForm.getMyForm(), message });
+                    }
+                    else
+                    {
+                        //设置英文输入法中输入的内容为读码器读出的内容
+                        ThreadingForm.fpcusTxt.Text = message;
+                    }
+                }
             }
             catch (Exception ex)
             {
