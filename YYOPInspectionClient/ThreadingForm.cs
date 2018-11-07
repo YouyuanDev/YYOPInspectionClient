@@ -773,6 +773,7 @@ namespace YYOPInspectionClient
             //{
             //    MessagePrompt.Show("录像机或读码器尚未关闭！");
             //}
+            this.btnNone.Focus();
             if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
             {
                 //关闭录像
@@ -804,7 +805,9 @@ namespace YYOPInspectionClient
                     YYKeyenceReaderConsole.codeReaderOff();
                 //重置录像机页面
                 CommonUtil.RestoreSetting(true);
+                this.btnNone.Focus();
                 this.Hide();
+                
             }
         }
         #endregion
@@ -1032,7 +1035,7 @@ namespace YYOPInspectionClient
                         //打开英文输入法
                         AlphabetKeyboardForm.inputTxt = tb;
                         AlphabetKeyboardForm.flag = 0;
-                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                        AlphabetKeyboardForm.getForm().Textbox_display.Text = tb.Text;//.Trim();
                         AlphabetKeyboardForm.getForm().Show();
                         //设置输入法头部对应输入框名称
                         SetAlphaKeyboardText(tb);
@@ -1046,14 +1049,14 @@ namespace YYOPInspectionClient
                         {
                             NumberKeyboardForm.inputTxt = tb;
                             NumberKeyboardForm.flag = 0;
-                            NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text.Trim();
+                            NumberKeyboardForm.getForm().Textbox_display.Text = tb.Text;//.Trim();
                             NumberKeyboardForm.getForm().Show();
                             NumberKeyboardForm.getForm().TopMost = true;
                             SetNumberKeyboardText(tb);
                         }
                         else
                         {
-                            txtCoupingNo.Focus();
+                            //txtCoupingNo.Focus();
                             MessagePrompt.Show("请检查接箍编号是否输入和视频录制是否启动!");
                         }
                     }
@@ -1128,7 +1131,7 @@ namespace YYOPInspectionClient
                         }
                         else
                         {
-                            txtCoupingNo.Focus();
+                            //txtCoupingNo.Focus();
                             MessagePrompt.Show("请检查接箍编号是否输入和视频录制是否启动!");
                         }
                     }
@@ -1145,7 +1148,7 @@ namespace YYOPInspectionClient
         #region 点击开始扫码事件
         private void button1_Click(object sender, EventArgs e)
         {
-
+            this.btnNone.Focus();
             string btnName = this.button1.Text;
             //如果已经在扫码中，则关闭扫码
             if (btnName.Contains("结束扫码"))
@@ -1192,6 +1195,7 @@ namespace YYOPInspectionClient
         #region 点击开始录制视频事件
         private void button2_Click(object sender, EventArgs e)
         {
+            this.btnNone.Focus();
             if (this.button2.Text.Contains("开始录制"))
             {
                 try
@@ -1425,6 +1429,7 @@ namespace YYOPInspectionClient
         #region 关闭窗体事件
         private void btnClose_Click(object sender, EventArgs e)
         {
+            this.btnNone.Focus();
             //关闭之前判断是否关闭读码器和结束录像
             if (button2.Text.Trim() == "结束录像")
             {
@@ -1716,6 +1721,23 @@ namespace YYOPInspectionClient
                 flag += "为必填项!";
             return flag;
         }
+
+
+
         #endregion
+
+        public void btnNone_Click(object sender, EventArgs e)
+        {
+            //重置一下
+            fpcusTxt = null;
+            this.btnNone.Focus();
+            if (sender != null)//点击调用，认为是重置清空
+            {
+                this.txtCoupingNo.Text = "";
+                this.txtBatchNo.Text = "";
+                this.txtHeatNo.Text = "";
+            }
+            
+        }
     }
 }

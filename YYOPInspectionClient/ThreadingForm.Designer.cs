@@ -71,6 +71,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
+            this.btnNone = new System.Windows.Forms.Button();
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblVideoStatus = new System.Windows.Forms.Label();
             this.lblReaderStatus = new System.Windows.Forms.Label();
@@ -588,6 +589,7 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTabTwoTitle.Controls.Add(this.btnNone);
             this.pnlTabTwoTitle.Controls.Add(this.lblTimer);
             this.pnlTabTwoTitle.Controls.Add(this.lblVideoStatus);
             this.pnlTabTwoTitle.Controls.Add(this.lblReaderStatus);
@@ -610,6 +612,16 @@
             this.pnlTabTwoTitle.Name = "pnlTabTwoTitle";
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1281, 108);
             this.pnlTabTwoTitle.TabIndex = 0;
+            // 
+            // btnNone
+            // 
+            this.btnNone.Location = new System.Drawing.Point(683, 54);
+            this.btnNone.Name = "btnNone";
+            this.btnNone.Size = new System.Drawing.Size(69, 46);
+            this.btnNone.TabIndex = 17;
+            this.btnNone.Text = "重置";
+            this.btnNone.UseVisualStyleBackColor = true;
+            this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
             // 
             // lblTimer
             // 
@@ -648,6 +660,7 @@
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(115, 46);
             this.btnFormClose.TabIndex = 13;
+            this.btnFormClose.TabStop = false;
             this.btnFormClose.Text = "关闭";
             this.btnFormClose.UseVisualStyleBackColor = true;
             this.btnFormClose.Click += new System.EventHandler(this.btnFormClose_Click);
@@ -658,6 +671,7 @@
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(115, 47);
             this.btnFormSubmit.TabIndex = 12;
+            this.btnFormSubmit.TabStop = false;
             this.btnFormSubmit.Text = "提交";
             this.btnFormSubmit.UseVisualStyleBackColor = true;
             this.btnFormSubmit.Click += new System.EventHandler(this.btnFormSubmit_Click);
@@ -668,6 +682,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(115, 43);
             this.button2.TabIndex = 11;
+            this.button2.TabStop = false;
             this.button2.Text = "开始录制视频";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -678,6 +693,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(116, 43);
             this.button1.TabIndex = 10;
+            this.button1.TabStop = false;
             this.button1.Text = "开始扫码";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -687,8 +703,10 @@
             this.txtBatchNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtBatchNo.Location = new System.Drawing.Point(499, 67);
             this.txtBatchNo.Name = "txtBatchNo";
+            this.txtBatchNo.ReadOnly = true;
             this.txtBatchNo.Size = new System.Drawing.Size(120, 29);
             this.txtBatchNo.TabIndex = 9;
+            this.txtBatchNo.TabStop = false;
             this.txtBatchNo.Tag = "English";
             this.txtBatchNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -697,8 +715,10 @@
             this.txtHeatNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtHeatNo.Location = new System.Drawing.Point(310, 65);
             this.txtHeatNo.Name = "txtHeatNo";
+            this.txtHeatNo.ReadOnly = true;
             this.txtHeatNo.Size = new System.Drawing.Size(120, 29);
             this.txtHeatNo.TabIndex = 8;
+            this.txtHeatNo.TabStop = false;
             this.txtHeatNo.Tag = "English";
             this.txtHeatNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -707,8 +727,10 @@
             this.txtCoupingNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtCoupingNo.Location = new System.Drawing.Point(120, 65);
             this.txtCoupingNo.Name = "txtCoupingNo";
+            this.txtCoupingNo.ReadOnly = true;
             this.txtCoupingNo.Size = new System.Drawing.Size(120, 29);
             this.txtCoupingNo.TabIndex = 7;
+            this.txtCoupingNo.TabStop = false;
             this.txtCoupingNo.Tag = "English";
             this.txtCoupingNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -968,5 +990,6 @@
         private System.Windows.Forms.Button btnChanger;
         private System.Windows.Forms.Button button4;
         public System.Windows.Forms.Label pingLbl;
+        private System.Windows.Forms.Button btnNone;
     }
 }

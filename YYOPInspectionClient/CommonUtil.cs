@@ -28,7 +28,7 @@ namespace YYOPInspectionClient
         //定义一个委托用于更新ThreadingForm中客户端ping服务器所需时间
         private delegate void SetLblTextCallbackOfThreading(string message);
 
-        #region 获取服务地址(例如:http://100.100.0.1:8080/)
+        #region 获取服务地址(例如:http://192.168.0.200:8080/)
         public static string getServerIpAndPort()
         {
             string serverPath=Application.StartupPath + "\\server.txt";

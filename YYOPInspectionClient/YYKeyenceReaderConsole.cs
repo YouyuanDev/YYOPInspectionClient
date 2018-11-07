@@ -579,7 +579,10 @@ namespace YYOPInspectionClient
                             argHeatNo = strArr[1];//炉号
                             argBatchNo = strArr[2];//批号
                             argCoupingNo = strArr[3];//接箍编号
-                                                     //判断是否是跨线程访问控件
+
+                            
+
+                            //判断是否是跨线程访问控件
                             if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
                             {
                                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);

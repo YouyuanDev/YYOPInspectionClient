@@ -141,6 +141,8 @@ namespace YYOPInspectionClient
         private void button_close_Click(object sender, EventArgs e)
         {
             this.Textbox_display.Text = "";
+            //清除关闭和Enter按钮的焦点，避免影响扫码枪的无意输出
+            Textbox_display.Focus();
             this.Hide();
         }
         #endregion
@@ -155,12 +157,17 @@ namespace YYOPInspectionClient
                 "txtHeatNo", "txtBatchNo", "txtMachineNo" };
                 if (inputTxt != null)
                 {
-                    inputTxt.Text = Textbox_display.Text.Trim();
+                    inputTxt.Text = Textbox_display.Text;
                     this.Textbox_display.Text = "";
                     //如果此时获取焦点的输入框的名称在数组中，则点击Enter后隐藏输入法
                     if (filterArr.Contains(inputTxt.Name))
                     {
+                        Textbox_display.Focus();
+                        //重置焦点
+                        ThreadingForm.getMyForm().btnNone_Click(null,null);
                         this.Hide();
+                        //此处是否要return？？
+                        return;
                     }
                 }
                 //查询鼠标焦点所在的TextBox控件在控件集合中的索引
@@ -198,6 +205,11 @@ namespace YYOPInspectionClient
             }
             catch (Exception ex)
             {
+            }
+            finally
+            {
+                //清除关闭和Enter按钮的焦点，避免影响扫码枪的无意输出
+                Textbox_display.Focus();
             }
         }
         #endregion

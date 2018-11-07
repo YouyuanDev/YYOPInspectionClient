@@ -87,6 +87,8 @@ namespace YYOPInspectionClient
             {
                 //字符串转utf-8编码
                 string scanerString = codes.Result;
+                //两个连续空格改一个
+                scanerString = scanerString.Replace("  ", " ");
                 byte[] byteArray = System.Text.Encoding.Default.GetBytes(scanerString);
                 //更新扫码枪扫码数据到输入框中
                 YYKeyenceReaderConsole.UpdateTextBox(ThreadingForm.getMyForm(), Encoding.UTF8.GetString(byteArray).TrimEnd());
@@ -282,12 +284,18 @@ namespace YYOPInspectionClient
                 StringBuilder strKeyName = new StringBuilder(500);
                 if (GetKeyNameText(c * 65536, strKeyName, 255) > 0)
                 {
-                    _key = strKeyName.ToString().Trim(new char[] { ' ', '\0' });
+                    _key = strKeyName.ToString().Trim(new char[] { ' ','\0' });
                     GetKeyboardState(_state);
+                    //Console.WriteLine("_key"+ _key); 
                     if (_key.Length == 1 && msg.paramH == 0)// && msg.paramH == 0
                     {
                         // 根据键盘状态和shift缓存判断输出字符  
                         _cur = ShiftChar(_key, isShift, _state).ToString();
+                        _result[_result.Count - 1] += _cur;
+                    }
+                    else if (_key.Equals("Space")) //_key 为空格是 值为“Space”
+                    {
+                        _cur= Convert.ToChar(' ').ToString();
                         _result[_result.Count - 1] += _cur;
                     }
                     // 备选
