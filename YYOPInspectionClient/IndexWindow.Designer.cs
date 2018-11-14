@@ -593,6 +593,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.BackColor = System.Drawing.Color.DarkRed;
             this.btnExit.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnExit.Location = new System.Drawing.Point(1196, 7);
             this.btnExit.Margin = new System.Windows.Forms.Padding(2);
@@ -600,7 +601,7 @@
             this.btnExit.Size = new System.Drawing.Size(120, 46);
             this.btnExit.TabIndex = 14;
             this.btnExit.Text = "登出";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // menuStrip1

@@ -43,5 +43,5 @@ C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspect
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.application
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.exe
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.pdb
-C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.csprojResolveAssemblyReference.cache
 C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\ReaderMaintenance.Form1.resources
+C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\obj\x64\Debug\YYOPInspectionClient.csprojResolveAssemblyReference.cache

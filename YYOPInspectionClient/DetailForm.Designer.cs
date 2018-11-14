@@ -588,12 +588,13 @@
             // 
             // btnClose
             // 
+            this.btnClose.BackColor = System.Drawing.Color.DarkRed;
             this.btnClose.Location = new System.Drawing.Point(1036, 60);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(151, 38);
+            this.btnClose.Size = new System.Drawing.Size(151, 49);
             this.btnClose.TabIndex = 30;
             this.btnClose.Text = "关闭";
-            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label11

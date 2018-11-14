@@ -38,35 +38,36 @@
             this.lblLoginTitle = new System.Windows.Forms.Label();
             this.btnLoginOut = new System.Windows.Forms.Button();
             this.pingLbl = new System.Windows.Forms.Label();
+            this.label_msg = new System.Windows.Forms.Label();
             this.pnlLoginTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(108, 62);
+            this.label1.Font = new System.Drawing.Font("黑体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(65, 65);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 22);
+            this.label1.Size = new System.Drawing.Size(98, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "用户名：";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(108, 124);
+            this.label2.Font = new System.Drawing.Font("黑体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(65, 127);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 22);
+            this.label2.Size = new System.Drawing.Size(98, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "密  码：";
             // 
             // txtLoginName
             // 
-            this.txtLoginName.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtLoginName.Location = new System.Drawing.Point(211, 59);
+            this.txtLoginName.Font = new System.Drawing.Font("黑体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtLoginName.Location = new System.Drawing.Point(168, 62);
             this.txtLoginName.Name = "txtLoginName";
-            this.txtLoginName.Size = new System.Drawing.Size(100, 32);
+            this.txtLoginName.Size = new System.Drawing.Size(204, 31);
             this.txtLoginName.TabIndex = 2;
             this.txtLoginName.Tag = "English";
             this.txtLoginName.Text = "1111";
@@ -74,11 +75,11 @@
             // 
             // txtLoginPwd
             // 
-            this.txtLoginPwd.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtLoginPwd.Location = new System.Drawing.Point(210, 121);
+            this.txtLoginPwd.Font = new System.Drawing.Font("黑体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtLoginPwd.Location = new System.Drawing.Point(167, 124);
             this.txtLoginPwd.Name = "txtLoginPwd";
             this.txtLoginPwd.PasswordChar = '*';
-            this.txtLoginPwd.Size = new System.Drawing.Size(100, 32);
+            this.txtLoginPwd.Size = new System.Drawing.Size(205, 31);
             this.txtLoginPwd.TabIndex = 3;
             this.txtLoginPwd.Tag = "English";
             this.txtLoginPwd.Text = "123456";
@@ -86,13 +87,14 @@
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button1.Font = new System.Drawing.Font("黑体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button1.Location = new System.Drawing.Point(63, 185);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(143, 52);
             this.button1.TabIndex = 4;
             this.button1.Text = "登录";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // pnlLoginTitle
@@ -103,15 +105,15 @@
             this.pnlLoginTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlLoginTitle.Location = new System.Drawing.Point(0, 0);
             this.pnlLoginTitle.Name = "pnlLoginTitle";
-            this.pnlLoginTitle.Size = new System.Drawing.Size(410, 39);
+            this.pnlLoginTitle.Size = new System.Drawing.Size(441, 46);
             this.pnlLoginTitle.TabIndex = 5;
             this.pnlLoginTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlLoginTitle_MouseDown);
             // 
             // btnClose
             // 
             this.btnClose.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnClose.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClose.Location = new System.Drawing.Point(367, 0);
+            this.btnClose.Font = new System.Drawing.Font("黑体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnClose.Location = new System.Drawing.Point(383, 4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(43, 39);
             this.btnClose.TabIndex = 1;
@@ -122,7 +124,7 @@
             // lblLoginTitle
             // 
             this.lblLoginTitle.AutoSize = true;
-            this.lblLoginTitle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblLoginTitle.Font = new System.Drawing.Font("黑体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblLoginTitle.Location = new System.Drawing.Point(4, 11);
             this.lblLoginTitle.Name = "lblLoginTitle";
             this.lblLoginTitle.Size = new System.Drawing.Size(40, 16);
@@ -132,31 +134,41 @@
             // 
             // btnLoginOut
             // 
-            this.btnLoginOut.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnLoginOut.BackColor = System.Drawing.Color.Maroon;
+            this.btnLoginOut.Font = new System.Drawing.Font("黑体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnLoginOut.Location = new System.Drawing.Point(229, 185);
             this.btnLoginOut.Name = "btnLoginOut";
             this.btnLoginOut.Size = new System.Drawing.Size(143, 52);
             this.btnLoginOut.TabIndex = 6;
             this.btnLoginOut.Text = "退出";
-            this.btnLoginOut.UseVisualStyleBackColor = true;
+            this.btnLoginOut.UseVisualStyleBackColor = false;
             this.btnLoginOut.Click += new System.EventHandler(this.btnLoginOut_Click);
             // 
             // pingLbl
             // 
-            this.pingLbl.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pingLbl.Font = new System.Drawing.Font("黑体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pingLbl.ForeColor = System.Drawing.Color.IndianRed;
-            this.pingLbl.Location = new System.Drawing.Point(105, 248);
+            this.pingLbl.Location = new System.Drawing.Point(108, 267);
             this.pingLbl.Name = "pingLbl";
             this.pingLbl.Size = new System.Drawing.Size(212, 22);
             this.pingLbl.TabIndex = 7;
             this.pingLbl.Text = " ";
             this.pingLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label_msg
+            // 
+            this.label_msg.Font = new System.Drawing.Font("黑体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_msg.Location = new System.Drawing.Point(61, 244);
+            this.label_msg.Name = "label_msg";
+            this.label_msg.Size = new System.Drawing.Size(349, 23);
+            this.label_msg.TabIndex = 8;
+            // 
             // LoginWinform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 275);
+            this.ClientSize = new System.Drawing.Size(441, 318);
+            this.Controls.Add(this.label_msg);
             this.Controls.Add(this.pingLbl);
             this.Controls.Add(this.btnLoginOut);
             this.Controls.Add(this.pnlLoginTitle);
@@ -191,5 +203,6 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnLoginOut;
         internal System.Windows.Forms.Label pingLbl;
+        private System.Windows.Forms.Label label_msg;
     }
 }

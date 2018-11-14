@@ -1,5 +1,24 @@
-[2018-09-18 18:34:02.875][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
-[2018-09-18 18:34:02.875][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
-[2018-09-18 18:34:02.878][INF] login dev 100.100.0.90:8000.
-[2018-09-18 18:34:06.545][ERR] Private connect 100.100.0.90:8000 sock=2432 this=0x1f844a04 cmd=0x10000 sys_err=10060, timeout= 3500
-[2018-09-18 18:34:06.545][ERR] [100.100.0.90:8000]LogonDevice Link_CreateLink fail[7].
+[2018-11-14 15:34:56.912][INF] The COM:Core ver is 5.3.1.22, 2017_09_09. Async:1.
+[2018-11-14 15:34:56.912][INF] This hcnetsdk ver is 5.3.1.22 Ver 2017_09_09.
+[2018-11-14 15:34:56.914][INF] login dev 100.100.0.90:8000.
+[2018-11-14 15:34:57.100][INF] Private connect 100.100.0.90:8000 sock=2260 this=0xb773dfc4 cmd=0x10000 port=16037
+[2018-11-14 15:34:57.100][INF] LogonDev1 in[100.100.0.90:8000]
+[2018-11-14 15:34:57.378][DBG] load[C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\HCNetSDKCom/HCPreview.dll] succ
+[2018-11-14 15:34:57.378][INF] AbilityAnalyze---Init-- start
+[2018-11-14 15:34:57.378][ERR] AbilityAnalyze---open zip package error, package path C:/Workspace/YYOPInspectionClient/YYOPInspectionClient/bin/LocalXml.zip
+[2018-11-14 15:34:57.379][INF] The COM:Preview ver is 5.3.1.22, 2017_09_09.
+[2018-11-14 15:34:57.379][INF] ID-IP-CHAN[0-100.100.0.90-1] [CPreviewSession::AdjustProtoType] StreamMode[0], StreamProtocol[0xffff]
+[2018-11-14 15:34:57.706][INF] GlobalCtrl load [C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\PlayCtrl.dll] with sdk path success and get handle[0xcd9a0000]
+[2018-11-14 15:34:57.706][DBG] ID-IP-CHAN[0-100.100.0.90-1] [CPreviewPlayer::CreatePlayer] create player success, version is[v7.3.3.3d]
+[2018-11-14 15:34:57.729][INF] Private connect 100.100.0.90:8000 sock=2496 this=0xb773dfc4 cmd=0x30000 port=16038
+[2018-11-14 15:34:57.753][INF] ID-IP-CHAN[0-100.100.0.90-1] [CPreviewPlayer::OpenPlayer] open player[bc4c58a4] success
+[2018-11-14 15:34:57.753][DBG] ID-IP-CHAN[0-100.100.0.90-1] RTP Format
+[2018-11-14 15:34:57.753][DBG] ID-IP-CHAN[0-100.100.0.90-1] [CPreviewSession::Start] SUCC
+[2018-11-14 15:35:44.534][INF] Private connect 100.100.0.90:8000 sock=2888 this=0xb773e6e0 cmd=0x90100 port=16059
+[2018-11-14 15:35:44.545][INF] GlobalCtrl load [C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\HCNetSDKCom/SystemTransform.dll] with sdk path success and get handle[0xb9f40000]
+[2018-11-14 15:35:44.545][INF] CStreamConvert::LoadConvertLib Load Succ, m_iInitCount = 1
+[2018-11-14 15:36:13.530][DBG] CStreamConvert::UnloadConvertLib, m_iInitCount = 0
+[2018-11-14 15:36:30.141][INF] Private connect 100.100.0.90:8000 sock=2844 this=0xb773e6e0 cmd=0x90100 port=16082
+[2018-11-14 15:36:30.146][INF] GlobalCtrl load [C:\Workspace\YYOPInspectionClient\YYOPInspectionClient\bin\HCNetSDKCom/SystemTransform.dll] with sdk path success and get handle[0xb9f50000]
+[2018-11-14 15:36:30.146][INF] CStreamConvert::LoadConvertLib Load Succ, m_iInitCount = 1
+[2018-11-14 15:36:31.826][DBG] CStreamConvert::UnloadConvertLib, m_iInitCount = 0

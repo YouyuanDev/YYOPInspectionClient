@@ -69,6 +69,7 @@ namespace YYOPInspectionClient
             this.button1.Enabled = false;
             try
             {
+                this.label_msg.Text = "发送登录请求。。。";
                 //封装客户端登录所传数据
                 JObject json = new JObject{
                     {"employee_no",employee_no },
@@ -88,6 +89,7 @@ namespace YYOPInspectionClient
                 {
                     sm.Write(data, 0, data.Length);
                 }
+                this.label_msg.Text = "登录验证中。。。";
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream streamResponse = response.GetResponseStream();
                 using (StreamReader sr = new StreamReader(streamResponse))
@@ -98,8 +100,10 @@ namespace YYOPInspectionClient
                 if (content != null)
                 {
                     //如果返回的数据为"{}"
+                    this.label_msg.Text = "";
                     if (content.Trim().Contains("{}"))
                     {
+                        this.label_msg.Text = "登录异常！";
                         MessagePrompt.Show("登录异常!");
                     }
                     else
@@ -114,6 +118,7 @@ namespace YYOPInspectionClient
                             if (rowsJson != null)
                             {
                                 //登录成功返回当前登录用户的信息,将返回的json格式的信息转换成指定对象
+                                this.label_msg.Text = "登录成功，初始化控件中...";
                                 Person person = JsonConvert.DeserializeObject<Person>(rowsJson);
                                 IndexWindow.getForm().Show();
                                 NumberKeyboardForm.getForm();
@@ -123,11 +128,13 @@ namespace YYOPInspectionClient
                             }
                             else
                             {
+                                this.label_msg.Text = "系统繁忙，请稍后重试!";
                                 MessagePrompt.Show("系统繁忙，请稍后重试!");
                             }
                         }
                         else
                         {
+                            this.label_msg.Text = msg;
                             MessagePrompt.Show(msg);
                         }
                     }

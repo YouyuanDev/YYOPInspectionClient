@@ -292,12 +292,13 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(1045, 100);
+            this.btnClose.BackColor = System.Drawing.Color.DarkRed;
+            this.btnClose.Location = new System.Drawing.Point(1045, 101);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(138, 37);
+            this.btnClose.Size = new System.Drawing.Size(138, 43);
             this.btnClose.TabIndex = 30;
             this.btnClose.Text = "关闭";
-            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // dtpInspectionTime
@@ -657,24 +658,26 @@
             // 
             // btnFormClose
             // 
+            this.btnFormClose.BackColor = System.Drawing.Color.DarkRed;
             this.btnFormClose.Location = new System.Drawing.Point(926, 54);
             this.btnFormClose.Name = "btnFormClose";
             this.btnFormClose.Size = new System.Drawing.Size(115, 46);
             this.btnFormClose.TabIndex = 13;
             this.btnFormClose.TabStop = false;
             this.btnFormClose.Text = "关闭";
-            this.btnFormClose.UseVisualStyleBackColor = true;
+            this.btnFormClose.UseVisualStyleBackColor = false;
             this.btnFormClose.Click += new System.EventHandler(this.btnFormClose_Click);
             // 
             // btnFormSubmit
             // 
+            this.btnFormSubmit.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnFormSubmit.Location = new System.Drawing.Point(781, 54);
             this.btnFormSubmit.Name = "btnFormSubmit";
             this.btnFormSubmit.Size = new System.Drawing.Size(115, 47);
             this.btnFormSubmit.TabIndex = 12;
             this.btnFormSubmit.TabStop = false;
             this.btnFormSubmit.Text = "提交";
-            this.btnFormSubmit.UseVisualStyleBackColor = true;
+            this.btnFormSubmit.UseVisualStyleBackColor = false;
             this.btnFormSubmit.Click += new System.EventHandler(this.btnFormSubmit_Click);
             // 
             // button2
