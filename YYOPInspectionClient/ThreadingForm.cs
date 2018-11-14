@@ -773,7 +773,6 @@ namespace YYOPInspectionClient
             //{
             //    MessagePrompt.Show("录像机或读码器尚未关闭！");
             //}
-            this.btnNone.Focus();
             if (!string.IsNullOrWhiteSpace(Person.pname) && !string.IsNullOrWhiteSpace(Person.employee_no))
             {
                 //关闭录像
@@ -805,7 +804,6 @@ namespace YYOPInspectionClient
                     YYKeyenceReaderConsole.codeReaderOff();
                 //重置录像机页面
                 CommonUtil.RestoreSetting(true);
-                this.btnNone.Focus();
                 this.Hide();
                 
             }
@@ -1148,7 +1146,7 @@ namespace YYOPInspectionClient
         #region 点击开始扫码事件
         private void button1_Click(object sender, EventArgs e)
         {
-            this.btnNone.Focus();
+            
             string btnName = this.button1.Text;
             //如果已经在扫码中，则关闭扫码
             if (btnName.Contains("结束扫码"))
@@ -1189,13 +1187,13 @@ namespace YYOPInspectionClient
                     MessagePrompt.Show("开启读码器出错,错误信息:" + ex.Message);
                 }
             }
+            this.button_scan.Text = this.button1.Text;
         }
         #endregion
 
         #region 点击开始录制视频事件
         private void button2_Click(object sender, EventArgs e)
         {
-            this.btnNone.Focus();
             if (this.button2.Text.Contains("开始录制"))
             {
                 try
@@ -1429,7 +1427,7 @@ namespace YYOPInspectionClient
         #region 关闭窗体事件
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.btnNone.Focus();
+
             //关闭之前判断是否关闭读码器和结束录像
             if (button2.Text.Trim() == "结束录像")
             {
@@ -1544,8 +1542,10 @@ namespace YYOPInspectionClient
             }
         }
 
-        
+
         #endregion
+
+       
 
         #region tabControl切换事件
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1730,7 +1730,6 @@ namespace YYOPInspectionClient
         {
             //重置一下
             fpcusTxt = null;
-            this.btnNone.Focus();
             if (sender != null)//点击调用，认为是重置清空
             {
                 this.txtCoupingNo.Text = "";
@@ -1738,6 +1737,12 @@ namespace YYOPInspectionClient
                 this.txtHeatNo.Text = "";
             }
             
+        }
+
+        //量具扫码按钮
+        private void button_scan_Click(object sender, EventArgs e)
+        {
+            this.button1_Click(this.button_scan, null);
         }
     }
 }

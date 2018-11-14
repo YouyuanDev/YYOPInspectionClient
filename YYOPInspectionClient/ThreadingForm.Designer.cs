@@ -41,6 +41,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.flpTabOneContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabOneTitle = new System.Windows.Forms.Panel();
+            this.button_scan = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.dtpInspectionTime = new System.Windows.Forms.DateTimePicker();
             this.cmbProductionShift = new System.Windows.Forms.ComboBox();
@@ -71,7 +72,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabTwoContent = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlTabTwoTitle = new System.Windows.Forms.Panel();
-            this.btnNone = new System.Windows.Forms.Button();
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblVideoStatus = new System.Windows.Forms.Label();
             this.lblReaderStatus = new System.Windows.Forms.Label();
@@ -245,6 +245,7 @@
             this.pnlTabOneTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTabOneTitle.AutoSize = true;
+            this.pnlTabOneTitle.Controls.Add(this.button_scan);
             this.pnlTabOneTitle.Controls.Add(this.btnClose);
             this.pnlTabOneTitle.Controls.Add(this.dtpInspectionTime);
             this.pnlTabOneTitle.Controls.Add(this.cmbProductionShift);
@@ -275,8 +276,19 @@
             this.pnlTabOneTitle.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pnlTabOneTitle.Location = new System.Drawing.Point(6, 6);
             this.pnlTabOneTitle.Name = "pnlTabOneTitle";
-            this.pnlTabOneTitle.Size = new System.Drawing.Size(1287, 143);
+            this.pnlTabOneTitle.Size = new System.Drawing.Size(1287, 147);
             this.pnlTabOneTitle.TabIndex = 0;
+            // 
+            // button_scan
+            // 
+            this.button_scan.Location = new System.Drawing.Point(850, 101);
+            this.button_scan.Name = "button_scan";
+            this.button_scan.Size = new System.Drawing.Size(116, 43);
+            this.button_scan.TabIndex = 31;
+            this.button_scan.TabStop = false;
+            this.button_scan.Text = "开始扫码";
+            this.button_scan.UseVisualStyleBackColor = true;
+            this.button_scan.Click += new System.EventHandler(this.button_scan_Click);
             // 
             // btnClose
             // 
@@ -589,7 +601,6 @@
             // 
             this.pnlTabTwoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTabTwoTitle.Controls.Add(this.btnNone);
             this.pnlTabTwoTitle.Controls.Add(this.lblTimer);
             this.pnlTabTwoTitle.Controls.Add(this.lblVideoStatus);
             this.pnlTabTwoTitle.Controls.Add(this.lblReaderStatus);
@@ -612,16 +623,6 @@
             this.pnlTabTwoTitle.Name = "pnlTabTwoTitle";
             this.pnlTabTwoTitle.Size = new System.Drawing.Size(1281, 108);
             this.pnlTabTwoTitle.TabIndex = 0;
-            // 
-            // btnNone
-            // 
-            this.btnNone.Location = new System.Drawing.Point(683, 54);
-            this.btnNone.Name = "btnNone";
-            this.btnNone.Size = new System.Drawing.Size(69, 46);
-            this.btnNone.TabIndex = 17;
-            this.btnNone.Text = "重置";
-            this.btnNone.UseVisualStyleBackColor = true;
-            this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
             // 
             // lblTimer
             // 
@@ -703,10 +704,8 @@
             this.txtBatchNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtBatchNo.Location = new System.Drawing.Point(499, 67);
             this.txtBatchNo.Name = "txtBatchNo";
-            this.txtBatchNo.ReadOnly = true;
             this.txtBatchNo.Size = new System.Drawing.Size(120, 29);
             this.txtBatchNo.TabIndex = 9;
-            this.txtBatchNo.TabStop = false;
             this.txtBatchNo.Tag = "English";
             this.txtBatchNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -715,10 +714,8 @@
             this.txtHeatNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtHeatNo.Location = new System.Drawing.Point(310, 65);
             this.txtHeatNo.Name = "txtHeatNo";
-            this.txtHeatNo.ReadOnly = true;
             this.txtHeatNo.Size = new System.Drawing.Size(120, 29);
             this.txtHeatNo.TabIndex = 8;
-            this.txtHeatNo.TabStop = false;
             this.txtHeatNo.Tag = "English";
             this.txtHeatNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -727,10 +724,8 @@
             this.txtCoupingNo.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtCoupingNo.Location = new System.Drawing.Point(120, 65);
             this.txtCoupingNo.Name = "txtCoupingNo";
-            this.txtCoupingNo.ReadOnly = true;
             this.txtCoupingNo.Size = new System.Drawing.Size(120, 29);
             this.txtCoupingNo.TabIndex = 7;
-            this.txtCoupingNo.TabStop = false;
             this.txtCoupingNo.Tag = "English";
             this.txtCoupingNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
             // 
@@ -990,6 +985,6 @@
         private System.Windows.Forms.Button btnChanger;
         private System.Windows.Forms.Button button4;
         public System.Windows.Forms.Label pingLbl;
-        private System.Windows.Forms.Button btnNone;
+        private System.Windows.Forms.Button button_scan;
     }
 }

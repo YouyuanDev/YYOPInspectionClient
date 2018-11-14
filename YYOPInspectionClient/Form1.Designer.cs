@@ -40,6 +40,7 @@
             this.AllReadersSelectBtn = new System.Windows.Forms.CheckBox();
             this.SearchedReaders_ChkLstBx = new System.Windows.Forms.CheckedListBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.downloadPath = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -54,7 +55,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label2 = new System.Windows.Forms.Label();
             this.readerSearchGroup.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -179,7 +179,7 @@
             this.AllReadersSelectBtn.AutoSize = true;
             this.AllReadersSelectBtn.Location = new System.Drawing.Point(13, 21);
             this.AllReadersSelectBtn.Name = "AllReadersSelectBtn";
-            this.AllReadersSelectBtn.Size = new System.Drawing.Size(131, 19);
+            this.AllReadersSelectBtn.Size = new System.Drawing.Size(126, 19);
             this.AllReadersSelectBtn.TabIndex = 19;
             this.AllReadersSelectBtn.Text = "Select All Readers";
             this.AllReadersSelectBtn.UseVisualStyleBackColor = true;
@@ -193,7 +193,7 @@
             this.SearchedReaders_ChkLstBx.FormattingEnabled = true;
             this.SearchedReaders_ChkLstBx.Location = new System.Drawing.Point(11, 40);
             this.SearchedReaders_ChkLstBx.Name = "SearchedReaders_ChkLstBx";
-            this.SearchedReaders_ChkLstBx.Size = new System.Drawing.Size(459, 76);
+            this.SearchedReaders_ChkLstBx.Size = new System.Drawing.Size(459, 68);
             this.SearchedReaders_ChkLstBx.TabIndex = 15;
             this.SearchedReaders_ChkLstBx.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.SearchedReaders_ChkLstBx_ItemCheck);
             // 
@@ -211,6 +211,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "CONFIG/Script File";
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(398, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 15);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "--";
+            // 
             // downloadPath
             // 
             this.downloadPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -218,7 +228,7 @@
             this.downloadPath.Location = new System.Drawing.Point(119, 27);
             this.downloadPath.Name = "downloadPath";
             this.downloadPath.ReadOnly = true;
-            this.downloadPath.Size = new System.Drawing.Size(269, 23);
+            this.downloadPath.Size = new System.Drawing.Size(269, 21);
             this.downloadPath.TabIndex = 8;
             // 
             // groupBox2
@@ -281,9 +291,9 @@
             this.maintainSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.maintainSelect.Appearance = System.Windows.Forms.Appearance.Button;
             this.maintainSelect.AutoSize = true;
-            this.maintainSelect.Location = new System.Drawing.Point(263, 21);
+            this.maintainSelect.Location = new System.Drawing.Point(265, 21);
             this.maintainSelect.Name = "maintainSelect";
-            this.maintainSelect.Size = new System.Drawing.Size(53, 25);
+            this.maintainSelect.Size = new System.Drawing.Size(51, 25);
             this.maintainSelect.TabIndex = 4;
             this.maintainSelect.Text = "Select";
             this.maintainSelect.UseVisualStyleBackColor = true;
@@ -296,7 +306,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(151, 364);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(17, 15);
+            this.label3.Size = new System.Drawing.Size(15, 15);
             this.label3.TabIndex = 3;
             this.label3.Text = "--";
             // 
@@ -310,7 +320,7 @@
             this.liveviewForm1.BinningType = Keyence.AutoID.SDK.LiveviewForm.ImageBinningType.OneQuarter;
             this.liveviewForm1.ImageFormat = Keyence.AutoID.SDK.LiveviewForm.ImageFormatType.Jpeg;
             this.liveviewForm1.ImageQuality = 5;
-            this.liveviewForm1.IpAddress = "192.168.100.100";
+            this.liveviewForm1.IpAddress = "100.100.0.101";
             this.liveviewForm1.Location = new System.Drawing.Point(10, 59);
             this.liveviewForm1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.liveviewForm1.Name = "liveviewForm1";
@@ -386,23 +396,13 @@
             this.splitContainer2.SplitterDistance = 56;
             this.splitContainer2.TabIndex = 12;
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(398, 29);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 15);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "--";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(861, 476);
             this.Controls.Add(this.splitContainer2);
-            this.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "ReaderMaintenance";

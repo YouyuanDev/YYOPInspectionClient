@@ -21,7 +21,7 @@ namespace YYOPInspectionClient
         //数据量buff最大值    
         private const int RECV_DATA_MAX = 10240;
         //读码器暂停读取数据时间 100毫秒 0为不等待
-        private const int ACCURACY = 200;
+        private const int ACCURACY = 300;
         //基恩士读码器clientSocket数组
         public static ClientSocket[] clientSocketInstance;
         //接受各读码器server端数据的线程
@@ -558,7 +558,8 @@ namespace YYOPInspectionClient
                     if (AlphabetKeyboardForm.getForm().Textbox_display.InvokeRequired)
                     {
                         UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                        AlphabetKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)AlphabetKeyboardForm.getForm(), message });
+                       // AlphabetKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)AlphabetKeyboardForm.getForm(), message });
+                        AlphabetKeyboardForm.getForm().Textbox_display.BeginInvoke(new Action(() => { AlphabetKeyboardForm.getForm().Textbox_display.Text = message; }));
                     }
                     else
                     {
@@ -572,15 +573,14 @@ namespace YYOPInspectionClient
                     string[] strArr = Regex.Split(message, "\\s+");
                     string argHeatNo = string.Empty, argBatchNo = string.Empty, argCoupingNo = string.Empty;
                     //如果读码器读接箍内容则读出的数据格式目前如:"12323 43434 5454 5454"
-                    if (strArr.Length > 1)
+                    if (strArr.Length >= 1)
                     {
                         if (strArr.Length > 3)
                         {
+                           
                             argHeatNo = strArr[1];//炉号
                             argBatchNo = strArr[2];//批号
                             argCoupingNo = strArr[3];//接箍编号
-
-                            
 
                             //判断是否是跨线程访问控件
                             if (ThreadingForm.getMyForm().txtCoupingNo.InvokeRequired)
@@ -588,11 +588,14 @@ namespace YYOPInspectionClient
                                 UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
                                 //设置表单上接箍编号、炉号、批号控件内容
                                 if (!string.IsNullOrWhiteSpace(argCoupingNo))
-                                    ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { form, argCoupingNo });
+                                    ThreadingForm.getMyForm().txtCoupingNo.BeginInvoke(new Action(() => { ThreadingForm.getMyForm().txtCoupingNo.Text = argCoupingNo; }));
+                                //ThreadingForm.getMyForm().txtCoupingNo.Invoke(md, new object[] { ThreadingForm.getMyForm(),  argCoupingNo });
                                 if (!string.IsNullOrWhiteSpace(argHeatNo))
-                                    ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { form, argHeatNo });
+                                    ThreadingForm.getMyForm().txtHeatNo.BeginInvoke(new Action(() => { ThreadingForm.getMyForm().txtHeatNo.Text = argHeatNo; }));
+                                //ThreadingForm.getMyForm().txtHeatNo.Invoke(md, new object[] { ThreadingForm.getMyForm(), argHeatNo });
                                 if (!string.IsNullOrWhiteSpace(argBatchNo))
-                                    ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { form, argBatchNo });
+                                    ThreadingForm.getMyForm().txtBatchNo.BeginInvoke(new Action(() => { ThreadingForm.getMyForm().txtBatchNo.Text = argBatchNo; }));
+                                //ThreadingForm.getMyForm().txtBatchNo.Invoke(md, new object[] { ThreadingForm.getMyForm(),  argBatchNo });
                             }
                             else
                             {
@@ -612,29 +615,33 @@ namespace YYOPInspectionClient
                         if (NumberKeyboardForm.getForm().Textbox_display.InvokeRequired)
                         {
                             UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                            NumberKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)NumberKeyboardForm.getForm(), message });
+                            NumberKeyboardForm.getForm().Textbox_display.BeginInvoke(new Action(() => { NumberKeyboardForm.getForm().Textbox_display.Text = message; }));
+                            //NumberKeyboardForm.getForm().Textbox_display.Invoke(md, new object[] { (object)NumberKeyboardForm.getForm(), message });
                         }
                         else
                         {
                             //设置数值输入法中输入的内容为读码器读出的内容
                             NumberKeyboardForm.getForm().Textbox_display.Text = message;
                         }
+
+                        //设置当前焦点所在文本框内容
+                        if (ThreadingForm.fpcusTxt != null)
+                        {
+                            if (ThreadingForm.fpcusTxt.InvokeRequired)
+                            {
+                                UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
+                                ThreadingForm.fpcusTxt.BeginInvoke(new Action(() => { ThreadingForm.fpcusTxt.Text = message; }));
+                                //ThreadingForm.fpcusTxt.Invoke(md, new object[] { (object)ThreadingForm.getMyForm(), message });
+                            }
+                            else
+                            {
+                                //设置英文输入法中输入的内容为读码器读出的内容
+                                ThreadingForm.fpcusTxt.Text = message;
+                            }
+                        }
                     }
                 }
-                //设置当前焦点所在文本框内容
-                if (ThreadingForm.fpcusTxt != null)
-                {
-                    if (ThreadingForm.fpcusTxt.InvokeRequired)
-                    {
-                        UpdateTextBoxDelegate md = new UpdateTextBoxDelegate(UpdateTextBox);
-                        ThreadingForm.fpcusTxt.Invoke(md, new object[] { (object)ThreadingForm.getMyForm(), message });
-                    }
-                    else
-                    {
-                        //设置英文输入法中输入的内容为读码器读出的内容
-                        ThreadingForm.fpcusTxt.Text = message;
-                    }
-                }
+               
             }
             catch (Exception ex)
             {

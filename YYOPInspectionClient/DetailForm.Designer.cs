@@ -778,7 +778,7 @@
         private System.Windows.Forms.TextBox txtMachiningContractNo;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.FlowLayoutPanel flpTabOneContent;
-        private System.Windows.Forms.TabControl tabControl1;
+        public System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel pnlTabOneFooter;
         private System.Windows.Forms.TextBox txtThreadDrawingNo;

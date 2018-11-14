@@ -82,9 +82,11 @@ namespace YYOPInspectionClient
                     //连接读码器
                     if (YYKeyenceReaderConsole.readerStatus == 0)
                         YYKeyenceReaderConsole.codeReaderConnect();
-                    //开启读码器
-                    if (YYKeyenceReaderConsole.readerStatus == 1)
-                        YYKeyenceReaderConsole.codeReaderLon();
+                    YYKeyenceReaderConsole.getForm().Show();
+                    YYKeyenceReaderConsole.getForm().Hide();
+                    //开启读码器,此处开启无法读码
+                    //if (YYKeyenceReaderConsole.readerStatus == 1)
+                    //    YYKeyenceReaderConsole.codeReaderLon();
                     //初始化螺纹检验表单窗体
                     ThreadingForm.getMyForm();
                 }
